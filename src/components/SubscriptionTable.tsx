@@ -7,23 +7,44 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Button, Chip, TextField, Box } from "@mui/material";
+import StatusChip from "./StatusChip";
 
 const mockData = [
-  { id: 1, messageType: "DATEX", originatingCountry: "NO", status: "CREATED" },
-  { id: 2, messageType: "DENM", originatingCountry: "DK", status: "REQUESTED" },
+  {
+    id: 1,
+    messageType: "DATEX",
+    originatingCountry: "NO",
+    status: "CREATED",
+    color: "primary",
+  },
+  {
+    id: 2,
+    messageType: "DENM",
+    originatingCountry: "DK",
+    status: "REQUESTED",
+    color: "secondary",
+  },
   {
     id: 3,
     messageType: "DATEX",
     originatingCountry: "NO",
     status: "TEAR DOWN",
+    color: "info",
   },
   {
     id: 4,
     messageType: "DATEX",
     originatingCountry: "NO",
     status: "RESUBSCRIBE",
+    color: "warning",
   },
-  { id: 5, messageType: "DATEX", originatingCountry: "NO", status: "ILLEGAL" },
+  {
+    id: 5,
+    messageType: "DATEX",
+    originatingCountry: "NO",
+    status: "ILLEGAL",
+    color: "error",
+  },
 ];
 
 export default function SubscriptionTable() {
@@ -62,7 +83,7 @@ export default function SubscriptionTable() {
                   <TableCell align="right">{row.messageType}</TableCell>
                   <TableCell align="right">{row.originatingCountry}</TableCell>
                   <TableCell align="right">
-                    <Chip color="success" label={row.status} />
+                    <StatusChip label={row.status} color={row.color} />
                   </TableCell>
                 </TableRow>
               ))}
