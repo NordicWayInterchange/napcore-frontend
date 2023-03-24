@@ -13,7 +13,13 @@ import styles from "./Navbar.module.css";
 
 const Navbar = () => {
   return (
-    <Box sx={{ flexDirection: "column" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
       <Image src={logo} alt="Nordic Way logo" width={150} />
       <List>
         <ListItem>
