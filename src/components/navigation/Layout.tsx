@@ -1,4 +1,5 @@
 import Navbar from "./Navbar";
+import Box from "@mui/material/Box";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -6,9 +7,9 @@ type LayoutProps = {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <div className="flex h-screen divide-x">
+    <Box sx={{ display: "flex", flexDirection: "row" }}>
       <Navbar />
-      <main className="flex-grow p-4">{children}</main>
-    </div>
+      <main>{children}</main>
+    </Box>
   );
 }

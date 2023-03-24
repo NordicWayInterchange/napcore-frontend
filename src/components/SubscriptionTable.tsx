@@ -50,7 +50,7 @@ const mockData = [
 export default function SubscriptionTable() {
   return (
     <div>
-      <div className="flex justify-evenly m-2">
+      <Box sx={{ flexDirection: "row" }}>
         {/* contained buttons not working */}
         <Button variant="outlined">Create Subscription</Button>
         <Button variant="outlined">Filter +</Button>
@@ -61,7 +61,7 @@ export default function SubscriptionTable() {
           label="Search ..."
           variant="outlined"
         />
-      </div>
+      </Box>
       <div>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
