@@ -10,6 +10,7 @@ grad støtte dem i oppretting av disse slik at de finner frem til de dataene de
 ønsker å motta.
 
 ## Teknologi
-Vi benytter oss av NextJS 13 som rammeverk for applikasjonen med Tailwind som
-base for CSS. For støtte av QuadTrees vil vi bruke Leaflet.
+Vi benytter oss av NextJS 13 som rammeverk for applikasjonen med MUI som base
+for CSS og grunnleggende react komponenter. For støtte av QuadTrees vil vi bruke
+Leaflet.
 
