@@ -52,8 +52,8 @@ export default function SubscriptionTable() {
     <div>
       <Box sx={{ flexDirection: "row" }}>
         {/* contained buttons not working */}
-        <Button variant="outlined">Create Subscription</Button>
-        <Button variant="outlined">Filter +</Button>
+        <Button variant="contained">Create Subscription</Button>
+        <Button variant="contained">Filter +</Button>
         <TextField
           sx={{ width: 400 }}
           id="outlined-basic"

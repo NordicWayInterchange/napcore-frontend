@@ -1,12 +1,13 @@
-import SubscriptionTable from "@/components/SubscriptionTable";
+import SubscriptionTable from "@/components/table/SubscriptionTable";
 import React from "react";
+import { Box, Typography } from "@mui/material";
 
 const subscriptions = () => {
   return (
-    <>
-      <div>Subscription</div>
+    <Box>
+      <Typography variant="h4">Subscription</Typography>
       <SubscriptionTable />
-    </>
+    </Box>
   );
 };
 

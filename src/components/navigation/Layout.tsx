@@ -8,8 +8,10 @@ type LayoutProps = {
 export default function Layout({ children }: LayoutProps) {
   return (
     <Box sx={{ display: "flex", flexDirection: "row" }}>
-      <Navbar />
-      <main>{children}</main>
+      <Box>
+        <Navbar />
+      </Box>
+      <Box sx={{ flexGrow: 1 }}>{children}</Box>
     </Box>
   );
 }

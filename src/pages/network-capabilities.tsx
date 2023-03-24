@@ -1,7 +1,12 @@
 import React from "react";
+import { Box, Typography } from "@mui/material";
 
 const networkCapabilities = () => {
-  return <div>networkCapabilities</div>;
+  return (
+    <Box>
+      <Typography variant="h4">Network Capabilities</Typography>
+    </Box>
+  );
 };
 
 export default networkCapabilities;
