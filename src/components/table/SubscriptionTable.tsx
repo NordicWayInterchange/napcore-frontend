@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -8,46 +8,21 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Button, Chip, TextField, Box } from "@mui/material";
 import StatusChip from "./StatusChip";
-
-const mockData = [
-  {
-    id: 1,
-    messageType: "DATEX",
-    originatingCountry: "NO",
-    status: "CREATED",
-    color: "primary",
-  },
-  {
-    id: 2,
-    messageType: "DENM",
-    originatingCountry: "DK",
-    status: "REQUESTED",
-    color: "secondary",
-  },
-  {
-    id: 3,
-    messageType: "DATEX",
-    originatingCountry: "NO",
-    status: "TEAR DOWN",
-    color: "info",
-  },
-  {
-    id: 4,
-    messageType: "DATEX",
-    originatingCountry: "NO",
-    status: "RESUBSCRIBE",
-    color: "warning",
-  },
-  {
-    id: 5,
-    messageType: "DATEX",
-    originatingCountry: "NO",
-    status: "ILLEGAL",
-    color: "error",
-  },
-];
+import { mockData } from "../../mock/subs";
+import { Subscriptions } from "@/interfaces/subscription";
 
 export default function SubscriptionTable() {
+  const [search, setSearch] = useState("");
+
+  const searchFunc = (rows: Subscriptions) => {
+    const columns = rows[0] && Object.keys(rows[0]);
+    return rows.filter((row) =>
+      columns.some(
+        (column) => row[column].toString().toLowerCase().indexOf(search) > -1
+      )
+    );
+  };
+
   return (
     <div>
       <Box sx={{ flexDirection: "row" }}>
@@ -60,6 +35,7 @@ export default function SubscriptionTable() {
           size="small"
           label="Search ..."
           variant="outlined"
+          onChange={(e) => setSearch(e.target.value)}
         />
       </Box>
       <div>
@@ -74,7 +50,7 @@ export default function SubscriptionTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {mockData.map((row) => (
+              {searchFunc(mockData).map((row) => (
                 <TableRow
                   key={row.id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
