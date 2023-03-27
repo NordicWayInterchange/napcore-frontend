@@ -1,19 +1,22 @@
 import React, { useState } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import { TableContainer as MuiTableContainer } from "@mui/material/";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { Button, Chip, TextField, Box } from "@mui/material";
-import StatusChip from "./StatusChip";
+import { Button, TextField, Box } from "@mui/material";
 import { mockData } from "../../mock/subs";
 import { Subscriptions } from "@/interfaces/subscription";
 import TableComponent from "./TableComponent";
+import TableDialog from "./TableDialog";
 
 export default function TableContainer() {
+  const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("");
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const searchColumns = (rows: Subscriptions) => {
     const columns = rows[0] && Object.keys(rows[0]);
@@ -30,9 +33,11 @@ export default function TableContainer() {
   return (
     <Box>
       <Box sx={{ flexDirection: "row" }}>
-        {/* contained buttons not working */}
         <Button variant="contained">Create Subscription</Button>
-        <Button variant="contained">Filter +</Button>
+        <Button onClick={handleClickOpen} variant="contained">
+          Filter +
+        </Button>
+        <TableDialog open={open} onClose={handleClose} />
         <TextField
           sx={{ width: 400 }}
           id="outlined-basic"

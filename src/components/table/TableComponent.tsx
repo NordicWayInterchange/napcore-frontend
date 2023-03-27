@@ -7,9 +7,14 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import StatusChip from "./StatusChip";
+import { Subscriptions } from "@/interfaces/subscription";
 
-// FIXME: Implicitly has an 'any' type.
-const TableComponent = ({ data }) => {
+type dataProps = {
+  data: Subscriptions;
+};
+
+// TODO: Receive headers as props
+const TableComponent = ({ data }: dataProps) => {
   return (
     <MuiTableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -22,7 +27,6 @@ const TableComponent = ({ data }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {/* // FIXME: Implicitly has an 'any' type. */}
           {data.map((row) => (
             <TableRow
               key={row.id}
