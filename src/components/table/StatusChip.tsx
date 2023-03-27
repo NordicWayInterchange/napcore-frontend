@@ -7,6 +7,7 @@ type StatusChipProps = {
 };
 
 const StatusChip = ({ label, color }: StatusChipProps) => {
+  // FIXME: No overload matches this call.
   return <Chip color={color} label={label} />;
 };
 
