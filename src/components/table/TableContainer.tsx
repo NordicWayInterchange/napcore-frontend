@@ -3,7 +3,7 @@ import { Button, TextField, Box } from "@mui/material";
 import { mockData } from "../../mock/subs";
 import { Subscriptions, Subscription } from "@/interfaces/subscription";
 import TableComponent from "./TableComponent";
-import TableDialog from "./TableDialog";
+import TableDialog from "../dialog/TableDialog";
 import { filterMockData } from "../../mock/filters";
 
 export default function TableContainer() {
@@ -13,19 +13,15 @@ export default function TableContainer() {
 
   const handleClear = () => {
     setFilters([]);
-    handleClose();
+    setOpen(false);
   };
 
   const handleApply = () => {
-    handleClose();
+    setOpen(false);
   };
 
   const handleClickOpen = () => {
     setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
   };
 
   const searchColumns = (rows: Subscriptions) => {
@@ -65,7 +61,6 @@ export default function TableContainer() {
           handleClear={handleClear}
           data={filterMockData}
           open={open}
-          onClose={handleClose}
         />
         <TextField
           sx={{ width: 400 }}
