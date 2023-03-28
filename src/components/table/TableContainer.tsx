@@ -4,11 +4,21 @@ import { mockData } from "../../mock/subs";
 import { Subscriptions, Subscription } from "@/interfaces/subscription";
 import TableComponent from "./TableComponent";
 import TableDialog from "./TableDialog";
+import { filterMockData } from "../../mock/filters";
 
 export default function TableContainer() {
   const [open, setOpen] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
-  const [filter, setFilter] = useState("");
+  const [filters, setFilters] = useState<string[]>([]);
+
+  const handleClear = () => {
+    setFilters([]);
+    handleClose();
+  };
+
+  const handleApply = () => {
+    handleClose();
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -22,12 +32,23 @@ export default function TableContainer() {
     const columns = rows[0] && Object.keys(rows[0]);
     return rows.filter((row) =>
       columns.some(
-        // FIXME: Element implicitly has an 'any'
+        // Element implicitly has an 'any'
         (column) =>
           row[column].toString().toLowerCase().indexOf(search.toLowerCase()) >
           -1
       )
     );
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = event.target.checked;
+    const selected = event.target.value;
+
+    if (checked) {
+      setFilters([...filters, selected]);
+    } else {
+      setFilters(filters.filter((p) => p !== selected));
+    }
   };
 
   return (
@@ -37,7 +58,15 @@ export default function TableContainer() {
         <Button onClick={handleClickOpen} variant="contained">
           Filter +
         </Button>
-        <TableDialog open={open} onClose={handleClose} />
+        <TableDialog
+          filters={filters}
+          handleChange={handleChange}
+          handleApply={handleApply}
+          handleClear={handleClear}
+          data={filterMockData}
+          open={open}
+          onClose={handleClose}
+        />
         <TextField
           sx={{ width: 400 }}
           id="outlined-basic"

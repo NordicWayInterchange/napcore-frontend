@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -11,26 +10,19 @@ import {
   FormGroup,
   Typography,
 } from "@mui/material";
+import React from "react";
 
-type DialogProps = {
-  open: boolean;
-  data: any; // remove any type
-  filters: any; // remove any type
-  onClose: () => void;
-  handleClear: () => void;
-  handleApply: () => void;
-  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-};
+type Props = {};
 
-const TableDialog = (props: DialogProps) => {
-  const { handleChange, handleClear, handleApply, data, filters, open } = props;
-
+const DialogComponent = (props): Props => {
+  const {} = props;
   return (
-    <Dialog open={open}>
+    <Dialog onClose={handleClose} open={open}>
       <DialogTitle>Add filters</DialogTitle>
       <DialogContent>
         <FormGroup>
-          {data.map((filterType, key) => (
+          {/* TODO: Optimize */}
+          {filterMockData.map((filterType, key) => (
             <Box key={key}>
               <Typography>{filterType.header}</Typography>
               {filterType.filter?.map((filterData) => (
@@ -51,16 +43,12 @@ const TableDialog = (props: DialogProps) => {
         </FormGroup>
 
         <DialogActions>
-          <Button autoFocus onClick={handleClear}>
-            Clear
-          </Button>
-          <Button onClick={handleApply} autoFocus>
-            Apply
-          </Button>
+          <Button onClick={handleClear}>Clear</Button>
+          <Button onClick={handleApply}>Apply</Button>
         </DialogActions>
       </DialogContent>
     </Dialog>
   );
 };
 
-export default TableDialog;
+export default DialogComponent;
