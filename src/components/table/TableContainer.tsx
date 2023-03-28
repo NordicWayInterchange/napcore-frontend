@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Button, TextField, Box } from "@mui/material";
 import { mockData } from "../../mock/subs";
-import { Subscriptions } from "@/interfaces/subscription";
+import { Subscriptions, Subscription } from "@/interfaces/subscription";
 import TableComponent from "./TableComponent";
 import TableDialog from "./TableDialog";
 
 export default function TableContainer() {
-  const [open, setOpen] = useState(false);
-  const [search, setSearch] = useState("");
+  const [open, setOpen] = useState<boolean>(false);
+  const [search, setSearch] = useState<string>("");
   const [filter, setFilter] = useState("");
 
   const handleClickOpen = () => {

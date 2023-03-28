@@ -36,7 +36,7 @@ const TableComponent = ({ data }: dataProps) => {
               <TableCell align="right">{row.messageType}</TableCell>
               <TableCell align="right">{row.originatingCountry}</TableCell>
               <TableCell align="right">
-                <StatusChip label={row.status} color={row.color} />
+                <StatusChip label={row.status} />
               </TableCell>
             </TableRow>
           ))}

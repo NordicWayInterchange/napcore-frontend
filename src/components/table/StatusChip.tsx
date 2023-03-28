@@ -3,12 +3,12 @@ import React from "react";
 
 type StatusChipProps = {
   label: String;
-  color: String;
+  // color: ChipTypeMap;
 };
 
-const StatusChip = ({ label, color }: StatusChipProps) => {
+const StatusChip = ({ label }: StatusChipProps) => {
   // FIXME: No overload matches this call.
-  return <Chip color={color} label={label} />;
+  return <Chip color="default" label={label} />;
 };
 
 export default StatusChip;

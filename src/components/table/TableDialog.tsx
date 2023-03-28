@@ -13,9 +13,14 @@ import {
 } from "@mui/material";
 import { filterMockData } from "../../mock/filters";
 
-const TableDialog = (props) => {
-  const { onClose, selectedValue, open } = props;
-  const [filters, setFilters] = useState([]);
+type DialogProps = {
+  onClose: () => void;
+  open: boolean;
+};
+
+const TableDialog = (props: DialogProps) => {
+  const { onClose, open } = props;
+  const [filters, setFilters] = useState<string[]>([]);
 
   const handleClose = () => {
     // handleOnClose if clicked outside dialog
@@ -31,8 +36,7 @@ const TableDialog = (props) => {
     onClose();
   };
 
-  // TODO: only handle on apply, otherwise clear
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const checked = event.target.checked;
     const selected = event.target.value;
 
