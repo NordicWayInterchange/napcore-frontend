@@ -16,7 +16,6 @@ type DialogProps = {
   open: boolean;
   data: any; // remove any type
   filters: any; // remove any type
-  onClose: () => void;
   handleClear: () => void;
   handleApply: () => void;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -49,7 +48,6 @@ const TableDialog = (props: DialogProps) => {
             </Box>
           ))}
         </FormGroup>
-
         <DialogActions>
           <Button autoFocus onClick={handleClear}>
             Clear

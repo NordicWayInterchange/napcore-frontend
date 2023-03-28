@@ -9,21 +9,30 @@ import Paper from "@mui/material/Paper";
 import StatusChip from "./StatusChip";
 import { Subscriptions } from "@/interfaces/subscription";
 
-type dataProps = {
+type Props = {
+  headers: string[];
   data: Subscriptions;
 };
 
-// TODO: Receive headers as props
-const TableComponent = ({ data }: dataProps) => {
+const TableComponent = (props: Props) => {
+  const { data, headers } = props;
+
+  // const renderHeaders = (headers: string[]) => {
+  //   headers.map((header) => {
+  //     <TableCell align="right">{header}</TableCell>;
+  //   });
+  // };
+
   return (
     <MuiTableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell align="right">ID</TableCell>
-            <TableCell align="right">Message Type</TableCell>
-            <TableCell align="right">Originating Country</TableCell>
-            <TableCell align="right">Status</TableCell>
+            {headers.map((header) => (
+              <TableCell key={header} align="right">
+                {header}
+              </TableCell>
+            ))}
           </TableRow>
         </TableHead>
         <TableBody>

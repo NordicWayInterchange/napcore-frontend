@@ -12,16 +12,20 @@ export default function TableContainer() {
   const [filters, setFilters] = useState<string[]>([]);
 
   const handleClear = () => {
-    setFilters([]);
+    clearFilter();
     setOpen(false);
   };
 
-  const handleApply = () => {
+  const handleApply = (): void => {
     setOpen(false);
   };
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (): void => {
     setOpen(true);
+  };
+
+  const clearFilter = (): void => {
+    setFilters([]);
   };
 
   const searchColumns = (rows: Subscriptions) => {
@@ -54,6 +58,11 @@ export default function TableContainer() {
         <Button onClick={handleClickOpen} variant="contained">
           Filter +
         </Button>
+        {filters.length == 0 ? null : (
+          <Button onClick={() => clearFilter()} variant="contained">
+            Clear filter
+          </Button>
+        )}
         <TableDialog
           filters={filters}
           handleChange={handleChange}
@@ -71,7 +80,10 @@ export default function TableContainer() {
           onChange={(e) => setSearch(e.target.value)}
         />
       </Box>
-      <TableComponent data={searchColumns(mockData)} />
+      <TableComponent
+        headers={["ID", "Message Type", "Originating Country", "Status"]}
+        data={searchColumns(mockData)}
+      />
     </Box>
   );
 }
