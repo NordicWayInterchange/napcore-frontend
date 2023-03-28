@@ -18,15 +18,20 @@ const TableDialog = (props) => {
   const [filters, setFilters] = useState([]);
 
   const handleClose = () => {
-    onClose(selectedValue);
+    // handleOnClose if clicked outside dialog
+    // onClose(selectedValue);
   };
 
-  // console.log(filterMockData);
+  const handleClear = () => {
+    setFilters([]);
+    onClose();
+  };
 
-  // const handleListItemClick = (value: string) => {
-  //   onClose(value);
-  // };
+  const handleApply = () => {
+    onClose();
+  };
 
+  // TODO: only handle on apply, otherwise clear
   const handleChange = (event) => {
     const checked = event.target.checked;
     const selected = event.target.value;
@@ -68,10 +73,10 @@ const TableDialog = (props) => {
         </FormGroup>
 
         <DialogActions>
-          <Button autoFocus onClick={handleClose}>
+          <Button autoFocus onClick={handleClear}>
             Clear
           </Button>
-          <Button onClick={handleClose} autoFocus>
+          <Button onClick={handleApply} autoFocus>
             Apply
           </Button>
         </DialogActions>
