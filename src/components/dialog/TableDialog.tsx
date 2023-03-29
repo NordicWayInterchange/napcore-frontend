@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   Button,
@@ -38,7 +38,7 @@ const TableDialog = (props: DialogProps) => {
                   label={filterData}
                   control={
                     <Checkbox
-                      checked={filters.includes(filterData.toLowerCase())}
+                      checked={filters.includes(filterData)}
                       value={filterData}
                       onChange={handleChange}
                     />

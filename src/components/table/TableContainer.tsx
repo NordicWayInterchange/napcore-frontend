@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Button, TextField, Box } from "@mui/material";
 import { mockData } from "../../mock/subs";
 import { Subscriptions, Subscription } from "@/interfaces/subscription";
-import TableComponent from "./TableComponent";
 import TableDialog from "../dialog/TableDialog";
 import { filterMockData } from "../../mock/filters";
+import TableComponent from "./TableComponent";
 
 export default function TableContainer() {
   const [open, setOpen] = useState<boolean>(false);
@@ -28,7 +28,7 @@ export default function TableContainer() {
     const columns = rows[0] && Object.keys(rows[0]);
     return rows.filter((row) =>
       columns.some(
-        // Element implicitly has an 'any'
+        // FIXME: Element implicitly has an 'any'
         (column) =>
           row[column].toString().toLowerCase().indexOf(search.toLowerCase()) >
           -1
@@ -41,13 +41,12 @@ export default function TableContainer() {
   console.log("on", searchColumns(mockData));
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = event.target.checked;
-    const selected = event.target.value.toLowerCase();
+    const { checked, value } = event.target;
 
     if (checked) {
-      setFilters([...filters, selected]);
+      setFilters([...filters, value]);
     } else {
-      setFilters(filters.filter((p) => p !== selected));
+      setFilters(filters.filter((p) => p !== value));
     }
   };
 

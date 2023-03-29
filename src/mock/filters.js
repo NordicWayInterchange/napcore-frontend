@@ -1,9 +1,3 @@
-// export const filterMockData = {
-//   messageType: ["DENM", "DATEX2", "CAM", "SPATEM", "MAPEM"],
-//   originatingCountry: ["NO", "SE", "FI", "DK", "DE"],
-//   status: ["Created", "Requested", "Not valid", "No overlap", "Illegal"],
-// };
-
 export const filterMockData = [
   {
     header: "Message Type",
