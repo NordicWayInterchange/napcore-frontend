@@ -11,8 +11,8 @@ export default function TableContainer() {
   const [search, setSearch] = useState<string>("");
   const [filters, setFilters] = useState<string[]>([]);
 
-  const handleClear = () => {
-    clearFilter();
+  const handleClear = (): void => {
+    setFilters([]);
     setOpen(false);
   };
 
@@ -24,10 +24,6 @@ export default function TableContainer() {
     setOpen(true);
   };
 
-  const clearFilter = (): void => {
-    setFilters([]);
-  };
-
   const searchColumns = (rows: Subscriptions) => {
     const columns = rows[0] && Object.keys(rows[0]);
     return rows.filter((row) =>
@@ -36,13 +32,17 @@ export default function TableContainer() {
         (column) =>
           row[column].toString().toLowerCase().indexOf(search.toLowerCase()) >
           -1
+        // filters.includes(row[column].toString().toLowerCase())
       )
     );
   };
 
+  console.log("filters", filters);
+  console.log("on", searchColumns(mockData));
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const checked = event.target.checked;
-    const selected = event.target.value;
+    const selected = event.target.value.toLowerCase();
 
     if (checked) {
       setFilters([...filters, selected]);
@@ -59,7 +59,7 @@ export default function TableContainer() {
           Filter +
         </Button>
         {filters.length == 0 ? null : (
-          <Button onClick={() => clearFilter()} variant="contained">
+          <Button onClick={() => handleClear()} variant="contained">
             Clear filter
           </Button>
         )}

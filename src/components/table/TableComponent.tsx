@@ -17,12 +17,7 @@ type Props = {
 const TableComponent = (props: Props) => {
   const { data, headers } = props;
 
-  // const renderHeaders = (headers: string[]) => {
-  //   headers.map((header) => {
-  //     <TableCell align="right">{header}</TableCell>;
-  //   });
-  // };
-
+  // TODO: Render cells based on object it receives
   return (
     <MuiTableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">

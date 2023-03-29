@@ -38,7 +38,7 @@ const TableDialog = (props: DialogProps) => {
                   label={filterData}
                   control={
                     <Checkbox
-                      checked={filters.includes(filterData)}
+                      checked={filters.includes(filterData.toLowerCase())}
                       value={filterData}
                       onChange={handleChange}
                     />
