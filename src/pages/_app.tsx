@@ -1,3 +1,4 @@
+import Layout from "@/components/navigation/Layout";
 import "@/styles/globals.css";
 import React from "react";
 import {
@@ -14,7 +15,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </Hydrate>
       <ReactQueryDevtools />
     </QueryClientProvider>
