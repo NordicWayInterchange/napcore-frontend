@@ -14,3 +14,9 @@ Vi benytter oss av NextJS 13 som rammeverk for applikasjonen med MUI som base
 for CSS og grunnleggende react komponenter. For støtte av QuadTrees vil vi bruke
 Leaflet.
 
+## Miljø
+### Nøkler
+For at vi skal kunne knytte apiet til interchange trenger vi at man setter de to miljøvariablene:
+
+`PFX_KEY_FILENAME` - som gir navnet på pfx nøkkel som ligger i roten av prosjektet.
+`PFX_PASSPHRASE` - Som gir passphrase for å åpne nøkkel
