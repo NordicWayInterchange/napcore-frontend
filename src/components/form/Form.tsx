@@ -19,28 +19,25 @@ import SelectComponent from "./SelectComponent";
 type Props = {
   name: string;
   version: string;
-  capability: Capability;
+  capability?: Capability;
 };
 
-const Form = ({
-  version,
-  name,
-  capability = {
-    messageType: "",
-    publisherId: "",
-    originatingCountry: "",
-    protocolVersion: "",
-    quadTree: [],
-    redirect: RedirectStatus.MANDATORY,
-    shardCount: 1,
-    infoUrl: "",
-  },
-}: Props) => {
-  const [subscriptionData, setSubscriptionData] = useState(capability);
-  const [errors, setErrors] = useState({});
+const Form = (props: Props) => {
+  const { name, version, capability } = props;
 
-  const { messageType, protocolVersion, originatingCountry, publisherId } =
-    subscriptionData;
+  let subscription = {
+    messageType: "",
+    protocolVersion: "",
+    originatingCountry: "",
+    publisherId: "",
+  };
+
+  if (capability) {
+    subscription = capability;
+  }
+
+  const [subscriptionData, setSubscriptionData] = useState(subscription);
+  const [errors, setErrors] = useState({});
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement> | SelectChangeEvent<string>
@@ -54,28 +51,32 @@ const Form = ({
   return (
     <Box sx={{ minWidth: 120 }}>
       <SelectComponent
-        value={messageType}
-        onChange={handleChange}
+        isDisabled={!!capability}
+        value={subscriptionData.messageType}
         label={"Message Type"}
         name={"messageType"}
         enumData={MessageTypes}
+        onChange={handleChange}
       />
       <InputComponent
-        value={protocolVersion}
-        name="protocolVersion"
+        isDisabled={!!capability}
+        value={subscriptionData.protocolVersion}
+        name={"protocolVersion"}
         label="Protocol Version"
         onChange={handleChange}
       />
       <SelectComponent
-        value={originatingCountry}
-        onChange={handleChange}
+        isDisabled={!!capability}
+        value={subscriptionData.originatingCountry}
         label={"Originating Country"}
         name={"originatingCountry"}
         enumData={OriginatingCountry}
+        onChange={handleChange}
       />
       <InputComponent
-        value={publisherId}
-        name="publisherId"
+        isDisabled={!!capability}
+        value={subscriptionData.publisherId}
+        name={"publisherId"}
         label="Publisher ID"
         onChange={handleChange}
       />

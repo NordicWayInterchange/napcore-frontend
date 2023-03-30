@@ -14,12 +14,13 @@ type Props = {
   label: string;
   name: string;
   enumData: any;
+  isDisabled: boolean;
 };
 
 const SelectComponent = (props: Props) => {
-  const { onChange, label, name, value, enumData } = props;
+  const { onChange, label, name, value, enumData, isDisabled } = props;
   return (
-    <FormControl fullWidth>
+    <FormControl disabled={isDisabled} fullWidth>
       <InputLabel>{label}</InputLabel>
       <Select value={value} name={name} label={label} onChange={onChange}>
         {getEnumValues(enumData).map((key, index) => (

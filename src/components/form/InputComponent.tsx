@@ -5,14 +5,21 @@ type Props = {
   name: string;
   label: string;
   value: string;
+  isDisabled: boolean;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
 const InputComponent = (props: Props) => {
-  const { name, label, onChange, value } = props;
+  const { name, label, onChange, value, isDisabled } = props;
   return (
     <FormControl fullWidth>
-      <TextField value={value} name={name} label={label} onChange={onChange} />
+      <TextField
+        disabled={isDisabled}
+        value={value}
+        name={name}
+        label={label}
+        onChange={onChange}
+      />
     </FormControl>
   );
 };
