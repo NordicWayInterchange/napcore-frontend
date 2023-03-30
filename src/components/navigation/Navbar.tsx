@@ -9,7 +9,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import logo from "../../../public/nordic-way-logo.png";
-import styles from "../../styles/Navbar.module.css";
+import styles from "../../styles/Link.module.css";
 
 const Navbar = () => {
   return (
