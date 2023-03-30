@@ -21,7 +21,9 @@ For at vi skal kunne knytte apiet til interchange trenger vi at man setter de to
 `PFX_KEY_FILENAME` - som gir navnet på pfx nøkkel som ligger i roten av prosjektet.
 `PFX_PASSPHRASE** - Som gir passphrase for å åpne nøkkel
 ### Kopi av .env.local
-`PFX_KEY_FILENAME=
+```
+PFX_KEY_FILENAME=
 PFX_PASSPHRASE=
 NODE_TLS_REJECT_UNAUTHORIZED='0' 
-INTERCHANGE_URI=https://bouvet.pilotinterchange.eu:4141/`
+INTERCHANGE_URI=https://bouvet.pilotinterchange.eu:4141/
+```
