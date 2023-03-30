@@ -53,7 +53,6 @@ export default function TableContainer() {
   return (
     <Box>
       <Box sx={{ flexDirection: "row" }}>
-        <Button variant="contained">Create Subscription</Button>
         <Button onClick={handleClickOpen} variant="contained">
           Filter +
         </Button>
