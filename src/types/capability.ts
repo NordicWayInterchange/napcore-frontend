@@ -8,10 +8,18 @@ export type Capability = {
   messageType: string;
   publisherId: string;
   originatingCountry: string;
+  protocolVersion: string;
   quadTree: Array<string>;
   redirect: RedirectStatus;
   shardCount: number;
   infoUrl: string;
+};
+
+export type Capabilities = {
+  name: string; // the name of the user which created the subscriptions
+  selector: string;
+  version: number;
+  capabilities: Array<Capability>;
 };
 
 export type LocalCapability = {
