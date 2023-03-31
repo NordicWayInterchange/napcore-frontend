@@ -1,4 +1,4 @@
-import { Deliveries } from "@/types/delivieries";
+import { Deliveries } from "@/types/delivery";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchDeliveries: (userName: string) => Promise<Deliveries> = async (
@@ -11,7 +11,7 @@ const fetchDeliveries: (userName: string) => Promise<Deliveries> = async (
 
 const useDeliveries = (userName: string) => {
   return useQuery({
-    queryKey: ["subscriptions"],
+    queryKey: ["deliveries"],
     queryFn: () => fetchDeliveries(userName),
   });
 };
