@@ -34,7 +34,7 @@ const fetchDeliveries = (userName: string) => {
   return fetchIXN(userName, "/deliveries");
 };
 
-const paths: { [key: string]: (userName: string) => Promise<any> } = {
+const getPaths: { [key: string]: (userName: string) => Promise<any> } = {
   "network/capabilities": fetchNetworkCapabilities,
   capabilities: fetchCapabilities,
   subscriptions: fetchSubscriptions,
@@ -51,9 +51,24 @@ export default async function handler(
 
   const [actorCommonName, ...path] = slug;
   const urlPath = path.join("/");
-  if (actorCommonName && urlPath in paths) {
-    const data = await paths[urlPath](actorCommonName);
-    return res.status(200).json(data);
+
+  if (actorCommonName && [...Object.keys(getPaths)].includes(urlPath)) {
+    const { method } = req;
+
+    switch (method) {
+      case "GET":
+        const data = await getPaths[urlPath](actorCommonName);
+        res.status(200).json(data);
+        break;
+      case "POST":
+        res.status(405).end(`Method ${method} Not Implemented yet`);
+        break;
+      default:
+        res.setHeader("Allow", ["GET", "POST"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+        break;
+    }
+    return;
   }
   return res.status(404).json({ description: `Page not found: ${urlPath}` });
 }
