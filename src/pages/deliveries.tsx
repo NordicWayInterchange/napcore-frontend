@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
-import { useDeliveries } from "../hooks/useDeliveries";
+import { useDeliveries } from "@/hooks/useDeliveries";
 
 const deliveries = () => {
   const { data, isLoading, isFetching } = useDeliveries("anna");
