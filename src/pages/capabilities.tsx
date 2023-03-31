@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
-import { useCapabilities } from "../hooks/useCapabilities";
+import { useCapabilities } from "@/hooks/useCapabilities";
 
 const Capabilities = () => {
   const { data, isLoading, isFetching } = useCapabilities("anna");

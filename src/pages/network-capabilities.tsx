@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
-import { useNetworkCapabilities } from "../hooks/useNetworkCapabilities";
+import { useNetworkCapabilities } from "@/hooks/useNetworkCapabilities";
 
 const networkCapabilities = () => {
   const { data, isLoading, isFetching } = useNetworkCapabilities("anna");

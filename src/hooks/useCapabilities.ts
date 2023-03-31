@@ -5,7 +5,6 @@ const fetchCapabilities: (userName: string) => Promise<Capabilities> = async (
   userName: string
 ) => {
   const res = await fetch(`/api/napcore/${userName}/capabilities`);
-
   return res.json();
 };
 

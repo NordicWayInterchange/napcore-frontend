@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import TableContainer from "@/components/table/TableContainer";
-import { useSubscriptions } from "../hooks/useSubscriptions";
+import { useSubscriptions } from "@/hooks/useSubscriptions";
 
 const subscriptions = () => {
   const { data, isLoading, isFetching } = useSubscriptions("anna");
