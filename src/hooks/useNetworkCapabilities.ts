@@ -1,12 +1,11 @@
 import { Capabilities } from "@/types/capability";
 import { useQuery } from "@tanstack/react-query";
 
-const fetchCapabilities: (userName: string) => Promise<Capabilities> = (
+const fetchCapabilities: (userName: string) => Promise<Capabilities> = async (
   userName: string
 ) => {
-  return fetch(`/api/napcore/${userName}/network/capabilities`).then((res) => {
-    return res.json();
-  });
+  const res = await fetch(`/api/napcore/${userName}/network/capabilities`);
+  return res.json();
 };
 
 const useNetworkCapabilities = (userName: string) => {
