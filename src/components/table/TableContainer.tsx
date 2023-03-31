@@ -5,6 +5,7 @@ import { Subscriptions, Subscription } from "@/interfaces/subscription";
 import TableDialog from "../dialog/TableDialog";
 import { filterMockData } from "../../mock/filters";
 import TableComponent from "./TableComponent";
+import ButtonComponent from "../ButtonComponent";
 
 export default function TableContainer() {
   const [open, setOpen] = useState<boolean>(false);
@@ -53,13 +54,9 @@ export default function TableContainer() {
   return (
     <Box>
       <Box sx={{ flexDirection: "row" }}>
-        <Button onClick={handleClickOpen} variant="contained">
-          Filter +
-        </Button>
+        <ButtonComponent text={"Filter +"} onClick={handleClickOpen} />
         {filters.length == 0 ? null : (
-          <Button onClick={() => handleClear()} variant="contained">
-            Clear filter
-          </Button>
+          <ButtonComponent text={"Clear"} onClick={handleClear} />
         )}
         <TableDialog
           filters={filters}

@@ -1,18 +1,8 @@
 import { Capability, RedirectStatus } from "@/types/capability";
-import { MessageTypes } from "@/types/messageType";
+import { MessageTypes, MessageTypeCapability } from "@/types/messageType";
 import { OriginatingCountry } from "@/types/originatingCountry";
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, SelectChangeEvent } from "@mui/material";
 import React, { ChangeEvent, useState } from "react";
-import { getEnumValues } from "../../lib/getEnumValues";
 import InputComponent from "./InputComponent";
 import SelectComponent from "./SelectComponent";
 
@@ -24,6 +14,7 @@ type Props = {
 
 const Form = (props: Props) => {
   const { name, version, capability } = props;
+  const isDisabled = !!capability;
 
   let subscription = {
     messageType: "",
@@ -37,6 +28,7 @@ const Form = (props: Props) => {
   }
 
   const [subscriptionData, setSubscriptionData] = useState(subscription);
+  // TODO: Handle errors
   const [errors, setErrors] = useState({});
 
   const handleChange = (
@@ -46,27 +38,35 @@ const Form = (props: Props) => {
     setSubscriptionData((prevData) => ({ ...prevData, [name]: value }));
   };
 
+  // TODO: Handle onSave
+  const onSave = () => {};
+
   console.log(subscriptionData);
+
+  const hello: MessageTypeCapability = "hei";
+
+  console.log(typeof hello);
 
   return (
     <Box sx={{ minWidth: 120 }}>
       <SelectComponent
-        isDisabled={!!capability}
+        isDisabled={isDisabled}
         value={subscriptionData.messageType}
         label={"Message Type"}
         name={"messageType"}
         enumData={MessageTypes}
         onChange={handleChange}
       />
+      {/* TODO: REGEX to check format */}
       <InputComponent
-        isDisabled={!!capability}
+        isDisabled={isDisabled}
         value={subscriptionData.protocolVersion}
         name={"protocolVersion"}
         label="Protocol Version"
         onChange={handleChange}
       />
       <SelectComponent
-        isDisabled={!!capability}
+        isDisabled={isDisabled}
         value={subscriptionData.originatingCountry}
         label={"Originating Country"}
         name={"originatingCountry"}
@@ -74,7 +74,7 @@ const Form = (props: Props) => {
         onChange={handleChange}
       />
       <InputComponent
-        isDisabled={!!capability}
+        isDisabled={isDisabled}
         value={subscriptionData.publisherId}
         name={"publisherId"}
         label="Publisher ID"

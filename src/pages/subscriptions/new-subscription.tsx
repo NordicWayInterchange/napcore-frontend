@@ -1,11 +1,12 @@
 import Form from "@/components/form/Form";
 import { RedirectStatus } from "@/types/capability";
+import { MessageTypes } from "@/types/messageType";
 import { Box, Typography } from "@mui/material";
 import React from "react";
 
 const NewSubscription = () => {
   let capability = {
-    messageType: "DATEX",
+    messageType: MessageTypes.DATEX_2,
     protocolVersion: "DATEX:1.1.1",
     originatingCountry: "NO",
     publisherId: "Bouvet-1",

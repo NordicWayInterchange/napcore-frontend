@@ -11,6 +11,7 @@ import {
   FormGroup,
   Typography,
 } from "@mui/material";
+import ButtonComponent from "../ButtonComponent";
 
 type DialogProps = {
   open: boolean;
@@ -49,12 +50,8 @@ const TableDialog = (props: DialogProps) => {
           ))}
         </FormGroup>
         <DialogActions>
-          <Button autoFocus onClick={handleClear}>
-            Clear
-          </Button>
-          <Button onClick={handleApply} autoFocus>
-            Apply
-          </Button>
+          <ButtonComponent text={"Clear"} onClick={handleClear} />
+          <ButtonComponent text={"Apply"} onClick={handleApply} />
         </DialogActions>
       </DialogContent>
     </Dialog>
