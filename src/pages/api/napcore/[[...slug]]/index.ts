@@ -53,7 +53,7 @@ export default async function handler(
   const urlPath = path.join("/");
   if (actorCommonName && urlPath in paths) {
     const data = await paths[urlPath](actorCommonName);
-    res.status(200).json(data);
+    return res.status(200).json(data);
   }
-  res.status(404).json({ description: `Page not found: ${urlPath}` });
+  return res.status(404).json({ description: `Page not found: ${urlPath}` });
 }
