@@ -10,6 +10,7 @@ type Props = {
   name: string;
   version: string;
   capability?: Capability;
+  //test?: MessageTypeCapability[MessageTypes];
 };
 
 const Form = (props: Props) => {
@@ -40,12 +41,6 @@ const Form = (props: Props) => {
 
   // TODO: Handle onSave
   const onSave = () => {};
-
-  console.log(subscriptionData);
-
-  const hello: MessageTypeCapability = "hei";
-
-  console.log(typeof hello);
 
   return (
     <Box sx={{ minWidth: 120 }}>

@@ -11,6 +11,7 @@ export enum MessageTypes {
   CAM = "CAM",
 }
 
+// FIXME: Burde ikke dette være under Cap.?
 export type DatexCapability = Capability & {
   publicationTypes: Array<string>;
 };
@@ -21,3 +22,17 @@ export type SpatemCapability = Capability & { ids: Array<string> };
 export type MapemCapability = Capability & { ids: Array<string> };
 export type SremCapability = Capability & { ids: Array<string> };
 export type SsemCapability = Capability & { ids: Array<string> };
+
+export type MessageTypeCapability = {
+  [MessageTypes.DATEX_2]: DatexCapability;
+  [MessageTypes.DENM]: DenmCapability;
+  [MessageTypes.IVIM]: IvimCapability;
+  [MessageTypes.SPATEM]: SpatemCapability;
+  [MessageTypes.MAPEM]: MapemCapability;
+  [MessageTypes.SREM]: SremCapability;
+  [MessageTypes.SSEM]: SsemCapability;
+  [MessageTypes.CAM]: CamCapability;
+};
+
+// TODO: Get corresponding capability based on message type
+// const test: MessageTypeCapability[MessageTypes.DATEX_2] = {};
