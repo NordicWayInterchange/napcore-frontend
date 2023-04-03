@@ -27,3 +27,10 @@ export type LocalCapability = {
   path: string;
   definition: Capability;
 };
+
+export type Capabilities = {
+  name: string;
+  selector: string;
+  capabilities: Array<Capability>;
+  version: string;
+};
