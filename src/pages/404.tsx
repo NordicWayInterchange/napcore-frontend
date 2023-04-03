@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 
-const pageNotFound = () => {
+const PageNotFound = () => {
   return (
     <Box>
       <Typography variant="h4">404 - Page not found</Typography>
@@ -9,4 +9,4 @@ const pageNotFound = () => {
   );
 };
 
-export default pageNotFound;
+export default PageNotFound;

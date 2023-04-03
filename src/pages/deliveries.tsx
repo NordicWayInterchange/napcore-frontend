@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import { useDeliveries } from "@/hooks/useDeliveries";
 
-const deliveries = () => {
+const Deliveries = () => {
   const { data, isLoading, isFetching } = useDeliveries("anna");
   return (
     <Box>
@@ -11,4 +11,4 @@ const deliveries = () => {
   );
 };
 
-export default deliveries;
+export default Deliveries;
