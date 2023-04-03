@@ -8,6 +8,7 @@ export type Capability = {
   messageType: string;
   publisherId: string;
   originatingCountry: string;
+  protocolVersion: string;
   quadTree: Array<string>;
   redirect: RedirectStatus;
   shardCount: number;

@@ -21,3 +21,14 @@ export type SpatemCapability = Capability & { ids: Array<string> };
 export type MapemCapability = Capability & { ids: Array<string> };
 export type SremCapability = Capability & { ids: Array<string> };
 export type SsemCapability = Capability & { ids: Array<string> };
+
+export type MessageTypeCapability = {
+  [MessageTypes.DATEX_2]: DatexCapability;
+  [MessageTypes.DENM]: DenmCapability;
+  [MessageTypes.IVIM]: IvimCapability;
+  [MessageTypes.SPATEM]: SpatemCapability;
+  [MessageTypes.MAPEM]: MapemCapability;
+  [MessageTypes.SREM]: SremCapability;
+  [MessageTypes.SSEM]: SsemCapability;
+  [MessageTypes.CAM]: CamCapability;
+};

@@ -8,8 +8,8 @@ import {
   ListItemButton,
   ListItemText,
 } from "@mui/material";
-import logo from "../../../public/nordic-way-logo.png";
-import styles from "../../styles/Navbar.module.css";
+import logo from "@/../public/nordic-way-logo.png";
+import styles from "@/styles/Link.module.css";
 
 const Navbar = () => {
   return (
@@ -26,13 +26,6 @@ const Navbar = () => {
           <Link href="/" className={styles.link}>
             <ListItemButton>
               <ListItemText primary="Capabilities" />
-            </ListItemButton>
-          </Link>
-        </ListItem>
-        <ListItem>
-          <Link href="/deliveries" className={styles.link}>
-            <ListItemButton>
-              <ListItemText primary="Deliveries" />
             </ListItemButton>
           </Link>
         </ListItem>

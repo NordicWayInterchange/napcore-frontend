@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import { useNetworkCapabilities } from "@/hooks/useNetworkCapabilities";
 
-const networkCapabilities = () => {
+const NetworkCapabilities = () => {
   const { data, isLoading, isFetching } = useNetworkCapabilities("anna");
   return (
     <Box>
@@ -11,4 +11,4 @@ const networkCapabilities = () => {
   );
 };
 
-export default networkCapabilities;
+export default NetworkCapabilities;
