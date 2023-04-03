@@ -1,11 +1,9 @@
-import { Button } from "@mui/material";
+import { Button, ButtonProps } from "@mui/material";
 import React from "react";
 
-type Props = {
+interface Props extends ButtonProps {
   text: string;
-  variant?: "text" | "outlined" | "contained" | undefined;
-  onClick?: () => void;
-};
+}
 
 const ButtonComponent = (props: Props) => {
   const { text, variant = "contained", onClick } = props;

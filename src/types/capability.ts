@@ -15,13 +15,6 @@ export type Capability = {
   infoUrl: string;
 };
 
-export type Capabilities = {
-  name: string; // the name of the user which created the subscriptions
-  selector: string;
-  version: number;
-  capabilities: Array<Capability>;
-};
-
 export type LocalCapability = {
   id: string;
   path: string;
