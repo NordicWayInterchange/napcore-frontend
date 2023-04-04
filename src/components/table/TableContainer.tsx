@@ -1,16 +1,27 @@
 import React, { useState } from "react";
 import { Button, TextField, Box } from "@mui/material";
-import { mockData } from "../../mock/subs";
-import { Subscriptions, Subscription } from "@/interfaces/subscription";
+import { Subscriptions } from "@/types/subscription";
 import TableDialog from "../dialog/TableDialog";
-import { filterMockData } from "../../mock/filters";
+import { filterMockData } from "@/mock/filters";
 import TableComponent from "./TableComponent";
 import ButtonComponent from "../ButtonComponent";
+import { Capabilities, Capability } from "@/types/capability";
 
-export default function TableContainer() {
+type Props = {
+  headers: { property: string; label: string }[];
+  subscriptions?: Subscriptions | undefined;
+  capabilities?: Capabilities | undefined;
+};
+
+export default function TableContainer(props: Props) {
+  const { headers, subscriptions, capabilities } = props;
   const [open, setOpen] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const [filters, setFilters] = useState<string[]>([]);
+
+  let data;
+  if (subscriptions) data = subscriptions.subscriptions;
+  if (capabilities) data = capabilities.capabilities;
 
   const handleClear = (): void => {
     setFilters([]);
@@ -37,9 +48,6 @@ export default function TableContainer() {
       )
     );
   };
-
-  console.log("filters", filters);
-  console.log("on", searchColumns(mockData));
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { checked, value } = event.target;
@@ -75,10 +83,7 @@ export default function TableContainer() {
           onChange={(e) => setSearch(e.target.value)}
         />
       </Box>
-      <TableComponent
-        headers={["ID", "Message Type", "Originating Country", "Status"]}
-        data={searchColumns(mockData)}
-      />
+      <TableComponent headers={headers} data={data} />
     </Box>
   );
 }

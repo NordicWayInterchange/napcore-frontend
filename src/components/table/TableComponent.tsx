@@ -7,11 +7,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import StatusChip from "./StatusChip";
-import { Subscriptions } from "@/interfaces/subscription";
+import { Capability} from "@/types/capability";
+import { Subscription } from "@/types/subscription";
 
 type Props = {
-  headers: string[];
-  data: Subscriptions;
+  headers: { property: string; label: string; }[]
+  data: Subscription[] | Capability[] | undefined;
 };
 
 const TableComponent = (props: Props) => {
@@ -24,24 +25,23 @@ const TableComponent = (props: Props) => {
         <TableHead>
           <TableRow>
             {headers.map((header) => (
-              <TableCell key={header} align="right">
-                {header}
+              <TableCell key={header.property} align="right">
+                {header.label}
               </TableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row) => (
-            <TableRow
-              key={row.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell align="right">{row.id}</TableCell>
-              <TableCell align="right">{row.messageType}</TableCell>
-              <TableCell align="right">{row.originatingCountry}</TableCell>
-              <TableCell align="right">
-                <StatusChip label={row.status} />
-              </TableCell>
+          {data && data.map((row, key) => (
+              <TableRow
+                  key={key}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+              {headers.map((header) => (
+                    <TableCell key={header.property} align="right">
+                      {row.definition[header.property]}
+                    </TableCell>
+                ))}
             </TableRow>
           ))}
         </TableBody>
