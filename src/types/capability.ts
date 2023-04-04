@@ -23,6 +23,6 @@ export type LocalCapability = {
 export type Capabilities = {
   name: string;
   selector: string;
-  capabilities: Array<Capability>;
+  capabilities: Array<LocalCapability>;
   version: string;
 };
