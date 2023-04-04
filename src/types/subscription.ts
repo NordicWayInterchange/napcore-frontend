@@ -15,6 +15,8 @@ export type Subscription = {
   status: SubscriptionStatus;
 };
 
+export type ExtendedSubscription = Subscription | { capabilityMatches: number };
+
 export type Subscriptions = {
   name: string; // the name of the user which created the subscriptions
   version: number;

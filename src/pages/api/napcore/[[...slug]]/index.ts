@@ -53,8 +53,9 @@ const fetchCapabilities = async (userName: string, selector: string = "") => {
   });
 };
 
-const fetchSubscriptions = (userName: string, selector: string = "") => {
-  return fetchIXN(userName, "/subscriptions", selector);
+const fetchSubscriptions = async (userName: string, selector: string = "") => {
+  const subscriptions = await fetchIXN(userName, "/subscriptions", selector);
+  return subscriptions.subscriptions;
 };
 
 const fetchDeliveries = (userName: string, selector: string = "") => {
