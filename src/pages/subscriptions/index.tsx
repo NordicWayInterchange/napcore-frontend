@@ -4,12 +4,11 @@ import TableContainer from "@/components/table/TableContainer";
 import Link from "next/link";
 import styles from "../../styles/Link.module.css";
 import ButtonComponent from "@/components/ButtonComponent";
-import {useSubscriptions} from "@/hooks/useSubscriptions";
+import { useSubscriptions } from "@/hooks/useSubscriptions";
 
 const Subscriptions = () => {
-    const { data, isLoading, isFetching } = useSubscriptions("anna");
-
-    return (
+  const { data, isLoading, isFetching } = useSubscriptions("anna");
+  return (
     <Box>
       <Typography variant="h4">Subscription</Typography>
       <Link className={styles.link} href="/subscriptions/new-subscription">
