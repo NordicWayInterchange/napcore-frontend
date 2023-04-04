@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, TextField, Box } from "@mui/material";
-import { Subscriptions } from "@/types/subscription";
+import { Subscription, Subscriptions } from "@/types/subscription";
 import TableDialog from "../dialog/TableDialog";
 import { filterMockData } from "@/mock/filters";
 import TableComponent from "./TableComponent";
@@ -9,8 +9,8 @@ import { Capabilities, Capability } from "@/types/capability";
 
 type Props = {
   headers: { property: string; label: string }[];
-  subscriptions?: Subscriptions | undefined;
-  capabilities?: Capabilities | undefined;
+  subscriptions?: Subscription[];
+  capabilities?: Capability[];
 };
 
 export default function TableContainer(props: Props) {
@@ -19,9 +19,9 @@ export default function TableContainer(props: Props) {
   const [search, setSearch] = useState<string>("");
   const [filters, setFilters] = useState<string[]>([]);
 
-  let data;
-  if (subscriptions) data = subscriptions.subscriptions;
-  if (capabilities) data = capabilities.capabilities;
+  let data = [];
+  if (subscriptions) data = subscriptions;
+  if (capabilities) data = capabilities;
 
   const handleClear = (): void => {
     setFilters([]);
@@ -36,15 +36,16 @@ export default function TableContainer(props: Props) {
     setOpen(true);
   };
 
-  const searchColumns = (rows: Subscriptions) => {
-    const columns = rows[0] && Object.keys(rows[0]);
-    return rows.filter((row) =>
+  const searchColumns = (rows, headers) => {
+    const columns = headers.map(header => header.property)
+
+    return rows?.filter((row) =>
       columns.some(
         // FIXME: Element implicitly has an 'any'
-        (column) =>
-          row[column].toString().toLowerCase().indexOf(search.toLowerCase()) >
+        (column: string) => {
+          return row[column].toString().toLowerCase().indexOf(search.toLowerCase()) >
           -1
-        // filters.includes(row[column].toString().toLowerCase())
+        }
       )
     );
   };
@@ -83,7 +84,7 @@ export default function TableContainer(props: Props) {
           onChange={(e) => setSearch(e.target.value)}
         />
       </Box>
-      <TableComponent headers={headers} data={data} />
+      <TableComponent headers={headers} data={searchColumns(data, headers)} />
     </Box>
   );
 }

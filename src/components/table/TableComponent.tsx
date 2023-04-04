@@ -12,13 +12,12 @@ import { Subscription } from "@/types/subscription";
 
 type Props = {
   headers: { property: string; label: string; }[]
-  data: Subscription[] | Capability[] | undefined;
+  data: Subscription[] | Capability[];
 };
 
 const TableComponent = (props: Props) => {
   const { data, headers } = props;
 
-  // TODO: Render cells based on object it receives
   return (
     <MuiTableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -39,7 +38,7 @@ const TableComponent = (props: Props) => {
               >
               {headers.map((header) => (
                     <TableCell key={header.property} align="right">
-                      {row.definition[header.property]}
+                      {row[header.property]}
                     </TableCell>
                 ))}
             </TableRow>
