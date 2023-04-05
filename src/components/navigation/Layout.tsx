@@ -1,5 +1,7 @@
 import Navbar from "./Navbar";
 import Box from "@mui/material/Box";
+import styles from "@/styles/Layout.module.css"
+import React from "react";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -7,11 +9,9 @@ type LayoutProps = {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <Box sx={{ display: "flex", flexDirection: "row" }}>
-      <Box>
+    <Box className={styles.flex}>
         <Navbar />
-      </Box>
-      <Box sx={{ flexGrow: 1 }}>{children}</Box>
+      <Box className={styles.main}>{children}</Box>
     </Box>
   );
 }

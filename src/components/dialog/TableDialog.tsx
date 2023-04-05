@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Box,
-  Button,
   Checkbox,
   Dialog,
   DialogActions,
@@ -30,12 +29,12 @@ const TableDialog = (props: DialogProps) => {
       <DialogTitle>Add filters</DialogTitle>
       <DialogContent>
         <FormGroup>
-          {data.map((filterType, key) => (
-            <Box key={key}>
+          {data.map((filterType, index) => (
+            <Box key={index}>
               <Typography>{filterType.header}</Typography>
-              {filterType.filter?.map((filterData) => (
+              {filterType.filter?.map((filterData, index) => (
                 <FormControlLabel
-                  key={filterData}
+                  key={index}
                   label={filterData}
                   control={
                     <Checkbox

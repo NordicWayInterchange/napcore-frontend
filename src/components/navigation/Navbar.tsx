@@ -14,11 +14,7 @@ import styles from "@/styles/Link.module.css";
 const Navbar = () => {
   return (
     <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
+      className={styles.layout}
     >
       <Image src={logo} alt="Nordic Way logo" width={150} />
       <List>

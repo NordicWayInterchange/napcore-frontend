@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Button, TextField, Box } from "@mui/material";
+import { TextField, Box } from "@mui/material";
 import { mockData } from "../../mock/subs";
-import { Subscriptions, Subscription } from "@/interfaces/subscription";
+import { Subscriptions } from "@/interfaces/subscription";
 import TableDialog from "../dialog/TableDialog";
 import { filterMockData } from "../../mock/filters";
 import TableComponent from "./TableComponent";
 import ButtonComponent from "../ButtonComponent";
+import styles from "@/styles/Table.module.css"
 
 export default function TableContainer() {
   const [open, setOpen] = useState<boolean>(false);
@@ -38,9 +39,6 @@ export default function TableContainer() {
     );
   };
 
-  console.log("filters", filters);
-  console.log("on", searchColumns(mockData));
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { checked, value } = event.target;
 
@@ -53,7 +51,7 @@ export default function TableContainer() {
 
   return (
     <Box>
-      <Box sx={{ flexDirection: "row" }}>
+      <Box>
         <ButtonComponent text={"Filter +"} onClick={handleClickOpen} />
         {filters.length == 0 ? null : (
           <ButtonComponent text={"Clear"} onClick={handleClear} />
@@ -67,7 +65,7 @@ export default function TableContainer() {
           open={open}
         />
         <TextField
-          sx={{ width: 400 }}
+            className={styles.textField}
           id="outlined-basic"
           size="small"
           label="Search ..."

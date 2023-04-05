@@ -20,21 +20,20 @@ const TableComponent = (props: Props) => {
   // TODO: Render cells based on object it receives
   return (
     <MuiTableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table aria-label="simple table">
         <TableHead>
           <TableRow>
-            {headers.map((header) => (
-              <TableCell key={header} align="right">
+            {headers.map((header, index) => (
+              <TableCell key={index} align="right">
                 {header}
               </TableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row) => (
+          {data.map((row, index) => (
             <TableRow
-              key={row.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              key={index}
             >
               <TableCell align="right">{row.id}</TableCell>
               <TableCell align="right">{row.messageType}</TableCell>
