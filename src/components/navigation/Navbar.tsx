@@ -13,9 +13,7 @@ import styles from "@/styles/Link.module.css";
 
 const Navbar = () => {
   return (
-    <Box
-      className={styles.layout}
-    >
+    <Box className={styles.layout}>
       <Image src={logo} alt="Nordic Way logo" width={150} />
       <List>
         <ListItem>

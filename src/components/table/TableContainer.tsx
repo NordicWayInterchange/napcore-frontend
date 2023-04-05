@@ -6,7 +6,7 @@ import TableDialog from "../dialog/TableDialog";
 import { filterMockData } from "../../mock/filters";
 import TableComponent from "./TableComponent";
 import ButtonComponent from "../ButtonComponent";
-import styles from "@/styles/Table.module.css"
+import styles from "@/styles/Table.module.css";
 
 export default function TableContainer() {
   const [open, setOpen] = useState<boolean>(false);
@@ -65,7 +65,7 @@ export default function TableContainer() {
           open={open}
         />
         <TextField
-            className={styles.textField}
+          className={styles.textField}
           id="outlined-basic"
           size="small"
           label="Search ..."

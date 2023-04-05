@@ -32,9 +32,7 @@ const TableComponent = (props: Props) => {
         </TableHead>
         <TableBody>
           {data.map((row, index) => (
-            <TableRow
-              key={index}
-            >
+            <TableRow key={index}>
               <TableCell align="right">{row.id}</TableCell>
               <TableCell align="right">{row.messageType}</TableCell>
               <TableCell align="right">{row.originatingCountry}</TableCell>
