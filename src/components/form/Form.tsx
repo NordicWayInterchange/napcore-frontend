@@ -2,7 +2,7 @@ import { Capability, RedirectStatus } from "@/types/capability";
 import { MessageTypes, MessageTypeCapability } from "@/types/messageType";
 import { OriginatingCountry } from "@/types/originatingCountry";
 import { Box, SelectChangeEvent } from "@mui/material";
-import React, { ChangeEvent, useState } from "react";
+import React, { useState } from "react";
 import InputComponent from "./InputComponent";
 import SelectComponent from "./SelectComponent";
 
@@ -10,7 +10,6 @@ type Props = {
   name: string;
   version: string;
   capability?: Capability;
-  //test?: MessageTypeCapability[MessageTypes];
 };
 
 const Form = (props: Props) => {
@@ -33,7 +32,7 @@ const Form = (props: Props) => {
   const [errors, setErrors] = useState({});
 
   const handleChange = (
-    event: ChangeEvent<HTMLInputElement> | SelectChangeEvent<string>
+      event: SelectChangeEvent<unknown>
   ) => {
     const { name, value } = event.target;
     setSubscriptionData((prevData) => ({ ...prevData, [name]: value }));
@@ -42,6 +41,8 @@ const Form = (props: Props) => {
   // TODO: Handle onSave
   const onSave = () => {};
 
+    console.log(subscriptionData)
+
   return (
     <Box sx={{ minWidth: 120 }}>
       <SelectComponent
@@ -49,7 +50,7 @@ const Form = (props: Props) => {
         value={subscriptionData.messageType}
         label={"Message Type"}
         name={"messageType"}
-        enumData={MessageTypes}
+        data={MessageTypes}
         onChange={handleChange}
       />
       {/* TODO: REGEX to check format */}
@@ -65,7 +66,7 @@ const Form = (props: Props) => {
         value={subscriptionData.originatingCountry}
         label={"Originating Country"}
         name={"originatingCountry"}
-        enumData={OriginatingCountry}
+        data={OriginatingCountry}
         onChange={handleChange}
       />
       <InputComponent
