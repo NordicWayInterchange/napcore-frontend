@@ -1,5 +1,5 @@
-import { Capability, RedirectStatus } from "@/types/capability";
-import { MessageTypes, MessageTypeCapability } from "@/types/messageType";
+import { Capability } from "@/types/capability";
+import { MessageTypes } from "@/types/messageType";
 import { OriginatingCountry } from "@/types/originatingCountry";
 import { Box, SelectChangeEvent } from "@mui/material";
 import React, { ChangeEvent, useState } from "react";
@@ -43,7 +43,7 @@ const Form = (props: Props) => {
   const onSave = () => {};
 
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <Box>
       <SelectComponent
         isDisabled={isDisabled}
         value={subscriptionData.messageType}

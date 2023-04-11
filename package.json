@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "prettier": "prettier --write ."
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
@@ -29,7 +30,9 @@
     "@tanstack/react-query-devtools": "^4.28.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
+    "eslint-config-prettier": "^8.8.0",
     "jest": "^29.5.0",
-    "jest-environment-jsdom": "^29.5.0"
+    "jest-environment-jsdom": "^29.5.0",
+    "prettier": "2.8.7"
   }
 }
