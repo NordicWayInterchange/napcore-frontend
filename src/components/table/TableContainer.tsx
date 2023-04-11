@@ -1,26 +1,27 @@
 import React, { useState } from "react";
 import { TextField, Box } from "@mui/material";
-import { Subscription } from "@/types/subscription";
+import { ExtendedSubscription } from "@/types/subscription";
 import TableDialog from "../dialog/TableDialog";
 import { filterMockData } from "@/mock/filters";
 import TableComponent from "./TableComponent";
 import ButtonComponent from "../ButtonComponent";
 import { Capability } from "@/types/capability";
-import styles from "@/styles/Table.module.css"
+import styles from "@/styles/Table.module.css";
+import { TableHeader, TableHeaders } from "@/types/tableHeaders";
 
 type Props = {
-  headers: { property: string; label: string }[];
-  subscriptions?: Subscription[];
+  tableHeaders: TableHeaders;
+  subscriptions?: ExtendedSubscription[];
   capabilities?: Capability[];
 };
 
 export default function TableContainer(props: Props) {
-  const { headers, subscriptions, capabilities } = props;
+  const { tableHeaders, subscriptions, capabilities } = props;
   const [open, setOpen] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const [filters, setFilters] = useState<string[]>([]);
 
-  let data = [];
+  let data: ExtendedSubscription[] | Capability[] = [];
   if (subscriptions) data = subscriptions;
   if (capabilities) data = capabilities;
 
@@ -37,15 +38,17 @@ export default function TableContainer(props: Props) {
     setOpen(true);
   };
 
-  const searchColumns = (rows, headers) => {
-    const columns = headers.map(header => header.property)
+  const searchColumns = (rows: any[], tableHeaders: TableHeaders) => {
+    const columns = tableHeaders.map((header: TableHeader) => header.property);
 
     return rows?.filter((row) =>
       columns.some(
         // FIXME: Element implicitly has an 'any'
         (column: string) => {
-          return row[column].toString().toLowerCase().indexOf(search.toLowerCase()) >
-          -1
+          return (
+            row[column].toString().toLowerCase().indexOf(search.toLowerCase()) >
+            -1
+          );
         }
       )
     );
@@ -85,7 +88,10 @@ export default function TableContainer(props: Props) {
           onChange={(e) => setSearch(e.target.value)}
         />
       </Box>
-      <TableComponent headers={headers} data={searchColumns(data, headers)} />
+      <TableComponent
+        tableHeaders={tableHeaders}
+        data={searchColumns(data, tableHeaders)}
+      />
     </Box>
   );
 }

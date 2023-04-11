@@ -1,12 +1,13 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { useNetworkCapabilities } from "@/hooks/useNetworkCapabilities";
 import TableContainer from "@/components/table/TableContainer";
+import { TableHeaders } from "@/types/tableHeaders";
 
 const NetworkCapabilities = () => {
   const { data, isLoading, isFetching } = useNetworkCapabilities("anna");
 
-  const headers = [
+  const tableHeaders: TableHeaders = [
     { property: "publisherId", label: "Publisher ID" },
     { property: "messageType", label: "Message Type" },
     { property: "originatingCountry", label: "Originating Country" },
@@ -15,7 +16,11 @@ const NetworkCapabilities = () => {
   return (
     <Box>
       <Typography variant="h4">Network Capabilities</Typography>
-      <TableContainer headers={headers} capabilities={data} />
+      {isLoading ? (
+        <CircularProgress />
+      ) : (
+        <TableContainer tableHeaders={tableHeaders} capabilities={data} />
+      )}
     </Box>
   );
 };
