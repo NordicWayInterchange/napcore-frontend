@@ -5,11 +5,12 @@ import Link from "next/link";
 import styles from "../../styles/Link.module.css";
 import ButtonComponent from "@/components/ButtonComponent";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
+import { TableHeaders } from "@/types/tableHeaders";
 
 const Subscriptions = () => {
   const { data, isLoading, isFetching } = useSubscriptions("anna");
 
-  const headers = [
+  const tableHeaders: TableHeaders = [
     { property: "id", label: "ID" },
     { property: "consumerCommonName", label: "Consumer Common Header" },
     { property: "status", label: "Status" },
@@ -24,7 +25,7 @@ const Subscriptions = () => {
       {isLoading ? (
         <CircularProgress />
       ) : (
-        <TableContainer headers={headers} subscriptions={data} />
+        <TableContainer tableHeaders={tableHeaders} subscriptions={data} />
       )}
     </Box>
   );

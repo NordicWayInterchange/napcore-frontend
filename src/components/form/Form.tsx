@@ -31,17 +31,13 @@ const Form = (props: Props) => {
   // TODO: Handle errors
   const [errors, setErrors] = useState({});
 
-  const handleChange = (
-      event: SelectChangeEvent<unknown>
-  ) => {
+  const handleChange = (event: SelectChangeEvent<unknown>) => {
     const { name, value } = event.target;
     setSubscriptionData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   // TODO: Handle onSave
   const onSave = () => {};
-
-    console.log(subscriptionData)
 
   return (
     <Box>

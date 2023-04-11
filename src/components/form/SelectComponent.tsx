@@ -11,7 +11,7 @@ import React from "react";
 interface Props extends SelectProps {
   data: any;
   isDisabled?: boolean;
-};
+}
 
 const SelectComponent = (props: Props) => {
   const { onChange, label, name, value, data, isDisabled } = props;
