@@ -62,7 +62,7 @@ export default function TableContainer(props: Props) {
 
   return (
     <Box>
-      <Box sx={{ flexDirection: "row" }}>
+      <Box>
         <ButtonComponent text={"Filter +"} onClick={handleClickOpen} />
         {filters.length == 0 ? null : (
           <ButtonComponent text={"Clear"} onClick={handleClear} />
@@ -76,7 +76,7 @@ export default function TableContainer(props: Props) {
           open={open}
         />
         <TextField
-          sx={{ width: 400 }}
+          className={styles.textField}
           id="outlined-basic"
           size="small"
           label="Search ..."
