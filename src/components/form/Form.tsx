@@ -39,8 +39,6 @@ const Form = (props: Props) => {
   // TODO: Handle onSave
   const onSave = () => {};
 
-  console.log(subscriptionData);
-
   return (
     <Box>
       <SelectComponent
