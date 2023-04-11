@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Button, TextField, Box } from "@mui/material";
-import { Subscription, Subscriptions } from "@/types/subscription";
+import { TextField, Box } from "@mui/material";
+import { Subscription } from "@/types/subscription";
 import TableDialog from "../dialog/TableDialog";
 import { filterMockData } from "@/mock/filters";
 import TableComponent from "./TableComponent";
 import ButtonComponent from "../ButtonComponent";
-import { Capabilities, Capability } from "@/types/capability";
+import { Capability } from "@/types/capability";
+import styles from "@/styles/Table.module.css"
 
 type Props = {
   headers: { property: string; label: string }[];
