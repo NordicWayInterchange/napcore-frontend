@@ -1,17 +1,28 @@
 import React, { useState } from "react";
 import { TextField, Box } from "@mui/material";
-import { mockData } from "../../mock/subs";
-import { Subscriptions } from "@/interfaces/subscription";
+import { Subscription } from "@/types/subscription";
 import TableDialog from "../dialog/TableDialog";
-import { filterMockData } from "../../mock/filters";
+import { filterMockData } from "@/mock/filters";
 import TableComponent from "./TableComponent";
 import ButtonComponent from "../ButtonComponent";
-import styles from "@/styles/Table.module.css";
+import { Capability } from "@/types/capability";
+import styles from "@/styles/Table.module.css"
 
-export default function TableContainer() {
+type Props = {
+  headers: { property: string; label: string }[];
+  subscriptions?: Subscription[];
+  capabilities?: Capability[];
+};
+
+export default function TableContainer(props: Props) {
+  const { headers, subscriptions, capabilities } = props;
   const [open, setOpen] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const [filters, setFilters] = useState<string[]>([]);
+
+  let data = [];
+  if (subscriptions) data = subscriptions;
+  if (capabilities) data = capabilities;
 
   const handleClear = (): void => {
     setFilters([]);
@@ -26,15 +37,16 @@ export default function TableContainer() {
     setOpen(true);
   };
 
-  const searchColumns = (rows: Subscriptions) => {
-    const columns = rows[0] && Object.keys(rows[0]);
-    return rows.filter((row) =>
+  const searchColumns = (rows, headers) => {
+    const columns = headers.map(header => header.property)
+
+    return rows?.filter((row) =>
       columns.some(
         // FIXME: Element implicitly has an 'any'
-        (column) =>
-          row[column].toString().toLowerCase().indexOf(search.toLowerCase()) >
+        (column: string) => {
+          return row[column].toString().toLowerCase().indexOf(search.toLowerCase()) >
           -1
-        // filters.includes(row[column].toString().toLowerCase())
+        }
       )
     );
   };
@@ -73,10 +85,7 @@ export default function TableContainer() {
           onChange={(e) => setSearch(e.target.value)}
         />
       </Box>
-      <TableComponent
-        headers={["ID", "Message Type", "Originating Country", "Status"]}
-        data={searchColumns(mockData)}
-      />
+      <TableComponent headers={headers} data={searchColumns(data, headers)} />
     </Box>
   );
 }
