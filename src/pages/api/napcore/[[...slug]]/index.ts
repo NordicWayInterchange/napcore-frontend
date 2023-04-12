@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
-import { Capabilities, Capability, LocalCapability } from "@/types/capability";
+import { Capabilities } from "@/types/capability";
 import { getTLSAgent } from "@/lib/sslAgent";
 
 const headers = {
@@ -62,36 +62,6 @@ const fetchDeliveries = (userName: string, selector: string = "") => {
   return fetchIXN(userName, "/deliveries", selector);
 };
 
-const fetchCapabilityCounter = async (userName: string, selector?: string) => {
-  const capabilities = await fetchNetworkCapabilities(userName, selector);
-  return capabilities.length;
-};
-
-const fetchAggregate = async (userName: string, selector?: string) => {
-  const capabilities = await fetchNetworkCapabilities(userName, selector);
-
-  return capabilities.reduce(
-    (acc: { [key: string]: any }, capability: Capability) => {
-      (Object.keys(capability) as Array<keyof typeof capability>).forEach(
-        (capabilityProp) => {
-          let value = Array.isArray(capability[capabilityProp])
-            ? (capability[capabilityProp] as Array<string>)
-            : [capability[capabilityProp] as string];
-          if (capabilityProp in acc) {
-            // get only new values
-            value = value.filter((val) => !acc[capabilityProp].includes(val));
-            acc[capabilityProp] = [...acc[capabilityProp], ...value];
-          } else {
-            acc[capabilityProp] = value;
-          }
-        }
-      );
-      return acc;
-    },
-    {}
-  );
-};
-
 // all getter methods on path
 const getPaths: {
   [key: string]: (userName: string, selector?: string) => Promise<any>;
@@ -100,14 +70,6 @@ const getPaths: {
   capabilities: fetchCapabilities,
   subscriptions: fetchSubscriptions,
   deliveries: fetchDeliveries,
-};
-
-// all internal fetchers
-const getInternal: {
-  [key: string]: (userName: string, selector?: string) => any;
-} = {
-  aggregate: fetchAggregate,
-  ["capability-count"]: fetchCapabilityCounter,
 };
 
 export default async function handler(
@@ -141,14 +103,6 @@ export default async function handler(
         break;
     }
     return;
-  }
-  if (actorCommonName && [...Object.keys(getInternal)].includes(urlPath)) {
-    try {
-      const data = await getInternal[urlPath](actorCommonName, selector);
-      return res.status(200).json(data);
-    } catch (err) {
-      return res.status(err.response.status).json(err.data);
-    }
   }
   return res.status(404).json({ description: `Page not found: ${urlPath}` });
 }

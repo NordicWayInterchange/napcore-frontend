@@ -1,11 +1,12 @@
 import { Deliveries } from "@/types/delivery";
 import { useQuery } from "@tanstack/react-query";
+import { getDeliveries } from "@/lib/fetchers";
 
-const fetchDeliveries: (userName: string) => Promise<Deliveries> = async (
-  userName: string
-) => {
-  const res = await fetch(`/api/napcore/${userName}/deliveries`);
-
+const fetchDeliveries: (
+  userName: string,
+  selector?: string
+) => Promise<Deliveries> = async (userName, selector = "") => {
+  const res = await getDeliveries(userName, selector);
   return res.json();
 };
 
