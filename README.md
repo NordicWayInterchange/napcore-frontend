@@ -32,4 +32,5 @@ PFX_KEY_FILENAME=
 PFX_PASSPHRASE=
 NODE_TLS_REJECT_UNAUTHORIZED='0'
 INTERCHANGE_URI=https://bouvet.pilotinterchange.eu:4141/
+NEXT_PUBLIC_NAPCORE_API_URI=http://localhost:3000/api/napcore/
 ```

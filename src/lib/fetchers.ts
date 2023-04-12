@@ -1,4 +1,4 @@
-const napCoreBaseUrl = process.env.NEXT_PUBLIC_NAPCORE_API_URL;
+const napCoreBaseUrl = process.env.NEXT_PUBLIC_NAPCORE_API_URI;
 
 export const getSubscriptions = (userName: string) => {
   return fetch(`${napCoreBaseUrl}/${userName}/subscriptions`);
