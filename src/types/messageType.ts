@@ -1,4 +1,5 @@
 import { Capability } from "./capability";
+import { denmCauseCodes } from "@/lib/denmCauseCodes";
 
 export enum MessageTypes {
   DATEX_2 = "DATEX2",
@@ -16,7 +17,9 @@ export type DatexCapability = Capability & {
 };
 export type CamCapability = Capability & { stationTypes: Array<string> };
 export type IvimCapability = Capability & { iviType: Array<string> };
-export type DenmCapability = Capability & { causeCode: Array<string> };
+export type DenmCapability = Capability & {
+  causeCode: Array<keyof typeof denmCauseCodes>;
+};
 export type SpatemCapability = Capability & { ids: Array<string> };
 export type MapemCapability = Capability & { ids: Array<string> };
 export type SremCapability = Capability & { ids: Array<string> };
