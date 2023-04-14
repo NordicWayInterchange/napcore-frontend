@@ -4,27 +4,29 @@ import { Subscription } from "@/types/subscription";
  *   - subValue can be a number (timestamp)
  *   - quadtree reducer
  *   - leading spaces after comma, without any letters (eg. DENM:1.1.2,    )
+ *   - Type for generateSelectorParameter
+ *   - Write comments
  * */
 
-export const generateSelector = (subscription: Subscription): string => {
+export const generateSelector = (subscription: any): string => {
   return Object.keys(subscription).reduce(
     (acc: string, key: string, index: number) => {
       const subValue = subscription[key as keyof typeof subscription];
+      const subValue2 = Array.isArray(subValue)
+        ? subValue
+        : subValue.trim().split(",").filter(Boolean);
 
-      if (subValue.length != 0) {
-        if (index != 0 && acc) {
+      if (subValue2.length > 0) {
+        if (index && acc) {
           acc += " AND ";
         }
-        if (Array.isArray(subValue)) {
-          const reduce = subValue.reduce(
-            (acc: string, value: string, index: number) =>
-              reducer(acc, value, index, key),
-            ""
-          );
-          acc += subValue.length > 1 ? `(${reduce})` : reduce;
-        } else {
-          acc += seperateComma(key, subValue);
-        }
+        const reduce = subValue2.reduce(
+          (acc: string, value: string, index: number) =>
+            reducer(acc, value, index, key),
+          ""
+        );
+        2;
+        acc += subValue2.length > 1 ? `(${reduce})` : reduce;
       }
 
       return acc;
@@ -33,14 +35,15 @@ export const generateSelector = (subscription: Subscription): string => {
   );
 };
 
-const seperateComma = (key: string, value: string): string => {
-  const formattedValue = value.trim().split(",");
-  const reduce = formattedValue.reduce(
-    (acc: string, value: string, index: number) =>
-      reducer(acc, value, index, key),
-    ""
-  );
-  return formattedValue.length > 1 ? `(${reduce})` : reduce;
+const quadTreeReducer = (quadTree: string[]) => {
+  quadTree.reduce((acc, value, index) => {
+    if (index != 0) {
+      acc += " OR ";
+    }
+    acc += `quadTree like '%,${value}%'`;
+    // TODO () rundt acc
+    return acc;
+  }, "");
 };
 
 const reducer = (
@@ -49,9 +52,11 @@ const reducer = (
   index: number,
   key: string
 ): string => {
-  if (index != 0) {
-    acc += " OR ";
+  if (value) {
+    if (index != 0) {
+      acc += " OR ";
+    }
+    acc += `(${key} = '${value}')`;
   }
-  acc += `(${key} = '${value}')`;
   return acc;
 };
