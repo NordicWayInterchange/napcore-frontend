@@ -6,7 +6,16 @@ export enum DeliveryStatus {
   NO_OVERLAP = "no_overlap",
 }
 
-export type Delivery = {
+export type Endpoint = {
+  host: string;
+  port: number;
+  target: string;
+  source: string;
+  maxBandwidth: number;
+  maxMessageRate: number;
+};
+
+export type DeliveriesDelivery = {
   id: string;
   path: string;
   selector: string;
@@ -14,7 +23,9 @@ export type Delivery = {
   status: DeliveryStatus;
 };
 
+export type Delivery = DeliveriesDelivery | { endpoints: Endpoint };
+
 export type Deliveries = {
   name: string;
-  deliveries: Array<Delivery>;
+  deliveries: Array<DeliveriesDelivery>;
 };
