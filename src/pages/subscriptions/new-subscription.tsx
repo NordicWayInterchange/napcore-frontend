@@ -1,4 +1,4 @@
-import Form from "@/components/form/Form";
+import SelectorBuilder from "@/components/selectorbuilder/SelectorBuilder";
 import { RedirectStatus } from "@/types/capability";
 import { MessageTypes } from "@/types/messageType";
 import { Box, Typography } from "@mui/material";
@@ -19,8 +19,8 @@ const NewSubscription = () => {
   return (
     <Box>
       <Typography variant="h4">Create subscription</Typography>
-      <Form name="name" version="version" />
-      <Form capability={capability} name="name" version="version" />
+      <SelectorBuilder name="name" version="version" />
+      {/*<Form capability={capability} name="name" version="version" />*/}
     </Box>
   );
 };

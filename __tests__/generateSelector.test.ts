@@ -1,5 +1,3 @@
-// expect(hello('world')).toBe('Hello world')
-
 import { generateSelector } from "@/lib/generateSelector";
 
 describe("Generate Selector", () => {
