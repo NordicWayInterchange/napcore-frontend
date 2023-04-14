@@ -1,5 +1,5 @@
 import Form from "@/components/form/Form";
-import { RedirectStatus } from "@/types/capability";
+import { RedirectStatus } from "@/types/napcore/capability";
 import { MessageTypes } from "@/types/messageType";
 import { Box, Typography } from "@mui/material";
 import React from "react";

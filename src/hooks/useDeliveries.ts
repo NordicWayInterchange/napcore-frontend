@@ -1,4 +1,4 @@
-import { Deliveries } from "@/types/delivery";
+import { Deliveries } from "@/types/napcore/delivery";
 import { useQuery } from "@tanstack/react-query";
 import { getDeliveries } from "@/lib/fetchers";
 

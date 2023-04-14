@@ -1,8 +1,7 @@
-export enum RedirectStatus {
-  OPTIONAL = "optional",
-  MANDATORY = "mandatory",
-  NOT_AVAILABLE = "not_available",
-}
+// these needs to be faced out and use the ones from napcore after new structure
+// is rolled out on the ixn.
+
+import { RedirectStatus } from "./napcore/Capability";
 
 export type Capability = {
   messageType: string;

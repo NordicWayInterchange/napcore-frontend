@@ -1,4 +1,5 @@
-import { Subscription, ExtendedSubscription } from "@/types/subscription";
+import { ExtendedSubscription } from "@/types/subscription";
+import { Subscription } from "@/types/napcore/subscription";
 import { useQuery } from "@tanstack/react-query";
 import { getSubscriptions } from "@/lib/fetchers";
 
