@@ -1,7 +1,5 @@
-import { Subscription } from "@/types/subscription";
-
 /* TODO
- *   - Type for generateSelectorParameter
+ *   - Type for parameter
  * */
 
 export const generateSelector = (formState: any): string => {
@@ -10,7 +8,7 @@ export const generateSelector = (formState: any): string => {
       const value = formState[key as keyof typeof formState];
       const valueArray = Array.isArray(value)
         ? value
-        : value.trim().split(",").filter(Boolean);
+        : value.split(",").filter(Boolean);
 
       if (valueArray.length > 0) {
         if (index && acc) {
@@ -18,7 +16,7 @@ export const generateSelector = (formState: any): string => {
         }
         const reduce = valueArray.reduce(
           (acc: string, value: string, index: number) =>
-            reducer(acc, value, index, key),
+            reducer(acc, value.trim(), index, key),
           ""
         );
         acc += valueArray.length > 1 ? `(${reduce})` : reduce;

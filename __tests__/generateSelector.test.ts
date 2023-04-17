@@ -10,10 +10,10 @@ describe("Generate Selector", () => {
   };
   it("can generate select", () => {
     const selector =
-      "((messageType = 'DENM') OR (messageType = ' IVIM')) AND " +
+      "((messageType = 'DENM') OR (messageType = 'IVIM')) AND " +
       "(protocolVersion = 'DENM:1.1.1') AND " +
-      "((originatingCountry = 'NO') OR (originatingCountry = ' SE')) AND " +
-      "((publisherId = 'Bouvet-1') OR (publisherId = ' Bouvet-2')) AND " +
+      "((originatingCountry = 'NO') OR (originatingCountry = 'SE')) AND " +
+      "((publisherId = 'Bouvet-1') OR (publisherId = 'Bouvet-2')) AND " +
       "(quadTree like '%,1%' OR quadTree like '%,2%' OR quadTree like '%,3%' OR quadTree like '%,123%')";
     expect(generateSelector(subscription)).toBe(selector);
   });
