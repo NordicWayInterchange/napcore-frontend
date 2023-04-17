@@ -1,7 +1,7 @@
 // these needs to be faced out and use the ones from napcore after new structure
 // is rolled out on the ixn.
 
-import { RedirectStatus } from "./napcore/Capability";
+import { RedirectStatus } from "./napcore/capability";
 
 export type Capability = {
   messageType: string;

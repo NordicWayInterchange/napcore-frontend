@@ -14,6 +14,7 @@ const Subscriptions = () => {
     { property: "id", label: "ID" },
     { property: "consumerCommonName", label: "Consumer Common Header" },
     { property: "status", label: "Status" },
+    { property: "capabilityMatches", label: "Capability Matches" },
   ];
 
   return (

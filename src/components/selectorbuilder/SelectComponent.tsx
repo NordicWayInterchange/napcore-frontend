@@ -18,7 +18,13 @@ const SelectComponent = (props: Props) => {
   return (
     <FormControl disabled={isDisabled} fullWidth>
       <InputLabel>{label}</InputLabel>
-      <Select value={value} name={name} label={label} onChange={onChange}>
+      <Select
+        multiple
+        value={value}
+        name={name}
+        label={label}
+        onChange={onChange}
+      >
         {getEnumValues(data).map((value, index) => (
           <MenuItem value={value} key={index}>
             {/* FIXME: */}
