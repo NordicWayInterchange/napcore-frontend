@@ -52,9 +52,7 @@ const fetchNetworkCapabilities = async (
     "/network/capabilities",
     selector
   );
-  return capabilities.capabilities.map((capability) => {
-    return capability.definition;
-  });
+  return capabilities;
 };
 
 const fetchCapabilities = async (userName: string, selector: string = "") => {
@@ -63,14 +61,12 @@ const fetchCapabilities = async (userName: string, selector: string = "") => {
     "/capabilities",
     selector
   );
-  return capabilities.capabilities.map((capability) => {
-    return capability.definition;
-  });
+  return capabilities;
 };
 
 const fetchSubscriptions = async (userName: string, selector: string = "") => {
   const subscriptions = await fetchIXN(userName, "/subscriptions", selector);
-  return subscriptions.subscriptions;
+  return subscriptions;
 };
 
 const fetchDeliveries = (userName: string, selector: string = "") => {
