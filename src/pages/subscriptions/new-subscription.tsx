@@ -38,7 +38,7 @@ const NewSubscription = () => {
   };
   const name = "anna"; // get this from context
   const [selector, setSelector] = useState<string>("");
-  const [completedSave, saveCompleted] = useState<boolean>(false);
+  const [completedSave, setCompletedSave] = useState<boolean>(false);
   const [savedSubscription, setSavedSubscription] = useState<Subscription>();
   const matchingCapabilities = useMatchingCapabilities(name, selector);
 
@@ -51,7 +51,7 @@ const NewSubscription = () => {
     const response = await createSubscription(name, selector);
     const data = await response.json();
     setSavedSubscription(data);
-    saveCompleted(true);
+    setCompletedSave(true);
   };
 
   return (
