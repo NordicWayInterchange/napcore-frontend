@@ -18,6 +18,7 @@ import { Subscription } from "@/types/napcore/subscription";
 import { useMatchingCapabilities } from "@/hooks/useMatchingCapabilities";
 import { TableHeaders } from "@/types/tableHeaders";
 import TableContainer from "@/components/table/TableContainer";
+import { createSubscription } from "@/lib/fetchers";
 
 const tableHeaders: TableHeaders = [
   { property: "publisherId", label: "Publisher ID" },
@@ -45,18 +46,9 @@ const NewSubscription = () => {
     setSelector(selector);
     matchingCapabilities.remove();
   };
+
   const saveSubscription = async (name: string, selector: string) => {
-    const subscriptionsRequest = {
-      name,
-      subscriptions: [{ selector }],
-    };
-    const response = await fetch(`/api/napcore/${name}/subscriptions`, {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(subscriptionsRequest),
-    });
+    const response = await createSubscription(name, selector);
     const data = await response.json();
     setSavedSubscription(data);
     saveCompleted(true);
