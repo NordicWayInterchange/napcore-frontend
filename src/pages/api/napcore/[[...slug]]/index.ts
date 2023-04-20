@@ -108,7 +108,7 @@ export default async function handler(
     // need to handle 404 if no data found on selector or pathParam
     if (executer && "fn" in executer) {
       const { fn, params } = executer;
-      const data = fn(params);
+      const data = await fn(params);
       return res.status(200).json(data);
     }
   }

@@ -24,7 +24,6 @@ const fetchIXN: (
     headers,
     httpsAgent: tlsAgent,
   });
-
   return await response.data;
 };
 
