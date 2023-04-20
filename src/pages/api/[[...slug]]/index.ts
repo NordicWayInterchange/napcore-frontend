@@ -67,10 +67,13 @@ const fetchNetworkCapabilities = async (
 
 const fetchCapabilities = async (userName: string, selector: string = "") => {
   const res = await getCapabilities(userName, selector);
-  const capabilities: Capabilities = await res.json();
-  return capabilities.capabilities.map((capability) => {
-    return capability.definition;
-  });
+  if (res.ok) {
+    const capabilities: Capabilities = await res.json();
+    return capabilities.capabilities.map((capability) => {
+      return capability.definition;
+    });
+  }
+  return [];
 };
 
 // all internal fetchers
