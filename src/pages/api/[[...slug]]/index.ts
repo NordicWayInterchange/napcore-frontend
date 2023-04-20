@@ -58,8 +58,8 @@ const fetchNetworkCapabilities = async (
   const res = await getNetworkCapabilities(userName, selector);
   if (res.ok) {
     const capabilities: Capabilities = await res.json();
-    return capabilities.capabilities.map((capability) => {
-      return capability.definition;
+    return capabilities.capabilities.map((capability, ix) => {
+      return { ...capability.definition, id: ix };
     });
   }
   return [];
@@ -69,8 +69,8 @@ const fetchCapabilities = async (userName: string, selector: string = "") => {
   const res = await getCapabilities(userName, selector);
   if (res.ok) {
     const capabilities: Capabilities = await res.json();
-    return capabilities.capabilities.map((capability) => {
-      return capability.definition;
+    return capabilities.capabilities.map((capability, ix) => {
+      return { ...capability.definition, id: ix };
     });
   }
   return [];

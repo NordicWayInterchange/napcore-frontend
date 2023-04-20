@@ -1,8 +1,8 @@
 import React from "react";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { useNetworkCapabilities } from "@/hooks/useNetworkCapabilities";
-import GridTest from "@/components/shared/DataGrid";
 import { GridColDef } from "@mui/x-data-grid";
+import DataGrid from "@/components/shared/DataGrid";
 
 export default function NetworkCapabilities() {
   const { data, isLoading, isFetching } = useNetworkCapabilities("anna");
@@ -46,7 +46,7 @@ export default function NetworkCapabilities() {
       {isLoading ? (
         <CircularProgress />
       ) : (
-        <GridTest tableHeaders={tableHeaders} data={data} />
+        <DataGrid tableHeaders={tableHeaders} data={data || []} />
       )}
     </Box>
   );

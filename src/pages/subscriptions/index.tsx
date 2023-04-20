@@ -1,13 +1,11 @@
 import React from "react";
 import { Box, CircularProgress, Typography } from "@mui/material";
-import TableContainer from "@/components/table/TableContainer";
 import Link from "next/link";
 import styles from "../../styles/Link.module.css";
 import ButtonComponent from "@/components/shared/Button";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
-import { TableHeaders } from "@/types/tableHeaders";
 import { GridColDef } from "@mui/x-data-grid";
-import GridTest from "@/components/shared/DataGrid";
+import DataGrid from "@/components/shared/DataGrid";
 
 export default function Subscriptions() {
   const { data, isLoading, isFetching } = useSubscriptions("anna");
@@ -48,7 +46,7 @@ export default function Subscriptions() {
       {isLoading ? (
         <CircularProgress />
       ) : (
-        <GridTest tableHeaders={tableHeaders} data={data} />
+        <DataGrid tableHeaders={tableHeaders} data={data || []} />
       )}
     </Box>
   );
