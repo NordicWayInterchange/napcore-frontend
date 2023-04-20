@@ -8,15 +8,18 @@ import {
 import { Subscriptions } from "@/types/napcore/subscription";
 
 const fetchCapabilityCounter = async (userName: string, selector?: string) => {
-  // query param selector
-  const res = await getNetworkCapabilities(userName, selector);
-  const capabilities: Capabilities[] = await res.json();
+  const capabilities: Capability[] = await fetchNetworkCapabilities(
+    userName,
+    selector
+  );
   return capabilities.length;
 };
 
 const fetchAggregate = async (userName: string, selector: string = "") => {
-  const res = await getNetworkCapabilities(userName, selector);
-  const capabilities: Capabilities[] = await res.json();
+  const capabilities: Capability[] = await fetchNetworkCapabilities(
+    userName,
+    selector
+  );
   return capabilities.reduce(
     (acc: { [key: string]: any }, capability: Capability) => {
       (Object.keys(capability) as Array<keyof typeof capability>).forEach(
