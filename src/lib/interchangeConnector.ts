@@ -30,7 +30,7 @@ const fetchIXN: (
 const postIXN: (
   actorCommonName: string,
   path: string,
-  body: SubscriptionRequest
+  body: SubscriptionRequest | {}
 ) => Promise<any> = async (actorCommonName, path, body) => {
   const uri = process.env.INTERCHANGE_URI || "";
   const uriPath = `${actorCommonName}${path}`;
@@ -66,7 +66,7 @@ export type extendedGetParams = {
 };
 export type basicPostParams = {
   actorCommonName: string;
-  body: SubscriptionRequest;
+  body?: SubscriptionRequest;
 };
 export type basicDeleteParams = {
   actorCommonName: string;
@@ -107,7 +107,7 @@ export const fetchDeliveries: basicGetFunction = async (params: {
 };
 
 export const addSubscriptions: basicPostFunction = async (params) => {
-  const { actorCommonName, body } = params;
+  const { actorCommonName, body = {} } = params;
   return await postIXN(actorCommonName, "/subscriptions", body);
 };
 
