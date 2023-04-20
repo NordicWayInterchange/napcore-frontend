@@ -1,7 +1,26 @@
+import { SubscriptionRequest } from "@/types/napcore/subscription";
+
 const napCoreBaseUrl = process.env.NEXT_PUBLIC_NAPCORE_API_URI;
 
 export const getSubscriptions = (userName: string) => {
   return fetch(`${napCoreBaseUrl}/${userName}/subscriptions`);
+};
+
+export const createSubscription = async (
+  userName: string,
+  selector: string
+) => {
+  const subscriptionsRequest = {
+    name: userName,
+    subscriptions: [{ selector }],
+  };
+  return await fetch(`${napCoreBaseUrl}/${userName}/subscriptions`, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(subscriptionsRequest),
+  });
 };
 
 export const getNetworkCapabilities = (

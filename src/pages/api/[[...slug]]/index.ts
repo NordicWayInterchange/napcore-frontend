@@ -1,17 +1,25 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Capabilities, Capability } from "@/types/capability";
-import { getNetworkCapabilities } from "@/lib/fetchers";
+import {
+  getCapabilities,
+  getNetworkCapabilities,
+  getSubscriptions,
+} from "@/lib/fetchers";
+import { Subscriptions } from "@/types/napcore/subscription";
 
 const fetchCapabilityCounter = async (userName: string, selector?: string) => {
-  // query param selector
-  const res = await getNetworkCapabilities(userName, selector);
-  const capabilities: Capabilities[] = await res.json();
+  const capabilities: Capability[] = await fetchNetworkCapabilities(
+    userName,
+    selector
+  );
   return capabilities.length;
 };
 
 const fetchAggregate = async (userName: string, selector: string = "") => {
-  const res = await getNetworkCapabilities(userName, selector);
-  const capabilities: Capabilities[] = await res.json();
+  const capabilities: Capability[] = await fetchNetworkCapabilities(
+    userName,
+    selector
+  );
   return capabilities.reduce(
     (acc: { [key: string]: any }, capability: Capability) => {
       (Object.keys(capability) as Array<keyof typeof capability>).forEach(
@@ -34,12 +42,49 @@ const fetchAggregate = async (userName: string, selector: string = "") => {
   );
 };
 
+const fetchSubscriptions = async (userName: string) => {
+  const res = await getSubscriptions(userName);
+  if (res.ok) {
+    const subscriptions: Subscriptions = await res.json();
+    return subscriptions.subscriptions;
+  }
+  return [];
+};
+
+const fetchNetworkCapabilities = async (
+  userName: string,
+  selector: string = ""
+) => {
+  const res = await getNetworkCapabilities(userName, selector);
+  if (res.ok) {
+    const capabilities: Capabilities = await res.json();
+    return capabilities.capabilities.map((capability) => {
+      return capability.definition;
+    });
+  }
+  return [];
+};
+
+const fetchCapabilities = async (userName: string, selector: string = "") => {
+  const res = await getCapabilities(userName, selector);
+  if (res.ok) {
+    const capabilities: Capabilities = await res.json();
+    return capabilities.capabilities.map((capability) => {
+      return capability.definition;
+    });
+  }
+  return [];
+};
+
 // all internal fetchers
 const getInternal: {
   [key: string]: (userName: string, selector?: string) => any;
 } = {
   aggregate: fetchAggregate,
   ["capability-count"]: fetchCapabilityCounter,
+  subscriptions: fetchSubscriptions,
+  "network/capabilities": fetchNetworkCapabilities,
+  capabilities: fetchCapabilities,
 };
 
 export default async function handler(

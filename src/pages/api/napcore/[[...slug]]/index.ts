@@ -1,75 +1,96 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import axios from "axios";
-import { Capabilities } from "@/types/capability";
-import { getTLSAgent } from "@/lib/sslAgent";
-
-const headers = {
-  Accept: "application/json",
-};
-
-const fetchIXN: (
-  userName: string,
-  path: string,
-  selector?: string
-) => Promise<any> = async (userName, path, selector = "") => {
-  const uri = process.env.INTERCHANGE_URI || "";
-  const uriPath = `${userName}${path}`;
-  const agent = getTLSAgent();
-  const params: { selector?: string } = {};
-  if (selector) {
-    params.selector = selector;
-  }
-  const respons = await axios(uri + uriPath, {
-    params,
-    headers,
-    httpsAgent: agent,
-  });
-
-  return await respons.data;
-};
-
-const fetchNetworkCapabilities = async (
-  userName: string,
-  selector: string = ""
-) => {
-  const capabilities: Capabilities = await fetchIXN(
-    userName,
-    "/network/capabilities",
-    selector
-  );
-  return capabilities.capabilities.map((capability) => {
-    return capability.definition;
-  });
-};
-
-const fetchCapabilities = async (userName: string, selector: string = "") => {
-  const capabilities: Capabilities = await fetchIXN(
-    userName,
-    "/capabilities",
-    selector
-  );
-  return capabilities.capabilities.map((capability) => {
-    return capability.definition;
-  });
-};
-
-const fetchSubscriptions = async (userName: string, selector: string = "") => {
-  const subscriptions = await fetchIXN(userName, "/subscriptions", selector);
-  return subscriptions.subscriptions;
-};
-
-const fetchDeliveries = (userName: string, selector: string = "") => {
-  return fetchIXN(userName, "/deliveries", selector);
-};
+import {
+  fetchNetworkCapabilities,
+  fetchCapabilities,
+  fetchSubscriptions,
+  fetchDeliveries,
+  addSubscriptions,
+  deleteSubscriptions,
+  basicGetFunction,
+  extendedGetFunction,
+  basicDeleteFunction,
+  basicPostFunction,
+  basicDeleteParams,
+  basicPostParams,
+  basicGetParams,
+  extendedGetParams,
+} from "@/lib/interchangeConnector";
 
 // all getter methods on path
 const getPaths: {
-  [key: string]: (userName: string, selector?: string) => Promise<any>;
+  [key: string]: basicGetFunction | extendedGetFunction;
 } = {
   "network/capabilities": fetchNetworkCapabilities,
   capabilities: fetchCapabilities,
   subscriptions: fetchSubscriptions,
   deliveries: fetchDeliveries,
+};
+
+// all post methods on path
+const postPaths: {
+  [key: string]: basicPostFunction;
+} = {
+  subscriptions: addSubscriptions,
+};
+
+// all delete methods on path
+const deletePaths: {
+  [key: string]: basicDeleteFunction;
+} = {
+  subscriptions: deleteSubscriptions,
+};
+
+const findHandler: (params: any) =>
+  | {
+      fn:
+        | basicDeleteFunction
+        | basicGetFunction
+        | basicPostFunction
+        | extendedGetFunction;
+      params:
+        | basicDeleteParams
+        | basicPostParams
+        | basicGetParams
+        | extendedGetParams;
+    }
+  | {} = (params) => {
+  const {
+    path = [],
+    method,
+    body = {},
+    actorCommonName,
+    selector = "",
+  } = params;
+  const urlPath = path.join("/");
+  switch (method) {
+    case "GET":
+      const possiblePaths = Object.keys(getPaths);
+      if (possiblePaths.includes(urlPath)) {
+        return {
+          fn: getPaths[urlPath],
+          params: { actorCommonName, selector },
+        };
+      }
+      if (path.length > 1 && possiblePaths.includes(path[0])) {
+        return {
+          fn: getPaths[path[0]],
+          params: { actorCommonName, pathParam: path[1] },
+        };
+      }
+    case "POST":
+      if (Object.keys(postPaths).includes(urlPath)) {
+        return { fn: postPaths[urlPath], params: { actorCommonName, body } };
+      }
+    case "DELETE":
+      if (path.length > 1 && Object.keys(deletePaths).includes(path[0])) {
+        return {
+          fn: deletePaths[path[0]],
+          params: { actorCommonName, pathParam: path[1] },
+        };
+      }
+    default:
+      return {};
+  }
 };
 
 export default async function handler(
@@ -83,26 +104,25 @@ export default async function handler(
   const selector = Array.isArray(req.query.selector)
     ? req.query.selector[0]
     : req.query.selector;
+
   const [actorCommonName, ...path] = slug;
   const urlPath = path.join("/");
+  const { method, body } = req;
 
-  if (actorCommonName && [...Object.keys(getPaths)].includes(urlPath)) {
-    const { method } = req;
-
-    switch (method) {
-      case "GET":
-        const data = await getPaths[urlPath](actorCommonName, selector);
-        res.status(200).json(data);
-        break;
-      case "POST":
-        res.status(405).end(`Method ${method} Not Implemented yet`);
-        break;
-      default:
-        res.setHeader("Allow", ["GET", "POST"]);
-        res.status(405).end(`Method ${method} Not Allowed`);
-        break;
+  if (actorCommonName && path) {
+    const executer = findHandler({
+      method,
+      path,
+      body,
+      actorCommonName,
+      selector,
+    });
+    // need to handle 404 if no data found on selector or pathParam
+    if (executer && "fn" in executer) {
+      const { fn, params } = executer;
+      const data = await fn(params);
+      return res.status(200).json(data);
     }
-    return;
   }
   return res.status(404).json({ description: `Page not found: ${urlPath}` });
 }

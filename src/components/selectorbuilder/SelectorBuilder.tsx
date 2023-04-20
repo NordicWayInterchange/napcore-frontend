@@ -11,6 +11,7 @@ type Props = {
   name: string;
   version: string;
   capability?: Capability;
+  selectorCallback: (selector: string) => void;
 };
 
 let defaultSelector = {
@@ -18,22 +19,20 @@ let defaultSelector = {
   protocolVersion: "",
   originatingCountry: [],
   publisherId: "",
-  quadTree: ["2", "123", "8888"],
+  quadTree: [],
 };
 
 const SelectorBuilder = (props: Props) => {
-  const { name, version, capability } = props;
+  const { name, version, capability, selectorCallback } = props;
   const isDisabled = !!capability;
   const [selector, setSelector] = useState<string>();
   const [formState, setFormState] = useState(defaultSelector);
   const [errors, setErrors] = useState({}); // TODO: Handle errors
 
-  /*  if (capability) {
-    subscription = capability;
-  }*/
-
   useEffect(() => {
-    setSelector(generateSelector(formState));
+    const selector = generateSelector(formState);
+    setSelector(selector);
+    selectorCallback(selector);
   }, [formState]);
 
   const handleChange = (event: SelectChangeEvent<unknown>) => {
@@ -47,44 +46,38 @@ const SelectorBuilder = (props: Props) => {
 
   return (
     <Grid container>
-      <Grid item xs={6}>
-        <Typography variant="h4">Form</Typography>
-        <SelectComponent
-          isDisabled={isDisabled}
-          value={formState.messageType}
-          label={"Message Type"}
-          name={"messageType"}
-          data={MessageTypes}
-          onChange={handleChange}
-        />
-        {/* TODO: REGEX to check format */}
-        <InputComponent
-          isDisabled={isDisabled}
-          value={formState.protocolVersion}
-          name={"protocolVersion"}
-          label="Protocol Version"
-          onChange={handleChange}
-        />
-        <SelectComponent
-          isDisabled={isDisabled}
-          value={formState.originatingCountry}
-          label={"Originating Country"}
-          name={"originatingCountry"}
-          data={OriginatingCountry}
-          onChange={handleChange}
-        />
-        <InputComponent
-          isDisabled={isDisabled}
-          value={formState.publisherId}
-          name={"publisherId"}
-          label="Publisher ID"
-          onChange={handleChange}
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <Typography variant="h4">Selector</Typography>
-        <p>{selector}</p>
-      </Grid>
+      <Typography variant="h4">Form</Typography>
+      <SelectComponent
+        isDisabled={isDisabled}
+        value={formState.messageType}
+        label={"Message Type"}
+        name={"messageType"}
+        data={MessageTypes}
+        onChange={handleChange}
+      />
+      {/* TODO: REGEX to check format */}
+      <InputComponent
+        isDisabled={isDisabled}
+        value={formState.protocolVersion}
+        name={"protocolVersion"}
+        label="Protocol Version"
+        onChange={handleChange}
+      />
+      <SelectComponent
+        isDisabled={isDisabled}
+        value={formState.originatingCountry}
+        label={"Originating Country"}
+        name={"originatingCountry"}
+        data={OriginatingCountry}
+        onChange={handleChange}
+      />
+      <InputComponent
+        isDisabled={isDisabled}
+        value={formState.publisherId}
+        name={"publisherId"}
+        label="Publisher ID"
+        onChange={handleChange}
+      />
     </Grid>
   );
 };

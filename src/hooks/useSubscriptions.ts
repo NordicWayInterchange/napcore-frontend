@@ -1,13 +1,12 @@
 import { ExtendedSubscription } from "@/types/subscription";
-import { Subscription } from "@/types/napcore/subscription";
+import { SubscriptionsSubscription } from "@/types/napcore/subscription";
 import { useQuery } from "@tanstack/react-query";
-import { getSubscriptions } from "@/lib/fetchers";
 
 const fetchSubscriptions: (
   userName: string
 ) => Promise<ExtendedSubscription[]> = async (userName: string) => {
-  const res = await getSubscriptions(userName);
-  const subscriptions: Subscription[] = await res.json();
+  const res = await fetch(`/api/${userName}/subscriptions`);
+  const subscriptions: SubscriptionsSubscription[] = await res.json();
   const seasonedSubscription = subscriptions.map(async (sub) => {
     const fetchNumberOfCapabilities = await fetch(
       `/api/${userName}/capability-count/?selector=${sub.selector}`
