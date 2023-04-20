@@ -6,11 +6,19 @@ import {
   fetchDeliveries,
   addSubscriptions,
   deleteSubscriptions,
+  basicGetFunction,
+  extendedGetFunction,
+  basicDeleteFunction,
+  basicPostFunction,
+  basicDeleteParams,
+  basicPostParams,
+  basicGetParams,
+  extendedGetParams,
 } from "@/lib/interchangeConnector";
 
 // all getter methods on path
 const getPaths: {
-  [key: string]: (params: any) => Promise<any>;
+  [key: string]: basicGetFunction | extendedGetFunction;
 } = {
   "network/capabilities": fetchNetworkCapabilities,
   capabilities: fetchCapabilities,
@@ -20,22 +28,30 @@ const getPaths: {
 
 // all post methods on path
 const postPaths: {
-  [key: string]: (params: any) => Promise<any>;
+  [key: string]: basicPostFunction;
 } = {
   subscriptions: addSubscriptions,
 };
 
 // all delete methods on path
 const deletePaths: {
-  [key: string]: (params: any) => Promise<any>;
+  [key: string]: basicDeleteFunction;
 } = {
   subscriptions: deleteSubscriptions,
 };
 
 const findHandler: (params: any) =>
   | {
-      fn: (arg0: any) => Promise<any>;
-      params: any;
+      fn:
+        | basicDeleteFunction
+        | basicGetFunction
+        | basicPostFunction
+        | extendedGetFunction;
+      params:
+        | basicDeleteParams
+        | basicPostParams
+        | basicGetParams
+        | extendedGetParams;
     }
   | {} = (params) => {
   const {

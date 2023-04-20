@@ -54,28 +54,42 @@ const deleteIXN: (
   return await response.data;
 };
 
-// exported functions
-export const fetchNetworkCapabilities = async (params: {
+// types for handler functions
+export type basicGetParams = {
   actorCommonName: string;
   selector?: string;
-}) => {
+};
+export type extendedGetParams = {
+  actorCommonName: string;
+  pathParam?: string;
+  selector?: string;
+};
+export type basicPostParams = {
+  actorCommonName: string;
+  body: SubscriptionRequest;
+};
+export type basicDeleteParams = {
+  actorCommonName: string;
+  pathParam?: string;
+};
+
+export type basicGetFunction = (params: basicGetParams) => Promise<any>;
+export type extendedGetFunction = (params: extendedGetParams) => Promise<any>;
+export type basicPostFunction = (params: basicPostParams) => Promise<any>;
+export type basicDeleteFunction = (params: basicDeleteParams) => Promise<any>;
+
+// exported functions
+export const fetchNetworkCapabilities: basicGetFunction = async (params) => {
   const { actorCommonName, selector = "" } = params;
   return await fetchIXN(actorCommonName, "/network/capabilities", selector);
 };
 
-export const fetchCapabilities = async (params: {
-  actorCommonName: string;
-  selector?: string;
-}) => {
+export const fetchCapabilities: basicGetFunction = async (params) => {
   const { actorCommonName, selector = "" } = params;
   return await fetchIXN(actorCommonName, "/capabilities", selector);
 };
 
-export const fetchSubscriptions = async (params: {
-  actorCommonName: string;
-  pathParam?: string;
-  selector?: string;
-}) => {
+export const fetchSubscriptions: extendedGetFunction = async (params) => {
   const { actorCommonName, selector = "", pathParam = "" } = params;
   return await fetchIXN(
     actorCommonName,
@@ -84,7 +98,7 @@ export const fetchSubscriptions = async (params: {
   );
 };
 
-export const fetchDeliveries = async (params: {
+export const fetchDeliveries: basicGetFunction = async (params: {
   actorCommonName: string;
   selector?: string;
 }) => {
@@ -92,18 +106,12 @@ export const fetchDeliveries = async (params: {
   return await fetchIXN(actorCommonName, "/deliveries", selector);
 };
 
-export const addSubscriptions = async (params: {
-  actorCommonName: string;
-  body: SubscriptionRequest;
-}) => {
+export const addSubscriptions: basicPostFunction = async (params) => {
   const { actorCommonName, body } = params;
   return await postIXN(actorCommonName, "/subscriptions", body);
 };
 
-export const deleteSubscriptions = async (params: {
-  actorCommonName: string;
-  pathParam: string;
-}) => {
+export const deleteSubscriptions: basicDeleteFunction = async (params) => {
   const { actorCommonName, pathParam } = params;
   return await deleteIXN(actorCommonName, `/subscriptions/${pathParam}`);
 };
