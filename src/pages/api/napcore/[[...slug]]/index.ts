@@ -77,12 +77,10 @@ const findHandler: (params: any) =>
           params: { actorCommonName, pathParam: path[1] },
         };
       }
-      break;
     case "POST":
       if (Object.keys(postPaths).includes(urlPath)) {
         return { fn: postPaths[urlPath], params: { actorCommonName, body } };
       }
-      break;
     case "DELETE":
       if (path.length > 1 && Object.keys(deletePaths).includes(path[0])) {
         return {
@@ -90,11 +88,9 @@ const findHandler: (params: any) =>
           params: { actorCommonName, pathParam: path[1] },
         };
       }
-      break;
     default:
       return {};
   }
-  return {};
 };
 
 export default async function handler(
