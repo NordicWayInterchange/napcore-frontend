@@ -39,7 +39,7 @@ export default function Subscriptions() {
 
   return (
     <Box>
-      <Typography variant="h4">Network Capabilities</Typography>
+      <Typography variant="h4">Subscription</Typography>
       <Link className={styles.link} href="/subscriptions/new-subscription">
         <ButtonComponent text={"Create Subscription"} />
       </Link>

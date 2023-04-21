@@ -1,9 +1,8 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { useState } from "react";
 import SelectorBuilder from "@/components/selectorbuilder/SelectorBuilder";
-import { RedirectStatus } from "@/types/napcore/capability";
-import { MessageTypes } from "@/types/messageType";
 import { Box, Grid, Typography } from "@mui/material";
 import React from "react";
+import { GridColDef } from "@mui/x-data-grid";
 import { Subscription } from "@/types/napcore/subscription";
 import { useMatchingCapabilities } from "@/hooks/useMatchingCapabilities";
 import { createSubscription } from "@/lib/fetchers";

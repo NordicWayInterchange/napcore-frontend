@@ -1,12 +1,12 @@
 import React from "react";
 import { DataGrid as MuiDataGrid, GridColDef } from "@mui/x-data-grid";
 import { ExtendedSubscription } from "@/types/subscription";
-import { Capability } from "@/types/capability";
+import { ExtendedCapability } from "@/types/capability";
 import { Box } from "@mui/material";
 
 type Props = {
   tableHeaders: GridColDef[];
-  data: ExtendedSubscription[] | Capability[] | [];
+  data: ExtendedSubscription[] | ExtendedCapability[] | [];
 };
 
 export default function DataGrid(props: Props) {
