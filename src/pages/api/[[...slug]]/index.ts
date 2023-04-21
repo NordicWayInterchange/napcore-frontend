@@ -1,5 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Capabilities, Capability } from "@/types/capability";
+import {
+  Capabilities,
+  Capability,
+  ExtendedCapability,
+} from "@/types/capability";
 import {
   getCapabilities,
   getNetworkCapabilities,
@@ -8,7 +12,7 @@ import {
 import { Subscriptions } from "@/types/napcore/subscription";
 
 const fetchCapabilityCounter = async (userName: string, selector?: string) => {
-  const capabilities: Capability[] = await fetchNetworkCapabilities(
+  const capabilities: ExtendedCapability[] = await fetchNetworkCapabilities(
     userName,
     selector
   );
@@ -16,7 +20,7 @@ const fetchCapabilityCounter = async (userName: string, selector?: string) => {
 };
 
 const fetchAggregate = async (userName: string, selector: string = "") => {
-  const capabilities: Capability[] = await fetchNetworkCapabilities(
+  const capabilities: ExtendedCapability[] = await fetchNetworkCapabilities(
     userName,
     selector
   );
@@ -58,8 +62,8 @@ const fetchNetworkCapabilities = async (
   const res = await getNetworkCapabilities(userName, selector);
   if (res.ok) {
     const capabilities: Capabilities = await res.json();
-    return capabilities.capabilities.map((capability) => {
-      return capability.definition;
+    return capabilities.capabilities.map((capability, ix) => {
+      return { ...capability.definition, id: ix };
     });
   }
   return [];
@@ -69,8 +73,8 @@ const fetchCapabilities = async (userName: string, selector: string = "") => {
   const res = await getCapabilities(userName, selector);
   if (res.ok) {
     const capabilities: Capabilities = await res.json();
-    return capabilities.capabilities.map((capability) => {
-      return capability.definition;
+    return capabilities.capabilities.map((capability, ix) => {
+      return { ...capability.definition, id: ix };
     });
   }
   return [];

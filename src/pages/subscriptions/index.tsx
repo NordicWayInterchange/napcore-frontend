@@ -1,20 +1,40 @@
 import React from "react";
 import { Box, CircularProgress, Typography } from "@mui/material";
-import TableContainer from "@/components/table/TableContainer";
 import Link from "next/link";
 import styles from "../../styles/Link.module.css";
-import ButtonComponent from "@/components/ButtonComponent";
+import ButtonComponent from "@/components/shared/Button";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
-import { TableHeaders } from "@/types/tableHeaders";
+import { GridColDef } from "@mui/x-data-grid";
+import DataGrid from "@/components/shared/DataGrid";
 
-const Subscriptions = () => {
+export default function Subscriptions() {
   const { data, isLoading, isFetching } = useSubscriptions("anna");
 
-  const tableHeaders: TableHeaders = [
-    { property: "id", label: "ID" },
-    { property: "consumerCommonName", label: "Consumer Common Header" },
-    { property: "status", label: "Status" },
-    { property: "capabilityMatches", label: "Capability Matches" },
+  const tableHeaders: GridColDef[] = [
+    {
+      field: "id",
+      headerName: "ID",
+      width: 200,
+      editable: true,
+    },
+    {
+      field: "consumerCommonName",
+      headerName: "Consumer Common Name",
+      width: 200,
+      editable: true,
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 200,
+      editable: true,
+    },
+    {
+      field: "capabilityMatches",
+      headerName: "Capability Matches",
+      width: 200,
+      editable: true,
+    },
   ];
 
   return (
@@ -26,10 +46,8 @@ const Subscriptions = () => {
       {isLoading ? (
         <CircularProgress />
       ) : (
-        <TableContainer tableHeaders={tableHeaders} subscriptions={data} />
+        <DataGrid tableHeaders={tableHeaders} data={data || []} />
       )}
     </Box>
   );
-};
-
-export default Subscriptions;
+}

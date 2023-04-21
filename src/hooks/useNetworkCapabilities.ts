@@ -1,10 +1,10 @@
-import { Capability } from "@/types/capability";
+import { Capability, ExtendedCapability } from "@/types/capability";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchCapabilities: (
   userName: string,
   selector?: string
-) => Promise<Capability[]> = async (userName, selector = "") => {
+) => Promise<ExtendedCapability[]> = async (userName, selector = "") => {
   const res = await fetch(
     `/api/${userName}/network/capabilities?selector=${selector}`
   );

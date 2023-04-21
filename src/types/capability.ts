@@ -14,6 +14,10 @@ export type Capability = {
   infoUrl: string;
 };
 
+export type ExtendedCapability = Capability & {
+  id: number;
+};
+
 export type LocalCapability = {
   id: string;
   path: string;

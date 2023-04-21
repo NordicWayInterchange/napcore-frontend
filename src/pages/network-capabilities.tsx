@@ -1,16 +1,43 @@
 import React from "react";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { useNetworkCapabilities } from "@/hooks/useNetworkCapabilities";
-import TableContainer from "@/components/table/TableContainer";
-import { TableHeaders } from "@/types/tableHeaders";
+import { GridColDef } from "@mui/x-data-grid";
+import DataGrid from "@/components/shared/DataGrid";
 
-const NetworkCapabilities = () => {
+export default function NetworkCapabilities() {
   const { data, isLoading, isFetching } = useNetworkCapabilities("anna");
 
-  const tableHeaders: TableHeaders = [
-    { property: "publisherId", label: "Publisher ID" },
-    { property: "messageType", label: "Message Type" },
-    { property: "originatingCountry", label: "Originating Country" },
+  const tableHeaders: GridColDef[] = [
+    {
+      field: "publisherId",
+      headerName: "Publisher ID",
+      width: 200,
+      editable: true,
+    },
+    {
+      field: "messageType",
+      headerName: "Message Type",
+      width: 200,
+      editable: true,
+    },
+    {
+      field: "protocolVersion",
+      headerName: "Protocol Version",
+      width: 200,
+      editable: true,
+    },
+    {
+      field: "originatingCountry",
+      headerName: "Originating Country",
+      width: 200,
+      editable: true,
+    },
+    {
+      field: "redirect",
+      headerName: "Redirect Status",
+      width: 200,
+      editable: true,
+    },
   ];
 
   return (
@@ -19,10 +46,8 @@ const NetworkCapabilities = () => {
       {isLoading ? (
         <CircularProgress />
       ) : (
-        <TableContainer tableHeaders={tableHeaders} capabilities={data} />
+        <DataGrid tableHeaders={tableHeaders} data={data || []} />
       )}
     </Box>
   );
-};
-
-export default NetworkCapabilities;
+}

@@ -1,41 +1,48 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { useState } from "react";
 import SelectorBuilder from "@/components/selectorbuilder/SelectorBuilder";
-import ButtonComponent from "@/components/ButtonComponent";
-/* import InputComponent from "@/components/InputComponent"; */
-
-import { RedirectStatus } from "@/types/napcore/capability";
-import { MessageTypes } from "@/types/messageType";
-import {
-  Box,
-  FormControl,
-  Grid,
-  SelectChangeEvent,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import React from "react";
+import { GridColDef } from "@mui/x-data-grid";
 import { Subscription } from "@/types/napcore/subscription";
 import { useMatchingCapabilities } from "@/hooks/useMatchingCapabilities";
-import { TableHeaders } from "@/types/tableHeaders";
-import TableContainer from "@/components/table/TableContainer";
 import { createSubscription } from "@/lib/fetchers";
+import ButtonComponent from "@/components/shared/Button";
+import DataGrid from "@/components/shared/DataGrid";
 
-const tableHeaders: TableHeaders = [
-  { property: "publisherId", label: "Publisher ID" },
-  { property: "messageType", label: "Message Type" },
-  { property: "originatingCountry", label: "Originating Country" },
+const tableHeaders: GridColDef[] = [
+  {
+    field: "publisherId",
+    headerName: "Publisher ID",
+    width: 200,
+    editable: true,
+  },
+  {
+    field: "messageType",
+    headerName: "Message Type",
+    width: 200,
+    editable: true,
+  },
+  {
+    field: "protocolVersion",
+    headerName: "Protocol Version",
+    width: 200,
+    editable: true,
+  },
+  {
+    field: "originatingCountry",
+    headerName: "Originating Country",
+    width: 200,
+    editable: true,
+  },
+  {
+    field: "redirect",
+    headerName: "Redirect Status",
+    width: 200,
+    editable: true,
+  },
 ];
+
 const NewSubscription = () => {
-  let capability = {
-    messageType: MessageTypes.DATEX_2,
-    protocolVersion: "DATEX:1.1.1",
-    originatingCountry: "NO",
-    publisherId: "Bouvet-1",
-    quadTree: ["1"],
-    redirect: RedirectStatus.MANDATORY,
-    shardCount: 1,
-    infoUrl: "info.url",
-  };
   const name = "anna"; // get this from context
   const [selector, setSelector] = useState<string>("");
   const [completedSave, setCompletedSave] = useState<boolean>(false);
@@ -76,9 +83,9 @@ const NewSubscription = () => {
         <Grid item xs={6}>
           <Typography variant="h4">Selector</Typography>
           <p>{selector}</p>
-          <TableContainer
+          <DataGrid
             tableHeaders={tableHeaders}
-            capabilities={matchingCapabilities.data}
+            data={matchingCapabilities.data || []}
           />
         </Grid>
       </Grid>

@@ -1,4 +1,4 @@
-import Layout from "@/components/navigation/Layout";
+import Layout from "@/components/layout/Layout";
 import "@/styles/globals.css";
 import React from "react";
 import {
