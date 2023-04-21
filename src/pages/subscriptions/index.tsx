@@ -6,34 +6,31 @@ import ButtonComponent from "@/components/shared/Button";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
 import { GridColDef } from "@mui/x-data-grid";
 import DataGrid from "@/components/shared/DataGrid";
+import { dataGridTemplate } from "@/components/shared/DataGridTemplate";
 
 export default function Subscriptions() {
   const { data, isLoading, isFetching } = useSubscriptions("anna");
 
   const tableHeaders: GridColDef[] = [
     {
+      ...dataGridTemplate,
       field: "id",
       headerName: "ID",
-      width: 200,
-      editable: true,
     },
     {
+      ...dataGridTemplate,
       field: "consumerCommonName",
       headerName: "Consumer Common Name",
-      width: 200,
-      editable: true,
     },
     {
+      ...dataGridTemplate,
       field: "status",
       headerName: "Status",
-      width: 200,
-      editable: true,
     },
     {
+      ...dataGridTemplate,
       field: "capabilityMatches",
       headerName: "Capability Matches",
-      width: 200,
-      editable: true,
     },
   ];
 

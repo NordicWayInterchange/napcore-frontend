@@ -3,40 +3,33 @@ import { Box, CircularProgress, Typography } from "@mui/material";
 import { useNetworkCapabilities } from "@/hooks/useNetworkCapabilities";
 import { GridColDef } from "@mui/x-data-grid";
 import DataGrid from "@/components/shared/DataGrid";
+import { dataGridTemplate } from "@/components/shared/DataGridTemplate";
 
 export default function NetworkCapabilities() {
   const { data, isLoading, isFetching } = useNetworkCapabilities("anna");
 
   const tableHeaders: GridColDef[] = [
+    { ...dataGridTemplate, field: "publisherId", headerName: "Publisher ID" },
     {
-      field: "publisherId",
-      headerName: "Publisher ID",
-      width: 200,
-      editable: true,
-    },
-    {
+      ...dataGridTemplate,
       field: "messageType",
       headerName: "Message Type",
-      width: 200,
-      editable: true,
     },
     {
+      ...dataGridTemplate,
       field: "protocolVersion",
       headerName: "Protocol Version",
-      width: 200,
-      editable: true,
     },
     {
+      ...dataGridTemplate,
       field: "originatingCountry",
       headerName: "Originating Country",
-      width: 200,
-      editable: true,
     },
     {
+      ...dataGridTemplate,
       field: "redirect",
       headerName: "Redirect Status",
-      width: 200,
-      editable: true,
+      description: "This is a description of Redirect",
     },
   ];
 
