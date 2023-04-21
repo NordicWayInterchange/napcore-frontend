@@ -1,5 +1,9 @@
 import React from "react";
-import { DataGrid as MuiDataGrid, GridColDef } from "@mui/x-data-grid";
+import {
+  DataGrid as MuiDataGrid,
+  GridColDef,
+  GridColumnHeaderSeparator,
+} from "@mui/x-data-grid";
 import { ExtendedSubscription } from "@/types/subscription";
 import { ExtendedCapability } from "@/types/capability";
 import { Box } from "@mui/material";
@@ -14,23 +18,19 @@ export default function DataGrid(props: Props) {
 
   return (
     <Box sx={{ width: "100%" }}>
-      {!data.length ? (
-        <p>No data to display</p>
-      ) : (
-        <MuiDataGrid
-          autoHeight
-          rows={data}
-          columns={tableHeaders}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 10,
-              },
+      <MuiDataGrid
+        autoHeight
+        rows={data}
+        columns={tableHeaders}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 10,
             },
-          }}
-          pageSizeOptions={[10]}
-        />
-      )}
+          },
+        }}
+        pageSizeOptions={[10]}
+      />
     </Box>
   );
 }

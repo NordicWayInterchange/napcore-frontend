@@ -2,7 +2,7 @@ import { getEnumValues } from "@/lib/getEnumValues";
 import {
   FormControl,
   InputLabel,
-  Select,
+  Select as MuiSelect,
   SelectProps,
   MenuItem,
 } from "@mui/material";
@@ -10,15 +10,14 @@ import React from "react";
 
 interface Props extends SelectProps {
   data: any;
-  isDisabled?: boolean;
 }
 
-const SelectComponent = (props: Props) => {
-  const { onChange, label, name, value, data, isDisabled } = props;
+const Select = (props: Props) => {
+  const { onChange, label, name, value, data } = props;
   return (
-    <FormControl disabled={isDisabled} fullWidth>
+    <FormControl sx={{ marginY: 2 }} fullWidth>
       <InputLabel>{label}</InputLabel>
-      <Select
+      <MuiSelect
         multiple
         value={value}
         name={name}
@@ -31,9 +30,9 @@ const SelectComponent = (props: Props) => {
             {value}
           </MenuItem>
         ))}
-      </Select>
+      </MuiSelect>
     </FormControl>
   );
 };
 
-export default SelectComponent;
+export default Select;

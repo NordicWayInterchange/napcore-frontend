@@ -2,9 +2,9 @@ import { Capability } from "@/types/capability";
 import { MessageTypes } from "@/types/messageType";
 import { OriginatingCountry } from "@/types/originatingCountry";
 import { Grid, SelectChangeEvent, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import InputComponent from "./InputComponent";
-import SelectComponent from "./SelectComponent";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import TextField from "./TextField";
+import Select from "./Select";
 import { generateSelector } from "@/lib/generateSelector";
 
 type Props = {
@@ -35,10 +35,15 @@ const SelectorBuilder = (props: Props) => {
     selectorCallback(selector);
   }, [formState]);
 
-  const handleChange = (event: SelectChangeEvent<unknown>) => {
+  const handleSelect = (event: SelectChangeEvent<unknown>) => {
     const { name, value } = event.target;
     setFormState((prevData) => ({ ...prevData, [name]: value }));
     //setSelector(createSelector(subscriptionData));
+  };
+
+  const handleTextField = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormState((prevData) => ({ ...prevData, [name]: value }));
   };
 
   // TODO: Handle onSave
@@ -47,36 +52,31 @@ const SelectorBuilder = (props: Props) => {
   return (
     <Grid container>
       <Typography variant="h4">Form</Typography>
-      <SelectComponent
-        isDisabled={isDisabled}
+      <Select
         value={formState.messageType}
         label={"Message Type"}
         name={"messageType"}
         data={MessageTypes}
-        onChange={handleChange}
+        onChange={handleSelect}
       />
-      {/* TODO: REGEX to check format */}
-      <InputComponent
-        isDisabled={isDisabled}
+      <TextField
         value={formState.protocolVersion}
         name={"protocolVersion"}
         label="Protocol Version"
-        onChange={handleChange}
+        onChange={handleTextField}
       />
-      <SelectComponent
-        isDisabled={isDisabled}
+      <Select
         value={formState.originatingCountry}
         label={"Originating Country"}
         name={"originatingCountry"}
         data={OriginatingCountry}
-        onChange={handleChange}
+        onChange={handleSelect}
       />
-      <InputComponent
-        isDisabled={isDisabled}
+      <TextField
         value={formState.publisherId}
         name={"publisherId"}
         label="Publisher ID"
-        onChange={handleChange}
+        onChange={handleTextField}
       />
     </Grid>
   );
