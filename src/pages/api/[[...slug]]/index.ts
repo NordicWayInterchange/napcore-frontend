@@ -12,47 +12,52 @@ import {
 import { Subscriptions } from "@/types/napcore/subscription";
 
 const fetchCapabilityCounter = async (userName: string, selector?: string) => {
-  const capabilities: ExtendedCapability[] = await fetchNetworkCapabilities(
-    userName,
-    selector
-  );
-  return capabilities.length;
+  const [status, body] = await fetchNetworkCapabilities(userName, selector);
+
+  if (status == 200) {
+    const capabilities = body as ExtendedCapability[];
+    return [status, capabilities.length];
+  }
+  return [status, body];
 };
 
 const fetchAggregate = async (userName: string, selector: string = "") => {
-  const capabilities: ExtendedCapability[] = await fetchNetworkCapabilities(
-    userName,
-    selector
-  );
-  return capabilities.reduce(
-    (acc: { [key: string]: any }, capability: Capability) => {
-      (Object.keys(capability) as Array<keyof typeof capability>).forEach(
-        (capabilityProp) => {
-          let value = Array.isArray(capability[capabilityProp])
-            ? (capability[capabilityProp] as Array<string>)
-            : [capability[capabilityProp] as string];
-          if (capabilityProp in acc) {
-            // get only new values
-            value = value.filter((val) => !acc[capabilityProp].includes(val));
-            acc[capabilityProp] = [...acc[capabilityProp], ...value];
-          } else {
-            acc[capabilityProp] = value;
+  const [status, body] = await fetchNetworkCapabilities(userName, selector);
+  if (status == 200) {
+    const capabilities = body as ExtendedCapability[];
+    const aggregatedCapabilities = capabilities.reduce(
+      (acc: { [key: string]: any }, capability: Capability) => {
+        (Object.keys(capability) as Array<keyof typeof capability>).forEach(
+          (capabilityProp) => {
+            let value = Array.isArray(capability[capabilityProp])
+              ? (capability[capabilityProp] as Array<string>)
+              : [capability[capabilityProp] as string];
+            if (capabilityProp in acc) {
+              // get only new values
+              value = value.filter((val) => !acc[capabilityProp].includes(val));
+              acc[capabilityProp] = [...acc[capabilityProp], ...value];
+            } else {
+              acc[capabilityProp] = value;
+            }
           }
-        }
-      );
-      return acc;
-    },
-    {}
-  );
+        );
+        return acc;
+      },
+      {}
+    );
+    return [status, aggregatedCapabilities];
+  }
+  return [status, body];
 };
 
 const fetchSubscriptions = async (userName: string) => {
   const res = await getSubscriptions(userName);
   if (res.ok) {
     const subscriptions: Subscriptions = await res.json();
-    return subscriptions.subscriptions;
+    return [res.status, subscriptions.subscriptions];
   }
-  return [];
+  const body = await res.json();
+  return [res.status, body];
 };
 
 const fetchNetworkCapabilities = async (
@@ -62,22 +67,30 @@ const fetchNetworkCapabilities = async (
   const res = await getNetworkCapabilities(userName, selector);
   if (res.ok) {
     const capabilities: Capabilities = await res.json();
-    return capabilities.capabilities.map((capability, ix) => {
-      return { ...capability.definition, id: ix };
-    });
+    return [
+      res.status,
+      capabilities.capabilities.map((capability, ix) => {
+        return { ...capability.definition, id: ix };
+      }),
+    ];
   }
-  return [];
+  const body = await res.json();
+  return [res.status, body];
 };
 
 const fetchCapabilities = async (userName: string, selector: string = "") => {
   const res = await getCapabilities(userName, selector);
   if (res.ok) {
     const capabilities: Capabilities = await res.json();
-    return capabilities.capabilities.map((capability, ix) => {
-      return { ...capability.definition, id: ix };
-    });
+    return [
+      res.status,
+      capabilities.capabilities.map((capability, ix) => {
+        return { ...capability.definition, id: ix };
+      }),
+    ];
   }
-  return [];
+  const body = await res.json();
+  return [res.status, body];
 };
 
 // all internal fetchers
@@ -110,8 +123,11 @@ export default async function handler(
 
     switch (method) {
       case "GET":
-        const data = await getInternal[urlPath](actorCommonName, selector);
-        res.status(200).json(data);
+        const [status, data] = await getInternal[urlPath](
+          actorCommonName,
+          selector
+        );
+        res.status(status).json(data);
         break;
       case "POST":
         res.status(405).end(`Method ${method} Not Implemented yet`);
