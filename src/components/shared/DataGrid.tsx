@@ -1,9 +1,8 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import {
   DataGrid as MuiDataGrid,
   GridColDef,
   GridEventListener,
-  GridRowParams,
 } from "@mui/x-data-grid";
 import { ExtendedSubscription } from "@/types/subscription";
 import { ExtendedCapability } from "@/types/capability";
@@ -11,19 +10,11 @@ import { ExtendedCapability } from "@/types/capability";
 type Props = {
   tableHeaders: GridColDef[];
   data: ExtendedSubscription[] | ExtendedCapability[] | [];
-  setState?: Dispatch<
-    SetStateAction<ExtendedCapability | ExtendedSubscription | undefined>
-  >;
+  handleEvent?: GridEventListener<"rowClick">;
 };
 
 export default function DataGrid(props: Props) {
-  const { setState, data, tableHeaders } = props;
-
-  const handleEvent: GridEventListener<"rowClick"> = (
-    params: GridRowParams<any>
-  ) => {
-    setState(params.row);
-  };
+  const { handleEvent, data, tableHeaders } = props;
 
   return (
     <>

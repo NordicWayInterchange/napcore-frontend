@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import { useNetworkCapabilities } from "@/hooks/useNetworkCapabilities";
-import { GridColDef } from "@mui/x-data-grid";
+import { GridColDef, GridEventListener, GridRowParams } from "@mui/x-data-grid";
 import DataGrid from "@/components/shared/DataGrid";
 import { dataGridTemplate } from "@/components/shared/DataGridTemplate";
 import { CapabilityDetails } from "@/components/details";
-import { ExtendedCapability } from "@/types/capability";
 
 const tableHeaders: GridColDef[] = [
   { ...dataGridTemplate, field: "publisherId", headerName: "Publisher ID" },
@@ -34,28 +33,31 @@ const tableHeaders: GridColDef[] = [
 
 export default function NetworkCapabilities() {
   const { data, isLoading, isFetching } = useNetworkCapabilities("anna");
-  const [extendedCapability, setExtendedCapability] =
-    useState<ExtendedCapability>();
+  const [extendedCapability, setExtendedCapability] = useState();
+
+  const handleEvent: GridEventListener<"rowClick"> = (
+    params: GridRowParams<any>
+  ) => {
+    setExtendedCapability(params.row);
+  };
+
+  if (isLoading) return <CircularProgress />;
 
   return (
     <>
       <Typography variant="h4">Network Capabilities</Typography>
-      {isLoading ? (
-        <CircularProgress />
-      ) : (
-        <Box sx={{ display: "flex" }}>
-          <Box sx={{ flex: 1 }}>
-            <DataGrid
-              setState={setExtendedCapability}
-              tableHeaders={tableHeaders}
-              data={data || []}
-            />
-          </Box>
-          <Box sx={{ flex: 1 }}>
-            <CapabilityDetails extendedCapability={extendedCapability} />
-          </Box>
+      <Box sx={{ display: "flex" }}>
+        <Box sx={{ flex: 1 }}>
+          <DataGrid
+            handleEvent={handleEvent}
+            tableHeaders={tableHeaders}
+            data={data || []}
+          />
         </Box>
-      )}
+        <Box sx={{ flex: 1 }}>
+          <CapabilityDetails extendedCapability={extendedCapability} />
+        </Box>
+      </Box>
     </>
   );
 }
