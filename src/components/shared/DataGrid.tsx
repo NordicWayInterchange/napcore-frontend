@@ -1,7 +1,6 @@
 import React from "react";
 import {
   DataGrid as MuiDataGrid,
-  DataGridProps,
   GridColDef,
   GridEventListener,
 } from "@mui/x-data-grid";
