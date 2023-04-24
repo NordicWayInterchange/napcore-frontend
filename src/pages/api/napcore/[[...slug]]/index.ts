@@ -15,6 +15,7 @@ import {
   basicGetParams,
   extendedGetParams,
 } from "@/lib/interchangeConnector";
+import { AxiosResponse } from "axios";
 
 // all getter methods on path
 const getPaths: {
@@ -119,9 +120,13 @@ export default async function handler(
     });
     // need to handle 404 if no data found on selector or pathParam
     if (executer && "fn" in executer) {
-      const { fn, params } = executer;
-      const data = await fn(params);
-      return res.status(200).json(data);
+      try {
+        const { fn, params } = executer;
+        const response = await fn(params);
+        return res.status(200).json(response.data);
+      } catch (error) {
+        return res.status(error.response.status).json(error.response.data);
+      }
     }
   }
   return res.status(404).json({ description: `Page not found: ${urlPath}` });
