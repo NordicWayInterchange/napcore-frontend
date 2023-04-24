@@ -1,4 +1,4 @@
-import { Capability, ExtendedCapability } from "@/types/capability";
+import { ExtendedCapability } from "@/types/capability";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchCapabilities: (
@@ -8,7 +8,13 @@ const fetchCapabilities: (
   const res = await fetch(
     `/api/${userName}/network/capabilities?selector=${selector}`
   );
-  return res.json();
+
+  if (res.ok) {
+    return res.json();
+  } else {
+    const errorObj = await res.json();
+    throw new Error(`${errorObj.errorCode}: ${errorObj.message}`);
+  }
 };
 
 const useNetworkCapabilities = (userName: string) => {
