@@ -1,6 +1,7 @@
 import React from "react";
 import {
   DataGrid as MuiDataGrid,
+  DataGridProps,
   GridColDef,
   GridEventListener,
 } from "@mui/x-data-grid";
@@ -11,15 +12,22 @@ type Props = {
   tableHeaders: GridColDef[];
   data: ExtendedSubscription[] | ExtendedCapability[] | [];
   handleEvent?: GridEventListener<"rowClick">;
+  disableRowSelectionOnClick?: boolean;
 };
 
 export default function DataGrid(props: Props) {
-  const { handleEvent, data, tableHeaders } = props;
+  const {
+    handleEvent,
+    data,
+    tableHeaders,
+    disableRowSelectionOnClick = false,
+  } = props;
 
   return (
     <>
       <MuiDataGrid
         onRowClick={handleEvent}
+        disableRowSelectionOnClick={disableRowSelectionOnClick}
         autoHeight
         rows={data}
         columns={tableHeaders}
