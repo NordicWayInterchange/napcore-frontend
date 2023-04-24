@@ -53,14 +53,14 @@ export default function Subscriptions() {
         <ButtonComponent text={"Create Subscription"} />
       </Link>
       <Box sx={{ display: "flex" }}>
-        <Box sx={{ flex: 1 }}>
+        <Box sx={{ flex: 1, padding: 2 }}>
           <DataGrid
             handleEvent={handleEvent}
             tableHeaders={tableHeaders}
             data={data || []}
           />
         </Box>
-        <Box sx={{ flex: 1 }}>
+        <Box sx={{ flex: 1, padding: 2 }}>
           <SubscriptionDetails extendedSubscription={extendedSubscription} />
         </Box>
       </Box>
