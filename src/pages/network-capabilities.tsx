@@ -46,18 +46,18 @@ export default function NetworkCapabilities() {
   return (
     <>
       <Typography variant="h4">Network Capabilities</Typography>
-      <Box sx={{ display: "flex" }}>
-        <Box sx={{ flex: 1, padding: 2 }}>
+      <Grid container spacing={3}>
+        <Grid item xs={6}>
           <DataGrid
             handleEvent={handleEvent}
             tableHeaders={tableHeaders}
             data={data || []}
           />
-        </Box>
-        <Box sx={{ flex: 1, padding: 2 }}>
+        </Grid>
+        <Grid item xs={6}>
           <CapabilityDetails extendedCapability={extendedCapability} />
-        </Box>
-      </Box>
+        </Grid>
+      </Grid>
     </>
   );
 }

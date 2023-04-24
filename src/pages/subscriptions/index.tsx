@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import Link from "next/link";
 import styles from "../../styles/Link.module.css";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
@@ -47,23 +47,23 @@ export default function Subscriptions() {
   if (isLoading) return <CircularProgress />;
 
   return (
-    <Box>
+    <>
       <Typography variant="h4">Subscription</Typography>
       <Link className={styles.link} href="/subscriptions/new-subscription">
         <ButtonComponent text={"Create Subscription"} />
       </Link>
-      <Box sx={{ display: "flex" }}>
-        <Box sx={{ flex: 1, padding: 2 }}>
+      <Grid container spacing={3}>
+        <Grid item xs={6}>
           <DataGrid
             handleEvent={handleEvent}
             tableHeaders={tableHeaders}
             data={data || []}
           />
-        </Box>
-        <Box sx={{ flex: 1, padding: 2 }}>
+        </Grid>
+        <Grid item xs={6}>
           <SubscriptionDetails extendedSubscription={extendedSubscription} />
-        </Box>
-      </Box>
-    </Box>
+        </Grid>
+      </Grid>
+    </>
   );
 }
