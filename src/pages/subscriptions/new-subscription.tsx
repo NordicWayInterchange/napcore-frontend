@@ -5,7 +5,7 @@ import React from "react";
 import { GridColDef } from "@mui/x-data-grid";
 import { Subscription } from "@/types/napcore/subscription";
 import { useMatchingCapabilities } from "@/hooks/useMatchingCapabilities";
-import { createSubscription } from "@/lib/fetchers";
+import { createSubscription } from "@/lib/internalFetchers";
 import ButtonComponent from "@/components/shared/Button";
 import DataGrid from "@/components/shared/DataGrid";
 import { dataGridTemplate } from "@/components/shared/DataGridTemplate";

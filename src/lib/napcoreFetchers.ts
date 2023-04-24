@@ -2,25 +2,42 @@ import { SubscriptionRequest } from "@/types/napcore/subscription";
 
 const napCoreBaseUrl = process.env.NEXT_PUBLIC_NAPCORE_API_URI;
 
-export const getSubscriptions = (userName: string) => {
-  return fetch(`${napCoreBaseUrl}/${userName}/subscriptions`);
+export const getSubscriptions = (
+  actorCommonName: string,
+  selector = "",
+  pathParam = ""
+) => {
+  if (pathParam.length > 0) {
+    return fetch(
+      `${napCoreBaseUrl}/${actorCommonName}/subscriptions/${pathParam}`
+    );
+  }
+  return fetch(
+    `${napCoreBaseUrl}/${actorCommonName}/subscriptions/?selector=${selector}`
+  );
 };
 
-export const createSubscription = async (
+export const createSubscription = (
   userName: string,
-  selector: string
+  body: SubscriptionRequest
 ) => {
-  const subscriptionsRequest = {
-    name: userName,
-    subscriptions: [{ selector }],
-  };
-  return await fetch(`${napCoreBaseUrl}/${userName}/subscriptions`, {
+  return fetch(`${napCoreBaseUrl}/${userName}/subscriptions`, {
     method: "post",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(subscriptionsRequest),
+    body: JSON.stringify(body),
   });
+};
+
+export const deleteSubscriptions = (
+  actorCommonName: string,
+  subscriptionId: string
+) => {
+  return fetch(
+    `${napCoreBaseUrl}/${actorCommonName}/subscriptions/${subscriptionId}`,
+    { method: "delete" }
+  );
 };
 
 export const getNetworkCapabilities = (
