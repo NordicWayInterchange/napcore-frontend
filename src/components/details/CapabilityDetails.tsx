@@ -1,13 +1,13 @@
-import { ExtendedCapability } from "@/types/capability";
 import React from "react";
+import { ExtendedCapability } from "@/types/capability";
+import { InformationText } from "./index";
 
 type Props = {
   extendedCapability: ExtendedCapability | undefined;
 };
 
 export default function CapabilityDetails({ extendedCapability }: Props) {
-  if (!extendedCapability)
-    return <p>Click a capability to display more information</p>;
+  if (!extendedCapability) return <InformationText text="capability" />;
 
   return (
     <div>

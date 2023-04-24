@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import Link from "next/link";
 import styles from "../../styles/Link.module.css";
@@ -7,9 +7,13 @@ import { useSubscriptions } from "@/hooks/useSubscriptions";
 import { GridColDef } from "@mui/x-data-grid";
 import DataGrid from "@/components/shared/DataGrid";
 import { dataGridTemplate } from "@/components/shared/DataGridTemplate";
+import { ExtendedSubscription } from "@/types/subscription";
+import SubscriptionDetails from "@/components/details/SubscriptionDetails";
 
 export default function Subscriptions() {
   const { data, isLoading, isFetching } = useSubscriptions("anna");
+  const [extendedSubscription, setExtendedSubscription] =
+    useState<ExtendedSubscription>();
 
   const tableHeaders: GridColDef[] = [
     {
@@ -43,7 +47,18 @@ export default function Subscriptions() {
       {isLoading ? (
         <CircularProgress />
       ) : (
-        <DataGrid tableHeaders={tableHeaders} data={data || []} />
+        <Box sx={{ display: "flex" }}>
+          <Box sx={{ flex: 1 }}>
+            <DataGrid
+              setState={setExtendedSubscription}
+              tableHeaders={tableHeaders}
+              data={data || []}
+            />
+          </Box>
+          <Box sx={{ flex: 1 }}>
+            <SubscriptionDetails extendedSubscription={extendedSubscription} />
+          </Box>
+        </Box>
       )}
     </Box>
   );

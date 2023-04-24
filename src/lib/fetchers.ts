@@ -23,6 +23,18 @@ export const createSubscription = async (
   });
 };
 
+export const deleteSubscription = async (
+  userName: string,
+  subscriptionId: string
+) => {
+  return await fetch(
+    `${napCoreBaseUrl}/${userName}/subscriptions/${subscriptionId}`,
+    {
+      method: "delete",
+    }
+  );
+};
+
 export const getNetworkCapabilities = (
   userName: string,
   selector: string = ""
