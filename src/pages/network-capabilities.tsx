@@ -1,38 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import { useNetworkCapabilities } from "@/hooks/useNetworkCapabilities";
 import { GridColDef } from "@mui/x-data-grid";
 import DataGrid from "@/components/shared/DataGrid";
 import { dataGridTemplate } from "@/components/shared/DataGridTemplate";
 import { CapabilityDetails } from "@/components/details";
+import { ExtendedCapability } from "@/types/capability";
+
+const tableHeaders: GridColDef[] = [
+  { ...dataGridTemplate, field: "publisherId", headerName: "Publisher ID" },
+  {
+    ...dataGridTemplate,
+    field: "messageType",
+    headerName: "Message Type",
+  },
+  {
+    ...dataGridTemplate,
+    field: "protocolVersion",
+    headerName: "Protocol Version",
+  },
+  {
+    ...dataGridTemplate,
+    field: "originatingCountry",
+    headerName: "Originating Country",
+  },
+  {
+    ...dataGridTemplate,
+    field: "redirect",
+    headerName: "Redirect Status",
+    description: "This is a description of Redirect",
+  },
+];
 
 export default function NetworkCapabilities() {
   const { data, isLoading, isFetching } = useNetworkCapabilities("anna");
-
-  const tableHeaders: GridColDef[] = [
-    { ...dataGridTemplate, field: "publisherId", headerName: "Publisher ID" },
-    {
-      ...dataGridTemplate,
-      field: "messageType",
-      headerName: "Message Type",
-    },
-    {
-      ...dataGridTemplate,
-      field: "protocolVersion",
-      headerName: "Protocol Version",
-    },
-    {
-      ...dataGridTemplate,
-      field: "originatingCountry",
-      headerName: "Originating Country",
-    },
-    {
-      ...dataGridTemplate,
-      field: "redirect",
-      headerName: "Redirect Status",
-      description: "This is a description of Redirect",
-    },
-  ];
+  const [extendedCapability, setExtendedCapability] =
+    useState<ExtendedCapability>();
 
   return (
     <>
@@ -42,10 +45,14 @@ export default function NetworkCapabilities() {
       ) : (
         <Box sx={{ display: "flex" }}>
           <Box sx={{ flex: 1 }}>
-            <DataGrid tableHeaders={tableHeaders} data={data || []} />
+            <DataGrid
+              setState={setExtendedCapability}
+              tableHeaders={tableHeaders}
+              data={data || []}
+            />
           </Box>
           <Box sx={{ flex: 1 }}>
-            <CapabilityDetails />
+            <CapabilityDetails extendedCapability={extendedCapability} />
           </Box>
         </Box>
       )}
