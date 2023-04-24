@@ -12,7 +12,7 @@ export default function Layout({ children }: LayoutProps) {
   return (
     <Box className={styles.flex}>
       <Navbar />
-      <Container maxWidth="xl">{children}</Container>
+      <Container maxWidth={false}>{children}</Container>
     </Box>
   );
 }

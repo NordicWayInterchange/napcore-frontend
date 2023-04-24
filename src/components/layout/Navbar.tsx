@@ -17,13 +17,6 @@ const Navbar = () => {
       <Image src={logo} alt="Nordic Way logo" width={150} />
       <List>
         <ListItem>
-          <Link href="/" className={styles.link}>
-            <ListItemButton>
-              <ListItemText primary="Capabilities" />
-            </ListItemButton>
-          </Link>
-        </ListItem>
-        <ListItem>
           <Link href="/subscriptions" className={styles.link}>
             <ListItemButton>
               <ListItemText primary="Subscriptions" />

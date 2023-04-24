@@ -1,9 +1,10 @@
 import React from "react";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import { useNetworkCapabilities } from "@/hooks/useNetworkCapabilities";
 import { GridColDef } from "@mui/x-data-grid";
 import DataGrid from "@/components/shared/DataGrid";
 import { dataGridTemplate } from "@/components/shared/DataGridTemplate";
+import { CapabilityDetails } from "@/components/details";
 
 export default function NetworkCapabilities() {
   const { data, isLoading, isFetching } = useNetworkCapabilities("anna");
@@ -34,13 +35,20 @@ export default function NetworkCapabilities() {
   ];
 
   return (
-    <Box>
+    <>
       <Typography variant="h4">Network Capabilities</Typography>
       {isLoading ? (
         <CircularProgress />
       ) : (
-        <DataGrid tableHeaders={tableHeaders} data={data || []} />
+        <Box sx={{ display: "flex" }}>
+          <Box sx={{ flex: 1 }}>
+            <DataGrid tableHeaders={tableHeaders} data={data || []} />
+          </Box>
+          <Box sx={{ flex: 1 }}>
+            <CapabilityDetails />
+          </Box>
+        </Box>
       )}
-    </Box>
+    </>
   );
 }

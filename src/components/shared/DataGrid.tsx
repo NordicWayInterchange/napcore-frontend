@@ -17,7 +17,7 @@ export default function DataGrid(props: Props) {
   const { data, tableHeaders } = props;
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <>
       <MuiDataGrid
         autoHeight
         rows={data}
@@ -31,6 +31,6 @@ export default function DataGrid(props: Props) {
         }}
         pageSizeOptions={[10]}
       />
-    </Box>
+    </>
   );
 }
