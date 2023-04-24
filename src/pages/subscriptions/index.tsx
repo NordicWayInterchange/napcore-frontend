@@ -10,33 +10,33 @@ import { dataGridTemplate } from "@/components/shared/DataGridTemplate";
 import { ExtendedSubscription } from "@/types/subscription";
 import SubscriptionDetails from "@/components/details/SubscriptionDetails";
 
+const tableHeaders: GridColDef[] = [
+  {
+    ...dataGridTemplate,
+    field: "id",
+    headerName: "ID",
+  },
+  {
+    ...dataGridTemplate,
+    field: "consumerCommonName",
+    headerName: "Consumer Common Name",
+  },
+  {
+    ...dataGridTemplate,
+    field: "status",
+    headerName: "Status",
+  },
+  {
+    ...dataGridTemplate,
+    field: "capabilityMatches",
+    headerName: "Capability Matches",
+  },
+];
+
 export default function Subscriptions() {
   const { data, isLoading, isFetching } = useSubscriptions("anna");
   const [extendedSubscription, setExtendedSubscription] =
     useState<ExtendedSubscription>();
-
-  const tableHeaders: GridColDef[] = [
-    {
-      ...dataGridTemplate,
-      field: "id",
-      headerName: "ID",
-    },
-    {
-      ...dataGridTemplate,
-      field: "consumerCommonName",
-      headerName: "Consumer Common Name",
-    },
-    {
-      ...dataGridTemplate,
-      field: "status",
-      headerName: "Status",
-    },
-    {
-      ...dataGridTemplate,
-      field: "capabilityMatches",
-      headerName: "Capability Matches",
-    },
-  ];
 
   return (
     <Box>

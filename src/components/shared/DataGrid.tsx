@@ -3,6 +3,7 @@ import {
   DataGrid as MuiDataGrid,
   GridColDef,
   GridEventListener,
+  GridRowParams,
 } from "@mui/x-data-grid";
 import { ExtendedSubscription } from "@/types/subscription";
 import { ExtendedCapability } from "@/types/capability";
@@ -19,9 +20,7 @@ export default function DataGrid(props: Props) {
   const { setState, data, tableHeaders } = props;
 
   const handleEvent: GridEventListener<"rowClick"> = (
-    params, // GridRowParams
-    event, // MuiEvent<React.MouseEvent<HTMLElement>>
-    details // GridCallbackDetails
+    params: GridRowParams<any>
   ) => {
     setState(params.row);
   };
