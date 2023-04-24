@@ -1,5 +1,9 @@
 # NAPCORE
 
+## Arkitektur
+
+![Architecture](/public/architecture.png)
+
 ## Grunnlag for applikasjonen
 
 Vi ønsker med denne applikasjonen å være et grensesnitt inn mot interchange som
