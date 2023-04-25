@@ -8,17 +8,17 @@ import React from "react";
 interface Props extends StandardTextFieldProps {}
 
 const TextArea = (props: Props) => {
-  const { name, label, onChange, value } = props;
+  const { name, label, onChange, value, rows = 4, disabled = true } = props;
   return (
     <FormControl fullWidth>
       <MuiTextField
         value={value}
         name={name}
         label={label}
-        disabled={true}
+        disabled={disabled}
         multiline
-        rows={2}
-        maxRows={4}
+        rows={rows}
+        onChange={onChange}
       />
     </FormControl>
   );

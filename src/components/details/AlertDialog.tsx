@@ -6,9 +6,9 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { deleteSubscription } from "@/lib/fetchers";
 import ButtonComponent from "../shared/Button";
 import { Dispatch, SetStateAction } from "react";
+import { deleteSubscriptions } from "@/lib/internalFetchers";
 
 type Props = {
   actorCommonName: string;
@@ -25,7 +25,7 @@ export default function AlertDialog(props: Props) {
   };
 
   const handleDeletion = async (name: string, subscriptionId: string) => {
-    const data = await deleteSubscription(name, subscriptionId);
+    const data = await deleteSubscriptions(name, subscriptionId);
     console.log(data.json());
     setOpen(false);
   };

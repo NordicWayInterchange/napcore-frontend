@@ -5,7 +5,6 @@ import React from "react";
 import { GridColDef } from "@mui/x-data-grid";
 import { Subscription } from "@/types/napcore/subscription";
 import { useMatchingCapabilities } from "@/hooks/useMatchingCapabilities";
-import { createSubscription } from "@/lib/internalFetchers";
 import ButtonComponent from "@/components/shared/Button";
 import DataGrid from "@/components/shared/DataGrid";
 import { dataGridTemplate } from "@/components/shared/DataGridTemplate";
@@ -42,20 +41,11 @@ const tableHeaders: GridColDef[] = [
 const NewSubscription = () => {
   const name = "anna"; // get this from context
   const [selector, setSelector] = useState<string>("");
-  const [completedSave, setCompletedSave] = useState<boolean>(false);
-  const [savedSubscription, setSavedSubscription] = useState<Subscription>();
   const matchingCapabilities = useMatchingCapabilities(name, selector);
 
   const handleChange = (selector: string) => {
     setSelector(selector);
     matchingCapabilities.remove();
-  };
-
-  const saveSubscription = async (name: string, selector: string) => {
-    const response = await createSubscription(name, selector);
-    const data = await response.json();
-    setSavedSubscription(data);
-    setCompletedSave(true);
   };
 
   return (
@@ -64,22 +54,12 @@ const NewSubscription = () => {
       <Grid container spacing={3}>
         <Grid item xs={6}>
           <SelectorBuilder
-            name="name"
+            name="anna"
             version="version"
             selectorCallback={handleChange}
           />
-          <Typography variant="h4">Selector</Typography>
-          <TextArea value={selector} />
-          <ButtonComponent
-            onClick={() => {
-              saveSubscription(name, selector);
-            }}
-            text={"Save Subscription"}
-          />
         </Grid>
-
         <Grid item xs={6}>
-          <Typography variant="h4">Matching Capabilities</Typography>
           <DataGrid
             disableRowSelectionOnClick={true}
             tableHeaders={tableHeaders}

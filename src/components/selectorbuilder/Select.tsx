@@ -13,9 +13,9 @@ interface Props extends SelectProps {
 }
 
 const Select = (props: Props) => {
-  const { onChange, label, name, value, data } = props;
+  const { onChange, label, name, value, data, disabled = false } = props;
   return (
-    <FormControl sx={{ marginY: 2 }} fullWidth>
+    <FormControl fullWidth>
       <InputLabel>{label}</InputLabel>
       <MuiSelect
         multiple
@@ -23,6 +23,7 @@ const Select = (props: Props) => {
         name={name}
         label={label}
         onChange={onChange}
+        disabled={disabled}
       >
         {getEnumValues(data).map((value, index) => (
           <MenuItem value={value} key={index}>
