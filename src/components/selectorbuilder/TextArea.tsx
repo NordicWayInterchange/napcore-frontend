@@ -18,7 +18,7 @@ const TextArea = (props: Props) => {
         disabled={disabled}
         multiline
         rows={rows}
-        maxRows={rows}
+        onChange={onChange}
       />
     </FormControl>
   );

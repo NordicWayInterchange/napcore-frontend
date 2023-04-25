@@ -9,6 +9,9 @@ import { generateSelector } from "@/lib/generateSelector";
 import TextArea from "./TextArea";
 import { ButtonComponent } from "../shared";
 import { denmCauseCodes } from "@/lib/denmCauseCodes";
+import { createSubscription } from "@/lib/internalFetchers";
+import { Subscription } from "@/types/napcore/subscription";
+import { green, red } from "@mui/material/colors";
 
 type Props = {
   name: string;
@@ -30,12 +33,19 @@ const DENM = MessageTypes.DENM;
 
 const SelectorBuilder = (props: Props) => {
   const { name, version, capability, selectorCallback } = props;
-  const [selector, setSelector] = useState<string>();
+  const [selector, setSelector] = useState<string>("");
   const [formState, setFormState] = useState(defaultSelector);
   const [errors, setErrors] = useState({}); // TODO: Handle errors
   const [showCauseCode, setShowCauseCode] = useState<boolean>();
-  const [advancedMode, setAdvancedMode] = useState<boolean>(true);
+  const [advancedMode, setAdvancedMode] = useState<boolean>(false);
+  const [completedSave, setCompletedSave] = useState<boolean>(false);
+  const [savedSubscription, setSavedSubscription] = useState<Subscription>();
+  const [persistSelector, setPersistSelector] = useState<string>("");
 
+  /*
+  Generate a new selector when the form state changes.
+  Send the selector backwards via selectorCallback(selector) to find matching capabilities.
+  */
   useEffect(() => {
     const selector = generateSelector(formState);
     setSelector(selector);
@@ -45,7 +55,6 @@ const SelectorBuilder = (props: Props) => {
   const handleSelect = (event: SelectChangeEvent<unknown>) => {
     const { name, value } = event.target;
     setFormState((prevData) => ({ ...prevData, [name]: value }));
-    //setSelector(createSelector(subscriptionData));
   };
 
   const handleTextField = (event: ChangeEvent<HTMLInputElement>) => {
@@ -53,13 +62,31 @@ const SelectorBuilder = (props: Props) => {
     setFormState((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleAdvancedMode = () => {
-    setAdvancedMode((prevCheck) => !prevCheck);
-    console.log(advancedMode);
+  const handleTextArea = (event: any) => {
+    const value = event.target.value;
+    setSelector(value);
+    //selectorCallback(selector);
   };
 
-  // TODO: Handle onSave
-  const onSave = () => {};
+  /* 
+  Switching to advanced mode will persist the selector.
+  When turning off advanced mode, the selector will be set to the persisted value.
+  */
+  const handleAdvancedMode = () => {
+    setAdvancedMode((prevCheck) => !prevCheck);
+    if (!advancedMode) {
+      setPersistSelector(selector);
+    } else {
+      setSelector(persistSelector);
+    }
+  };
+
+  const saveSubscription = async (name: string, selector: string) => {
+    const response = await createSubscription(name, selector);
+    const data = await response.json();
+    setSavedSubscription(data);
+    setCompletedSave(true);
+  };
 
   return (
     <Grid container spacing={1}>
@@ -73,6 +100,7 @@ const SelectorBuilder = (props: Props) => {
           disabled={advancedMode}
         />
       </Grid>
+      {/* FIXME */}
       {formState.messageType.includes(DENM) && (
         <Grid item xs={6}>
           <Select
@@ -123,13 +151,24 @@ const SelectorBuilder = (props: Props) => {
         />
       </Grid>
       <Grid item xs={12}>
-        <TextArea value={selector} disabled={!advancedMode} />
+        <TextArea
+          value={selector}
+          disabled={!advancedMode}
+          onChange={handleTextArea}
+        />
       </Grid>
       <Grid item>
-        <ButtonComponent text={"Advanced mode"} onClick={handleAdvancedMode} />
+        <ButtonComponent
+          color={advancedMode ? "error" : "success"}
+          text={"Advanced mode"}
+          onClick={handleAdvancedMode}
+        />
       </Grid>
       <Grid item>
-        <ButtonComponent text={"Save Subscription"} />
+        <ButtonComponent
+          text={"Save Subscription"}
+          onClick={() => saveSubscription(name, selector)}
+        />
       </Grid>
     </Grid>
   );
