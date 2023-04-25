@@ -34,6 +34,7 @@ const SelectorBuilder = (props: Props) => {
   const [formState, setFormState] = useState(defaultSelector);
   const [errors, setErrors] = useState({}); // TODO: Handle errors
   const [showCauseCode, setShowCauseCode] = useState<boolean>();
+  const [advancedMode, setAdvancedMode] = useState<boolean>(true);
 
   useEffect(() => {
     const selector = generateSelector(formState);
@@ -52,6 +53,11 @@ const SelectorBuilder = (props: Props) => {
     setFormState((prevData) => ({ ...prevData, [name]: value }));
   };
 
+  const handleAdvancedMode = () => {
+    setAdvancedMode((prevCheck) => !prevCheck);
+    console.log(advancedMode);
+  };
+
   // TODO: Handle onSave
   const onSave = () => {};
 
@@ -64,6 +70,7 @@ const SelectorBuilder = (props: Props) => {
           name={"messageType"}
           data={MessageTypes}
           onChange={handleSelect}
+          disabled={advancedMode}
         />
       </Grid>
       {formState.messageType.includes(DENM) && (
@@ -74,6 +81,7 @@ const SelectorBuilder = (props: Props) => {
             name={"causeCode"}
             data={denmCauseCodes}
             onChange={handleSelect}
+            disabled={advancedMode}
           />
         </Grid>
       )}
@@ -83,6 +91,7 @@ const SelectorBuilder = (props: Props) => {
           name={"protocolVersion"}
           label="Protocol Version"
           onChange={handleTextField}
+          disabled={advancedMode}
         />
       </Grid>
       <Grid item xs={6}>
@@ -92,6 +101,7 @@ const SelectorBuilder = (props: Props) => {
           name={"originatingCountry"}
           data={OriginatingCountry}
           onChange={handleSelect}
+          disabled={advancedMode}
         />
       </Grid>
       <Grid item xs={6}>
@@ -100,6 +110,7 @@ const SelectorBuilder = (props: Props) => {
           name={"publisherId"}
           label="Publisher ID"
           onChange={handleTextField}
+          disabled={advancedMode}
         />
       </Grid>
       <Grid item xs={6}>
@@ -108,13 +119,14 @@ const SelectorBuilder = (props: Props) => {
           label={"Quadtree"}
           name={"quadTree"}
           onChange={handleTextField}
+          disabled={advancedMode}
         />
       </Grid>
       <Grid item xs={12}>
-        <TextArea value={selector} />
+        <TextArea value={selector} disabled={!advancedMode} />
       </Grid>
       <Grid item>
-        <ButtonComponent text={"Advanced mode"} />
+        <ButtonComponent text={"Advanced mode"} onClick={handleAdvancedMode} />
       </Grid>
       <Grid item>
         <ButtonComponent text={"Save Subscription"} />
