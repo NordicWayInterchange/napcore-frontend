@@ -15,7 +15,7 @@ interface Props extends SelectProps {
 const Select = (props: Props) => {
   const { onChange, label, name, value, data } = props;
   return (
-    <FormControl sx={{ marginY: 2 }} fullWidth>
+    <FormControl fullWidth>
       <InputLabel>{label}</InputLabel>
       <MuiSelect
         multiple

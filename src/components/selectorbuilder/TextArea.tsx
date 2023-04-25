@@ -17,7 +17,7 @@ const TextArea = (props: Props) => {
         label={label}
         disabled={true}
         multiline
-        rows={2}
+        rows={4}
         maxRows={4}
       />
     </FormControl>
