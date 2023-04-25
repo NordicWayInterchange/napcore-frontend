@@ -1,50 +1,69 @@
-import React from "react";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import Link from "next/link";
 import styles from "../../styles/Link.module.css";
-import ButtonComponent from "@/components/shared/Button";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
-import { GridColDef } from "@mui/x-data-grid";
-import DataGrid from "@/components/shared/DataGrid";
-import { dataGridTemplate } from "@/components/shared/DataGridTemplate";
+import { GridColDef, GridEventListener, GridRowParams } from "@mui/x-data-grid";
+import {
+  dataGridTemplate,
+  DataGrid,
+  ButtonComponent,
+} from "@/components/shared/index";
+import SubscriptionDetails from "@/components/details/SubscriptionDetails";
+
+const tableHeaders: GridColDef[] = [
+  {
+    ...dataGridTemplate,
+    field: "id",
+    headerName: "ID",
+  },
+  {
+    ...dataGridTemplate,
+    field: "consumerCommonName",
+    headerName: "Consumer Common Name",
+  },
+  {
+    ...dataGridTemplate,
+    field: "status",
+    headerName: "Status",
+  },
+  {
+    ...dataGridTemplate,
+    field: "capabilityMatches",
+    headerName: "Capability Matches",
+  },
+];
 
 export default function Subscriptions() {
   const { data, isLoading, isFetching } = useSubscriptions("anna");
+  const [extendedSubscription, setExtendedSubscription] = useState();
 
-  const tableHeaders: GridColDef[] = [
-    {
-      ...dataGridTemplate,
-      field: "id",
-      headerName: "ID",
-    },
-    {
-      ...dataGridTemplate,
-      field: "consumerCommonName",
-      headerName: "Consumer Common Name",
-    },
-    {
-      ...dataGridTemplate,
-      field: "status",
-      headerName: "Status",
-    },
-    {
-      ...dataGridTemplate,
-      field: "capabilityMatches",
-      headerName: "Capability Matches",
-    },
-  ];
+  const handleEvent: GridEventListener<"rowClick"> = (
+    params: GridRowParams<any>
+  ) => {
+    setExtendedSubscription(params.row);
+  };
+
+  if (isLoading) return <CircularProgress />;
 
   return (
-    <Box>
+    <>
       <Typography variant="h4">Subscription</Typography>
       <Link className={styles.link} href="/subscriptions/new-subscription">
         <ButtonComponent text={"Create Subscription"} />
       </Link>
-      {isLoading ? (
-        <CircularProgress />
-      ) : (
-        <DataGrid tableHeaders={tableHeaders} data={data || []} />
-      )}
-    </Box>
+      <Grid container spacing={3}>
+        <Grid item xs={6}>
+          <DataGrid
+            handleEvent={handleEvent}
+            tableHeaders={tableHeaders}
+            data={data || []}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <SubscriptionDetails extendedSubscription={extendedSubscription} />
+        </Grid>
+      </Grid>
+    </>
   );
 }

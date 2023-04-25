@@ -6,9 +6,9 @@ interface Props extends ButtonProps {
 }
 
 const ButtonComponent = (props: Props) => {
-  const { text, variant = "contained", onClick } = props;
+  const { text, variant = "contained", onClick, color = "primary" } = props;
   return (
-    <Button onClick={onClick} variant={variant}>
+    <Button color={color} onClick={onClick} variant={variant}>
       {text}
     </Button>
   );

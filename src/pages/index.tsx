@@ -1,7 +1,5 @@
-import Head from "next/head";
-import { Box, Typography } from "@mui/material";
-import Capabilities from "./capabilities";
+import Subscriptions from "./subscriptions";
 
 export default function Home() {
-  return <Capabilities />;
+  return <Subscriptions />;
 }

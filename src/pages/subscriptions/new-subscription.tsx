@@ -81,6 +81,7 @@ const NewSubscription = () => {
         <Grid item xs={6}>
           <Typography variant="h4">Matching Capabilities</Typography>
           <DataGrid
+            disableRowSelectionOnClick={true}
             tableHeaders={tableHeaders}
             data={matchingCapabilities.data || []}
           />

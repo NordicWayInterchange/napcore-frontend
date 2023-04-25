@@ -2,23 +2,31 @@ import React from "react";
 import {
   DataGrid as MuiDataGrid,
   GridColDef,
-  GridColumnHeaderSeparator,
+  GridEventListener,
 } from "@mui/x-data-grid";
 import { ExtendedSubscription } from "@/types/subscription";
 import { ExtendedCapability } from "@/types/capability";
-import { Box } from "@mui/material";
 
 type Props = {
   tableHeaders: GridColDef[];
   data: ExtendedSubscription[] | ExtendedCapability[] | [];
+  handleEvent?: GridEventListener<"rowClick">;
+  disableRowSelectionOnClick?: boolean;
 };
 
 export default function DataGrid(props: Props) {
-  const { data, tableHeaders } = props;
+  const {
+    handleEvent,
+    data,
+    tableHeaders,
+    disableRowSelectionOnClick = false,
+  } = props;
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <>
       <MuiDataGrid
+        onRowClick={handleEvent}
+        disableRowSelectionOnClick={disableRowSelectionOnClick}
         autoHeight
         rows={data}
         columns={tableHeaders}
@@ -31,6 +39,6 @@ export default function DataGrid(props: Props) {
         }}
         pageSizeOptions={[10]}
       />
-    </Box>
+    </>
   );
 }
