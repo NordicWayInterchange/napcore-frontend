@@ -54,13 +54,12 @@ const NewSubscription = () => {
       <Grid container spacing={3}>
         <Grid item xs={6}>
           <SelectorBuilder
-            name="name"
+            name="anna"
             version="version"
             selectorCallback={handleChange}
           />
         </Grid>
         <Grid item xs={6}>
-          <Typography variant="h4">Matching Capabilities</Typography>
           <DataGrid
             disableRowSelectionOnClick={true}
             tableHeaders={tableHeaders}
