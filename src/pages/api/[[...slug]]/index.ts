@@ -5,92 +5,209 @@ import {
   ExtendedCapability,
 } from "@/types/capability";
 import {
+  createSubscription,
+  deleteSubscriptions,
   getCapabilities,
   getNetworkCapabilities,
   getSubscriptions,
-} from "@/lib/fetchers";
+} from "@/lib/napcoreFetchers";
 import { Subscriptions } from "@/types/napcore/subscription";
+import {
+  basicDeleteFunction,
+  basicDeleteParams,
+  basicGetFunction,
+  basicGetParams,
+  basicPostFunction,
+  basicPostParams,
+  extendedGetFunction,
+  extendedGetParams,
+} from "@/lib/interchangeConnector";
 
-const fetchCapabilityCounter = async (userName: string, selector?: string) => {
-  const capabilities: ExtendedCapability[] = await fetchNetworkCapabilities(
-    userName,
-    selector
-  );
-  return capabilities.length;
+const fetchCapabilityCounter = async (params: basicGetParams) => {
+  const { actorCommonName, selector = "" } = params;
+  const [status, body] = await fetchNetworkCapabilities({
+    actorCommonName,
+    selector,
+  });
+
+  if (status == 200) {
+    const capabilities = body as ExtendedCapability[];
+    return [status, capabilities.length];
+  }
+  return [status, body];
 };
 
-const fetchAggregate = async (userName: string, selector: string = "") => {
-  const capabilities: ExtendedCapability[] = await fetchNetworkCapabilities(
-    userName,
-    selector
-  );
-  return capabilities.reduce(
-    (acc: { [key: string]: any }, capability: Capability) => {
-      (Object.keys(capability) as Array<keyof typeof capability>).forEach(
-        (capabilityProp) => {
-          let value = Array.isArray(capability[capabilityProp])
-            ? (capability[capabilityProp] as Array<string>)
-            : [capability[capabilityProp] as string];
-          if (capabilityProp in acc) {
-            // get only new values
-            value = value.filter((val) => !acc[capabilityProp].includes(val));
-            acc[capabilityProp] = [...acc[capabilityProp], ...value];
-          } else {
-            acc[capabilityProp] = value;
+const fetchAggregate = async (params: basicGetParams) => {
+  const { actorCommonName, selector } = params;
+  const [status, body] = await fetchNetworkCapabilities({
+    actorCommonName,
+    selector,
+  });
+  if (status == 200) {
+    const capabilities = body as ExtendedCapability[];
+    const aggregatedCapabilities = capabilities.reduce(
+      (acc: { [key: string]: any }, capability: Capability) => {
+        (Object.keys(capability) as Array<keyof typeof capability>).forEach(
+          (capabilityProp) => {
+            let value = Array.isArray(capability[capabilityProp])
+              ? (capability[capabilityProp] as Array<string>)
+              : [capability[capabilityProp] as string];
+            if (capabilityProp in acc) {
+              // get only new values
+              value = value.filter((val) => !acc[capabilityProp].includes(val));
+              acc[capabilityProp] = [...acc[capabilityProp], ...value];
+            } else {
+              acc[capabilityProp] = value;
+            }
           }
-        }
-      );
-      return acc;
-    },
-    {}
-  );
+        );
+        return acc;
+      },
+      {}
+    );
+    return [status, aggregatedCapabilities];
+  }
+  return [status, body];
 };
 
-const fetchSubscriptions = async (userName: string) => {
-  const res = await getSubscriptions(userName);
+const fetchSubscriptions = async (params: extendedGetParams) => {
+  const { actorCommonName, selector = "", pathParam = "" } = params;
+  const res = await getSubscriptions(actorCommonName, selector, pathParam);
   if (res.ok) {
     const subscriptions: Subscriptions = await res.json();
-    return subscriptions.subscriptions;
+    return [res.status, subscriptions.subscriptions];
   }
-  return [];
+  const body = await res.json();
+  return [res.status, body];
 };
 
-const fetchNetworkCapabilities = async (
-  userName: string,
-  selector: string = ""
+export const addSubscriptions: basicPostFunction = async (
+  params: basicPostParams
 ) => {
-  const res = await getNetworkCapabilities(userName, selector);
-  if (res.ok) {
-    const capabilities: Capabilities = await res.json();
-    return capabilities.capabilities.map((capability, ix) => {
-      return { ...capability.definition, id: ix };
-    });
-  }
-  return [];
+  const { actorCommonName, body = {} } = params;
+  const res = await createSubscription(actorCommonName, body);
+  const data = await res.json();
+  return [res.status, data];
 };
 
-const fetchCapabilities = async (userName: string, selector: string = "") => {
-  const res = await getCapabilities(userName, selector);
+export const removeSubscription: basicDeleteFunction = async (
+  params: basicDeleteParams
+) => {
+  const { actorCommonName, pathParam } = params;
+  const res = await deleteSubscriptions(actorCommonName, pathParam);
+  const data = await res.json();
+  return [res.status, data];
+};
+
+const fetchNetworkCapabilities = async (params: basicGetParams) => {
+  const { actorCommonName, selector = "" } = params;
+  const res = await getNetworkCapabilities(actorCommonName, selector);
   if (res.ok) {
     const capabilities: Capabilities = await res.json();
-    return capabilities.capabilities.map((capability, ix) => {
-      return { ...capability.definition, id: ix };
-    });
+    return [
+      res.status,
+      capabilities.capabilities.map((capability, ix) => {
+        return { ...capability.definition, id: ix };
+      }),
+    ];
   }
-  return [];
+  const body = await res.json();
+  return [res.status, body];
+};
+
+const fetchCapabilities = async (params: basicGetParams) => {
+  const { actorCommonName, selector = "" } = params;
+  const res = await getCapabilities(actorCommonName, selector);
+  if (res.ok) {
+    const capabilities: Capabilities = await res.json();
+    return [
+      res.status,
+      capabilities.capabilities.map((capability, ix) => {
+        return { ...capability.definition, id: ix };
+      }),
+    ];
+  }
+  const body = await res.json();
+  return [res.status, body];
 };
 
 // all internal fetchers
-const getInternal: {
-  [key: string]: (userName: string, selector?: string) => any;
+const getPaths: {
+  [key: string]: basicGetFunction | extendedGetFunction;
 } = {
   aggregate: fetchAggregate,
-  ["capability-count"]: fetchCapabilityCounter,
+  "capability-count": fetchCapabilityCounter,
   subscriptions: fetchSubscriptions,
   "network/capabilities": fetchNetworkCapabilities,
   capabilities: fetchCapabilities,
 };
 
+// all post methods on path
+const postPaths: {
+  [key: string]: basicPostFunction;
+} = {
+  subscriptions: addSubscriptions,
+};
+
+// all delete methods on path
+const deletePaths: {
+  [key: string]: basicDeleteFunction;
+} = {
+  subscriptions: removeSubscription,
+};
+
+const findHandler: (params: any) =>
+  | {
+      fn:
+        | basicDeleteFunction
+        | basicGetFunction
+        | basicPostFunction
+        | extendedGetFunction;
+      params:
+        | basicDeleteParams
+        | basicPostParams
+        | basicGetParams
+        | extendedGetParams;
+    }
+  | {} = (params) => {
+  const {
+    path = [],
+    method,
+    body = {},
+    actorCommonName,
+    selector = "",
+  } = params;
+  const urlPath = path.join("/");
+  switch (method) {
+    case "GET":
+      const possiblePaths = Object.keys(getPaths);
+      if (possiblePaths.includes(urlPath)) {
+        return {
+          fn: getPaths[urlPath],
+          params: { actorCommonName, selector },
+        };
+      }
+      if (path.length > 1 && possiblePaths.includes(path[0])) {
+        return {
+          fn: getPaths[path[0]],
+          params: { actorCommonName, pathParam: path[1] },
+        };
+      }
+    case "POST":
+      if (Object.keys(postPaths).includes(urlPath)) {
+        return { fn: postPaths[urlPath], params: { actorCommonName, body } };
+      }
+    case "DELETE":
+      if (path.length > 1 && Object.keys(deletePaths).includes(path[0])) {
+        return {
+          fn: deletePaths[path[0]],
+          params: { actorCommonName, pathParam: path[1] },
+        };
+      }
+    default:
+      return {};
+  }
+};
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -102,26 +219,25 @@ export default async function handler(
   const selector = Array.isArray(req.query.selector)
     ? req.query.selector[0]
     : req.query.selector;
+
   const [actorCommonName, ...path] = slug;
   const urlPath = path.join("/");
+  const { method, body } = req;
 
-  if (actorCommonName && [...Object.keys(getInternal)].includes(urlPath)) {
-    const { method } = req;
+  if (actorCommonName && path) {
+    const executer = findHandler({
+      method,
+      path,
+      body,
+      actorCommonName,
+      selector,
+    });
 
-    switch (method) {
-      case "GET":
-        const data = await getInternal[urlPath](actorCommonName, selector);
-        res.status(200).json(data);
-        break;
-      case "POST":
-        res.status(405).end(`Method ${method} Not Implemented yet`);
-        break;
-      default:
-        res.setHeader("Allow", ["GET", "POST"]);
-        res.status(405).end(`Method ${method} Not Allowed`);
-        break;
+    if (executer && "fn" in executer) {
+      const { fn, params } = executer;
+      const [status, resBody] = await fn(params);
+      return res.status(status).json(resBody);
     }
-    return;
   }
   return res.status(404).json({ description: `Page not found: ${urlPath}` });
 }

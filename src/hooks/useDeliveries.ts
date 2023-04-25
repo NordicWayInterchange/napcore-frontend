@@ -7,7 +7,12 @@ const fetchDeliveries: (
   selector?: string
 ) => Promise<Deliveries> = async (userName, selector = "") => {
   const res = await getDeliveries(userName, selector);
-  return res.json();
+  if (res.ok) {
+    return res.json();
+  } else {
+    const errorObj = await res.json();
+    throw new Error(`${errorObj.errorCode}: ${errorObj.message}`);
+  }
 };
 
 const useDeliveries = (userName: string) => {

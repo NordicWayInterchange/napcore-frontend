@@ -8,14 +8,13 @@ const fetchMatchingCapabilities: (
   const res = await fetch(
     `/api/${userName}/network/capabilities?selector=${selector}`
   );
+
   if (res.ok) {
     const capabilities: ExtendedCapability[] = await res.json();
     return capabilities;
   } else {
-    console.error(
-      `error when fetching ${selector} - ${res.status} - ${res.statusText}`
-    );
-    return [];
+    const errorObj = await res.json();
+    throw new Error(`${errorObj.errorCode}: ${errorObj.message}`);
   }
 };
 

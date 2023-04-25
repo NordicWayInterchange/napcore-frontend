@@ -19,12 +19,11 @@ const fetchIXN: (
   if (selector) {
     params.selector = selector;
   }
-  const response = await axios.get(uri + uriPath, {
+  return await axios.get(uri + uriPath, {
     params,
     headers,
     httpsAgent: tlsAgent,
   });
-  return await response.data;
 };
 
 const postIXN: (
@@ -34,11 +33,10 @@ const postIXN: (
 ) => Promise<any> = async (actorCommonName, path, body) => {
   const uri = process.env.INTERCHANGE_URI || "";
   const uriPath = `${actorCommonName}${path}`;
-  const response = await axios.post(uri + uriPath, body, {
+  return await axios.post(uri + uriPath, body, {
     headers,
     httpsAgent: tlsAgent,
   });
-  return await response.data;
 };
 
 const deleteIXN: (
@@ -47,11 +45,10 @@ const deleteIXN: (
 ) => Promise<any> = async (actorCommonName, path) => {
   const uri = process.env.INTERCHANGE_URI || "";
   const uriPath = `${actorCommonName}${path}`;
-  const response = await axios.delete(uri + uriPath, {
+  return await axios.delete(uri + uriPath, {
     headers,
     httpsAgent: tlsAgent,
   });
-  return await response.data;
 };
 
 // types for handler functions
