@@ -4,6 +4,13 @@ import { InformationText } from "./index";
 import { ButtonComponent } from "../shared";
 import { createSubscription } from "@/lib/internalFetchers";
 import { generateSelector } from "@/lib/generateSelector";
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material";
 
 type Props = {
   extendedCapability?: ExtendedCapability;
@@ -12,6 +19,8 @@ type Props = {
 export default function CapabilityDetails({ extendedCapability }: Props) {
   if (!extendedCapability) return <InformationText text="capability" />;
 
+  const capability = Object.keys(extendedCapability);
+
   const saveSubscription = async (name: string, selector: string) => {
     const response = await createSubscription(name, selector);
     const data = await response.json();
@@ -19,17 +28,30 @@ export default function CapabilityDetails({ extendedCapability }: Props) {
   };
 
   return (
-    <div>
-      <p>{extendedCapability.messageType}</p>
-      <p>{extendedCapability.protocolVersion}</p>
-      <p>{extendedCapability.publisherId}</p>
-      {/* TODO: Selector builder for creating subscription from capability */}
+    <Box
+      sx={{
+        width: "100%",
+        overflow: "hidden",
+      }}
+    >
+      <List>
+        {capability.map((key, index) => (
+          <ListItem key={index} disablePadding>
+            <ListItemText
+              primary={key}
+              secondary={
+                extendedCapability[key as keyof typeof extendedCapability]
+              }
+            />
+          </ListItem>
+        ))}
+      </List>
       <ButtonComponent
         text="Subscribe"
         onClick={() =>
           saveSubscription("anna", generateSelector(extendedCapability))
         }
       />
-    </div>
+    </Box>
   );
 }
