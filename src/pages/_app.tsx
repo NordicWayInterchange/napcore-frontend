@@ -9,7 +9,7 @@ import {
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { AppProps } from "next/app";
 import { ThemeProvider } from "@mui/material";
-import { transportportal } from "@/theme/transportportal";
+import { transportportal, trafficdata } from "@/theme";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = React.useState(() => new QueryClient());

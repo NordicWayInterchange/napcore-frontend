@@ -6,7 +6,6 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListSubheader,
   styled,
   useTheme,
 } from "@mui/material";
@@ -16,13 +15,12 @@ import { useRouter } from "next/router";
 
 export default function Navbar() {
   const theme = useTheme();
-  const router = useRouter();
 
   const StyledListItem = styled(ListItem)(({}) => ({
-    "&": {
-      backgroundColor:
-        router.pathname == "/subscriptions" ? theme.palette.navbarListItem : "",
-    },
+    // "&": {
+    //   backgroundColor:
+    //     router.pathname == "/subscriptions" ? theme.palette.navbarListItem : "",
+    // },
     "&:hover": {
       backgroundColor: theme.palette.navbarListItem,
     },
@@ -30,7 +28,13 @@ export default function Navbar() {
 
   return (
     <Box
-      sx={{ backgroundColor: theme.palette.navbarBackground, width: "200px" }}
+      sx={{
+        backgroundColor: theme.palette.navbarBackground,
+        width: "200px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
     >
       <Image src={logo} alt="Nordic Way logo" width={150} />
       <List sx={{ width: "100%" }}>
@@ -42,16 +46,6 @@ export default function Navbar() {
         <Link href="/network-capabilities" className={styles.link}>
           <StyledListItem>
             <ListItemText primary="Capabilities" />
-          </StyledListItem>
-        </Link>
-        <Link href="/network-capabilities" className={styles.link}>
-          <StyledListItem>
-            <ListItemText primary="Profile" />
-          </StyledListItem>
-        </Link>
-        <Link href="/network-capabilities" className={styles.link}>
-          <StyledListItem>
-            <ListItemText primary="Certificate" />
           </StyledListItem>
         </Link>
       </List>
