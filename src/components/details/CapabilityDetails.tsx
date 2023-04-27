@@ -4,13 +4,7 @@ import { InformationText } from "./index";
 import { ButtonComponent } from "../shared";
 import { createSubscription } from "@/lib/internalFetchers";
 import { generateSelector } from "@/lib/generateSelector";
-import {
-  Box,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-} from "@mui/material";
+import { Box, List, ListItem, ListItemText } from "@mui/material";
 
 type Props = {
   extendedCapability?: ExtendedCapability;

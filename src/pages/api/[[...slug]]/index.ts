@@ -1,10 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import {
-  Capabilities,
-  Capability,
-  ExtendedCapability,
-} from "@/types/capability";
-import {
   createSubscription,
   deleteSubscriptions,
   getCapabilities,
@@ -22,6 +17,8 @@ import {
   extendedGetFunction,
   extendedGetParams,
 } from "@/lib/interchangeConnector";
+import { ExtendedCapability } from "@/types/capability";
+import { Capabilities, Capability } from "@/types/napcore/capability";
 
 const fetchCapabilityCounter = async (params: basicGetParams) => {
   const { actorCommonName, selector = "" } = params;
@@ -107,7 +104,7 @@ const fetchNetworkCapabilities = async (params: basicGetParams) => {
     return [
       res.status,
       capabilities.capabilities.map((capability, ix) => {
-        return { ...capability.definition, id: ix };
+        return { ...capability.application, id: ix };
       }),
     ];
   }
@@ -123,7 +120,7 @@ const fetchCapabilities = async (params: basicGetParams) => {
     return [
       res.status,
       capabilities.capabilities.map((capability, ix) => {
-        return { ...capability.definition, id: ix };
+        return { ...capability, id: ix };
       }),
     ];
   }
@@ -236,6 +233,9 @@ export default async function handler(
     if (executer && "fn" in executer) {
       const { fn, params } = executer;
       const [status, resBody] = await fn(params);
+      if (status != 200) {
+        console.error(resBody);
+      }
       return res.status(status).json(resBody);
     }
   }
