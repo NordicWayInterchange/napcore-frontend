@@ -5,34 +5,56 @@ import {
   Box,
   List,
   ListItem,
-  ListItemButton,
   ListItemText,
+  ListSubheader,
+  styled,
+  useTheme,
 } from "@mui/material";
 import logo from "@/../public/nordic-way-logo.png";
-import styles from "@/styles/Link.module.css";
+import styles from "@/styles/Navbar.module.css";
+import { useRouter } from "next/router";
 
-const Navbar = () => {
+export default function Navbar() {
+  const theme = useTheme();
+  const router = useRouter();
+
+  const StyledListItem = styled(ListItem)(({}) => ({
+    "&": {
+      backgroundColor:
+        router.pathname == "/subscriptions" ? theme.palette.navbarListItem : "",
+    },
+    "&:hover": {
+      backgroundColor: theme.palette.navbarListItem,
+    },
+  }));
+
   return (
-    <Box className={styles.layout}>
+    <Box
+      sx={{ backgroundColor: theme.palette.navbarBackground, width: "200px" }}
+    >
       <Image src={logo} alt="Nordic Way logo" width={150} />
-      <List>
-        <ListItem>
-          <Link href="/subscriptions" className={styles.link}>
-            <ListItemButton>
-              <ListItemText primary="Subscriptions" />
-            </ListItemButton>
-          </Link>
-        </ListItem>
-        <ListItem>
-          <Link href="/network-capabilities" className={styles.link}>
-            <ListItemButton>
-              <ListItemText primary="Network Capabilities" />
-            </ListItemButton>
-          </Link>
-        </ListItem>
+      <List sx={{ width: "100%" }}>
+        <Link href="/subscriptions" className={styles.link}>
+          <StyledListItem>
+            <ListItemText primary="Subscriptions" />
+          </StyledListItem>
+        </Link>
+        <Link href="/network-capabilities" className={styles.link}>
+          <StyledListItem>
+            <ListItemText primary="Capabilities" />
+          </StyledListItem>
+        </Link>
+        <Link href="/network-capabilities" className={styles.link}>
+          <StyledListItem>
+            <ListItemText primary="Profile" />
+          </StyledListItem>
+        </Link>
+        <Link href="/network-capabilities" className={styles.link}>
+          <StyledListItem>
+            <ListItemText primary="Certificate" />
+          </StyledListItem>
+        </Link>
       </List>
     </Box>
   );
-};
-
-export default Navbar;
+}

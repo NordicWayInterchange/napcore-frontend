@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import Link from "next/link";
-import styles from "../../styles/Link.module.css";
+import styles from "../../styles/Navbar.module.css";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
 import { GridColDef, GridEventListener, GridRowParams } from "@mui/x-data-grid";
 import {

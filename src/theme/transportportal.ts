@@ -1,8 +1,20 @@
 import { createTheme } from "@mui/material";
-import { green } from "@mui/material/colors";
+
+declare module "@mui/material/styles/createPalette" {
+  interface Palette {
+    navbarBackground: string;
+    navbarListItem: string;
+  }
+
+  interface PaletteOptions {
+    navbarBackground: string;
+    navbarListItem: string;
+  }
+}
 
 export const transportportal = createTheme({
   palette: {
-    //primary: green,
+    navbarBackground: "#444f55",
+    navbarListItem: "#2d3539",
   },
 });
