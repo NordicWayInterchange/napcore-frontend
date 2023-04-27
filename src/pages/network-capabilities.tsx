@@ -33,6 +33,7 @@ const tableHeaders: GridColDef[] = [
 
 export default function NetworkCapabilities() {
   const { data, isLoading, isFetching } = useNetworkCapabilities("anna");
+
   const [extendedCapability, setExtendedCapability] = useState();
 
   const handleEvent: GridEventListener<"rowClick"> = (

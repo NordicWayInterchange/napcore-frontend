@@ -6,6 +6,8 @@ import {
 } from "@mui/x-data-grid";
 import { ExtendedSubscription } from "@/types/subscription";
 import { ExtendedCapability } from "@/types/capability";
+import { styled } from "@mui/material/styles";
+import { Box, Typography } from "@mui/material";
 
 type Props = {
   tableHeaders: GridColDef[];
@@ -24,7 +26,7 @@ export default function DataGrid(props: Props) {
 
   return (
     <>
-      <MuiDataGrid
+      <StyledDataGrid
         onRowClick={handleEvent}
         disableRowSelectionOnClick={disableRowSelectionOnClick}
         autoHeight
@@ -42,3 +44,13 @@ export default function DataGrid(props: Props) {
     </>
   );
 }
+
+const StyledDataGrid = styled(MuiDataGrid)(({}) => ({
+  "& .MuiDataGrid-cell:focus-within": {
+    outline: "none",
+  },
+  "& .MuiDataGrid-columnHeader:focus-within": {
+    outline: "none",
+  },
+  "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
+}));
