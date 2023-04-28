@@ -1,7 +1,7 @@
 import { Capability } from "@/types/capability";
 import { MessageTypes } from "@/types/messageType";
 import { OriginatingCountry } from "@/types/originatingCountry";
-import { Grid, SelectChangeEvent, Typography } from "@mui/material";
+import { AlertColor, Grid, SelectChangeEvent, Typography } from "@mui/material";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import TextField from "./TextField";
 import Select from "./Select";
@@ -12,6 +12,7 @@ import { denmCauseCodes } from "@/lib/denmCauseCodes";
 import { createSubscription } from "@/lib/internalFetchers";
 import { Subscription } from "@/types/napcore/subscription";
 import { green, red } from "@mui/material/colors";
+import Alert from "../shared/Alert";
 
 type Props = {
   name: string;
@@ -20,7 +21,22 @@ type Props = {
   selectorCallback: (selector: string) => void;
 };
 
-let defaultSelector = {
+interface IAlert {
+  title: string;
+  information: string;
+  severity?: AlertColor;
+}
+
+interface ISelector {
+  messageType: MessageTypes[];
+  causeCodes: string[];
+  protocolVersion: string;
+  originatingCountry: string[];
+  publisherId: string;
+  quadTree: string[];
+}
+
+const defaultSelector: ISelector = {
   messageType: [],
   causeCodes: [],
   protocolVersion: "",
@@ -34,13 +50,15 @@ const DENM = MessageTypes.DENM;
 const SelectorBuilder = (props: Props) => {
   const { name, version, capability, selectorCallback } = props;
   const [selector, setSelector] = useState<string>("");
-  const [formState, setFormState] = useState(defaultSelector);
+  const [formState, setFormState] = useState<ISelector>(defaultSelector);
   const [errors, setErrors] = useState({}); // TODO: Handle errors
   const [showCauseCode, setShowCauseCode] = useState<boolean>();
   const [advancedMode, setAdvancedMode] = useState<boolean>(false);
   const [completedSave, setCompletedSave] = useState<boolean>(false);
   const [savedSubscription, setSavedSubscription] = useState<Subscription>();
   const [persistSelector, setPersistSelector] = useState<string>("");
+
+  const [alert, setAlert] = useState<IAlert>();
 
   /*
   Generate a new selector when the form state changes.
@@ -84,9 +102,20 @@ const SelectorBuilder = (props: Props) => {
   const saveSubscription = async (name: string, selector: string) => {
     const response = await createSubscription(name, selector);
     const data = await response.json();
-    console.log(data);
-    setSavedSubscription(data);
-    setCompletedSave(true);
+
+    if (response.ok) {
+      setAlert({
+        title: "Subscription have been created",
+        severity: "success",
+        information: "This is meant to display an success message!",
+      });
+    } else {
+      setAlert({
+        title: data.errorCode,
+        severity: "error",
+        information: "This is meant to display an error message - Try again!",
+      });
+    }
   };
 
   return (
@@ -171,6 +200,15 @@ const SelectorBuilder = (props: Props) => {
           onClick={() => saveSubscription(name, selector)}
         />
       </Grid>
+      {alert && (
+        <Grid item xs={12}>
+          <Alert
+            title={alert.title}
+            severity={alert.severity}
+            information={alert.information}
+          />
+        </Grid>
+      )}
     </Grid>
   );
 };

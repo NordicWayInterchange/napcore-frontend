@@ -1,4 +1,4 @@
-import { Capability, ExtendedCapability } from "@/types/capability";
+import { ExtendedCapability } from "@/types/capability";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchCapabilities: (
