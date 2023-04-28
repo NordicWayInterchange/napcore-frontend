@@ -8,7 +8,7 @@ export default function MapView() {
       center={[51.505, -0.09]}
       zoom={13}
       scrollWheelZoom={false}
-      style={{ height: 400, width: "100%" }}
+      style={{ height: 700, width: 700 }}
     >
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

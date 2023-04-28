@@ -5,7 +5,7 @@ import Subscriptions from "./subscriptions";
 export default function Home() {
   const Map = useMemo(
     () =>
-      dynamic(() => import("../components/MapView"), {
+      dynamic(() => import("../components/leaflet/MapView"), {
         loading: () => <p>A map is loading</p>,
         ssr: false,
       }),
