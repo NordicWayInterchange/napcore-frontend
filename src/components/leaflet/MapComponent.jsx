@@ -18,7 +18,9 @@ export default function MapComponent() {
     if (!map) return;
 
     map.addEventListener("mousemove", (e) => {
-      setCoords({ lat: e.latlng.lat, lng: e.latlng.lng });
+      const coords = { lat: e.latlng.lat, lng: e.latlng.lng };
+
+      setCoords(coords);
 
       setRectangles(updateLayer(coords));
     });
@@ -30,8 +32,6 @@ export default function MapComponent() {
     map.addEventListener("moveend", (e) => {
       setRectangles(updateLayer(coords));
     });
-
-    console.log("rectangles: ", rectangles);
   }, [map]);
 
   var quadAdapter = {
@@ -185,7 +185,9 @@ export default function MapComponent() {
     // });
     // poly.addTo(layerGroup);
 
-    return <Rectangle bounds={bounds} pathOptions={{ color: "red" }} />;
+    return (
+      <Rectangle key={hash} bounds={bounds} pathOptions={{ color: "red" }} />
+    );
 
     // full (long) hash marker
     // if (labels.long.length > 1) {
@@ -224,7 +226,6 @@ export default function MapComponent() {
     });
   }
 
-  console.log(rectangles);
   return (
     <LayerGroup>
       {rectangles &&
