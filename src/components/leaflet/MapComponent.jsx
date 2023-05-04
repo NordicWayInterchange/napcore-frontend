@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import L from "leaflet";
 import { useMap, Rectangle, LayerGroup, Tooltip } from "react-leaflet";
 import { latLonToQtree, QuadToSlippy } from "./helpers";
@@ -16,51 +16,70 @@ export default function MapComponent() {
         - Double click, wheel scroll, buttons
         - Wheel scroll and buttons seems most reasonable
   */
-  map.doubleClickZoom.disable();
+  //map.doubleClickZoom.disable();
 
   const [coords, setCoords] = useState({});
   const [rectangles, setRectangles] = useState();
   const [selectedRects, setSelectedRects] = useState();
-  const [selectedHashes, setSelectedHashes] = useState();
+  const [selectedHashes, setSelectedHashes] = useState([]);
+  const [layers, setLayers] = useState({});
 
-  const rectangleEventHandlers = useMemo(
-    () => ({
-      mouseover(event) {
-        const layer = event.target;
-        layer.setStyle(rectangleStyleHover);
-      },
-      mouseout(event) {
-        const layer = event.target;
-        layer.setStyle(rectangleStyle);
-      },
-      click(event) {
-        const hash = event.target.options.hash;
-        const bounds = event.target.getBounds();
-        hashSelect(hash, bounds);
-      },
-    }),
-    []
+  const updateLayer = useCallback(
+    (coords) => {
+      var zoom = map.getZoom();
+      var center = map.getCenter();
+      var hashLength = zoom + 1;
+
+      if (coords) {
+        center = coords;
+      }
+
+      const currentHash = adapter.encode(center, hashLength);
+
+      let layers = adapter.layers(currentHash, zoom);
+      setLayers(layers);
+    },
+    [adapter, map, setLayers]
   );
+
+  const onMove = useCallback(
+    (e) => {
+      const coords = { lat: e.latlng.lat, lng: e.latlng.lng };
+      setCoords(coords);
+      setRectangles(updateLayer(coords));
+    },
+    [updateLayer]
+  );
+
+  const onZoom = useCallback(() => {
+    setRectangles(updateLayer(map.getCenter()));
+  }, [map, updateLayer]);
 
   useEffect(() => {
     if (!map) return;
 
-    map.addEventListener("mousemove", (e) => {
-      const coords = { lat: e.latlng.lat, lng: e.latlng.lng };
+    map.on("mousemove", onMove);
+    return () => {
+      map.off("mousemove", onMove);
+    };
+  }, [map, onMove]);
 
-      setCoords(coords);
+  useEffect(() => {
+    if (!map) return;
 
-      setRectangles(updateLayer(coords));
+    map.on("zoomend", onZoom);
+    return () => {
+      map.off("zoomend", onZoom);
+    };
+  }, [map, onZoom]);
+
+  useEffect(() => {
+    const rectangles = Object.keys(layers).map((layerKey) => {
+      let tmpVar = drawLayer(layerKey, layers[layerKey]);
+      return tmpVar;
     });
-
-    map.addEventListener("zoomend", (e) => {
-      setRectangles(updateLayer(coords));
-    });
-
-    map.addEventListener("moveend", (e) => {
-      setRectangles(updateLayer(coords));
-    });
-  }, [map]);
+    setRectangles(rectangles);
+  }, [layers]);
 
   var quadAdapter = {
     range: ["0", "1", "2", "3"],
@@ -104,61 +123,19 @@ export default function MapComponent() {
     },
   };
 
-  if (typeof Number.prototype.toRad === "undefined") {
-    Number.prototype.toRad = function () {
-      return (this * Math.PI) / 180;
-    };
-  }
-
-  var currentHash;
   var adapter = quadAdapter;
 
-  var generateCurrentHash = function (precision, coords) {
-    var center = map.getCenter();
-
-    if (coords) {
-      center = coords;
-    }
-
-    return adapter.encode(center, precision);
-  };
-
-  var prevHash = "NOTAHASH";
-
-  var zoomToHashChars = function (zoom) {
-    return 1 + Math.floor(zoom / 3);
-  };
-
-  function updateLayer(coords) {
-    var zoom = map.getZoom();
-    var hashLength = zoom + 1;
-
-    // update current hash
-    currentHash = generateCurrentHash(hashLength, coords);
-
-    var hashPrefix = currentHash.substr(0, hashLength);
-
-    if (prevHash != hashPrefix) {
-      let layers = adapter.layers(currentHash, zoom);
-
-      return Object.keys(layers).map((layerKey) => {
-        let tmpVar = drawLayer(layerKey, layers[layerKey]);
-        return tmpVar;
-      });
-    }
-
-    prevHash = hashPrefix;
-  }
-
   function hashSelect(hash, bounds) {
-    setSelectedHashes(hash);
-    console.log(hash, bounds);
-
-    /* TODO: Check if selection already contains hashes */
-
-    /* TODO: Remove if it exists */
-
-    /* TODO: generate new tile */
+    if (selectedHashes.includes(hash)) {
+      console.log(selectedHashes.includes(hash));
+      const index = selectedHashes.indexOf(hash);
+      if (index > -1) {
+        selectedHashes.splice(index, 1);
+      }
+    } else {
+      console.log(selectedHashes.includes(hash));
+      setSelectedHashes((existingHash) => [...existingHash, hash]);
+    }
   }
 
   function drawLayer(prefix, showDigit) {
@@ -189,13 +166,29 @@ export default function MapComponent() {
     //   console.log(latLonToQtree(e.latlng.lat, e.latlng.lng, hash.length));
     // });
 
+    console.log(selectedHashes);
+
     return (
       <Rectangle
         key={hash}
         hash={hash}
         bounds={bounds}
         pathOptions={rectangleStyle}
-        eventHandlers={rectangleEventHandlers}
+        eventHandlers={{
+          mouseover(event) {
+            const layer = event.target;
+            layer.setStyle(rectangleStyleHover);
+          },
+          mouseout(event) {
+            const layer = event.target;
+            layer.setStyle(rectangleStyle);
+          },
+          click(event) {
+            const hash = event.target.options.hash;
+            const bounds = event.target.getBounds();
+            hashSelect(hash, bounds);
+          },
+        }}
       >
         <Tooltip sticky>{labels.long}</Tooltip>
       </Rectangle>
