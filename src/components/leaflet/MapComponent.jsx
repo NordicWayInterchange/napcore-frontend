@@ -1,18 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import L from "leaflet";
-import {
-  MapContainer,
-  TileLayer,
-  useMap,
-  Rectangle,
-  LayerGroup,
-} from "react-leaflet";
+import { useMap, Rectangle, LayerGroup, Tooltip } from "react-leaflet";
 import { latLonToQtree, QuadToSlippy } from "./helpers";
+import {
+  rectangleStyle,
+  rectangleStyleHover,
+  rectangleStyleSelect,
+} from "./rectangleStyles";
 
 export default function MapComponent() {
   const map = useMap();
+
+  /* Disable zoom on double click 
+        - Don't know what is preferred here
+        - Double click, wheel scroll, buttons
+        - Wheel scroll and buttons seems most reasonable
+  */
+  map.doubleClickZoom.disable();
+
   const [coords, setCoords] = useState({});
   const [rectangles, setRectangles] = useState();
+  const [selectedRects, setSelectedRects] = useState();
+  const [selectedHashes, setSelectedHashes] = useState();
+
+  const rectangleEventHandlers = useMemo(
+    () => ({
+      mouseover(event) {
+        const layer = event.target;
+        layer.setStyle(rectangleStyleHover);
+      },
+      mouseout(event) {
+        const layer = event.target;
+        layer.setStyle(rectangleStyle);
+      },
+      click(event) {
+        const hash = event.target.options.hash;
+        const bounds = event.target.getBounds();
+        hashSelect(hash, bounds);
+      },
+    }),
+    []
+  );
 
   useEffect(() => {
     if (!map) return;
@@ -123,70 +151,54 @@ export default function MapComponent() {
   }
 
   function hashSelect(hash, bounds) {
-    for (var i = 0; i < selectedHashes.length; i++) {
-      if (selectedHashes[i] == hash) continue;
-      if (
-        selectedHashes[i].startsWith(hash) ||
-        hash.startsWith(selectedHashes[i])
-      ) {
-        console.log("selection contains already added hashes");
-        var popup = L.popup()
-          .setLatLng(bounds.getCenter())
-          .setContent(
-            "<p>Selection contains already added tiles.</br>Zoom in/out and click the already selected tiles to remove them.</p>"
-          )
-          .openOn(map);
-        return;
-      }
-    }
-    if (selectedHashes.includes(hash)) {
-      //rect.setStyle(rectStyle);
-      const index = selectedHashes.indexOf(hash);
-      selectedGroup.removeLayer(selectedRects[index]);
-      if (index > -1) {
-        selectedHashes.splice(index, 1);
-        selectedRects.splice(index, 1);
-      }
-    } // new select
-    // else {
-    //   var selrect = L.rectangle(bounds, rectStyleSelect);
-    //   selrect.bringToFront();
-    //   selrect.on("click", function () {
-    //     hashSelect(hash, selrect);
-    //   });
-    //   selectedHashes.push(hash);
-    //   selectedRects.push(selrect);
-    //   selrect.addTo(selectedGroup);
-    // }
-    console.log(hash + " " + selectedHashes);
-    document.getElementById("tiles").innerHTML = selectedHashes;
-    if (document.getElementById("tiles").innerHTML == "")
-      document.getElementById("tiles").innerHTML = "-";
+    setSelectedHashes(hash);
+    console.log(hash, bounds);
+
+    /* TODO: Check if selection already contains hashes */
+
+    /* TODO: Remove if it exists */
+
+    /* TODO: generate new tile */
+  }
+
+  function drawLayer(prefix, showDigit) {
+    return adapter.range.map(function (n) {
+      var hash = "" + prefix + n;
+
+      var bbox = adapter.bbox(hash);
+
+      var bounds = L.latLngBounds(
+        L.latLng(bbox.maxlat, bbox.minlng),
+        L.latLng(bbox.minlat, bbox.maxlng)
+      );
+
+      const rectangles = drawRect(bounds, hash, showDigit);
+
+      return rectangles;
+    });
   }
 
   function drawRect(bounds, hash, showDigit) {
     var hashAndSize = hash + " len:" + hash.length;
-    var labels = adapter.labels(hashAndSize); //hash );
+    var labels = adapter.labels(hashAndSize);
 
-    // http://leafletjs.com/reference.html#path-options
-    // var poly = L.rectangle(bounds, rectStyle);
-    // poly.bringToBack();
     // poly.on("click", function () {
     //   hashSelect(hash, bounds);
-    // });
-    // poly.on("mouseover", function () {
-    //   poly.setStyle(rectStyleHover);
-    // });
-    // poly.on("mouseout", function () {
-    //   poly.setStyle(rectStyle);
     // });
     // poly.on("contextmenu", function (e) {
     //   console.log(latLonToQtree(e.latlng.lat, e.latlng.lng, hash.length));
     // });
-    // poly.addTo(layerGroup);
 
     return (
-      <Rectangle key={hash} bounds={bounds} pathOptions={{ color: "red" }} />
+      <Rectangle
+        key={hash}
+        hash={hash}
+        bounds={bounds}
+        pathOptions={rectangleStyle}
+        eventHandlers={rectangleEventHandlers}
+      >
+        <Tooltip sticky>{labels.long}</Tooltip>
+      </Rectangle>
     );
 
     // full (long) hash marker
@@ -207,23 +219,6 @@ export default function MapComponent() {
     //   });
     //   marker.addTo(layerGroup);
     // }
-  }
-
-  function drawLayer(prefix, showDigit) {
-    return adapter.range.map(function (n) {
-      var hash = "" + prefix + n;
-
-      var bbox = adapter.bbox(hash);
-
-      var bounds = L.latLngBounds(
-        L.latLng(bbox.maxlat, bbox.minlng),
-        L.latLng(bbox.minlat, bbox.maxlng)
-      );
-
-      const rectangles = drawRect(bounds, hash, showDigit);
-
-      return rectangles;
-    });
   }
 
   return (
