@@ -13,11 +13,9 @@ export default function MapComponent() {
   const map = useMap();
   const adapter = createQuadAdapter(map);
 
-  const [coords, setCoords] = useState({});
   const [rectangles, setRectangles] = useState();
-  const [selectedRects, setSelectedRects] = useState([]);
-  const [selectedHashes, setSelectedHashes] = useState([]);
   const [layers, setLayers] = useState({});
+  const [hashAndRect, setHashAndRect] = useState({});
 
   // drawing functions
   const drawLayer = (adapter, prefix, showDigit) => {
@@ -37,40 +35,34 @@ export default function MapComponent() {
     (event) => {
       const hash = event.target.options.hash;
       const bounds = event.target.getBounds();
+      const selectedHashes = Object.keys(hashAndRect);
 
-      for (var i = 0; i < selectedHashes.length; i++) {
-        if (selectedHashes[i] == hash) continue;
-        if (
-          selectedHashes[i].startsWith(hash) ||
-          hash.startsWith(selectedHashes[i])
-        ) {
-          const popup = L.popup()
-            .setLatLng(bounds.getCenter())
-            .setContent(
-              "<p>Selection contains already added tiles.</br>Zoom in/out and click the already selected tiles to remove them.</p>"
-            )
-            .openOn(map);
-          return;
-        }
+      const isChild = selectedHashes.filter(
+        (currentHash) =>
+          currentHash != hash &&
+          (currentHash.startsWith(hash) || hash.startsWith(currentHash))
+      );
+
+      if (isChild.length) {
+        const popup = L.popup()
+          .setLatLng(bounds.getCenter())
+          .setContent(
+            "<p>Selection contains already added tiles.</br>Zoom in/out and click the already selected tiles to remove them.</p>"
+          )
+          .openOn(map);
+
+        return;
       }
 
-      let currentHashes = selectedHashes;
-      let currentRects = selectedRects;
-      const index = selectedHashes.indexOf(hash);
-      if (index != -1) {
-        currentHashes = selectedHashes.filter((item) => item != hash);
-        //currentSelects = selectedRects.filter((item) => item != hash);
+      if (hash in hashAndRect) {
+        const { [hash]: removedHash, ...rest } = hashAndRect;
+        setHashAndRect(rest);
       } else {
-        currentHashes = [...selectedHashes, hash];
-        currentRects = [...selectedRects, drawRect2(bounds, hash)];
+        const rectangle = drawSelectedRect(bounds, hash);
+        setHashAndRect({ ...hashAndRect, [hash]: rectangle });
       }
-      setSelectedHashes(currentHashes);
-      setSelectedRects(currentRects);
-
-      console.log(selectedRects);
-      console.log(selectedHashes);
     },
-    [setSelectedHashes, selectedHashes, selectedRects]
+    [hashAndRect]
   );
 
   const drawRect = (adapter, bounds, hash, showDigit) => {
@@ -97,7 +89,7 @@ export default function MapComponent() {
     );
   };
 
-  const drawRect2 = (bounds, hash) => {
+  const drawSelectedRect = (bounds, hash) => {
     return (
       <Rectangle
         key={hash}
@@ -130,7 +122,6 @@ export default function MapComponent() {
   const onMove = useCallback(
     (e) => {
       const coords = { lat: e.latlng.lat, lng: e.latlng.lng };
-      setCoords(coords);
       setRectangles(updateLayer(coords));
     },
     [updateLayer]
@@ -170,8 +161,8 @@ export default function MapComponent() {
           });
         })}
       <LayerGroup>
-        {selectedRects &&
-          selectedRects.map((i) => {
+        {hashAndRect &&
+          Object.values(hashAndRect).map((i) => {
             return i;
           })}
       </LayerGroup>
