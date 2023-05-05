@@ -7,47 +7,7 @@ import {
   rectangleStyleHover,
   rectangleStyleSelect,
 } from "./rectangleStyles";
-
-const createQuadAdapter = (map) => ({
-  range: ["0", "1", "2", "3"],
-  encode: function (centroid, precision) {
-    const zoom = precision - 1;
-    return latLonToQtree(centroid.lat, centroid.lng, zoom);
-  },
-  bbox: function (hash) {
-    const tileSize = 256;
-    const tile = QuadToSlippy(hash);
-
-    const nwTilePoint = new L.Point(tile.x * tileSize, tile.y * tileSize);
-    const seTilePoint = new L.Point(tile.x * tileSize, tile.y * tileSize);
-    seTilePoint.x += tileSize;
-    seTilePoint.y += tileSize;
-
-    const nwLatLon = map.unproject(nwTilePoint, tile.z);
-    const seLatLon = map.unproject(seTilePoint, tile.z);
-
-    return {
-      minlng: nwLatLon.lng,
-      minlat: seLatLon.lat,
-      maxlng: seLatLon.lng,
-      maxlat: nwLatLon.lat,
-    };
-  },
-  layers: function (currentHash, zoom) {
-    const layers = {};
-
-    if (zoom > 2) layers[currentHash.substr(0, zoom - 2)] = true;
-    if (zoom > 1) layers[currentHash.substr(0, zoom - 1)] = true;
-    layers[currentHash.substr(0, zoom)] = true;
-    return layers;
-  },
-  labels: function (hash) {
-    return {
-      long: hash,
-      short: hash.substr(-1, 1),
-    };
-  },
-});
+import createQuadAdapter from "./createQuadAdapter";
 
 export default function MapComponent() {
   const map = useMap();
@@ -55,7 +15,7 @@ export default function MapComponent() {
 
   const [coords, setCoords] = useState({});
   const [rectangles, setRectangles] = useState();
-  const [selectedRects, setSelectedRects] = useState();
+  const [selectedRects, setSelectedRects] = useState([]);
   const [selectedHashes, setSelectedHashes] = useState([]);
   const [layers, setLayers] = useState({});
 
@@ -76,17 +36,41 @@ export default function MapComponent() {
   const rectangleClickHandler = useCallback(
     (event) => {
       const hash = event.target.options.hash;
+      const bounds = event.target.getBounds();
+
+      for (var i = 0; i < selectedHashes.length; i++) {
+        if (selectedHashes[i] == hash) continue;
+        if (
+          selectedHashes[i].startsWith(hash) ||
+          hash.startsWith(selectedHashes[i])
+        ) {
+          const popup = L.popup()
+            .setLatLng(bounds.getCenter())
+            .setContent(
+              "<p>Selection contains already added tiles.</br>Zoom in/out and click the already selected tiles to remove them.</p>"
+            )
+            .openOn(map);
+          return;
+        }
+      }
 
       let currentHashes = selectedHashes;
+      let currentRects = selectedRects;
       const index = selectedHashes.indexOf(hash);
       if (index != -1) {
         currentHashes = selectedHashes.filter((item) => item != hash);
+        //currentSelects = selectedRects.filter((item) => item != hash);
       } else {
         currentHashes = [...selectedHashes, hash];
+        currentRects = [...selectedRects, drawRect2(bounds, hash)];
       }
       setSelectedHashes(currentHashes);
+      setSelectedRects(currentRects);
+
+      console.log(selectedRects);
+      console.log(selectedHashes);
     },
-    [setSelectedHashes, selectedHashes]
+    [setSelectedHashes, selectedHashes, selectedRects]
   );
 
   const drawRect = (adapter, bounds, hash, showDigit) => {
@@ -110,6 +94,17 @@ export default function MapComponent() {
       >
         <Tooltip sticky>{labels.long}</Tooltip>
       </Rectangle>
+    );
+  };
+
+  const drawRect2 = (bounds, hash) => {
+    return (
+      <Rectangle
+        key={hash}
+        hash={hash}
+        bounds={bounds}
+        pathOptions={rectangleStyleSelect}
+      />
     );
   };
 
@@ -165,6 +160,7 @@ export default function MapComponent() {
     );
     setRectangles(rectangles);
   }, [layers]);
+
   return (
     <LayerGroup>
       {rectangles &&
@@ -173,6 +169,12 @@ export default function MapComponent() {
             return j;
           });
         })}
+      <LayerGroup>
+        {selectedRects &&
+          selectedRects.map((i) => {
+            return i;
+          })}
+      </LayerGroup>
     </LayerGroup>
   );
 }
