@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+  useRef,
+} from "react";
 import L from "leaflet";
 import { useMap, Rectangle, LayerGroup, Tooltip } from "react-leaflet";
 import { latLonToQtree, QuadToSlippy } from "./helpers";
@@ -9,7 +15,7 @@ import {
 } from "./rectangleStyles";
 import createQuadAdapter from "./createQuadAdapter";
 
-export default function MapComponent({ quadtree }) {
+export default function MapComponent({ quadtreeCallback, quadtree }) {
   const map = useMap();
   const adapter = createQuadAdapter(map);
 
@@ -17,10 +23,23 @@ export default function MapComponent({ quadtree }) {
   const [layers, setLayers] = useState({});
   const [hashAndRect, setHashAndRect] = useState({});
 
-  // // draw if receives quadtree
-  // if (quadtree){
+  const drawSelectedRect = (bounds, hash) => {
+    return (
+      <Rectangle
+        key={hash}
+        hash={hash}
+        bounds={bounds}
+        pathOptions={rectangleStyleSelect}
+      />
+    );
+  };
 
-  // }
+  useEffect(() => {
+    if (quadtree.length && !Object.keys(hashAndRect).length) {
+      console.log("QUADTREE EXISTS", Object.keys(hashAndRect), quadtree);
+      enterHash(quadtree);
+    }
+  }, [quadtree]);
 
   // drawing functions
   const drawLayer = (adapter, prefix, showDigit) => {
@@ -67,9 +86,9 @@ export default function MapComponent({ quadtree }) {
         setHashAndRect({ ...hashAndRect, [hash]: rectangle });
       }
 
-      quadtree(Object.keys(hashAndRect));
+      quadtreeCallback(Object.keys(hashAndRect));
     },
-    [hashAndRect, quadtree]
+    [hashAndRect, quadtreeCallback]
   );
 
   const drawRect = (adapter, bounds, hash, showDigit) => {
@@ -100,16 +119,22 @@ export default function MapComponent({ quadtree }) {
     );
   };
 
-  const drawSelectedRect = (bounds, hash) => {
-    return (
-      <Rectangle
-        key={hash}
-        hash={hash}
-        bounds={bounds}
-        pathOptions={rectangleStyleSelect}
-      />
-    );
-  };
+  function enterHash(hashes) {
+    const rectangles = {};
+
+    for (var i = 0; i < hashes.length; i++) {
+      var hash = hashes[i];
+      var bbox = adapter.bbox(hash);
+
+      var bounds = L.latLngBounds(
+        L.latLng(bbox.maxlat, bbox.minlng),
+        L.latLng(bbox.minlat, bbox.maxlng)
+      );
+
+      rectangles[hash] = drawSelectedRect(bounds, hash);
+    }
+    setHashAndRect(rectangles);
+  }
 
   // event handling on the map
   const updateLayer = useCallback(

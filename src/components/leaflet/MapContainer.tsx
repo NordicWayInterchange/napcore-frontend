@@ -11,10 +11,11 @@ import "leaflet/dist/leaflet.css";
 import MapComponent from "./MapComponent";
 
 type Props = {
-  quadtree: (value: string) => void;
+  quadtreeCallback: (value: string[]) => void;
+  quadtree: string[];
 };
 
-export default function MapView({ quadtree }: Props) {
+export default function MapView({ quadtreeCallback, quadtree }: Props) {
   return (
     <LeafletContainer
       center={[0, 0]}
@@ -28,7 +29,7 @@ export default function MapView({ quadtree }: Props) {
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <MapComponent quadtree={quadtree} />
+      <MapComponent quadtree={quadtree} quadtreeCallback={quadtreeCallback} />
     </LeafletContainer>
   );
 }

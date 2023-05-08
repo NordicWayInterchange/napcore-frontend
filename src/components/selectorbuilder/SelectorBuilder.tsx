@@ -43,6 +43,7 @@ const SelectorBuilder = (props: Props) => {
   const [savedSubscription, setSavedSubscription] = useState<Subscription>();
   const [persistSelector, setPersistSelector] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
+  const [quadtree, setQuadtree] = useState<string[]>();
 
   /*
   Generate a new selector when the form state changes.
@@ -96,12 +97,14 @@ const SelectorBuilder = (props: Props) => {
   };
 
   const handleClose = (value: string) => {
+    setFormState((prevData) => ({ ...prevData, quadtree: quadtree }));
     setOpen(false);
+    console.log(formState);
   };
 
   const handleQuadtree = (value: string[]) => {
     console.log("QUADTREE VALUE", value);
-    setFormState((prevData) => ({ ...prevData, quadtree: value }));
+    setQuadtree(value);
   };
 
   return (
@@ -188,7 +191,12 @@ const SelectorBuilder = (props: Props) => {
       <Grid item>
         <ButtonComponent text={"Quadtree"} onClick={handleClickOpen} />
       </Grid>
-      <MapDialog open={open} onClose={handleClose} quadtree={handleQuadtree} />
+      <MapDialog
+        open={open}
+        onClose={handleClose}
+        quadtree={formState.quadtree}
+        quadtreeCallback={handleQuadtree}
+      />
     </Grid>
   );
 };

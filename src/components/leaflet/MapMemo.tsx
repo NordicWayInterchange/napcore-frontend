@@ -2,10 +2,11 @@ import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 
 type Props = {
-  quadtree: (value: string) => void;
+  quadtreeCallback: (value: string[]) => void;
+  quadtree: string[];
 };
 
-export default function MapMemo({ quadtree }: Props) {
+export default function MapMemo({ quadtreeCallback, quadtree }: Props) {
   const Map = useMemo(
     () =>
       dynamic(() => import("./MapContainer"), {
@@ -15,5 +16,5 @@ export default function MapMemo({ quadtree }: Props) {
     []
   );
 
-  return <Map quadtree={quadtree} />;
+  return <Map quadtree={quadtree} quadtreeCallback={quadtreeCallback} />;
 }
