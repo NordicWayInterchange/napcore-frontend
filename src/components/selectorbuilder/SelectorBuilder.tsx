@@ -27,7 +27,7 @@ let defaultSelector = {
   protocolVersion: "",
   originatingCountry: [],
   publisherId: "",
-  quadTree: [],
+  quadtree: [],
 };
 
 const DENM = MessageTypes.DENM;
@@ -99,6 +99,11 @@ const SelectorBuilder = (props: Props) => {
     setOpen(false);
   };
 
+  const handleQuadtree = (value: string[]) => {
+    console.log("QUADTREE VALUE", value);
+    setFormState((prevData) => ({ ...prevData, quadtree: value }));
+  };
+
   return (
     <Grid container spacing={1}>
       <Grid item xs={6}>
@@ -154,10 +159,9 @@ const SelectorBuilder = (props: Props) => {
       </Grid>
       <Grid item xs={6}>
         <TextField
-          value={formState.quadTree}
+          value={formState.quadtree}
+          name={"quadtree"}
           label={"Quadtree"}
-          name={"quadTree"}
-          onChange={handleTextField}
           disabled={true}
         />
       </Grid>
@@ -184,7 +188,7 @@ const SelectorBuilder = (props: Props) => {
       <Grid item>
         <ButtonComponent text={"Quadtree"} onClick={handleClickOpen} />
       </Grid>
-      <MapDialog open={open} onClose={handleClose} />
+      <MapDialog open={open} onClose={handleClose} quadtree={handleQuadtree} />
     </Grid>
   );
 };

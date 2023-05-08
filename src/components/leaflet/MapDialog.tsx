@@ -12,7 +12,7 @@ import { MapContainer } from "react-leaflet";
 import MapMemo from "./MapMemo";
 
 type Props = {
-  quadtree?: string;
+  quadtree: (value: string) => void;
   open: boolean;
   onClose: (value: string) => void;
 };
@@ -28,7 +28,7 @@ export default function MapDialog(props: Props) {
     <Dialog maxWidth={"xl"} open={open} onClose={handleClose}>
       {/* <DialogTitle>Are you sure?</DialogTitle> */}
       <DialogContent>
-        <MapMemo />
+        <MapMemo quadtree={quadtree} />
       </DialogContent>
       {/* <DialogActions>
         <ButtonComponent color="inherit" text="No" onClick={handleClose} />

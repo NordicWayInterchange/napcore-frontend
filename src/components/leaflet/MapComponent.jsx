@@ -9,13 +9,18 @@ import {
 } from "./rectangleStyles";
 import createQuadAdapter from "./createQuadAdapter";
 
-export default function MapComponent() {
+export default function MapComponent({ quadtree }) {
   const map = useMap();
   const adapter = createQuadAdapter(map);
 
   const [rectangles, setRectangles] = useState();
   const [layers, setLayers] = useState({});
   const [hashAndRect, setHashAndRect] = useState({});
+
+  // // draw if receives quadtree
+  // if (quadtree){
+
+  // }
 
   // drawing functions
   const drawLayer = (adapter, prefix, showDigit) => {
@@ -61,8 +66,10 @@ export default function MapComponent() {
         const rectangle = drawSelectedRect(bounds, hash);
         setHashAndRect({ ...hashAndRect, [hash]: rectangle });
       }
+
+      quadtree(Object.keys(hashAndRect));
     },
-    [hashAndRect]
+    [hashAndRect, quadtree]
   );
 
   const drawRect = (adapter, bounds, hash, showDigit) => {
