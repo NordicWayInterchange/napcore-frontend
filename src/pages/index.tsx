@@ -3,15 +3,5 @@ import { useMemo } from "react";
 import Subscriptions from "./subscriptions";
 
 export default function Home() {
-  const Map = useMemo(
-    () =>
-      dynamic(() => import("../components/leaflet/MapContainer"), {
-        loading: () => <p>A map is loading</p>,
-        ssr: false,
-      }),
-    [
-      /* list variables which should trigger a re-render */
-    ]
-  );
-  return <Map />;
+  <Subscriptions />;
 }

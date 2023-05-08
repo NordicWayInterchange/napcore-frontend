@@ -68,6 +68,7 @@ export default function MapComponent() {
   const drawRect = (adapter, bounds, hash, showDigit) => {
     const hashAndSize = hash + " len:" + hash.length;
     const labels = adapter.labels(hashAndSize);
+
     return (
       <Rectangle
         key={hash}
@@ -84,7 +85,10 @@ export default function MapComponent() {
           click: rectangleClickHandler,
         }}
       >
-        <Tooltip sticky>{labels.long}</Tooltip>
+        {/* <Tooltip sticky>{labels.long}</Tooltip> */}
+        {/* <Tooltip direction="right" offset={[0, 20]} opacity={1} permanent>
+          {hashAndSize}
+        </Tooltip> */}
       </Rectangle>
     );
   };
