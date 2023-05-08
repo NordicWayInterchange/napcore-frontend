@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import L from "leaflet";
 import { useMap, Rectangle, LayerGroup, Tooltip } from "react-leaflet";
-import { latLonToQtree, QuadToSlippy } from "./helpers";
 import {
   rectangleStyle,
   rectangleStyleHover,

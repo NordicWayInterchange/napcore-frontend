@@ -36,14 +36,10 @@ const SelectorBuilder = (props: Props) => {
   const { name, version, capability, selectorCallback } = props;
   const [selector, setSelector] = useState<string>("");
   const [formState, setFormState] = useState(defaultSelector);
-  const [errors, setErrors] = useState({}); // TODO: Handle errors
-  const [showCauseCode, setShowCauseCode] = useState<boolean>();
   const [advancedMode, setAdvancedMode] = useState<boolean>(false);
-  const [completedSave, setCompletedSave] = useState<boolean>(false);
-  const [savedSubscription, setSavedSubscription] = useState<Subscription>();
   const [persistSelector, setPersistSelector] = useState<string>("");
-  const [open, setOpen] = useState<boolean>(false);
   const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>();
+  const [open, setOpen] = useState<boolean>(false);
 
   /*
   Generate a new selector when the form state changes.
@@ -88,8 +84,6 @@ const SelectorBuilder = (props: Props) => {
     const response = await createSubscription(name, selector);
     const data = await response.json();
     console.log(data);
-    setSavedSubscription(data);
-    setCompletedSave(true);
   };
 
   const handleClickOpen = () => {
