@@ -27,7 +27,7 @@ let defaultSelector = {
   protocolVersion: "",
   originatingCountry: [],
   publisherId: "",
-  quadtree: [],
+  quadTree: [],
 };
 
 const DENM = MessageTypes.DENM;
@@ -43,7 +43,7 @@ const SelectorBuilder = (props: Props) => {
   const [savedSubscription, setSavedSubscription] = useState<Subscription>();
   const [persistSelector, setPersistSelector] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
-  const [quadtree, setQuadtree] = useState<string[]>();
+  const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>();
 
   /*
   Generate a new selector when the form state changes.
@@ -97,14 +97,17 @@ const SelectorBuilder = (props: Props) => {
   };
 
   const handleClose = (value: string) => {
-    setFormState((prevData) => ({ ...prevData, quadtree: quadtree }));
+    setFormState((prevData) => ({
+      ...prevData,
+      quadTree: predefinedQuadtree,
+    }));
     setOpen(false);
     console.log(formState);
   };
 
   const handleQuadtree = (value: string[]) => {
     console.log("QUADTREE VALUE", value);
-    setQuadtree(value);
+    setPredefinedQuadtree(value);
   };
 
   return (
@@ -162,7 +165,7 @@ const SelectorBuilder = (props: Props) => {
       </Grid>
       <Grid item xs={6}>
         <TextField
-          value={formState.quadtree}
+          value={formState.quadTree}
           name={"quadtree"}
           label={"Quadtree"}
           disabled={true}
@@ -194,7 +197,7 @@ const SelectorBuilder = (props: Props) => {
       <MapDialog
         open={open}
         onClose={handleClose}
-        quadtree={formState.quadtree}
+        quadtree={formState.quadTree}
         quadtreeCallback={handleQuadtree}
       />
     </Grid>
