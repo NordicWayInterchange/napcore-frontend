@@ -90,7 +90,7 @@ const SelectorBuilder = (props: Props) => {
     setOpen(true);
   };
 
-  const handleClose = (value: string) => {
+  const handleClose = () => {
     setFormState((prevData) => ({
       ...prevData,
       quadTree: predefinedQuadtree,

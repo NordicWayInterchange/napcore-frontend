@@ -15,14 +15,14 @@ type Props = {
   quadtreeCallback: (value: string[]) => void;
   quadtree: string[];
   open: boolean;
-  onClose: (value: string) => void;
+  onClose: () => void;
 };
 
 export default function MapDialog(props: Props) {
   const { onClose, open, quadtreeCallback, quadtree } = props;
 
   const handleClose = () => {
-    onClose("quadtree");
+    onClose();
   };
 
   return (

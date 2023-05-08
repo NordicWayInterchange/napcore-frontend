@@ -77,15 +77,16 @@ export default function MapComponent({ quadtreeCallback, quadtree }) {
         return;
       }
 
+      let returned = {};
       if (hash in hashAndRect) {
         const { [hash]: removedHash, ...rest } = hashAndRect;
-        setHashAndRect(rest);
+        returned = rest;
       } else {
         const rectangle = drawSelectedRect(bounds, hash);
-        setHashAndRect({ ...hashAndRect, [hash]: rectangle });
+        returned = { ...hashAndRect, [hash]: rectangle };
       }
-
-      quadtreeCallback(Object.keys(hashAndRect));
+      setHashAndRect(returned);
+      quadtreeCallback(Object.keys(returned));
     },
     [hashAndRect, quadtreeCallback]
   );
