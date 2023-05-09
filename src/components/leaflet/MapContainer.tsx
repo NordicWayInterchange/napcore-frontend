@@ -5,11 +5,16 @@ import MapComponent from "./MapComponent";
 import MapControls from "./MapControls";
 
 type Props = {
-  quadtreeCallback: (value: string[]) => void;
+  quadtreeCallback?: (value: string[]) => void;
   quadtree: string[];
+  interactive?: boolean;
 };
 
-export default function MapView({ quadtreeCallback, quadtree }: Props) {
+export default function MapView({
+  quadtreeCallback,
+  quadtree,
+  interactive,
+}: Props) {
   const [controlsHash, setControlsHash] = useState<string[]>([]);
 
   const controlsCallback = (hash: string) => {
@@ -33,6 +38,7 @@ export default function MapView({ quadtreeCallback, quadtree }: Props) {
         quadtree={quadtree}
         quadtreeCallback={quadtreeCallback}
         controlsCallback={controlsCallback}
+        interactive={interactive}
       />
       <MapControls controlsHash={controlsHash} quadtree={quadtree} />
     </LeafletContainer>

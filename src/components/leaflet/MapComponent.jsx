@@ -18,6 +18,7 @@ export default function MapComponent({
   quadtree,
   quadtreeCallback,
   controlsCallback,
+  interactive,
 }) {
   const map = useMap();
   const adapter = createQuadAdapter(map);
@@ -174,16 +175,20 @@ export default function MapComponent({
   useEffect(() => {
     if (!map) return;
 
+    if (!interactive) return;
+
     map.on("mousemove", onMove);
     return () => map.off("mousemove", onMove);
-  }, [map, onMove]);
+  }, [map, onMove, interactive]);
 
   useEffect(() => {
     if (!map) return;
 
+    if (!interactive) return;
+
     map.on("zoomend", onZoom);
     return () => map.off("zoomend", onZoom);
-  }, [map, onZoom]);
+  }, [map, onZoom, interactive]);
 
   useEffect(() => {
     const rectangles = Object.keys(layers).map((layerKey) =>
