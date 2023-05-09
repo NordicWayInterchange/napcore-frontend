@@ -14,7 +14,11 @@ import {
 } from "./rectangleStyles";
 import createQuadAdapter from "./createQuadAdapter";
 
-export default function MapComponent({ quadtreeCallback, quadtree }) {
+export default function MapComponent({
+  quadtreeCallback,
+  quadtree,
+  hashCallback,
+}) {
   const map = useMap();
   const adapter = createQuadAdapter(map);
 
@@ -87,6 +91,7 @@ export default function MapComponent({ quadtreeCallback, quadtree }) {
       }
       setHashAndRect(returned);
       quadtreeCallback(Object.keys(returned));
+      hashCallback(Object.keys(returned));
     },
     [hashAndRect, quadtreeCallback]
   );

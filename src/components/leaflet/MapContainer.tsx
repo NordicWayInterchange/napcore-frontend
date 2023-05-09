@@ -1,14 +1,8 @@
-import React, { useRef, useState } from "react";
-import {
-  MapContainer as LeafletContainer,
-  TileLayer,
-  useMap,
-  Marker,
-  Popup,
-  Rectangle,
-} from "react-leaflet";
+import React, { useState } from "react";
+import { MapContainer as LeafletContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import MapComponent from "./MapComponent";
+import MapControls from "./MapControls";
 
 type Props = {
   quadtreeCallback: (value: string[]) => void;
@@ -16,6 +10,12 @@ type Props = {
 };
 
 export default function MapView({ quadtreeCallback, quadtree }: Props) {
+  const [hash, setHash] = useState<string[]>();
+
+  const hashCallback = (value: string) => {
+    setHash([value]);
+  };
+
   return (
     <LeafletContainer
       center={[0, 0]}
@@ -29,7 +29,12 @@ export default function MapView({ quadtreeCallback, quadtree }: Props) {
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <MapComponent quadtree={quadtree} quadtreeCallback={quadtreeCallback} />
+      <MapComponent
+        quadtree={quadtree}
+        quadtreeCallback={quadtreeCallback}
+        hashCallback={hashCallback}
+      />
+      <MapControls hash={hash} quadtree={quadtree} />
     </LeafletContainer>
   );
 }
