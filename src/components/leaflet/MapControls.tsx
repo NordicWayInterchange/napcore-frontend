@@ -1,6 +1,6 @@
 import { TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 
 const POSITION_CLASSES = {
   bottomleft: "leaflet-bottom leaflet-left",
@@ -10,12 +10,21 @@ const POSITION_CLASSES = {
 };
 
 type MapControlsProps = {
-  hash: string[];
+  controlsHash: string[];
   quadtree: string[];
 };
 
-export default function MapControls({ hash }: MapControlsProps) {
-  console.log(hash);
+export default function MapControls({
+  controlsHash,
+  quadtree,
+}: MapControlsProps) {
+  let hash: string[];
+
+  if (quadtree?.length && !controlsHash?.length) {
+    hash = quadtree;
+  } else {
+    hash = controlsHash;
+  }
 
   const inputBar = useMemo(
     () => (
@@ -29,7 +38,7 @@ export default function MapControls({ hash }: MapControlsProps) {
           justifyContent: "center",
         }}
       >
-        <Typography noWrap={true}>{hash && hash.join(", ")}</Typography>
+        <Typography noWrap={true}>{hash && hash.join()}</Typography>
       </Box>
     ),
     [hash]

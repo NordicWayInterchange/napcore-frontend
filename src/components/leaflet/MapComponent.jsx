@@ -15,9 +15,9 @@ import {
 import createQuadAdapter from "./createQuadAdapter";
 
 export default function MapComponent({
-  quadtreeCallback,
   quadtree,
-  hashCallback,
+  quadtreeCallback,
+  controlsCallback,
 }) {
   const map = useMap();
   const adapter = createQuadAdapter(map);
@@ -39,7 +39,6 @@ export default function MapComponent({
 
   useEffect(() => {
     if (quadtree.length && !Object.keys(hashAndRect).length) {
-      console.log("QUADTREE EXISTS", Object.keys(hashAndRect), quadtree);
       enterHash(quadtree);
     }
   }, [quadtree]);
@@ -91,7 +90,7 @@ export default function MapComponent({
       }
       setHashAndRect(returned);
       quadtreeCallback(Object.keys(returned));
-      hashCallback(Object.keys(returned));
+      controlsCallback(Object.keys(returned));
     },
     [hashAndRect, quadtreeCallback]
   );

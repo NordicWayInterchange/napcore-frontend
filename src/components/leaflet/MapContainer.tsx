@@ -10,10 +10,10 @@ type Props = {
 };
 
 export default function MapView({ quadtreeCallback, quadtree }: Props) {
-  const [hash, setHash] = useState<string[]>();
+  const [controlsHash, setControlsHash] = useState<string[]>([]);
 
-  const hashCallback = (value: string) => {
-    setHash([value]);
+  const controlsCallback = (hash: string) => {
+    setControlsHash([hash]);
   };
 
   return (
@@ -32,9 +32,9 @@ export default function MapView({ quadtreeCallback, quadtree }: Props) {
       <MapComponent
         quadtree={quadtree}
         quadtreeCallback={quadtreeCallback}
-        hashCallback={hashCallback}
+        controlsCallback={controlsCallback}
       />
-      <MapControls hash={hash} quadtree={quadtree} />
+      <MapControls controlsHash={controlsHash} quadtree={quadtree} />
     </LeafletContainer>
   );
 }

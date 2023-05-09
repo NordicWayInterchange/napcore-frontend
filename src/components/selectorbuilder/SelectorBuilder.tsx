@@ -96,11 +96,9 @@ const SelectorBuilder = (props: Props) => {
       quadTree: predefinedQuadtree,
     }));
     setOpen(false);
-    console.log(formState);
   };
 
   const handleQuadtree = (value: string[]) => {
-    console.log("QUADTREE VALUE", value);
     setPredefinedQuadtree(value);
   };
 
