@@ -1,4 +1,6 @@
-function latLonToQtree(lat, lon, zoom) {
+import { LatLng, Point, Map } from "leaflet";
+
+function latLonToQtree(lat: number, lon: number, zoom: number) {
   const sinlat = Math.sin((lat * Math.PI) / 180);
 
   const x = 0.5 + lon / 360;
@@ -16,11 +18,11 @@ function latLonToQtree(lat, lon, zoom) {
   return qtree;
 }
 
-function QuadToSlippy(quad) {
+function QuadToSlippy(quad: string) {
   var x = 0;
   var y = 0;
   var z = 0;
-  quad.split("").forEach(function (char) {
+  quad.split("").forEach(function (char: string) {
     x *= 2;
     y *= 2;
     z++;
@@ -36,18 +38,18 @@ function QuadToSlippy(quad) {
   return { x: x, y: y, z: z };
 }
 
-const createQuadAdapter = (map) => ({
+const createQuadAdapter = (map: Map) => ({
   range: ["0", "1", "2", "3"],
-  encode: function (centroid, precision) {
+  encode: function (centroid: LatLng, precision: number) {
     const zoom = precision - 1;
     return latLonToQtree(centroid.lat, centroid.lng, zoom);
   },
-  bbox: function (hash) {
+  bbox: function (hash: string) {
     const tileSize = 256;
     const tile = QuadToSlippy(hash);
 
-    const nwTilePoint = new L.Point(tile.x * tileSize, tile.y * tileSize);
-    const seTilePoint = new L.Point(tile.x * tileSize, tile.y * tileSize);
+    const nwTilePoint = new Point(tile.x * tileSize, tile.y * tileSize);
+    const seTilePoint = new Point(tile.x * tileSize, tile.y * tileSize);
     seTilePoint.x += tileSize;
     seTilePoint.y += tileSize;
 
@@ -61,18 +63,23 @@ const createQuadAdapter = (map) => ({
       maxlat: nwLatLon.lat,
     };
   },
-  layers: function (currentHash, zoom) {
-    const layers = {};
+  layers: function (currentHash: string, zoom: number) {
+    type LayersType = {
+      [key: string]: boolean;
+    };
 
-    if (zoom > 2) layers[currentHash.substr(0, zoom - 2)] = true;
-    if (zoom > 1) layers[currentHash.substr(0, zoom - 1)] = true;
-    layers[currentHash.substr(0, zoom)] = true;
+    const layers: LayersType = {};
+
+    if (zoom > 2) layers[currentHash.substring(0, zoom - 2)] = true;
+    if (zoom > 1) layers[currentHash.substring(0, zoom - 1)] = true;
+    layers[currentHash.substring(0, zoom)] = true;
+
     return layers;
   },
-  labels: function (hash) {
+  labels: function (hash: string) {
     return {
       long: hash,
-      short: hash.substr(-1, 1),
+      short: hash.substring(-1, 1),
     };
   },
 });

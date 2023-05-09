@@ -12,7 +12,7 @@ import {
   rectangleStyleHover,
   rectangleStyleSelect,
 } from "./rectangleStyles";
-import createQuadAdapter from "./createQuadAdapter";
+import quadAdapter from "./quadAdapter";
 
 export default function MapComponent({
   quadtree,
@@ -21,7 +21,7 @@ export default function MapComponent({
   interactive,
 }) {
   const map = useMap();
-  const adapter = createQuadAdapter(map);
+  const adapter = quadAdapter(map);
 
   const [rectangles, setRectangles] = useState();
   const [layers, setLayers] = useState({});
