@@ -17,7 +17,7 @@ import Link from "next/link";
 import React from "react";
 import logo from "@/../public/nordic-way-logo.png";
 
-const drawerWidth = 240;
+const width = 240;
 
 const links = [
   { text: "Subscriptions", link: "/subscriptions" },
@@ -30,17 +30,22 @@ export default function Sidebar() {
       <CssBaseline />
       <Drawer
         sx={{
-          width: drawerWidth,
+          width: width,
           flexShrink: 0,
           "& .MuiDrawer-paper": {
-            width: drawerWidth,
+            width: width,
             boxSizing: "border-box",
           },
         }}
         variant="permanent"
         anchor="left"
       >
-        <Toolbar />
+        <Image
+          src={logo}
+          alt="Nordic Way logo"
+          width={width / 1.2}
+          style={{ alignSelf: "center", padding: 3 }}
+        />
         <Divider />
         <List>
           {links.map((link, key) => (

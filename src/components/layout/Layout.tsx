@@ -2,11 +2,11 @@ import Navbar from "./Navbar";
 import { Container, Drawer } from "@mui/material";
 import Box from "@mui/material/Box";
 import styles from "@/styles/Layout.module.css";
-import React from "react";
+import React, { ReactNode } from "react";
 import Sidebar from "./Sidebar";
 
 type LayoutProps = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 export default function Layout({ children }: LayoutProps) {
