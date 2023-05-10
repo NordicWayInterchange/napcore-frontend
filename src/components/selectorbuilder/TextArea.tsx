@@ -12,6 +12,7 @@ const TextArea = (props: Props) => {
   return (
     <FormControl fullWidth>
       <MuiTextField
+        sx={{ backgroundColor: "white" }}
         value={value}
         name={name}
         label={label}
