@@ -1,4 +1,4 @@
-import { Capability } from "@/types/capability";
+import { ExtendedCapability } from "@/types/capability";
 import { MessageTypes } from "@/types/messageType";
 import { OriginatingCountry } from "@/types/originatingCountry";
 import { AlertColor, Grid, SelectChangeEvent, Typography } from "@mui/material";
@@ -17,7 +17,7 @@ import Alert from "../shared/Alert";
 type Props = {
   name: string;
   version: string;
-  capability?: Capability;
+  extendedCapability?: ExtendedCapability;
   selectorCallback: (selector: string) => void;
 };
 
@@ -48,7 +48,7 @@ const defaultSelector: ISelector = {
 const DENM = MessageTypes.DENM;
 
 const SelectorBuilder = (props: Props) => {
-  const { name, version, capability, selectorCallback } = props;
+  const { name, version, extendedCapability, selectorCallback } = props;
   const [selector, setSelector] = useState<string>("");
   const [formState, setFormState] = useState<ISelector>(defaultSelector);
   const [errors, setErrors] = useState({}); // TODO: Handle errors
