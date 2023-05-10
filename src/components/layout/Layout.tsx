@@ -1,18 +1,24 @@
 import Navbar from "./Navbar";
-import { Container } from "@mui/material";
+import { Container, Drawer } from "@mui/material";
 import Box from "@mui/material/Box";
 import styles from "@/styles/Layout.module.css";
-import React from "react";
+import React, { ReactNode } from "react";
+import Sidebar from "./Sidebar";
 
 type LayoutProps = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <Box className={styles.flex}>
-      <Navbar />
-      <Container maxWidth={false}>{children}</Container>
+    <Box sx={{ display: "flex" }}>
+      <Sidebar />
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
+      >
+        {children}
+      </Box>
     </Box>
   );
 }
