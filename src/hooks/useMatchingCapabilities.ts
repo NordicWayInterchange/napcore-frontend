@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Capability, ExtendedCapability } from "@/types/capability";
+import { ExtendedCapability } from "@/types/capability";
 
 const fetchMatchingCapabilities: (
   userName: string,

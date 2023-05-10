@@ -23,12 +23,6 @@ const tableHeaders: GridColDef[] = [
     field: "originatingCountry",
     headerName: "Originating Country",
   },
-  {
-    ...dataGridTemplate,
-    field: "redirect",
-    headerName: "Redirect Status",
-    description: "This is a description of Redirect",
-  },
 ];
 
 export default function NetworkCapabilities() {

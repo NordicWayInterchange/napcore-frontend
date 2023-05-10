@@ -1,6 +1,6 @@
+import { getDeliveries } from "@/lib/napcoreFetchers";
 import { Deliveries } from "@/types/napcore/delivery";
 import { useQuery } from "@tanstack/react-query";
-import { getDeliveries } from "@/lib/fetchers";
 
 const fetchDeliveries: (
   userName: string,

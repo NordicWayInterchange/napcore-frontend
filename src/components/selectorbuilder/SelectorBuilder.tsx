@@ -1,7 +1,7 @@
-import { Capability } from "@/types/capability";
+import { ExtendedCapability } from "@/types/capability";
 import { MessageTypes } from "@/types/messageType";
 import { OriginatingCountry } from "@/types/originatingCountry";
-import { Grid, SelectChangeEvent, Typography } from "@mui/material";
+import { AlertColor, Grid, SelectChangeEvent, Typography } from "@mui/material";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import TextField from "./TextField";
 import Select from "./Select";
@@ -13,15 +13,31 @@ import { createSubscription } from "@/lib/internalFetchers";
 import { Subscription } from "@/types/napcore/subscription";
 import { green, red } from "@mui/material/colors";
 import MapDialog from "../leaflet/MapDialog";
+import Alert from "../shared/Alert";
 
 type Props = {
   name: string;
   version: string;
-  capability?: Capability;
+  extendedCapability?: ExtendedCapability;
   selectorCallback: (selector: string) => void;
 };
 
-let defaultSelector = {
+interface IAlert {
+  title: string;
+  information: string;
+  severity?: AlertColor;
+}
+
+interface ISelector {
+  messageType: MessageTypes[];
+  causeCodes: string[];
+  protocolVersion: string;
+  originatingCountry: string[];
+  publisherId: string;
+  quadTree: string[];
+}
+
+const defaultSelector: ISelector = {
   messageType: [],
   causeCodes: [],
   protocolVersion: "",
@@ -33,13 +49,17 @@ let defaultSelector = {
 const DENM = MessageTypes.DENM;
 
 const SelectorBuilder = (props: Props) => {
-  const { name, version, capability, selectorCallback } = props;
+  const { name, version, extendedCapability, selectorCallback } = props;
   const [selector, setSelector] = useState<string>("");
-  const [formState, setFormState] = useState(defaultSelector);
+  const [formState, setFormState] = useState<ISelector>(defaultSelector);
+  const [errors, setErrors] = useState({}); // TODO: Handle errors
+  const [showCauseCode, setShowCauseCode] = useState<boolean>();
   const [advancedMode, setAdvancedMode] = useState<boolean>(false);
   const [persistSelector, setPersistSelector] = useState<string>("");
   const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>();
   const [open, setOpen] = useState<boolean>(false);
+
+  const [alert, setAlert] = useState<IAlert>();
 
   /*
   Generate a new selector when the form state changes.
@@ -84,6 +104,20 @@ const SelectorBuilder = (props: Props) => {
     const response = await createSubscription(name, selector);
     const data = await response.json();
     console.log(data);
+
+    if (response.ok) {
+      setAlert({
+        title: "Subscription have been created",
+        severity: "success",
+        information: "This is meant to display an success message!",
+      });
+    } else {
+      setAlert({
+        title: data.errorCode,
+        severity: "error",
+        information: "This is meant to display an error message - Try again!",
+      });
+    }
   };
 
   const handleClickOpen = () => {
@@ -192,6 +226,15 @@ const SelectorBuilder = (props: Props) => {
         quadtree={formState.quadTree}
         quadtreeCallback={handleQuadtree}
       />
+      {alert && (
+        <Grid item xs={12}>
+          <Alert
+            title={alert.title}
+            severity={alert.severity}
+            information={alert.information}
+          />
+        </Grid>
+      )}
     </Grid>
   );
 };
