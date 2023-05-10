@@ -31,11 +31,6 @@ const tableHeaders: GridColDef[] = [
     field: "originatingCountry",
     headerName: "Originating Country",
   },
-  {
-    ...dataGridTemplate,
-    field: "redirect",
-    headerName: "Redirect Status",
-  },
 ];
 
 const NewSubscription = () => {

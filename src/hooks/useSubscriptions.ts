@@ -19,7 +19,7 @@ const fetchSubscriptions: (
         console.error(
           `error when fetching ${sub.selector} - ${fetchNumberOfCapabilities.status} - ${fetchNumberOfCapabilities.statusText}`
         );
-        return { ...sub, capabilitiesMatches: 0 };
+        return { ...sub, capabilityMatches: 0 };
       }
     });
     return Promise.all(seasonedSubscription);
