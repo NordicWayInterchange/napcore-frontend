@@ -1,9 +1,16 @@
-export const createSubscription = (userName: string, selector: string) => {
+export const createSubscription = (
+  actorCommonName: string,
+  selector: string
+) => {
   const subscriptionsRequest = {
-    name: userName,
+    name: actorCommonName,
     subscriptions: [{ selector }],
   };
-  return fetch(`/api/${userName}/subscriptions`, {
+
+  // TODO: remove this
+  actorCommonName = "anna";
+
+  return fetch(`/api/${actorCommonName}/subscriptions`, {
     method: "post",
     headers: {
       "Content-Type": "application/json",
@@ -16,6 +23,9 @@ export const deleteSubscriptions = (
   actorCommonName: string,
   subscriptionId: string
 ) => {
+  // TODO: remove this
+  actorCommonName = "anna";
+
   return fetch(`/api/${actorCommonName}/subscriptions/${subscriptionId}`, {
     method: "delete",
   });

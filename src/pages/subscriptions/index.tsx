@@ -10,6 +10,7 @@ import {
   ButtonComponent,
 } from "@/components/shared/index";
 import SubscriptionDetails from "@/components/details/SubscriptionDetails";
+import { useSession } from "next-auth/react";
 
 const tableHeaders: GridColDef[] = [
   {
@@ -35,7 +36,10 @@ const tableHeaders: GridColDef[] = [
 ];
 
 export default function Subscriptions() {
-  const { data, isLoading, isFetching } = useSubscriptions("anna");
+  const { data: session } = useSession();
+  const { data, isLoading, isFetching } = useSubscriptions(
+    session?.user?.email || ""
+  );
   const [extendedSubscription, setExtendedSubscription] = useState();
 
   const handleEvent: GridEventListener<"rowClick"> = (

@@ -98,12 +98,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const secret = process.env.NEXTAUTH_SECRET;
-
-  const token = await getToken({ req, secret, raw: true });
-
-  console.log(token);
-
   const slug = Array.isArray(req.query.slug)
     ? req.query.slug
     : [req.query.slug];
@@ -130,7 +124,7 @@ export default async function handler(
         const { fn, params } = executer;
         const response = await fn(params);
         return res.status(200).json(response.data);
-      } catch (error) {
+      } catch (error: any) {
         return res.status(error.response.status).json(error.response.data);
       }
     }
