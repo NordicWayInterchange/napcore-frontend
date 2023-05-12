@@ -15,7 +15,7 @@ import {
   basicGetParams,
   extendedGetParams,
 } from "@/lib/interchangeConnector";
-import { AxiosResponse } from "axios";
+import { getToken } from "next-auth/jwt";
 
 // all getter methods on path
 const getPaths: {
@@ -98,6 +98,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const secret = process.env.NEXTAUTH_SECRET;
+
+  const token = await getToken({ req, secret, raw: true });
+
+  console.log(token);
+
   const slug = Array.isArray(req.query.slug)
     ? req.query.slug
     : [req.query.slug];

@@ -19,6 +19,7 @@ import {
 } from "@/lib/interchangeConnector";
 import { ExtendedCapability } from "@/types/capability";
 import { Capabilities, Capability } from "@/types/napcore/capability";
+import { getToken } from "next-auth/jwt";
 
 const fetchCapabilityCounter = async (params: basicGetParams) => {
   const { actorCommonName, selector = "" } = params;
@@ -115,6 +116,7 @@ const fetchNetworkCapabilities = async (params: basicGetParams) => {
 const fetchCapabilities = async (params: basicGetParams) => {
   const { actorCommonName, selector = "" } = params;
   const res = await getCapabilities(actorCommonName, selector);
+
   if (res.ok) {
     const capabilities: Capabilities = await res.json();
     return [
@@ -209,6 +211,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const secret = process.env.NEXTAUTH_SECRET;
+  const token = await getToken({ req, secret, raw: true });
+  if (!token) {
+    return res.status(403).json({ description: `Access denied` });
+  }
+
   const slug = Array.isArray(req.query.slug)
     ? req.query.slug
     : [req.query.slug];

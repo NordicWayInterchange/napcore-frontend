@@ -1,15 +1,11 @@
 import {
-  AppBar,
   Box,
   CssBaseline,
-  Toolbar,
-  Typography,
   Drawer,
   Divider,
   List,
   ListItem,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
 } from "@mui/material";
 import Image from "next/image";
@@ -22,6 +18,7 @@ const width = 240;
 const links = [
   { text: "Subscriptions", link: "/subscriptions" },
   { text: "Network Capabilities", link: "/network-capabilities" },
+  { text: "Profile", link: "/profile" },
 ];
 
 export default function Sidebar() {
