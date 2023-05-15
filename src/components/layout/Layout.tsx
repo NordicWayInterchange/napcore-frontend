@@ -1,10 +1,8 @@
-import Navbar from "./Navbar";
-import { Container, Drawer } from "@mui/material";
 import Box from "@mui/material/Box";
-import styles from "@/styles/Layout.module.css";
 import React, { ReactNode } from "react";
 import Sidebar from "./Sidebar";
 import { useSession } from "next-auth/react";
+import { Toolbar, useTheme } from "@mui/material";
 
 type LayoutProps = {
   children: ReactNode;
@@ -12,6 +10,7 @@ type LayoutProps = {
 
 export default function Layout({ children }: LayoutProps) {
   const { status: authStatus } = useSession();
+  const theme = useTheme();
 
   if (authStatus != "authenticated") {
     return (
@@ -19,10 +18,10 @@ export default function Layout({ children }: LayoutProps) {
         component="main"
         sx={{
           display: "flex",
+          height: "100vh",
           alignItems: "center",
           justifyContent: "center",
-          height: "100%",
-          bgcolor: "background.default",
+          bgcolor: theme.palette.mainBackgroundColor,
         }}
       >
         {children}
@@ -35,8 +34,14 @@ export default function Layout({ children }: LayoutProps) {
       <Sidebar />
       <Box
         component="main"
-        sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
+        sx={{
+          flexGrow: 1,
+          bgcolor: theme.palette.mainBackgroundColor,
+          p: 3,
+          height: "100vh",
+        }}
       >
+        <Toolbar />
         {children}
       </Box>
     </Box>

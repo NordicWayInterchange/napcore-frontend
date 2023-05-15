@@ -9,8 +9,8 @@ import {
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { AppProps } from "next/app";
 import { ThemeProvider } from "@mui/material";
-import { transportportal } from "@/theme/transportportal";
 import { SessionProvider } from "next-auth/react";
+import { trafficdata, transportportal } from "@/theme";
 
 export default function App({
   Component,
