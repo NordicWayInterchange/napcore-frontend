@@ -38,7 +38,7 @@ const tableHeaders: GridColDef[] = [
 export default function Subscriptions() {
   const { data: session } = useSession();
   const { data, isLoading, isFetching } = useSubscriptions(
-    session?.user?.email || ""
+    session?.user?.email as string
   );
   const [extendedSubscription, setExtendedSubscription] = useState();
 

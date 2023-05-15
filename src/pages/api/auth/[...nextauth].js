@@ -22,6 +22,12 @@ export const authOptions = {
       session.accessToken = token.accessToken;
       return session;
     },
+    authorized({ req, token }) {
+      if (token) return true; // If there is a token, the user is authenticated
+    },
+  },
+  pages: {
+    signIn: "/login",
   },
 };
 export default NextAuth(authOptions);

@@ -29,8 +29,9 @@ const tableHeaders: GridColDef[] = [
 export default function NetworkCapabilities() {
   const { data: session } = useSession();
 
+  // TODO: Common name needs a prefix
   const { data, isLoading, isFetching } = useNetworkCapabilities(
-    session?.user?.email || ""
+    session?.user?.email as string
   );
 
   const [extendedCapability, setExtendedCapability] = useState();
