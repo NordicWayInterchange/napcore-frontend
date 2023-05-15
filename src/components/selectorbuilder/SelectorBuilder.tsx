@@ -10,8 +10,6 @@ import TextArea from "./TextArea";
 import { ButtonComponent } from "../shared";
 import { denmCauseCodes } from "@/lib/denmCauseCodes";
 import { createSubscription } from "@/lib/internalFetchers";
-import { Subscription } from "@/types/napcore/subscription";
-import { green, red } from "@mui/material/colors";
 import MapDialog from "../leaflet/MapDialog";
 import Alert from "../shared/Alert";
 
@@ -56,7 +54,7 @@ const SelectorBuilder = (props: Props) => {
   const [showCauseCode, setShowCauseCode] = useState<boolean>();
   const [advancedMode, setAdvancedMode] = useState<boolean>(false);
   const [persistSelector, setPersistSelector] = useState<string>("");
-  const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>();
+  const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
 
   const [alert, setAlert] = useState<IAlert>();
@@ -132,7 +130,7 @@ const SelectorBuilder = (props: Props) => {
     setOpen(false);
   };
 
-  const handleQuadtree = (value: string[]) => {
+  const quadtreeCallback = (value: string[]) => {
     setPredefinedQuadtree(value);
   };
 
@@ -224,7 +222,7 @@ const SelectorBuilder = (props: Props) => {
         open={open}
         onClose={handleClose}
         quadtree={formState.quadTree}
-        quadtreeCallback={handleQuadtree}
+        quadtreeCallback={quadtreeCallback}
       />
       {alert && (
         <Grid item xs={12}>

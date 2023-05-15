@@ -1,12 +1,6 @@
-import React, {
-  useEffect,
-  useState,
-  useMemo,
-  useCallback,
-  useRef,
-} from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import L from "leaflet";
-import { useMap, Rectangle, LayerGroup, Tooltip } from "react-leaflet";
+import { useMap, Rectangle, LayerGroup } from "react-leaflet";
 import {
   rectangleStyle,
   rectangleStyleHover,
