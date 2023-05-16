@@ -53,6 +53,7 @@ const fetchAggregate = async (params: basicGetParams, token: string) => {
   if (status == 200) {
     const capabilities = body as ExtendedCapability[];
     const aggregatedCapabilities = capabilities.reduce(
+      // TODO: Fix overload
       (acc: { [key: string]: any }, capability: Capability) => {
         (Object.keys(capability) as Array<keyof typeof capability>).forEach(
           (capabilityProp) => {
@@ -233,6 +234,7 @@ export default async function handler(
   const secret = process.env.NEXTAUTH_SECRET;
   const token = await getToken({ req, secret, raw: true });
   if (!token) {
+    // TODO: make it more descriptive
     return res.status(403).json({ description: `Access denied` });
   }
 
