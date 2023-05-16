@@ -19,13 +19,20 @@ import {
 } from "@/lib/interchangeConnector";
 import { ExtendedCapability } from "@/types/capability";
 import { Capabilities, Capability } from "@/types/napcore/capability";
+import { getToken } from "next-auth/jwt";
 
-const fetchCapabilityCounter = async (params: basicGetParams) => {
+const fetchCapabilityCounter = async (
+  params: basicGetParams,
+  token: string
+) => {
   const { actorCommonName, selector = "" } = params;
-  const [status, body] = await fetchNetworkCapabilities({
-    actorCommonName,
-    selector,
-  });
+  const [status, body] = await fetchNetworkCapabilities(
+    {
+      actorCommonName,
+      selector,
+    },
+    token
+  );
 
   if (status == 200) {
     const capabilities = body as ExtendedCapability[];
@@ -34,15 +41,19 @@ const fetchCapabilityCounter = async (params: basicGetParams) => {
   return [status, body];
 };
 
-const fetchAggregate = async (params: basicGetParams) => {
+const fetchAggregate = async (params: basicGetParams, token: string) => {
   const { actorCommonName, selector } = params;
-  const [status, body] = await fetchNetworkCapabilities({
-    actorCommonName,
-    selector,
-  });
+  const [status, body] = await fetchNetworkCapabilities(
+    {
+      actorCommonName,
+      selector,
+    },
+    token
+  );
   if (status == 200) {
     const capabilities = body as ExtendedCapability[];
     const aggregatedCapabilities = capabilities.reduce(
+      // TODO: Fix overload
       (acc: { [key: string]: any }, capability: Capability) => {
         (Object.keys(capability) as Array<keyof typeof capability>).forEach(
           (capabilityProp) => {
@@ -67,9 +78,14 @@ const fetchAggregate = async (params: basicGetParams) => {
   return [status, body];
 };
 
-const fetchSubscriptions = async (params: extendedGetParams) => {
+const fetchSubscriptions = async (params: extendedGetParams, token: string) => {
   const { actorCommonName, selector = "", pathParam = "" } = params;
-  const res = await getSubscriptions(actorCommonName, selector, pathParam);
+  const res = await getSubscriptions(
+    actorCommonName,
+    selector,
+    pathParam,
+    token
+  );
   if (res.ok) {
     const subscriptions: Subscriptions = await res.json();
     return [res.status, subscriptions.subscriptions];
@@ -79,26 +95,31 @@ const fetchSubscriptions = async (params: extendedGetParams) => {
 };
 
 export const addSubscriptions: basicPostFunction = async (
-  params: basicPostParams
+  params: basicPostParams,
+  token: string
 ) => {
   const { actorCommonName, body = {} } = params;
-  const res = await createSubscription(actorCommonName, body);
+  const res = await createSubscription(actorCommonName, body, token);
   const data = await res.json();
   return [res.status, data];
 };
 
 export const removeSubscription: basicDeleteFunction = async (
-  params: basicDeleteParams
+  params: basicDeleteParams,
+  token: string
 ) => {
   const { actorCommonName, pathParam } = params;
-  const res = await deleteSubscriptions(actorCommonName, pathParam);
+  const res = await deleteSubscriptions(actorCommonName, pathParam, token);
   const data = await res.json();
   return [res.status, data];
 };
 
-const fetchNetworkCapabilities = async (params: basicGetParams) => {
+const fetchNetworkCapabilities = async (
+  params: basicGetParams,
+  token: string
+) => {
   const { actorCommonName, selector = "" } = params;
-  const res = await getNetworkCapabilities(actorCommonName, selector);
+  const res = await getNetworkCapabilities(actorCommonName, selector, token);
   if (res.ok) {
     const capabilities: Capabilities = await res.json();
     return [
@@ -112,9 +133,10 @@ const fetchNetworkCapabilities = async (params: basicGetParams) => {
   return [res.status, body];
 };
 
-const fetchCapabilities = async (params: basicGetParams) => {
+const fetchCapabilities = async (params: basicGetParams, token: string) => {
   const { actorCommonName, selector = "" } = params;
-  const res = await getCapabilities(actorCommonName, selector);
+  const res = await getCapabilities(actorCommonName, selector, token);
+
   if (res.ok) {
     const capabilities: Capabilities = await res.json();
     return [
@@ -209,6 +231,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const secret = process.env.NEXTAUTH_SECRET;
+  const token = await getToken({ req, secret, raw: true });
+  if (!token) {
+    // TODO: make it more descriptive
+    return res.status(403).json({ description: `Access denied` });
+  }
+
   const slug = Array.isArray(req.query.slug)
     ? req.query.slug
     : [req.query.slug];
@@ -232,7 +261,7 @@ export default async function handler(
 
     if (executer && "fn" in executer) {
       const { fn, params } = executer;
-      const [status, resBody] = await fn(params);
+      const [status, resBody] = await fn(params, token);
       if (status != 200) {
         console.error(resBody);
       }

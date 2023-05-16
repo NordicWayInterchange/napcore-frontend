@@ -5,6 +5,9 @@ const fetchMatchingCapabilities: (
   userName: string,
   selector: string
 ) => Promise<ExtendedCapability[]> = async (userName, selector) => {
+  // TODO: remove this
+  userName = "anna";
+
   const res = await fetch(
     `/api/${userName}/network/capabilities?selector=${selector}`
   );

@@ -5,6 +5,7 @@ import { GridColDef, GridEventListener, GridRowParams } from "@mui/x-data-grid";
 import DataGrid from "@/components/shared/DataGrid";
 import { dataGridTemplate } from "@/components/shared/DataGridTemplate";
 import { CapabilityDetails } from "@/components/details";
+import { useSession } from "next-auth/react";
 
 const tableHeaders: GridColDef[] = [
   { ...dataGridTemplate, field: "publisherId", headerName: "Publisher ID" },
@@ -26,7 +27,12 @@ const tableHeaders: GridColDef[] = [
 ];
 
 export default function NetworkCapabilities() {
-  const { data, isLoading, isFetching } = useNetworkCapabilities("anna");
+  const { data: session } = useSession();
+
+  // TODO: Common name needs a prefix
+  const { data, isLoading, isFetching } = useNetworkCapabilities(
+    session?.user?.email as string
+  );
 
   const [extendedCapability, setExtendedCapability] = useState();
 
