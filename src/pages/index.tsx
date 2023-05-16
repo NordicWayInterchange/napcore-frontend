@@ -3,5 +3,5 @@ import { useMemo } from "react";
 import Subscriptions from "./subscriptions";
 
 export default function Home() {
-  <Subscriptions />;
+  return <Subscriptions />;
 }
