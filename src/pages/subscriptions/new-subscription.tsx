@@ -8,7 +8,7 @@ import { useMatchingCapabilities } from "@/hooks/useMatchingCapabilities";
 import ButtonComponent from "@/components/shared/Button";
 import DataGrid from "@/components/shared/DataGrid";
 import { dataGridTemplate } from "@/components/shared/DataGridTemplate";
-import TextArea from "@/components/selectorbuilder/TextArea";
+import { useSession } from "next-auth/react";
 
 const tableHeaders: GridColDef[] = [
   {
@@ -34,9 +34,13 @@ const tableHeaders: GridColDef[] = [
 ];
 
 const NewSubscription = () => {
-  const name = "anna"; // get this from context
+  const { data: session } = useSession();
   const [selector, setSelector] = useState<string>("");
-  const matchingCapabilities = useMatchingCapabilities(name, selector);
+
+  const matchingCapabilities = useMatchingCapabilities(
+    session?.user?.email || "",
+    selector
+  );
 
   const handleChange = (selector: string) => {
     setSelector(selector);

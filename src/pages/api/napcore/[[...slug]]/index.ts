@@ -15,7 +15,7 @@ import {
   basicGetParams,
   extendedGetParams,
 } from "@/lib/interchangeConnector";
-import { AxiosResponse } from "axios";
+import { getToken } from "next-auth/jwt";
 
 // all getter methods on path
 const getPaths: {
@@ -98,6 +98,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  // check if the api receives headers with bearer token
+  //console.log(req.headers);
+
   const slug = Array.isArray(req.query.slug)
     ? req.query.slug
     : [req.query.slug];
@@ -122,9 +125,10 @@ export default async function handler(
     if (executer && "fn" in executer) {
       try {
         const { fn, params } = executer;
+        // @ts-ignore
         const response = await fn(params);
         return res.status(200).json(response.data);
-      } catch (error) {
+      } catch (error: any) {
         return res.status(error.response.status).json(error.response.data);
       }
     }

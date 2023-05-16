@@ -1,8 +1,8 @@
 import { createTheme } from "@mui/material";
 
-export const transportportal = createTheme({
+export const trafficdata = createTheme({
   palette: {
-    navbarBackgroundColor: "rgb(68, 79, 85)",
+    navbarBackgroundColor: "#d12e2c",
     mainBackgroundColor: "#f0f1f1",
   },
 });

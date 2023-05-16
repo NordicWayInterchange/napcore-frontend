@@ -1,33 +1,52 @@
 import {
-  AppBar,
   Box,
   CssBaseline,
-  Toolbar,
-  Typography,
   Drawer,
   Divider,
   List,
   ListItem,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
+  AppBar,
+  Toolbar,
+  Typography,
+  useTheme,
 } from "@mui/material";
-import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-import logo from "@/../public/nordic-way-logo.png";
+import React, { useState } from "react";
 
 const width = 240;
 
-const links = [
+const pages = [
   { text: "Subscriptions", link: "/subscriptions" },
   { text: "Network Capabilities", link: "/network-capabilities" },
 ];
 
+const admin = [
+  { text: "Profile", link: "/profile" },
+  { text: "Certificate", link: "/certificate" },
+];
+
 export default function Sidebar() {
+  const theme = useTheme();
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
+      <AppBar
+        elevation={0}
+        sx={{
+          zIndex: (index) => index.zIndex.drawer + 1,
+          backgroundColor: theme.palette.navbarBackgroundColor,
+        }}
+        position="fixed"
+      >
+        <Toolbar>
+          <Typography variant="h6" noWrap component="div">
+            Transportportal
+          </Typography>
+        </Toolbar>
+      </AppBar>
       <Drawer
         sx={{
           width: width,
@@ -40,15 +59,26 @@ export default function Sidebar() {
         variant="permanent"
         anchor="left"
       >
-        <Image
-          src={logo}
-          alt="Nordic Way logo"
-          width={width / 1.2}
-          style={{ alignSelf: "center", padding: 3 }}
-        />
+        <Toolbar />
         <Divider />
         <List>
-          {links.map((link, key) => (
+          {pages.map((link, key) => (
+            <Link
+              href={link.link}
+              key={key}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <ListItemText primary={link.text} />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+          ))}
+        </List>
+        <Divider />
+        <List>
+          {admin.map((link, key) => (
             <Link
               href={link.link}
               key={key}

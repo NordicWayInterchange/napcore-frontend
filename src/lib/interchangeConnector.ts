@@ -70,10 +70,22 @@ export type basicDeleteParams = {
   pathParam?: string;
 };
 
-export type basicGetFunction = (params: basicGetParams) => Promise<any>;
-export type extendedGetFunction = (params: extendedGetParams) => Promise<any>;
-export type basicPostFunction = (params: basicPostParams) => Promise<any>;
-export type basicDeleteFunction = (params: basicDeleteParams) => Promise<any>;
+export type basicGetFunction = (
+  params: basicGetParams,
+  token: string
+) => Promise<any>;
+export type extendedGetFunction = (
+  params: extendedGetParams,
+  token: string
+) => Promise<any>;
+export type basicPostFunction = (
+  params: basicPostParams,
+  token: string
+) => Promise<any>;
+export type basicDeleteFunction = (
+  params: basicDeleteParams,
+  token: string
+) => Promise<any>;
 
 // exported functions
 export const fetchNetworkCapabilities: basicGetFunction = async (params) => {
