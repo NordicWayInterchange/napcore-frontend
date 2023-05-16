@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "./api/auth/[...nextauth]";
 import Image from "next/image";
 import logo from "@/../public/nordic-way-logo.png";
-import { Button, Card, Typography } from "@mui/material";
+import { Button, Card } from "@mui/material";
 
 export default function login({
   providers,

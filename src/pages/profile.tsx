@@ -1,19 +1,46 @@
+import { Box, Button, Card, Typography } from "@mui/material";
 import { useSession, signIn, signOut } from "next-auth/react";
+import Image from "next/image";
 
 export default function Profile() {
   const { data: session } = useSession();
-  if (session) {
+
+  const handleClick = () => {
+    signOut();
+  };
+
+  if (!session) {
     return (
-      <>
-        Signed in as {session.user?.email} <br />
-        <button onClick={() => signOut()}>Sign out</button>
-      </>
+      <Button variant="contained" onClick={handleClick}>
+        Sign out
+      </Button>
     );
   }
+
   return (
-    <>
-      Not signed in <br />
-      <button onClick={() => signIn()}>Sign in</button>
-    </>
+    <Box display={"inline-block"}>
+      <Card
+        variant="outlined"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 3,
+          p: 3,
+        }}
+      >
+        <Image
+          src={session.user?.image as string}
+          alt="Profile Image"
+          width={200}
+          height={200}
+        />
+        <Typography variant="body1">{session.user?.name}</Typography>
+        <Typography variant="body1">{session.user?.email}</Typography>
+        <Button variant="contained" onClick={handleClick}>
+          Sign out
+        </Button>
+      </Card>
+    </Box>
   );
 }
