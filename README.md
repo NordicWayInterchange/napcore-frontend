@@ -38,3 +38,10 @@ NODE_TLS_REJECT_UNAUTHORIZED='0'
 INTERCHANGE_URI=https://bouvet.pilotinterchange.eu:4141/
 NEXT_PUBLIC_NAPCORE_API_URI=http://localhost:3000/api/napcore/
 ```
+
+## Leaflet
+
+- Leaflets external depency relies on browser APIs (window)
+- We need to use ssr option to disable server-rendering for the component
+- https://nextjs.org/docs/advanced-features/dynamic-import#with-no-ssr
+- https://stackoverflow.com/questions/57704196/leaflet-with-next-js

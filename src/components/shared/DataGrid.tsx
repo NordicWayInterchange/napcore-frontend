@@ -32,6 +32,7 @@ export default function DataGrid(props: Props) {
         autoHeight
         rows={data}
         columns={tableHeaders}
+        sx={{ backgroundColor: "white" }}
         initialState={{
           pagination: {
             paginationModel: {

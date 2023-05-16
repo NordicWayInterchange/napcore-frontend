@@ -19,6 +19,7 @@ const Select = (props: Props) => {
       <InputLabel>{label}</InputLabel>
       <MuiSelect
         multiple
+        sx={{ backgroundColor: "white" }}
         value={value}
         name={name}
         label={label}

@@ -11,6 +11,7 @@ import {
   Toolbar,
   Typography,
   useTheme,
+  ListSubheader,
 } from "@mui/material";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -61,7 +62,14 @@ export default function Sidebar() {
       >
         <Toolbar />
         <Divider />
-        <List>
+        <List
+        /*
+        subheader={
+            <ListSubheader component="div" id="nested-list-subheader">
+              Streams
+            </ListSubheader>
+          }*/
+        >
           {pages.map((link, key) => (
             <Link
               href={link.link}

@@ -10,8 +10,7 @@ import TextArea from "./TextArea";
 import { ButtonComponent } from "../shared";
 import { denmCauseCodes } from "@/lib/denmCauseCodes";
 import { createSubscription } from "@/lib/internalFetchers";
-import { Subscription } from "@/types/napcore/subscription";
-import { green, red } from "@mui/material/colors";
+import MapDialog from "../leaflet/MapDialog";
 import Alert from "../shared/Alert";
 
 type Props = {
@@ -54,9 +53,9 @@ const SelectorBuilder = (props: Props) => {
   const [errors, setErrors] = useState({}); // TODO: Handle errors
   const [showCauseCode, setShowCauseCode] = useState<boolean>();
   const [advancedMode, setAdvancedMode] = useState<boolean>(false);
-  const [completedSave, setCompletedSave] = useState<boolean>(false);
-  const [savedSubscription, setSavedSubscription] = useState<Subscription>();
   const [persistSelector, setPersistSelector] = useState<string>("");
+  const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>([]);
+  const [open, setOpen] = useState<boolean>(false);
 
   const [alert, setAlert] = useState<IAlert>();
 
@@ -102,6 +101,7 @@ const SelectorBuilder = (props: Props) => {
   const saveSubscription = async (name: string, selector: string) => {
     const response = await createSubscription(name, selector);
     const data = await response.json();
+    console.log(data);
 
     if (response.ok) {
       setAlert({
@@ -116,6 +116,22 @@ const SelectorBuilder = (props: Props) => {
         information: "This is meant to display an error message - Try again!",
       });
     }
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setFormState((prevData) => ({
+      ...prevData,
+      quadTree: predefinedQuadtree,
+    }));
+    setOpen(false);
+  };
+
+  const quadtreeCallback = (value: string[]) => {
+    setPredefinedQuadtree(value);
   };
 
   return (
@@ -174,10 +190,9 @@ const SelectorBuilder = (props: Props) => {
       <Grid item xs={6}>
         <TextField
           value={formState.quadTree}
+          name={"quadtree"}
           label={"Quadtree"}
-          name={"quadTree"}
-          onChange={handleTextField}
-          disabled={advancedMode}
+          disabled={true}
         />
       </Grid>
       <Grid item xs={12}>
@@ -200,6 +215,15 @@ const SelectorBuilder = (props: Props) => {
           onClick={() => saveSubscription(name, selector)}
         />
       </Grid>
+      <Grid item>
+        <ButtonComponent text={"Quadtree"} onClick={handleClickOpen} />
+      </Grid>
+      <MapDialog
+        open={open}
+        onClose={handleClose}
+        quadtree={formState.quadTree}
+        quadtreeCallback={quadtreeCallback}
+      />
       {alert && (
         <Grid item xs={12}>
           <Alert

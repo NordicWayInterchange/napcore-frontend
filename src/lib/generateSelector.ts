@@ -15,7 +15,6 @@ export const generateSelector = (formState: any): string => {
   return Object.keys(formState).reduce(
     (acc: string, key: string, index: number) => {
       const value = formState[key as keyof typeof formState];
-      //console.log("key", key, "value", value);
 
       const valueArray = Array.isArray(value)
         ? value
