@@ -51,6 +51,7 @@ export default function NetworkCapabilities() {
   return (
     <>
       <Typography variant="h4">Network Capabilities</Typography>
+      <Divider sx={{ marginY: 3 }} />
       <Box sx={{ display: "flex" }}>
         <Box sx={{ flex: 1 }}>
           <DataGrid
@@ -60,9 +61,9 @@ export default function NetworkCapabilities() {
             loading={isLoading}
           />
         </Box>
-        {/* <Box sx={{ flex: 1 }}>
+        <Box sx={{ flex: 1 }}>
           <CapabilityDetails extendedCapability={extendedCapability} />
-        </Box> */}
+        </Box>
       </Box>
     </>
   );

@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Box, CircularProgress, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Divider,
+  Grid,
+  Typography,
+} from "@mui/material";
 import Link from "next/link";
 import styles from "../../styles/Link.module.css";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
@@ -49,6 +55,7 @@ export default function Subscriptions() {
   return (
     <>
       <Typography variant="h4">Subscription</Typography>
+      <Divider sx={{ marginY: 3 }} />
       <Link className={styles.url} href="/subscriptions/new-subscription">
         <ButtonComponent text={"Create Subscription"} />
       </Link>

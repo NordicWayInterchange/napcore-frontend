@@ -7,7 +7,6 @@ import {
 import { ExtendedSubscription } from "@/types/subscription";
 import { ExtendedCapability } from "@/types/capability";
 import { styled } from "@mui/material/styles";
-import LinearProgress from "@mui/material/LinearProgress";
 
 type Props = {
   tableHeaders: GridColDef[];
@@ -35,9 +34,6 @@ export default function DataGrid(props: Props) {
         rows={data}
         columns={tableHeaders}
         loading={loading}
-        // slots={{
-        //   loadingOverlay: LinearProgress,
-        // }}
         sx={{ backgroundColor: "white" }}
         initialState={{
           pagination: {
