@@ -63,6 +63,7 @@ const NewSubscription = () => {
             disableRowSelectionOnClick={true}
             tableHeaders={tableHeaders}
             data={matchingCapabilities.data || []}
+            loading={matchingCapabilities.isLoading}
           />
         </Grid>
       </Grid>

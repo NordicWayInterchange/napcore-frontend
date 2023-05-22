@@ -46,8 +46,6 @@ export default function Subscriptions() {
     setExtendedSubscription(params.row);
   };
 
-  if (isLoading) return <CircularProgress />;
-
   return (
     <>
       <Typography variant="h4">Subscription</Typography>
@@ -60,6 +58,7 @@ export default function Subscriptions() {
             handleEvent={handleEvent}
             tableHeaders={tableHeaders}
             data={data || []}
+            loading={isLoading}
           />
         </Grid>
         <Grid item xs={6}>

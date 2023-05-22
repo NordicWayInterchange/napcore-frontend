@@ -7,12 +7,14 @@ import {
 import { ExtendedSubscription } from "@/types/subscription";
 import { ExtendedCapability } from "@/types/capability";
 import { styled } from "@mui/material/styles";
+import LinearProgress from "@mui/material/LinearProgress";
 
 type Props = {
   tableHeaders: GridColDef[];
   data: ExtendedSubscription[] | ExtendedCapability[] | [];
   handleEvent?: GridEventListener<"rowClick">;
   disableRowSelectionOnClick?: boolean;
+  loading: boolean;
 };
 
 export default function DataGrid(props: Props) {
@@ -21,6 +23,7 @@ export default function DataGrid(props: Props) {
     data,
     tableHeaders,
     disableRowSelectionOnClick = false,
+    loading,
   } = props;
 
   return (
@@ -31,6 +34,10 @@ export default function DataGrid(props: Props) {
         autoHeight
         rows={data}
         columns={tableHeaders}
+        loading={loading}
+        // slots={{
+        //   loadingOverlay: LinearProgress,
+        // }}
         sx={{ backgroundColor: "white" }}
         initialState={{
           pagination: {

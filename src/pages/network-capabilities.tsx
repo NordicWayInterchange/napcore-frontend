@@ -48,8 +48,6 @@ export default function NetworkCapabilities() {
     setExtendedCapability(params.row);
   };
 
-  if (isLoading) return <CircularProgress />;
-
   return (
     <>
       <Typography variant="h4">Network Capabilities</Typography>
@@ -59,11 +57,12 @@ export default function NetworkCapabilities() {
             handleEvent={handleEvent}
             tableHeaders={tableHeaders}
             data={data || []}
+            loading={isLoading}
           />
         </Box>
-        <Box sx={{ flex: 1 }}>
+        {/* <Box sx={{ flex: 1 }}>
           <CapabilityDetails extendedCapability={extendedCapability} />
-        </Box>
+        </Box> */}
       </Box>
     </>
   );
