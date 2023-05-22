@@ -14,7 +14,7 @@ import {
   ListSubheader,
 } from "@mui/material";
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 
 const width = 240;
 
@@ -63,12 +63,11 @@ export default function Sidebar() {
         <Toolbar />
         <Divider />
         <List
-        /*
-        subheader={
+          subheader={
             <ListSubheader component="div" id="nested-list-subheader">
-              Streams
+              Subheader
             </ListSubheader>
-          }*/
+          }
         >
           {pages.map((link, key) => (
             <Link
@@ -85,7 +84,13 @@ export default function Sidebar() {
           ))}
         </List>
         <Divider />
-        <List>
+        <List
+          subheader={
+            <ListSubheader component="div" id="nested-list-subheader">
+              Subheader
+            </ListSubheader>
+          }
+        >
           {admin.map((link, key) => (
             <Link
               href={link.url}
