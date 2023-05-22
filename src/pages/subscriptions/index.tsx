@@ -4,13 +4,11 @@ import Link from "next/link";
 import styles from "../../styles/Link.module.css";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
 import { GridColDef, GridEventListener, GridRowParams } from "@mui/x-data-grid";
-import {
-  dataGridTemplate,
-  DataGrid,
-  ButtonComponent,
-} from "@/components/shared/index";
+import { ButtonComponent } from "@/components/shared/index";
 import SubscriptionDetails from "@/components/details/SubscriptionDetails";
 import { useSession } from "next-auth/react";
+import { dataGridTemplate } from "@/components/datagrid/DataGridTemplate";
+import DataGrid from "@/components/datagrid/DataGrid";
 
 const tableHeaders: GridColDef[] = [
   {
@@ -53,7 +51,7 @@ export default function Subscriptions() {
   return (
     <>
       <Typography variant="h4">Subscription</Typography>
-      <Link className={styles.link} href="/subscriptions/new-subscription">
+      <Link className={styles.url} href="/subscriptions/new-subscription">
         <ButtonComponent text={"Create Subscription"} />
       </Link>
       <Grid container spacing={3}>

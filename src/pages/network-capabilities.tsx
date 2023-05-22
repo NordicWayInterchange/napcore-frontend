@@ -1,9 +1,15 @@
 import React, { useState } from "react";
-import { Box, CircularProgress, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Divider,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { useNetworkCapabilities } from "@/hooks/useNetworkCapabilities";
 import { GridColDef, GridEventListener, GridRowParams } from "@mui/x-data-grid";
-import DataGrid from "@/components/shared/DataGrid";
-import { dataGridTemplate } from "@/components/shared/DataGridTemplate";
+import DataGrid from "@/components/datagrid/DataGrid";
+import { dataGridTemplate } from "@/components/datagrid/DataGridTemplate";
 import { CapabilityDetails } from "@/components/details";
 import { useSession } from "next-auth/react";
 

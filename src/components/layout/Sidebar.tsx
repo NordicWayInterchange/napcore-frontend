@@ -14,23 +14,24 @@ import {
   ListSubheader,
 } from "@mui/material";
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
+import { useRouter } from "next/router";
 
 const width = 240;
 
 const pages = [
-  { text: "Subscriptions", link: "/subscriptions" },
-  { text: "Network Capabilities", link: "/network-capabilities" },
+  { text: "Subscriptions", url: "/subscriptions" },
+  { text: "Network Capabilities", url: "/network-capabilities" },
 ];
 
 const admin = [
-  { text: "Profile", link: "/profile" },
-  { text: "Certificate", link: "/certificate" },
+  { text: "Profile", url: "/profile" },
+  { text: "Certificate", url: "/certificate" },
 ];
 
 export default function Sidebar() {
   const theme = useTheme();
-
+  const router = useRouter();
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -63,20 +64,25 @@ export default function Sidebar() {
         <Toolbar />
         <Divider />
         <List
-        /*
-        subheader={
+          subheader={
             <ListSubheader component="div" id="nested-list-subheader">
-              Streams
+              Subheader
             </ListSubheader>
-          }*/
+          }
         >
           {pages.map((link, key) => (
             <Link
-              href={link.link}
+              href={link.url}
               key={key}
               style={{ textDecoration: "none", color: "inherit" }}
             >
-              <ListItem disablePadding>
+              <ListItem
+                sx={{
+                  backgroundColor:
+                    router.asPath === link.url ? "#AEAEAE" : null,
+                }}
+                disablePadding
+              >
                 <ListItemButton>
                   <ListItemText primary={link.text} />
                 </ListItemButton>
@@ -85,14 +91,26 @@ export default function Sidebar() {
           ))}
         </List>
         <Divider />
-        <List>
+        <List
+          subheader={
+            <ListSubheader component="div" id="nested-list-subheader">
+              Subheader
+            </ListSubheader>
+          }
+        >
           {admin.map((link, key) => (
             <Link
-              href={link.link}
+              href={link.url}
               key={key}
               style={{ textDecoration: "none", color: "inherit" }}
             >
-              <ListItem disablePadding>
+              <ListItem
+                sx={{
+                  backgroundColor:
+                    router.asPath === link.url ? "#AEAEAE" : null,
+                }}
+                disablePadding
+              >
                 <ListItemButton>
                   <ListItemText primary={link.text} />
                 </ListItemButton>
