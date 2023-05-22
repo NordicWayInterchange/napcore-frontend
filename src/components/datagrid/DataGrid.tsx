@@ -7,7 +7,6 @@ import {
 import { ExtendedSubscription } from "@/types/subscription";
 import { ExtendedCapability } from "@/types/capability";
 import { styled } from "@mui/material/styles";
-import { Box, Typography } from "@mui/material";
 
 type Props = {
   tableHeaders: GridColDef[];

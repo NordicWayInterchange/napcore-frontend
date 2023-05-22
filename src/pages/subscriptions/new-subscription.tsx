@@ -6,8 +6,8 @@ import { GridColDef } from "@mui/x-data-grid";
 import { Subscription } from "@/types/napcore/subscription";
 import { useMatchingCapabilities } from "@/hooks/useMatchingCapabilities";
 import ButtonComponent from "@/components/shared/Button";
-import DataGrid from "@/components/shared/DataGrid";
-import { dataGridTemplate } from "@/components/shared/DataGridTemplate";
+import DataGrid from "@/components/datagrid/DataGrid";
+import { dataGridTemplate } from "@/components/datagrid/DataGridTemplate";
 import { useSession } from "next-auth/react";
 
 const tableHeaders: GridColDef[] = [

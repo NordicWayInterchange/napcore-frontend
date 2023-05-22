@@ -1,6 +1,7 @@
 import ButtonComponent from "./Button";
-import DataGrid from "./DataGrid";
-import { dataGridTemplate } from "./DataGridTemplate";
-import StatusChip from "./StatusChip";
+import Alert from "./Alert";
+import Select from "./Select";
+import TextArea from "./TextArea";
+import TextField from "./TextField";
 
-export { ButtonComponent, DataGrid, dataGridTemplate, StatusChip };
+export { ButtonComponent, Alert, Select, TextArea, TextField };

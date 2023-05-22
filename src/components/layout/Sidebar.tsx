@@ -19,13 +19,13 @@ import React, { useState } from "react";
 const width = 240;
 
 const pages = [
-  { text: "Subscriptions", link: "/subscriptions" },
-  { text: "Network Capabilities", link: "/network-capabilities" },
+  { text: "Subscriptions", url: "/subscriptions" },
+  { text: "Network Capabilities", url: "/network-capabilities" },
 ];
 
 const admin = [
-  { text: "Profile", link: "/profile" },
-  { text: "Certificate", link: "/certificate" },
+  { text: "Profile", url: "/profile" },
+  { text: "Certificate", url: "/certificate" },
 ];
 
 export default function Sidebar() {
@@ -72,7 +72,7 @@ export default function Sidebar() {
         >
           {pages.map((link, key) => (
             <Link
-              href={link.link}
+              href={link.url}
               key={key}
               style={{ textDecoration: "none", color: "inherit" }}
             >
@@ -88,7 +88,7 @@ export default function Sidebar() {
         <List>
           {admin.map((link, key) => (
             <Link
-              href={link.link}
+              href={link.url}
               key={key}
               style={{ textDecoration: "none", color: "inherit" }}
             >
