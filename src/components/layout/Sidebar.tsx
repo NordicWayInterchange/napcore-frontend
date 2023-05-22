@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import React from "react";
+import { useRouter } from "next/router";
 
 const width = 240;
 
@@ -30,7 +31,7 @@ const admin = [
 
 export default function Sidebar() {
   const theme = useTheme();
-
+  const router = useRouter();
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -75,7 +76,13 @@ export default function Sidebar() {
               key={key}
               style={{ textDecoration: "none", color: "inherit" }}
             >
-              <ListItem disablePadding>
+              <ListItem
+                sx={{
+                  backgroundColor:
+                    router.asPath === link.url ? "#AEAEAE" : null,
+                }}
+                disablePadding
+              >
                 <ListItemButton>
                   <ListItemText primary={link.text} />
                 </ListItemButton>
@@ -97,7 +104,13 @@ export default function Sidebar() {
               key={key}
               style={{ textDecoration: "none", color: "inherit" }}
             >
-              <ListItem disablePadding>
+              <ListItem
+                sx={{
+                  backgroundColor:
+                    router.asPath === link.url ? "#AEAEAE" : null,
+                }}
+                disablePadding
+              >
                 <ListItemButton>
                   <ListItemText primary={link.text} />
                 </ListItemButton>

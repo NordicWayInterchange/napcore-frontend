@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Box, CircularProgress, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Divider,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { useNetworkCapabilities } from "@/hooks/useNetworkCapabilities";
 import { GridColDef, GridEventListener, GridRowParams } from "@mui/x-data-grid";
 import DataGrid from "@/components/datagrid/DataGrid";
