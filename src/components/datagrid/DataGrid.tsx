@@ -42,7 +42,7 @@ export default function DataGrid(props: Props) {
             },
           },
         }}
-        pageSizeOptions={[10]}
+        pageSizeOptions={[15]}
       />
     </>
   );
