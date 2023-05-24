@@ -2,7 +2,8 @@ import Box from "@mui/material/Box";
 import React, { ReactNode } from "react";
 import Sidebar from "./Sidebar";
 import { useSession } from "next-auth/react";
-import { Toolbar, useTheme } from "@mui/material";
+import { CircularProgress, Toolbar, useTheme } from "@mui/material";
+import Navbar from "./Navbar";
 
 type LayoutProps = {
   children: ReactNode;
@@ -12,38 +13,58 @@ export default function Layout({ children }: LayoutProps) {
   const { status: authStatus } = useSession();
   const theme = useTheme();
 
-  if (authStatus != "authenticated") {
+  if (authStatus == "authenticated") {
     return (
-      <Box
-        component="main"
-        sx={{
-          display: "flex",
-          height: "100vh",
-          alignItems: "center",
-          justifyContent: "center",
-          bgcolor: theme.palette.mainBackgroundColor,
-        }}
-      >
-        {children}
+      <Box sx={{ display: "flex" }}>
+        <Sidebar />
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            bgcolor: theme.palette.mainBackgroundColor,
+            p: 3,
+            height: "100vh",
+          }}
+        >
+          <Toolbar />
+          {children}
+        </Box>
+      </Box>
+    );
+  }
+
+  if (authStatus == "unauthenticated") {
+    return (
+      <Box>
+        <Navbar />
+        <Box
+          component="main"
+          sx={{
+            bgcolor: theme.palette.mainBackgroundColor,
+            height: "100vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {children}
+        </Box>
       </Box>
     );
   }
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <Sidebar />
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          bgcolor: theme.palette.mainBackgroundColor,
-          p: 3,
-          height: "100vh",
-        }}
-      >
-        <Toolbar />
-        {children}
-      </Box>
+    <Box
+      component="main"
+      sx={{
+        bgcolor: theme.palette.mainBackgroundColor,
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <CircularProgress />;
     </Box>
   );
 }
