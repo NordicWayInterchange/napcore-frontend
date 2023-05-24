@@ -104,9 +104,6 @@ export default function MapComponent({
           mouseover: (event) => {
             event.target.setStyle(rectangleStyleHover);
           },
-          mouseout: (event) => {
-            event.target.setStyle(rectangleStyle);
-          },
           click: rectangleClickHandler,
         }}
       >

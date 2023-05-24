@@ -79,7 +79,7 @@ export default function Sidebar() {
               <ListItem
                 sx={{
                   backgroundColor:
-                    router.asPath === link.url ? "#AEAEAE" : null,
+                    router.asPath === link.url ? "#e5e5e5" : null,
                 }}
                 disablePadding
               >
@@ -107,7 +107,7 @@ export default function Sidebar() {
               <ListItem
                 sx={{
                   backgroundColor:
-                    router.asPath === link.url ? "#AEAEAE" : null,
+                    router.asPath === link.url ? "#e5e5e5" : null,
                 }}
                 disablePadding
               >
