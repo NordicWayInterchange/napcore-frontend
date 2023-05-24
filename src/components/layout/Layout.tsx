@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import React, { ReactNode } from "react";
 import Sidebar from "./Sidebar";
 import { useSession } from "next-auth/react";
-import { Toolbar, useTheme } from "@mui/material";
+import { CssBaseline, Toolbar, useTheme } from "@mui/material";
 
 type LayoutProps = {
   children: ReactNode;

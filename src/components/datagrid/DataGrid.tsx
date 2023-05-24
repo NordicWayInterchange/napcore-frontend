@@ -7,6 +7,7 @@ import {
 import { ExtendedSubscription } from "@/types/subscription";
 import { ExtendedCapability } from "@/types/capability";
 import { styled } from "@mui/material/styles";
+import { Box } from "@mui/material";
 
 type Props = {
   tableHeaders: GridColDef[];
@@ -26,11 +27,10 @@ export default function DataGrid(props: Props) {
   } = props;
 
   return (
-    <>
+    <Box sx={{ height: "70vh" }}>
       <StyledDataGrid
         onRowClick={handleEvent}
         disableRowSelectionOnClick={disableRowSelectionOnClick}
-        autoHeight
         rows={data}
         columns={tableHeaders}
         loading={loading}
@@ -38,13 +38,13 @@ export default function DataGrid(props: Props) {
         initialState={{
           pagination: {
             paginationModel: {
-              pageSize: 15,
+              pageSize: 10,
             },
           },
         }}
-        pageSizeOptions={[15]}
+        pageSizeOptions={[10, 25, 50]}
       />
-    </>
+    </Box>
   );
 }
 
