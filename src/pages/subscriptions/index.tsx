@@ -1,7 +1,12 @@
 import React, { useState } from "react";
-import { Box, CircularProgress, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Divider,
+  Grid,
+  Typography,
+} from "@mui/material";
 import Link from "next/link";
-import styles from "../../styles/Link.module.css";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
 import { GridColDef, GridEventListener, GridRowParams } from "@mui/x-data-grid";
 import { ButtonComponent } from "@/components/shared/index";
@@ -46,12 +51,17 @@ export default function Subscriptions() {
     setExtendedSubscription(params.row);
   };
 
-  if (isLoading) return <CircularProgress />;
-
   return (
     <>
       <Typography variant="h4">Subscription</Typography>
-      <Link className={styles.url} href="/subscriptions/new-subscription">
+      <Divider sx={{ marginY: 3 }} />
+      <Link
+        style={{
+          textDecoration: "none",
+          color: "black",
+        }}
+        href="/subscriptions/new-subscription"
+      >
         <ButtonComponent text={"Create Subscription"} />
       </Link>
       <Grid container spacing={3}>
@@ -60,6 +70,7 @@ export default function Subscriptions() {
             handleEvent={handleEvent}
             tableHeaders={tableHeaders}
             data={data || []}
+            loading={isLoading}
           />
         </Grid>
         <Grid item xs={6}>

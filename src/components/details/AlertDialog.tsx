@@ -7,27 +7,26 @@ import {
   DialogTitle,
 } from "@mui/material";
 import ButtonComponent from "../shared/Button";
-import { Dispatch, SetStateAction } from "react";
 import { deleteSubscriptions } from "@/lib/internalFetchers";
 
 type Props = {
   actorCommonName: string;
   subscriptionId: string;
   open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  handleDialog: (close: boolean) => void;
 };
 
 export default function AlertDialog(props: Props) {
-  const { actorCommonName, subscriptionId, setOpen, open } = props;
+  const { actorCommonName, subscriptionId, open, handleDialog } = props;
 
   const handleClose = () => {
-    setOpen(false);
+    handleDialog(false);
   };
 
   const handleDeletion = async (name: string, subscriptionId: string) => {
     const data = await deleteSubscriptions(name, subscriptionId);
     console.log(data.json());
-    setOpen(false);
+    handleDialog(false);
   };
 
   return (

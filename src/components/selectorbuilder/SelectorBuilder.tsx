@@ -135,6 +135,8 @@ const SelectorBuilder = (props: Props) => {
   };
 
   return (
+    // TODO: add form component
+    // validate fields before submitting
     <Grid container spacing={1}>
       <Grid item xs={6}>
         <Select
@@ -149,12 +151,11 @@ const SelectorBuilder = (props: Props) => {
       {/* FIXME */}
       {formState.messageType.includes(DENM) && (
         <Grid item xs={6}>
-          <Select
+          <TextField
             value={formState.causeCodes}
             label={"Cause Codes"}
-            name={"causeCode"}
-            data={denmCauseCodes}
-            onChange={handleSelect}
+            name={"causeCodes"}
+            onChange={handleTextField}
             disabled={advancedMode}
           />
         </Grid>

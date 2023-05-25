@@ -7,12 +7,14 @@ import {
 import { ExtendedSubscription } from "@/types/subscription";
 import { ExtendedCapability } from "@/types/capability";
 import { styled } from "@mui/material/styles";
+import { Box } from "@mui/material";
 
 type Props = {
   tableHeaders: GridColDef[];
   data: ExtendedSubscription[] | ExtendedCapability[] | [];
   handleEvent?: GridEventListener<"rowClick">;
   disableRowSelectionOnClick?: boolean;
+  loading: boolean;
 };
 
 export default function DataGrid(props: Props) {
@@ -21,27 +23,28 @@ export default function DataGrid(props: Props) {
     data,
     tableHeaders,
     disableRowSelectionOnClick = false,
+    loading,
   } = props;
 
   return (
-    <>
+    <Box sx={{ height: "70vh" }}>
       <StyledDataGrid
         onRowClick={handleEvent}
         disableRowSelectionOnClick={disableRowSelectionOnClick}
-        autoHeight
         rows={data}
         columns={tableHeaders}
+        loading={loading}
         sx={{ backgroundColor: "white" }}
         initialState={{
           pagination: {
             paginationModel: {
-              pageSize: 15,
+              pageSize: 10,
             },
           },
         }}
-        pageSizeOptions={[10]}
+        pageSizeOptions={[10, 25, 50]}
       />
-    </>
+    </Box>
   );
 }
 

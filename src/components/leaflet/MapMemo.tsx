@@ -1,3 +1,4 @@
+import { CircularProgress } from "@mui/material";
 import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 
@@ -15,7 +16,7 @@ export default function MapMemo({
   const Map = useMemo(
     () =>
       dynamic(() => import("./MapContainer"), {
-        loading: () => <p>A map is loading</p>,
+        loading: () => <CircularProgress />,
         ssr: false,
       }),
     []

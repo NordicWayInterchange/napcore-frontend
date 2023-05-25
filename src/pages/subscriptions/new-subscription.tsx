@@ -1,6 +1,13 @@
 import { useState } from "react";
 import SelectorBuilder from "@/components/selectorbuilder/SelectorBuilder";
-import { Box, FormControl, Grid, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Divider,
+  FormControl,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
 import React from "react";
 import { GridColDef } from "@mui/x-data-grid";
 import { Subscription } from "@/types/napcore/subscription";
@@ -50,6 +57,7 @@ const NewSubscription = () => {
   return (
     <Box>
       <Typography variant="h4">Create subscription</Typography>
+      <Divider sx={{ marginY: 3 }} />
       <Grid container spacing={3}>
         <Grid item xs={6}>
           <SelectorBuilder
@@ -63,6 +71,7 @@ const NewSubscription = () => {
             disableRowSelectionOnClick={true}
             tableHeaders={tableHeaders}
             data={matchingCapabilities.data || []}
+            loading={matchingCapabilities.isLoading}
           />
         </Grid>
       </Grid>

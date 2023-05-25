@@ -36,6 +36,7 @@ export default function MapControls({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          p: 3,
         }}
       >
         <Typography noWrap={true}>{hash && hash.join()}</Typography>

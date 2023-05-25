@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ButtonComponent from "../shared/Button";
 import { ExtendedSubscription } from "@/types/subscription";
 import { InformationText, AlertDialog } from "./index";
@@ -8,12 +8,16 @@ type Props = {
 };
 
 export default function SubscriptionDetails({ extendedSubscription }: Props) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState<boolean>(false);
 
   if (!extendedSubscription) return <InformationText text="subscription" />;
 
   const handleClickOpen = () => {
     setOpen(true);
+  };
+
+  const handleClickClose = (close: boolean) => {
+    setOpen(close);
   };
 
   return (
@@ -22,9 +26,9 @@ export default function SubscriptionDetails({ extendedSubscription }: Props) {
       <ButtonComponent text="Unsubscribe" onClick={handleClickOpen} />
       <AlertDialog
         open={open}
-        setOpen={setOpen}
         actorCommonName={"anna"}
         subscriptionId={extendedSubscription.id}
+        handleDialog={handleClickClose}
       />
     </div>
   );
