@@ -33,26 +33,6 @@ export default function Layout({ children }: LayoutProps) {
     );
   }
 
-  if (authStatus == "unauthenticated") {
-    return (
-      <Box>
-        <Navbar />
-        <Box
-          component="main"
-          sx={{
-            bgcolor: theme.palette.mainBackgroundColor,
-            height: "100vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          {children}
-        </Box>
-      </Box>
-    );
-  }
-
   return (
     <Box
       component="main"
@@ -64,7 +44,8 @@ export default function Layout({ children }: LayoutProps) {
         justifyContent: "center",
       }}
     >
-      <CircularProgress />;
+      <Navbar />
+      {authStatus == "unauthenticated" ? children : <CircularProgress />}
     </Box>
   );
 }
