@@ -41,6 +41,12 @@ export default function DataGrid(props: Props) {
               pageSize: 10,
             },
           },
+          sorting: {
+            /* TODO:
+             *   - sub does not have pub. id, so we need to sort on id
+             * */
+            sortModel: [{ field: "publicationId", sort: "desc" }],
+          },
         }}
         pageSizeOptions={[10, 25, 50]}
       />

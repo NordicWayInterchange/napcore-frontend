@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  Box,
-  CircularProgress,
-  Divider,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import { useNetworkCapabilities } from "@/hooks/useNetworkCapabilities";
 import { GridColDef, GridEventListener, GridRowParams } from "@mui/x-data-grid";
 import DataGrid from "@/components/datagrid/DataGrid";
@@ -15,6 +9,7 @@ import { useSession } from "next-auth/react";
 
 const tableHeaders: GridColDef[] = [
   { ...dataGridTemplate, field: "publisherId", headerName: "Publisher ID" },
+  { ...dataGridTemplate, field: "publicationId", headerName: "Publication ID" },
   {
     ...dataGridTemplate,
     field: "messageType",
@@ -36,7 +31,7 @@ export default function NetworkCapabilities() {
   const { data: session } = useSession();
 
   // TODO: Common name needs a prefix
-  const { data, isLoading, isFetching } = useNetworkCapabilities(
+  const { data, isLoading } = useNetworkCapabilities(
     session?.user?.email as string
   );
 
