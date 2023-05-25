@@ -2,7 +2,12 @@ import Box from "@mui/material/Box";
 import React, { ReactNode } from "react";
 import Sidebar from "./Sidebar";
 import { useSession } from "next-auth/react";
-import { CircularProgress, Toolbar, useTheme } from "@mui/material";
+import {
+  CircularProgress,
+  CssBaseline,
+  Toolbar,
+  useTheme,
+} from "@mui/material";
 import Navbar from "./Navbar";
 
 type LayoutProps = {
@@ -44,6 +49,7 @@ export default function Layout({ children }: LayoutProps) {
         justifyContent: "center",
       }}
     >
+      <CssBaseline />
       <Navbar />
       {authStatus == "unauthenticated" ? children : <CircularProgress />}
     </Box>
