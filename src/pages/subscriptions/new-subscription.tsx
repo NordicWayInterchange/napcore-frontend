@@ -1,18 +1,9 @@
 import { useState } from "react";
 import SelectorBuilder from "@/components/selectorbuilder/SelectorBuilder";
-import {
-  Box,
-  Divider,
-  FormControl,
-  Grid,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Grid, Typography } from "@mui/material";
 import React from "react";
 import { GridColDef } from "@mui/x-data-grid";
-import { Subscription } from "@/types/napcore/subscription";
 import { useMatchingCapabilities } from "@/hooks/useMatchingCapabilities";
-import ButtonComponent from "@/components/shared/Button";
 import DataGrid from "@/components/datagrid/DataGrid";
 import { dataGridTemplate } from "@/components/datagrid/DataGridTemplate";
 import { useSession } from "next-auth/react";
@@ -22,6 +13,11 @@ const tableHeaders: GridColDef[] = [
     ...dataGridTemplate,
     field: "publisherId",
     headerName: "Publisher ID",
+  },
+  {
+    ...dataGridTemplate,
+    field: "publicationId",
+    headerName: "Publication ID",
   },
   {
     ...dataGridTemplate,
