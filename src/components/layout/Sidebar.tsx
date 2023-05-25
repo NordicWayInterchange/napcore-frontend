@@ -16,6 +16,7 @@ import {
 import Link from "next/link";
 import React from "react";
 import { useRouter } from "next/router";
+import Navbar from "./Navbar";
 
 const width = 240;
 
@@ -30,25 +31,12 @@ const admin = [
 ];
 
 export default function Sidebar() {
-  const theme = useTheme();
   const router = useRouter();
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar
-        elevation={0}
-        sx={{
-          zIndex: (index) => index.zIndex.drawer + 1,
-          backgroundColor: theme.palette.navbarBackgroundColor,
-        }}
-        position="fixed"
-      >
-        <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            Transportportal
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <Navbar />
       <Drawer
         sx={{
           width: width,
