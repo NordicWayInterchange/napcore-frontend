@@ -3,7 +3,6 @@ import { ExtendedCapability } from "@/types/capability";
 import { InformationText } from "./index";
 import { ButtonComponent } from "../shared";
 import { createSubscription } from "@/lib/internalFetchers";
-import { generateSelector } from "@/lib/generateSelector";
 import { Box, List, ListItem, ListItemText } from "@mui/material";
 import MapDialog from "../leaflet/MapDialog";
 
@@ -17,6 +16,7 @@ export default function CapabilityDetails({ extendedCapability }: Props) {
   if (!extendedCapability) return <InformationText text="capability" />;
 
   const capability = Object.keys(extendedCapability);
+  const selector = `(publicationId = '${extendedCapability.publicationId}')`;
 
   const saveSubscription = async (name: string, selector: string) => {
     const response = await createSubscription(name, selector);
@@ -53,9 +53,7 @@ export default function CapabilityDetails({ extendedCapability }: Props) {
       </List>
       <ButtonComponent
         text="Subscribe"
-        onClick={() =>
-          saveSubscription("anna", generateSelector(extendedCapability))
-        }
+        onClick={() => saveSubscription("anna", selector)}
       />
       {extendedCapability.quadTree && (
         <ButtonComponent text="Map" onClick={handleClickOpen} />
