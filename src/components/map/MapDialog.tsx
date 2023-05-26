@@ -1,15 +1,5 @@
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "@mui/material";
-import ButtonComponent from "../shared/Button";
-import { useState } from "react";
-import { deleteSubscriptions } from "@/lib/internalFetchers";
-import { MapContainer } from "react-leaflet";
-import MapMemo from "./MapMemo";
+import { Dialog, DialogContent } from "@mui/material";
+import Map from "./Map";
 
 type Props = {
   quadtreeCallback?: (value: string[]) => void;
@@ -36,7 +26,7 @@ export default function MapDialog(props: Props) {
     <Dialog maxWidth={"xl"} open={open} onClose={handleClose}>
       {/* <DialogTitle>Are you sure?</DialogTitle> */}
       <DialogContent>
-        <MapMemo
+        <Map
           quadtree={quadtree}
           quadtreeCallback={quadtreeCallback}
           interactive={interactive}

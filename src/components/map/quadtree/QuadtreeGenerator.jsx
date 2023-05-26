@@ -5,10 +5,10 @@ import {
   rectangleStyle,
   rectangleStyleHover,
   rectangleStyleSelect,
-} from "./rectangleStyles";
-import quadAdapter from "./quadAdapter";
+} from "./RectangleStyles";
+import quadAdapter from "../adapters/QuadAdapter";
 
-export default function MapComponent({
+export default function QuadtreeGenerator({
   quadtree,
   quadtreeCallback,
   controlsCallback,

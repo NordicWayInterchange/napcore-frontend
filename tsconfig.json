@@ -22,8 +22,6 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/components/leaflet/styles/rectangle.js",
-    "src/components/leaflet/geohash.js"
   ],
   "exclude": ["node_modules"]
 }

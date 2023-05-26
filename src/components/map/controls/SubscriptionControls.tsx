@@ -1,20 +1,14 @@
 import { TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useMemo } from "react";
-
-const POSITION_CLASSES = {
-  bottomleft: "leaflet-bottom leaflet-left",
-  bottomright: "leaflet-bottom leaflet-right",
-  topleft: "leaflet-top leaflet-left",
-  topright: "leaflet-top leaflet-right",
-};
+import { POSITIONS } from "@/components/map/controls/Positions";
 
 type MapControlsProps = {
   controlsHash: string[];
   quadtree: string[];
 };
 
-export default function MapControls({
+export default function SubscriptionControls({
   controlsHash,
   quadtree,
 }: MapControlsProps) {
@@ -45,7 +39,7 @@ export default function MapControls({
     [hash]
   );
   return (
-    <div className={POSITION_CLASSES.topright}>
+    <div className={POSITIONS.topright}>
       <div className="leaflet-control leaflet-bar">{inputBar}</div>
     </div>
   );

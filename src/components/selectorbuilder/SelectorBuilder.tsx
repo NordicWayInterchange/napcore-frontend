@@ -8,9 +8,9 @@ import Select from "../shared/Select";
 import { generateSelector } from "@/lib/generateSelector";
 import TextArea from "../shared/TextArea";
 import { ButtonComponent } from "../shared";
-import { denmCauseCodes } from "@/lib/denmCauseCodes";
+import { CauseCodes } from "@/lib/causeCodes";
 import { createSubscription } from "@/lib/internalFetchers";
-import MapDialog from "../leaflet/MapDialog";
+import MapDialog from "../map/MapDialog";
 import Alert from "../shared/Alert";
 
 type Props = {
