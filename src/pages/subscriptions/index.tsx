@@ -5,6 +5,7 @@ import {
   CircularProgress,
   Divider,
   Grid,
+  IconButton,
   Typography,
 } from "@mui/material";
 import Link from "next/link";
@@ -16,7 +17,10 @@ import { useSession } from "next-auth/react";
 import { dataGridTemplate } from "@/components/datagrid/DataGridTemplate";
 import DataGrid from "@/components/datagrid/DataGrid";
 import { statusChips } from "@/lib/statusChips";
+import DeleteIcon from "@mui/icons-material/Delete";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
+// TODO: Extract to seperate file
 const tableHeaders: GridColDef[] = [
   {
     ...dataGridTemplate,
@@ -48,6 +52,27 @@ const tableHeaders: GridColDef[] = [
     field: "lastUpdatedTimeStamp",
     headerName: "Last updated",
   },
+  {
+    ...dataGridTemplate,
+    field: "actions",
+    headerName: "",
+    sortable: false,
+    filterable: false,
+    disableColumnMenu: true,
+    align: "right",
+    renderCell: (cell) => {
+      return (
+        <Box>
+          <IconButton onClick={() => console.log("clicked trash")}>
+            <DeleteIcon />
+          </IconButton>
+          <IconButton onClick={() => console.log("clicked more")}>
+            <MoreVertIcon />
+          </IconButton>
+        </Box>
+      );
+    },
+  },
 ];
 
 export default function Subscriptions() {
@@ -74,10 +99,12 @@ export default function Subscriptions() {
         }}
         href="/subscriptions/new-subscription"
       >
+        {/*
         <ButtonComponent text={"Create Subscription"} />
+*/}
       </Link>
       <Grid container spacing={3}>
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <DataGrid
             handleEvent={handleEvent}
             tableHeaders={tableHeaders}
@@ -85,9 +112,9 @@ export default function Subscriptions() {
             loading={isLoading}
           />
         </Grid>
-        <Grid item xs={6}>
+        {/*        <Grid item xs={6}>
           <SubscriptionDetails extendedSubscription={extendedSubscription} />
-        </Grid>
+        </Grid>*/}
       </Grid>
     </>
   );

@@ -29,8 +29,8 @@ export default function DataGrid(props: Props) {
   return (
     <Box sx={{ height: "70vh" }}>
       <StyledDataGrid
-        onRowClick={handleEvent}
-        disableRowSelectionOnClick={disableRowSelectionOnClick}
+        //onRowClick={handleEvent}
+        disableRowSelectionOnClick={true}
         rows={data}
         columns={tableHeaders}
         loading={loading}
