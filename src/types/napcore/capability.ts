@@ -10,6 +10,7 @@ export type Application = {
   protocolVersion: string;
   publicationId: string;
   quadTree: Array<string>;
+  causeCodes?: Array<number>;
 };
 
 export type Metadata = {

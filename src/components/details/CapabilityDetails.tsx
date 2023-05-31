@@ -40,7 +40,7 @@ export default function CapabilityDetails({ extendedCapability }: Props) {
       }}
     >
       <List>
-        {capability.map((key, index) => (
+        {/*{capability.map((key, index) => (
           <ListItem key={index} disablePadding>
             <ListItemText
               primary={key}
@@ -49,7 +49,13 @@ export default function CapabilityDetails({ extendedCapability }: Props) {
               }
             />
           </ListItem>
-        ))}
+        ))}*/}
+        {extendedCapability.causeCodesDictionary &&
+          extendedCapability.causeCodesDictionary.map((key, index) => (
+            <ListItem key={index} disablePadding>
+              <ListItemText primary={key.message} />
+            </ListItem>
+          ))}
       </List>
       <ButtonComponent
         text="Subscribe"

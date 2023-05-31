@@ -21,13 +21,8 @@ export type SubscriptionsSubscription = {
   selector: string;
   lastUpdatedTimeStamp: number;
   status: SubscriptionStatus;
+  endpoints: Array<Endpoint>;
 };
-
-export type Subscription =
-  | SubscriptionsSubscription
-  | {
-      endpoints: Endpoint[];
-    };
 
 export type Subscriptions = {
   name: string;

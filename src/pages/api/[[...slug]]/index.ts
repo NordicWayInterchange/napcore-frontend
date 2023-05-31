@@ -20,6 +20,7 @@ import {
 import { ExtendedCapability } from "@/types/capability";
 import { Capabilities, Capability } from "@/types/napcore/capability";
 import { getToken } from "next-auth/jwt";
+import { denmCauseCodes } from "@/lib/denmCauseCodes";
 
 const fetchCapabilityCounter = async (
   params: basicGetParams,
@@ -125,7 +126,26 @@ const fetchNetworkCapabilities = async (
     return [
       res.status,
       capabilities.capabilities.map((capability, ix) => {
-        return { ...capability.application, id: ix };
+        let causeCodes;
+
+        if (
+          "causeCodes" in capability.application &&
+          capability.application.causeCodes
+        ) {
+          causeCodes = capability.application.causeCodes.map((causeCode) => {
+            return {
+              code: causeCode,
+              /*TODO: Fix*/
+              message: denmCauseCodes[causeCode],
+            };
+          });
+        }
+
+        return {
+          ...capability.application,
+          id: ix,
+          causeCodesDictionary: causeCodes,
+        };
       }),
     ];
   }
