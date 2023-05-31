@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "./api/auth/[...nextauth]";
 import Image from "next/image";
 import logo from "@/../public/nordic-way-logo.png";
-import { Button, Card } from "@mui/material";
+import { Button, Card, Typography } from "@mui/material";
 
 export default function login({
   providers,
@@ -18,15 +18,27 @@ export default function login({
       sx={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        padding: 8,
-        gap: 8,
+        //alignItems: "center",
+        padding: 5,
+        gap: 3,
+        width: "35vh",
       }}
     >
-      <Image src={logo} alt="Nordic Way logo" width={200} />
+      <Image
+        style={{ alignSelf: "center" }}
+        src={logo}
+        alt="Nordic Way logo"
+        width={200}
+      />
+
+      <Typography variant="h6">Welcome to Napcore</Typography>
+      <Typography variant="body1">
+        Napcore is restricted to users in the organization. If you want access,
+        you can contact [name]
+      </Typography>
 
       {Object.values(providers).map((provider) => (
-        <div key={provider.name}>
+        <div style={{ alignSelf: "center" }} key={provider.name}>
           <Button variant="contained" onClick={() => signIn(provider.id)}>
             Sign in with {provider.name}
           </Button>
@@ -40,7 +52,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
 
   if (session) {
-    return { redirect: { destination: "/subscriptions" } };
+    return { redirect: { destination: "/" } };
   }
 
   const providers = await getProviders();
