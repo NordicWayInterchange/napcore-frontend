@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   Box,
+  Chip,
   CircularProgress,
   Divider,
   Grid,
@@ -14,6 +15,7 @@ import SubscriptionDetails from "@/components/details/SubscriptionDetails";
 import { useSession } from "next-auth/react";
 import { dataGridTemplate } from "@/components/datagrid/DataGridTemplate";
 import DataGrid from "@/components/datagrid/DataGrid";
+import { statusChips } from "@/lib/statusChips";
 
 const tableHeaders: GridColDef[] = [
   {
@@ -23,18 +25,28 @@ const tableHeaders: GridColDef[] = [
   },
   {
     ...dataGridTemplate,
-    field: "consumerCommonName",
-    headerName: "Consumer Common Name",
-  },
-  {
-    ...dataGridTemplate,
     field: "status",
     headerName: "Status",
+    renderCell: (cell) => {
+      return (
+        <Chip
+          sx={{ borderRadius: 1 }}
+          // TODO: Fix
+          color={statusChips[cell.value]}
+          label={cell.value}
+        />
+      );
+    },
   },
   {
     ...dataGridTemplate,
     field: "capabilityMatches",
     headerName: "Capability Matches",
+  },
+  {
+    ...dataGridTemplate,
+    field: "lastUpdatedTimeStamp",
+    headerName: "Last updated",
   },
 ];
 
