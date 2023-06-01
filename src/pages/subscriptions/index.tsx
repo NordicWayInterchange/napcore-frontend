@@ -19,78 +19,94 @@ import DataGrid from "@/components/datagrid/DataGrid";
 import { statusChips } from "@/lib/statusChips";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-
-// TODO: Extract to seperate file
-const tableHeaders: GridColDef[] = [
-  {
-    ...dataGridTemplate,
-    field: "id",
-    headerName: "ID",
-  },
-  {
-    ...dataGridTemplate,
-    field: "status",
-    headerName: "Status",
-    renderCell: (cell) => {
-      return (
-        <Chip
-          sx={{ borderRadius: 1 }}
-          // TODO: Fix
-          color={statusChips[cell.value]}
-          label={cell.value}
-        />
-      );
-    },
-  },
-  {
-    ...dataGridTemplate,
-    field: "capabilityMatches",
-    headerName: "Capability Matches",
-  },
-  {
-    ...dataGridTemplate,
-    field: "lastUpdatedTimeStamp",
-    headerName: "Last updated",
-  },
-  {
-    ...dataGridTemplate,
-    field: "actions",
-    headerName: "",
-    sortable: false,
-    filterable: false,
-    disableColumnMenu: true,
-    align: "right",
-    renderCell: (cell) => {
-      return (
-        <Box>
-          <IconButton onClick={() => console.log("clicked trash")}>
-            <DeleteIcon />
-          </IconButton>
-          <IconButton onClick={() => console.log("clicked more")}>
-            <MoreVertIcon />
-          </IconButton>
-        </Box>
-      );
-    },
-  },
-];
+import { DeleteSubDialog } from "@/components/details";
+import { SubscriptionsSubscription } from "@/types/napcore/subscription";
+import { ExtendedSubscription } from "@/types/subscription";
+import SubscriptionsDrawer from "@/components/subscriptions/SubscriptionsDrawer";
 
 export default function Subscriptions() {
   const { data: session } = useSession();
-  const { data, isLoading, isFetching } = useSubscriptions(
-    session?.user?.email as string
-  );
-  const [extendedSubscription, setExtendedSubscription] = useState();
+  const { data, isLoading } = useSubscriptions(session?.user?.email as string);
+  const [open, setOpen] = useState<boolean>(false);
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+  const [subscriptionRow, setSubscriptionRow] =
+    useState<ExtendedSubscription>();
 
-  const handleEvent: GridEventListener<"rowClick"> = (
-    params: GridRowParams<any>
-  ) => {
-    setExtendedSubscription(params.row);
+  const handleDelete = (subscription: ExtendedSubscription) => {
+    setSubscriptionRow(subscription);
+    setOpen(true);
   };
+
+  const handleMore = (subscription: ExtendedSubscription) => {
+    setSubscriptionRow(subscription);
+    setDrawerOpen(true);
+  };
+
+  const handleMoreClose = () => {
+    setDrawerOpen(false);
+  };
+
+  const handleClickClose = (close: boolean) => {
+    setOpen(close);
+  };
+
+  const tableHeaders: GridColDef[] = [
+    {
+      ...dataGridTemplate,
+      field: "id",
+      headerName: "ID",
+    },
+    {
+      ...dataGridTemplate,
+      field: "status",
+      headerName: "Status",
+      renderCell: (cell) => {
+        return (
+          <Chip
+            sx={{ borderRadius: 1 }}
+            // TODO: Fix
+            color={statusChips[cell.value]}
+            label={cell.value}
+          />
+        );
+      },
+    },
+    {
+      ...dataGridTemplate,
+      field: "capabilityMatches",
+      headerName: "Capability Matches",
+    },
+    {
+      ...dataGridTemplate,
+      field: "lastUpdatedTimeStamp",
+      headerName: "Last updated",
+    },
+    {
+      ...dataGridTemplate,
+      field: "actions",
+      headerName: "",
+      sortable: false,
+      filterable: false,
+      disableColumnMenu: true,
+      align: "right",
+      renderCell: (params) => {
+        return (
+          <Box>
+            <IconButton onClick={() => handleDelete(params.row)}>
+              <DeleteIcon />
+            </IconButton>
+            <IconButton onClick={() => handleMore(params.row)}>
+              <MoreVertIcon />
+            </IconButton>
+          </Box>
+        );
+      },
+    },
+  ];
 
   return (
     <>
-      <Typography variant="h4">Subscription</Typography>
+      <Typography variant="h4">Subscriptions</Typography>
       <Divider sx={{ marginY: 3 }} />
       <Link
         style={{
@@ -98,24 +114,34 @@ export default function Subscriptions() {
           color: "black",
         }}
         href="/subscriptions/new-subscription"
-      >
-        {/*
-        <ButtonComponent text={"Create Subscription"} />
-*/}
-      </Link>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
+      ></Link>
+      <Box sx={{ display: "flex" }}>
+        <Box sx={{ flexGrow: 1 }}>
           <DataGrid
+            /*
             handleEvent={handleEvent}
+*/
             tableHeaders={tableHeaders}
             data={data || []}
             loading={isLoading}
           />
-        </Grid>
-        {/*        <Grid item xs={6}>
-          <SubscriptionDetails extendedSubscription={extendedSubscription} />
-        </Grid>*/}
-      </Grid>
+        </Box>
+        {subscriptionRow && (
+          <Box>
+            <SubscriptionsDrawer
+              handleMoreClose={handleMoreClose}
+              open={drawerOpen}
+              subscription={subscriptionRow as ExtendedSubscription}
+            />
+          </Box>
+        )}
+        <DeleteSubDialog
+          subscription={subscriptionRow as ExtendedSubscription}
+          handleDialog={handleClickClose}
+          open={open}
+          actorCommonName={"anna"}
+        />
+      </Box>
     </>
   );
 }
