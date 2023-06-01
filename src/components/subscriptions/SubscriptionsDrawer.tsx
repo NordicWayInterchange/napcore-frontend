@@ -211,9 +211,12 @@ const SubscriptionsDrawer = ({
               </FormControl>
             </Box>
           </ListItem>
-
           <ListItem>
-            <Button sx={{ borderRadius: 100 }} variant={"contained"}>
+            <Button
+              sx={{ borderRadius: 100 }}
+              variant={"contained"}
+              color={"depricatedLight"}
+            >
               Remove Subscription
             </Button>
           </ListItem>

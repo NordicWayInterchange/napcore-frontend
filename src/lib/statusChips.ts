@@ -1,8 +1,8 @@
 export const statusChips = {
-  REQUESTED: "default",
-  CREATED: "primary",
-  ILLEGAL: "secondary",
-  NOT_VALID: "error",
-  NO_OVERLAP: "info",
-  RESUBSCRIBE: "success",
+  REQUESTED: "grayLight",
+  CREATED: "greenLight",
+  ILLEGAL: "depricatedLight",
+  NOT_VALID: "pinkLight",
+  NO_OVERLAP: "blueLight",
+  RESUBSCRIBE: "yellowLight",
 };
