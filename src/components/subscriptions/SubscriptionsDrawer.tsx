@@ -23,8 +23,9 @@ import { ExtendedSubscription } from "@/types/subscription";
 import { statusChips } from "@/lib/statusChips";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import CloseIcon from "@mui/icons-material/Close";
+import { left } from "@popperjs/core";
 
-const width = 400;
+const width = 600;
 
 type Props = {
   subscription: ExtendedSubscription;
@@ -60,8 +61,13 @@ const SubscriptionsDrawer = ({
           boxSizing: "border-box",
         },
       }}
+      PaperProps={{
+        sx: {
+          backgroundColor: "#F9F9F9",
+        },
+      }}
       //TODO: change to persistent
-      variant="permanent"
+      variant="temporary"
       anchor="right"
       open={open}
       onClose={handleClose}
@@ -69,9 +75,9 @@ const SubscriptionsDrawer = ({
       <Toolbar />
       <Box sx={{ padding: 1, width: 1 }}>
         <List>
-          {/*        <IconButton onClick={handleMoreClose} edge="end" color="primary">
-          <CloseIcon />
-        </IconButton>*/}
+          <IconButton onClick={handleMoreClose} edge="end" color="primary">
+            <CloseIcon />
+          </IconButton>
           <ListItem>
             <Box
               sx={{
@@ -93,7 +99,7 @@ const SubscriptionsDrawer = ({
           <ListItem>
             <Box
               sx={{
-                backgroundColor: theme.palette.mainBackgroundColor,
+                backgroundColor: "#FFFFFF",
                 padding: 2,
                 borderRadius: 2,
                 width: 1,
@@ -107,18 +113,20 @@ const SubscriptionsDrawer = ({
                     secondary={subscription.capabilityMatches}
                   />
                 </Box>
-                <ListItemText
-                  primary={"Last updated"}
-                  // TODO: Update
-                  secondary={"12:46"}
-                />
+                <Box>
+                  <ListItemText
+                    primary={"Last updated"}
+                    // TODO: Update
+                    secondary={"12:46"}
+                  />
+                </Box>
               </Box>
             </Box>
           </ListItem>
           <ListItem>
             <Box
               sx={{
-                backgroundColor: theme.palette.mainBackgroundColor,
+                backgroundColor: "#FFFFFF",
                 padding: 2,
                 borderRadius: 2,
                 width: 1,
@@ -191,7 +199,7 @@ const SubscriptionsDrawer = ({
           <ListItem>
             <Box
               sx={{
-                backgroundColor: theme.palette.mainBackgroundColor,
+                backgroundColor: "#FFFFFF",
                 padding: 2,
                 borderRadius: 2,
                 width: 1,

@@ -127,13 +127,11 @@ export default function Subscriptions() {
           />
         </Box>
         {subscriptionRow && (
-          <Box>
-            <SubscriptionsDrawer
-              handleMoreClose={handleMoreClose}
-              open={drawerOpen}
-              subscription={subscriptionRow as ExtendedSubscription}
-            />
-          </Box>
+          <SubscriptionsDrawer
+            handleMoreClose={handleMoreClose}
+            open={drawerOpen}
+            subscription={subscriptionRow as ExtendedSubscription}
+          />
         )}
         <DeleteSubDialog
           subscription={subscriptionRow as ExtendedSubscription}
