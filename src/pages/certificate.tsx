@@ -22,11 +22,9 @@ export default function Certificate() {
 
   const handleClick = () => {
     createPKCS10({
-      enrollmentID: "user1",
-      organizationUnit: "Marketing",
-      organization: "Farmer Market",
-      state: "M",
-      country: "V",
+      commonName: "Henrik",
+      organization: "Bouvet Norge AS",
+      country: "NO",
     }).then((value) => {
       // @ts-ignore
       setCsr({ csr: value.csr, privateKey: value.privateKey });

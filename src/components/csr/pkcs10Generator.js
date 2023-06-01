@@ -22,13 +22,7 @@ const signAlg = "ECDSA";
  * createPKCS10({ enrollmentID: 'user1', organizationUnit: 'Marketing', organization: 'Farmer Market', state: 'M', country: 'V' })
  *  .then(({csr, privateKey} => {...}))
  */
-export async function createPKCS10({
-  enrollmentID,
-  organizationUnit,
-  organization,
-  state,
-  country,
-}) {
+export async function createPKCS10({ commonName, organization, country }) {
   const crypto = getWebCrypto();
 
   const keyPair = await generateKeyPair(crypto, getAlgorithm(signAlg, hashAlg));
@@ -38,10 +32,8 @@ export async function createPKCS10({
       toBase64(
         arrayBufferToString(
           await createCSR(keyPair, hashAlg, {
-            enrollmentID,
-            organizationUnit,
+            commonName,
             organization,
-            state,
             country,
           })
         )
@@ -59,7 +51,7 @@ export async function createPKCS10({
 async function createCSR(
   keyPair,
   hashAlg,
-  { enrollmentID, organizationUnit, organization, state, country }
+  { commonName, organization, country }
 ) {
   const pkcs10 = new CertificationRequest();
   pkcs10.version = 0;
@@ -72,26 +64,14 @@ async function createCSR(
   );
   pkcs10.subject.typesAndValues.push(
     new AttributeTypeAndValue({
-      type: "2.5.4.8", //stateOrProvinceName
-      value: new asn1js.Utf8String({ value: state }),
-    })
-  );
-  pkcs10.subject.typesAndValues.push(
-    new AttributeTypeAndValue({
       type: "2.5.4.10", //organizationName
       value: new asn1js.Utf8String({ value: organization }),
     })
   );
   pkcs10.subject.typesAndValues.push(
     new AttributeTypeAndValue({
-      type: "2.5.4.11", //organizationUnitName
-      value: new asn1js.Utf8String({ value: organizationUnit }),
-    })
-  );
-  pkcs10.subject.typesAndValues.push(
-    new AttributeTypeAndValue({
       type: "2.5.4.3", //commonName
-      value: new asn1js.Utf8String({ value: enrollmentID }),
+      value: new asn1js.Utf8String({ value: commonName }),
     })
   );
 
