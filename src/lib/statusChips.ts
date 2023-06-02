@@ -6,3 +6,15 @@ export const statusChips = {
   NO_OVERLAP: "blueLight",
   RESUBSCRIBE: "yellowLight",
 };
+
+export const messageTypeChips = {
+  DATEX2: "grayLight",
+  DENM: "greenLight",
+  IVIM: "depricatedLight",
+  SPATEM: "pinkLight",
+  MAPEM: "blueLight",
+  SREM: "yellowLight",
+  // TODO: Update colors
+  SSEM: "yellowLight",
+  CAM: "yellowLight",
+};

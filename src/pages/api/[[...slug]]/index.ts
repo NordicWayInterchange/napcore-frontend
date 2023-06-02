@@ -20,7 +20,7 @@ import {
 import { ExtendedCapability } from "@/types/capability";
 import { Capabilities, Capability } from "@/types/napcore/capability";
 import { getToken } from "next-auth/jwt";
-import { denmCauseCodes } from "@/lib/denmCauseCodes";
+import { CauseCodes } from "@/lib/causeCodes";
 
 const fetchCapabilityCounter = async (
   params: basicGetParams,
@@ -136,7 +136,7 @@ const fetchNetworkCapabilities = async (
             return {
               code: causeCode,
               /*TODO: Fix*/
-              message: denmCauseCodes[causeCode],
+              message: CauseCodes[causeCode],
             };
           });
         }

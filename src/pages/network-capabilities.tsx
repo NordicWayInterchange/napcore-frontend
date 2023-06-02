@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Divider, IconButton, Typography } from "@mui/material";
+import { Box, Chip, Divider, IconButton, Typography } from "@mui/material";
 import { useNetworkCapabilities } from "@/hooks/useNetworkCapabilities";
 import { GridColDef, GridEventListener, GridRowParams } from "@mui/x-data-grid";
 import DataGrid from "@/components/datagrid/DataGrid";
@@ -11,6 +11,7 @@ import { ExtendedSubscription } from "@/types/subscription";
 import { ExtendedCapability } from "@/types/capability";
 import SubscriptionsDrawer from "@/components/subscriptions/SubscriptionsDrawer";
 import CapabilitiesDrawer from "@/components/capabilities/CapabilitiesDrawer";
+import { messageTypeChips, statusChips } from "@/lib/statusChips";
 
 export default function NetworkCapabilities() {
   const { data: session } = useSession();
@@ -42,6 +43,17 @@ export default function NetworkCapabilities() {
       ...dataGridTemplate,
       field: "messageType",
       headerName: "Message Type",
+      // TODO: Add colors (currently flickering when rerender)
+      /*renderCell: (cell) => {
+        return (
+          <Chip
+            sx={{ borderRadius: 1 }}
+            // TODO: Fix
+            color={messageTypeChips[cell.value]}
+            label={cell.value}
+          />
+        );
+      },*/
     },
     {
       ...dataGridTemplate,

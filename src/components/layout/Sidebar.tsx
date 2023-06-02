@@ -135,7 +135,7 @@ export default function Sidebar() {
               </ListItem>
             </Link>
           </List>
-          <Divider sx={{ marginY: 3 }} />
+          <Divider sx={{ marginY: 2 }} />
           <Box
             sx={{
               display: "flex",
