@@ -1,4 +1,4 @@
-export const denmCauseCodes = {
+export const CauseCodes = {
   1: "Traffic",
   2: "Accident",
   3: "Roadwork",

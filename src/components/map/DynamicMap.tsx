@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { MapContainer as LeafletContainer, TileLayer } from "react-leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import MapComponent from "./MapComponent";
-import MapControls from "./MapControls";
+import QuadtreeGenerator from "./quadtree/QuadtreeGenerator";
+import SubscriptionControls from "./controls/SubscriptionControls";
 import { latLngBounds } from "leaflet";
 
 type Props = {
@@ -11,42 +11,41 @@ type Props = {
   interactive?: boolean;
 };
 
-const ZOOM = 2;
-const BOUNDS = latLngBounds([
-  [-90, -180],
-  [90, 180],
-]);
-
-export default function MapView({
-  quadtreeCallback,
-  quadtree,
-  interactive,
-}: Props) {
+export default function DynamicMap(props: Props) {
+  const { quadtreeCallback, quadtree, interactive } = props;
   const [controlsHash, setControlsHash] = useState<string[]>([]);
 
   const controlsCallback = (hash: string) => {
     setControlsHash([hash]);
   };
 
+  const DEFAULT_ZOOM = 1;
+  const MAX_BOUNDS = latLngBounds([
+    [-90, -180],
+    [90, 180],
+  ]);
+
   return (
-    <LeafletContainer
+    <MapContainer
       center={[0, 0]}
-      zoom={ZOOM}
-      maxBounds={BOUNDS}
+      zoom={DEFAULT_ZOOM}
+      maxBounds={MAX_BOUNDS}
       scrollWheelZoom={true}
-      style={{ height: 900, width: 1200 }}
+      style={{ height: 400, width: 400 }}
     >
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <MapComponent
+      <QuadtreeGenerator
         quadtree={quadtree}
         quadtreeCallback={quadtreeCallback}
         controlsCallback={controlsCallback}
         interactive={interactive}
       />
-      <MapControls controlsHash={controlsHash} quadtree={quadtree} />
-    </LeafletContainer>
+      {interactive && (
+        <SubscriptionControls controlsHash={controlsHash} quadtree={quadtree} />
+      )}
+    </MapContainer>
   );
 }

@@ -19,9 +19,10 @@ function latLonToQtree(lat: number, lon: number, zoom: number) {
 }
 
 function QuadToSlippy(quad: string) {
-  var x = 0;
-  var y = 0;
-  var z = 0;
+  let x = 0;
+  let y = 0;
+  let z = 0;
+
   quad.split("").forEach(function (char: string) {
     x *= 2;
     y *= 2;
@@ -38,7 +39,7 @@ function QuadToSlippy(quad: string) {
   return { x: x, y: y, z: z };
 }
 
-const createQuadAdapter = (map: Map) => ({
+const QuadAdapter = (map: Map) => ({
   range: ["0", "1", "2", "3"],
   encode: function (centroid: LatLng, precision: number) {
     const zoom = precision - 1;
@@ -84,4 +85,4 @@ const createQuadAdapter = (map: Map) => ({
   },
 });
 
-export default createQuadAdapter;
+export default QuadAdapter;

@@ -8,17 +8,9 @@ import React from "react";
 interface Props extends StandardTextFieldProps {}
 
 const TextField = (props: Props) => {
-  const { name, label, onChange, value, disabled = false } = props;
   return (
     <FormControl fullWidth>
-      <MuiTextField
-        sx={{ backgroundColor: "white" }}
-        value={value}
-        name={name}
-        label={label}
-        onChange={onChange}
-        disabled={disabled}
-      />
+      <MuiTextField sx={{ backgroundColor: "white" }} {...props} />
     </FormControl>
   );
 };

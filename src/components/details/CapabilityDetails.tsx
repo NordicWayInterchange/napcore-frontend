@@ -4,7 +4,8 @@ import { InformationText } from "./index";
 import { ButtonComponent } from "../shared";
 import { createSubscription } from "@/lib/internalFetchers";
 import { Box, List, ListItem, ListItemText } from "@mui/material";
-import MapDialog from "../leaflet/MapDialog";
+import MapDialog from "../map/MapDialog";
+import Map from "@/components/map/Map";
 
 type Props = {
   extendedCapability?: ExtendedCapability;
@@ -17,6 +18,7 @@ export default function CapabilityDetails({ extendedCapability }: Props) {
 
   const capability = Object.keys(extendedCapability);
   const selector = `(publicationId = '${extendedCapability.publicationId}')`;
+  const quadtree = extendedCapability.quadTree;
 
   const saveSubscription = async (name: string, selector: string) => {
     const response = await createSubscription(name, selector);
@@ -67,9 +69,10 @@ export default function CapabilityDetails({ extendedCapability }: Props) {
       <MapDialog
         open={open}
         onClose={handleClose}
-        quadtree={extendedCapability.quadTree}
+        quadtree={quadtree}
         interactive={false}
       />
+      <Map quadtree={quadtree} interactive={false} />
     </Box>
   );
 }
