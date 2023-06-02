@@ -9,7 +9,9 @@ export type Application = {
   publisherId: string;
   protocolVersion: string;
   publicationId: string;
+  originatingCountry: string;
   quadTree: Array<string>;
+  causeCodes?: Array<number>;
 };
 
 export type Metadata = {

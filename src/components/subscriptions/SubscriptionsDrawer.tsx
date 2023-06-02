@@ -75,9 +75,11 @@ const SubscriptionsDrawer = ({
       <Toolbar />
       <Box sx={{ padding: 1, width: 1 }}>
         <List>
-          <IconButton onClick={handleMoreClose} edge="end" color="primary">
-            <CloseIcon />
-          </IconButton>
+          <ListItem sx={{ justifyContent: "flex-end" }}>
+            <IconButton onClick={handleMoreClose}>
+              <CloseIcon />
+            </IconButton>
+          </ListItem>
           <ListItem>
             <Box
               sx={{
@@ -132,7 +134,7 @@ const SubscriptionsDrawer = ({
                 width: 1,
               }}
             >
-              {/*TODO: add enpoints (currently existing)*/}
+              {/*TODO: add endpoints (currently not existing)*/}
               {/*<Box>{subscription.endpoints[0].host}</Box>
           <Box>{subscription.endpoints[0].source}</Box>
           <Box>{subscription.endpoints[0].port}</Box>*/}
@@ -142,13 +144,13 @@ const SubscriptionsDrawer = ({
                   contentEditable={false}
                   value={"ampqs://myserver"}
                   label={"Host"}
+                  margin="normal"
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton
                           onClick={() => copyPrivateKey("ampqs://myserver")}
                           edge="end"
-                          color="primary"
                         >
                           <ContentCopyIcon />
                         </IconButton>
@@ -160,13 +162,13 @@ const SubscriptionsDrawer = ({
                   contentEditable={false}
                   value={"Serviceprovider 1-1"}
                   label={"Source"}
+                  margin="normal"
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton
                           onClick={() => copyPrivateKey("Serviceprovider 1-1")}
                           edge="end"
-                          color="primary"
                         >
                           <ContentCopyIcon />
                         </IconButton>
@@ -178,13 +180,13 @@ const SubscriptionsDrawer = ({
                   contentEditable={false}
                   value={"5671"}
                   label={"Port"}
+                  margin="normal"
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton
                           onClick={() => copyPrivateKey("5671")}
                           edge="end"
-                          color="primary"
                         >
                           <ContentCopyIcon />
                         </IconButton>
@@ -207,17 +209,34 @@ const SubscriptionsDrawer = ({
             >
               <Typography>SELECTOR</Typography>
               <FormControl fullWidth>
-                <TextField multiline value={subscription.selector} rows={4} />
+                <TextField
+                  margin="normal"
+                  multiline
+                  value={subscription.selector}
+                  rows={4}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => copyPrivateKey(subscription.selector)}
+                          edge="end"
+                        >
+                          <ContentCopyIcon />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
               </FormControl>
             </Box>
           </ListItem>
           <ListItem>
             <Button
-              sx={{ borderRadius: 100 }}
+              sx={{ borderRadius: 100, textTransform: "none" }}
               variant={"contained"}
               color={"depricatedLight"}
             >
-              Remove Subscription
+              Remove subscription
             </Button>
           </ListItem>
         </List>
