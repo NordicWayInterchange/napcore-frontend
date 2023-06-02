@@ -22,6 +22,7 @@ import CellTowerIcon from "@mui/icons-material/CellTower";
 import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
 import { signOut, useSession } from "next-auth/react";
 import LogoutIcon from "@mui/icons-material/Logout";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 const width = 360;
 
@@ -99,19 +100,54 @@ export default function Sidebar() {
           ))}
         </List>
 
-        <Box
-          sx={{
-            marginTop: `auto`,
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: 2,
-          }}
-        >
-          <Typography>{session?.user?.name}</Typography>
-          <IconButton onClick={handleSignOut}>
-            <LogoutIcon />
-          </IconButton>
+        <Box sx={{ marginTop: "auto", padding: 2 }}>
+          <List>
+            <Link
+              href={"/profile"}
+              style={{
+                textDecoration: "none",
+                color: "inherit",
+              }}
+            >
+              <ListItem
+                sx={{
+                  borderRadius: 100,
+                  backgroundColor:
+                    router.asPath === "/profile"
+                      ? theme.palette.sidebarActiveColor
+                      : null,
+                }}
+                disablePadding
+              >
+                <ListItemButton
+                  sx={{
+                    "&:hover": {
+                      backgroundColor: "transparent",
+                      borderRadius: 100,
+                    },
+                  }}
+                >
+                  <ListItemIcon>
+                    <SettingsIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={"Profile settings"} />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+          </List>
+          <Divider sx={{ marginY: 3 }} />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography>{session?.user?.name}</Typography>
+            <IconButton onClick={handleSignOut}>
+              <LogoutIcon />
+            </IconButton>
+          </Box>
         </Box>
       </Drawer>
     </Box>
