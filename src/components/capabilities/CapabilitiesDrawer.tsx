@@ -7,11 +7,13 @@ import {
   FormControl,
   IconButton,
   InputAdornment,
+  InputLabel,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  MenuItem,
   Select,
   TextField,
   Toolbar,
@@ -129,22 +131,21 @@ const SubscriptionsDrawer = ({ capability, open, handleMoreClose }: Props) => {
                   margin="normal"
                 />
                 {/*TODO: Cause Codes*/}
-                {capability.causeCodes && (
-                  <Select
-                    contentEditable={false}
-                    value={capability.causeCodes}
-                    label={"Cause Codes"}
-                  >
-                    {/*                    {names.map((name) => (
-                      <MenuItem
-                        key={name}
-                        value={name}
-                        style={getStyles(name, personName, theme)}
-                      >
-                        {name}
-                      </MenuItem>
-                    ))}*/}
-                  </Select>
+                {capability.causeCodesDictionary && (
+                  <FormControl>
+                    <InputLabel>Cause codes</InputLabel>
+                    <Select contentEditable={false} value={"Cause codes"}>
+                      {capability.causeCodesDictionary.map((cause) => {
+                        if (cause.message != undefined) {
+                          return (
+                            <MenuItem key={cause.code} value={cause.message}>
+                              {`${cause.code}: ${cause.message}`}
+                            </MenuItem>
+                          );
+                        }
+                      })}
+                    </Select>
+                  </FormControl>
                 )}
                 <TextField
                   contentEditable={false}
