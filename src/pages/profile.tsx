@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   Card,
@@ -61,12 +62,14 @@ export default function Profile() {
             p: 3,
           }}
         >
-          <Image
-            src={session?.user?.image as string}
-            alt="Profile Image"
-            width={200}
-            height={200}
-          />
+          <Avatar sx={{ width: 200, height: 200 }}>
+            <Image
+              src={session?.user?.image as string}
+              alt="Profile Image"
+              width={200}
+              height={200}
+            />
+          </Avatar>
           <List>
             <ListItem>
               <ListItemText primary={"Name"} secondary={session?.user?.name} />
@@ -81,9 +84,19 @@ export default function Profile() {
         </Card>
         <br /> {/*TODO: remove*/}
         <Typography variant="h5">Certificate</Typography>
-        <FormControl>
-          <TextField value={""} label={"Country Code"} margin="normal" />
-          <TextField value={""} label={"Organisation name"} margin="normal" />
+        <FormControl sx={{ width: 300 }}>
+          <TextField
+            sx={{ backgroundColor: "white" }}
+            value={""}
+            label={"Country Code"}
+            margin="normal"
+          />
+          <TextField
+            sx={{ backgroundColor: "white" }}
+            value={""}
+            label={"Organisation name"}
+            margin="normal"
+          />
           <Button onClick={handleClick} variant={"contained"}>
             Generate Certificate
           </Button>

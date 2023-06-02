@@ -1,12 +1,13 @@
 import { useState } from "react";
 import SelectorBuilder from "@/components/selectorbuilder/SelectorBuilder";
-import { Box, Divider, Grid, Typography } from "@mui/material";
+import { Box, Chip, Divider, Grid, Typography } from "@mui/material";
 import React from "react";
 import { GridColDef } from "@mui/x-data-grid";
 import { useMatchingCapabilities } from "@/hooks/useMatchingCapabilities";
 import DataGrid from "@/components/datagrid/DataGrid";
 import { dataGridTemplate } from "@/components/datagrid/DataGridTemplate";
 import { useSession } from "next-auth/react";
+import { messageTypeChips } from "@/lib/statusChips";
 
 const tableHeaders: GridColDef[] = [
   {
@@ -23,6 +24,16 @@ const tableHeaders: GridColDef[] = [
     ...dataGridTemplate,
     field: "messageType",
     headerName: "Message Type",
+    renderCell: (cell) => {
+      return (
+        <Chip
+          sx={{ borderRadius: 1 }}
+          // TODO: Fix
+          color={messageTypeChips[cell.value]}
+          label={cell.value}
+        />
+      );
+    },
   },
   {
     ...dataGridTemplate,
@@ -64,10 +75,10 @@ const NewSubscription = () => {
         </Grid>
         <Grid item xs={6}>
           <DataGrid
-            disableRowSelectionOnClick={true}
-            tableHeaders={tableHeaders}
-            data={matchingCapabilities.data || []}
+            columns={tableHeaders}
+            rows={matchingCapabilities.data || []}
             loading={matchingCapabilities.isLoading}
+            getRowId={(row) => row.publicationId}
           />
         </Grid>
       </Grid>

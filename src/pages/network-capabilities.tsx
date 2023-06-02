@@ -23,8 +23,8 @@ export default function NetworkCapabilities() {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [extendedCapability, setExtendedCapability] = useState();
 
-  const handleMore = (subscription: ExtendedSubscription) => {
-    setCapabilityRow(subscription);
+  const handleMore = (capability: ExtendedSubscription) => {
+    setCapabilityRow(capability);
     setDrawerOpen(true);
   };
 
@@ -44,7 +44,7 @@ export default function NetworkCapabilities() {
       field: "messageType",
       headerName: "Message Type",
       // TODO: Add colors (currently flickering when rerender)
-      /*renderCell: (cell) => {
+      renderCell: (cell) => {
         return (
           <Chip
             sx={{ borderRadius: 1 }}
@@ -53,7 +53,7 @@ export default function NetworkCapabilities() {
             label={cell.value}
           />
         );
-      },*/
+      },
     },
     {
       ...dataGridTemplate,
@@ -92,9 +92,10 @@ export default function NetworkCapabilities() {
       <Box sx={{ display: "flex" }}>
         <Box sx={{ flex: 1 }}>
           <DataGrid
-            tableHeaders={tableHeaders}
-            data={data || []}
+            columns={tableHeaders}
+            rows={data || []}
             loading={isLoading}
+            getRowId={(row) => row.publicationId}
           />
         </Box>
         {capabilityRow && (

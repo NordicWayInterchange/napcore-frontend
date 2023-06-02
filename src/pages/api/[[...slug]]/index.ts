@@ -143,7 +143,7 @@ const fetchNetworkCapabilities = async (
 
         return {
           ...capability.application,
-          id: ix,
+          /*id: ix,*/ // may be needed for a ID in the datagrid, using publication id for now
           causeCodesDictionary: causeCodes,
         };
       }),

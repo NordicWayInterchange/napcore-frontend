@@ -1,39 +1,16 @@
 import React from "react";
-import {
-  DataGrid as MuiDataGrid,
-  GridColDef,
-  GridEventListener,
-} from "@mui/x-data-grid";
-import { ExtendedSubscription } from "@/types/subscription";
-import { ExtendedCapability } from "@/types/capability";
+import { DataGrid as MuiDataGrid, DataGridProps } from "@mui/x-data-grid";
 import { styled } from "@mui/material/styles";
 import { Box } from "@mui/material";
 
-type Props = {
-  tableHeaders: GridColDef[];
-  data: ExtendedSubscription[] | ExtendedCapability[] | [];
-  handleEvent?: GridEventListener<"rowClick">;
-  disableRowSelectionOnClick?: boolean;
-  loading: boolean;
-};
+interface Props extends DataGridProps {}
 
 export default function DataGrid(props: Props) {
-  const {
-    handleEvent,
-    data,
-    tableHeaders,
-    disableRowSelectionOnClick = false,
-    loading,
-  } = props;
-
   return (
     <Box sx={{ height: "70vh" }}>
       <StyledDataGrid
-        //onRowClick={handleEvent}
+        {...props}
         disableRowSelectionOnClick={true}
-        rows={data}
-        columns={tableHeaders}
-        loading={loading}
         sx={{ backgroundColor: "white" }}
         initialState={{
           pagination: {

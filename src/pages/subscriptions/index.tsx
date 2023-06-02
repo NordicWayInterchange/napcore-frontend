@@ -118,11 +118,8 @@ export default function Subscriptions() {
       <Box sx={{ display: "flex" }}>
         <Box sx={{ flexGrow: 1 }}>
           <DataGrid
-            /*
-            handleEvent={handleEvent}
-*/
-            tableHeaders={tableHeaders}
-            data={data || []}
+            columns={tableHeaders}
+            rows={data || []}
             loading={isLoading}
           />
         </Box>
