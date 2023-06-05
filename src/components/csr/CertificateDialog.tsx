@@ -10,6 +10,7 @@ import {
   IconButton,
   InputAdornment,
   TextField,
+  Typography,
 } from "@mui/material";
 import ButtonComponent from "../shared/Button";
 import { deleteSubscriptions } from "@/lib/internalFetchers";
@@ -17,6 +18,8 @@ import { ExtendedSubscription } from "@/types/subscription";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DownloadIcon from "@mui/icons-material/Download";
 import CheckIcon from "@mui/icons-material/Check";
+import { downloadKey } from "@/lib/downloadTxt";
+import { Box } from "@mui/system";
 
 type Props = {
   privateKey: string;
@@ -32,43 +35,44 @@ export default function CertificateDialog(props: Props) {
     handleDialog(false);
   };
 
-  const handleDeletion = async (name: string, subscriptionId: string) => {
-    const data = await deleteSubscriptions(name, subscriptionId);
-    console.log(data.json());
-    handleDialog(false);
-  };
-
-  const copyPrivateKey = (value: string) => {
-    // TODO: Promise retured are ignored
-    navigator.clipboard.writeText(value);
-  };
-
   return (
     <>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Certificate generated</DialogTitle>
+        <DialogTitle
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Box>
+            <CheckIcon fontSize="large" />
+          </Box>
+          <Typography variant={"h5"}>Certificate generated</Typography>
+        </DialogTitle>
         <DialogContent>
-          <DialogContentText>
+          <DialogContentText sx={{ marginY: 1 }}>
             The certificate was successfully created.
           </DialogContentText>
-          <DialogContentText>
-            Please copy your private key and download your .cert file.
+          <DialogContentText sx={{ marginY: 1 }}>
+            Please download your private key and .cert file before closing this
+            window.
           </DialogContentText>
           <FormControl fullWidth>
             <TextField
-              type="password"
               contentEditable={false}
               value={privateKey}
-              label={"Private key"}
               margin="normal"
+              label={"Private key"}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
-                      onClick={() => copyPrivateKey(privateKey)}
+                      onClick={() => downloadKey(privateKey)}
                       edge="end"
                     >
-                      <ContentCopyIcon />
+                      <DownloadIcon />
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -76,13 +80,29 @@ export default function CertificateDialog(props: Props) {
             />
           </FormControl>
         </DialogContent>
-        <DialogActions sx={{ display: "flex", justifyContent: "space-evenly" }}>
+        <DialogActions
+          sx={{
+            display: "flex",
+            justifyContent: "space-evenly",
+            marginBottom: 2,
+          }}
+        >
+          <Button
+            variant="text"
+            color="greenDark"
+            sx={{ borderRadius: 100, textTransform: "none" }}
+            onClick={() => console.log("Close")}
+            disableElevation
+          >
+            Close
+          </Button>
           <Button
             startIcon={<DownloadIcon />}
             variant="contained"
             color="greenDark"
             sx={{ borderRadius: 100, textTransform: "none" }}
             onClick={() => console.log("Downloaded cert")}
+            disableElevation
           >
             Download certificate
           </Button>

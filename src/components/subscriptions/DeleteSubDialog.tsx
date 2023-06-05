@@ -64,9 +64,10 @@ export default function DeleteSubDialog(props: Props) {
           </Button>
           <Button
             variant="contained"
-            color="depricatedRed"
+            color="depricatedLight"
             sx={{ borderRadius: 100, textTransform: "none" }}
             onClick={() => handleDeletion(actorCommonName, subscriptionId)}
+            disableElevation
           >
             Yes, remove
           </Button>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   Box,
+  Button,
   Chip,
   CircularProgress,
   Divider,
@@ -10,7 +11,12 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
-import { GridColDef, GridEventListener, GridRowParams } from "@mui/x-data-grid";
+import {
+  GridColDef,
+  GridEventListener,
+  GridPagination,
+  GridRowParams,
+} from "@mui/x-data-grid";
 import { ButtonComponent } from "@/components/shared/index";
 import SubscriptionDetails from "@/components/details/SubscriptionDetails";
 import { useSession } from "next-auth/react";
@@ -23,6 +29,9 @@ import { DeleteSubDialog } from "@/components/details";
 import { SubscriptionsSubscription } from "@/types/napcore/subscription";
 import { ExtendedSubscription } from "@/types/subscription";
 import SubscriptionsDrawer from "@/components/subscriptions/SubscriptionsDrawer";
+import DownloadIcon from "@mui/icons-material/Download";
+import AddIcon from "@mui/icons-material/Add";
+import { CustomFooter } from "@/components/datagrid/CustomFooter";
 
 export default function Subscriptions() {
   const { data: session } = useSession();
@@ -121,6 +130,7 @@ export default function Subscriptions() {
             columns={tableHeaders}
             rows={data || []}
             loading={isLoading}
+            slots={{ footer: CustomFooter }}
           />
         </Box>
         {subscriptionRow && (

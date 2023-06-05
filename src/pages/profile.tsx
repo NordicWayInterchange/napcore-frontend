@@ -97,7 +97,13 @@ export default function Profile() {
             label={"Organisation name"}
             margin="normal"
           />
-          <Button onClick={handleClick} variant={"contained"}>
+          <Button
+            onClick={handleClick}
+            variant={"contained"}
+            disableElevation
+            color={"greenDark"}
+            sx={{ borderRadius: 100 }}
+          >
             Generate Certificate
           </Button>
         </FormControl>
