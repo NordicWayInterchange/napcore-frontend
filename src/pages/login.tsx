@@ -6,8 +6,11 @@ import { getProviders, signIn } from "next-auth/react";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "./api/auth/[...nextauth]";
 import Image from "next/image";
-import logo from "@/../public/nordic-way-logo.png";
-import { Button, Card, Typography } from "@mui/material";
+import logo from "@/../public/napcore-logo.png";
+import { Button, Card, SvgIcon, Typography } from "@mui/material";
+import DownloadIcon from "@mui/icons-material/Download";
+import * as React from "react";
+import Google from "@/../public/icons8-google.svg";
 
 export default function login({
   providers,
@@ -21,7 +24,7 @@ export default function login({
         //alignItems: "center",
         padding: 5,
         gap: 3,
-        width: "35vh",
+        width: "45vh",
       }}
     >
       <Image
@@ -34,13 +37,28 @@ export default function login({
       <Typography variant="h6">Welcome to Napcore</Typography>
       <Typography variant="body1">
         Napcore is restricted to users in the organization. If you want access,
-        you can contact [name]
+        you can contact christian.berg.skjetne@vegvesen.no
       </Typography>
 
       {Object.values(providers).map((provider) => (
-        <div style={{ alignSelf: "center" }} key={provider.name}>
-          <Button variant="contained" onClick={() => signIn(provider.id)}>
-            Sign in with {provider.name}
+        <div key={provider.name}>
+          <Button
+            startIcon={
+              <SvgIcon
+                sx={{
+                  width: "inherit",
+                  height: "inherit",
+                }}
+                component={Google}
+                inheritViewBox
+              />
+            }
+            variant="outlined"
+            fullWidth
+            sx={{ borderColor: "gray", color: "black", textTransform: "none" }}
+            onClick={() => signIn(provider.id)}
+          >
+            <Typography>Sign in with {provider.name}</Typography>
           </Button>
         </div>
       ))}

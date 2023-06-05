@@ -132,9 +132,9 @@ const SubscriptionsDrawer = ({ capability, open, handleMoreClose }: Props) => {
                 />
                 {/*TODO: Cause Codes*/}
                 {capability.causeCodesDictionary && (
-                  <FormControl>
+                  <FormControl margin="normal">
                     <InputLabel>Cause codes</InputLabel>
-                    <Select contentEditable={false} value={"Cause codes"}>
+                    <Select label={"Cause codes"}>
                       {capability.causeCodesDictionary.map((cause) => {
                         if (cause.message != undefined) {
                           return (
