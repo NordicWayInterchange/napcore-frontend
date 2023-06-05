@@ -124,29 +124,25 @@ export default function Subscriptions() {
         }}
         href="/subscriptions/new-subscription"
       ></Link>
-      <Box sx={{ display: "flex" }}>
-        <Box sx={{ flexGrow: 1 }}>
-          <DataGrid
-            columns={tableHeaders}
-            rows={data || []}
-            loading={isLoading}
-            slots={{ footer: CustomFooter }}
-          />
-        </Box>
-        {subscriptionRow && (
-          <SubscriptionsDrawer
-            handleMoreClose={handleMoreClose}
-            open={drawerOpen}
-            subscription={subscriptionRow as ExtendedSubscription}
-          />
-        )}
-        <DeleteSubDialog
-          subscriptionId={subscriptionRow?.id as string}
-          handleDialog={handleClickClose}
-          open={open}
-          actorCommonName={"anna"}
+      <DataGrid
+        columns={tableHeaders}
+        rows={data || []}
+        loading={isLoading}
+        slots={{ footer: CustomFooter }}
+      />
+      {subscriptionRow && (
+        <SubscriptionsDrawer
+          handleMoreClose={handleMoreClose}
+          open={drawerOpen}
+          subscription={subscriptionRow as ExtendedSubscription}
         />
-      </Box>
+      )}
+      <DeleteSubDialog
+        subscriptionId={subscriptionRow?.id as string}
+        handleDialog={handleClickClose}
+        open={open}
+        actorCommonName={"anna"}
+      />
     </>
   );
 }

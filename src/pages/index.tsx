@@ -23,8 +23,14 @@ export default function Home() {
   const shortcuts = [
     {
       header: "Subscriptions",
-      description: "View and create new subscriptions",
+      description: "View subscriptions",
       url: "/subscriptions",
+      avatar: "S",
+    },
+    {
+      header: "Add subscription",
+      description: "Create and add new subscription",
+      url: "/subscriptions/new-subscription",
       avatar: "S",
     },
     {
