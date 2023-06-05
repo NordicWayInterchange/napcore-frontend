@@ -9,10 +9,12 @@ type Props = {
   quadtreeCallback?: (value: string[]) => void;
   quadtree: string[];
   interactive?: boolean;
+  width: string;
+  height: number;
 };
 
 export default function DynamicMap(props: Props) {
-  const { quadtreeCallback, quadtree, interactive } = props;
+  const { quadtreeCallback, quadtree, interactive, width, height } = props;
   const [controlsHash, setControlsHash] = useState<string[]>([]);
 
   const controlsCallback = (hash: string) => {
@@ -31,16 +33,16 @@ export default function DynamicMap(props: Props) {
       zoom={DEFAULT_ZOOM}
       maxBounds={MAX_BOUNDS}
       scrollWheelZoom={true}
-      style={{ height: 400, width: 400 }}
+      style={{ height: height, width: width }}
     >
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <QuadtreeGenerator
+        controlsCallback={controlsCallback}
         quadtree={quadtree}
         quadtreeCallback={quadtreeCallback}
-        controlsCallback={controlsCallback}
         interactive={interactive}
       />
       {interactive && (
