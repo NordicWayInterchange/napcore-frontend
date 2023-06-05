@@ -10,30 +10,42 @@ import {
 import ButtonComponent from "../shared/Button";
 import { deleteSubscriptions } from "@/lib/internalFetchers";
 import { ExtendedSubscription } from "@/types/subscription";
+import Snackbar from "@/components/shared/Snackbar";
+import { useState } from "react";
 
 type Props = {
   actorCommonName: string;
   open: boolean;
   handleDialog: (close: boolean) => void;
-  subscription: ExtendedSubscription;
+  subscriptionId: string;
 };
 
 export default function DeleteSubDialog(props: Props) {
-  const { actorCommonName, open, handleDialog, subscription } = props;
+  const { actorCommonName, open, handleDialog, subscriptionId } = props;
 
-  const handleClose = () => {
-    handleDialog(false);
-  };
+  const [openSnack, setOpenSnack] = useState<boolean>(false);
 
   const handleDeletion = async (name: string, subscriptionId: string) => {
     const data = await deleteSubscriptions(name, subscriptionId);
     console.log(data.json());
     handleDialog(false);
+    setOpenSnack(true);
+  };
+
+  const handleSnackClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSnack(false);
   };
 
   return (
     <>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={() => handleDialog(false)}>
         <DialogTitle>Remove subscription</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -45,7 +57,7 @@ export default function DeleteSubDialog(props: Props) {
           <Button
             variant="text"
             color="inherit"
-            onClick={handleClose}
+            onClick={() => handleDialog(false)}
             sx={{ borderRadius: 100, textTransform: "none" }}
           >
             Cancel
@@ -54,15 +66,18 @@ export default function DeleteSubDialog(props: Props) {
             variant="contained"
             color="depricatedRed"
             sx={{ borderRadius: 100, textTransform: "none" }}
-            onClick={() => {
-              /*TODO: fix promise*/
-              handleDeletion(actorCommonName, subscription.id);
-            }}
+            onClick={() => handleDeletion(actorCommonName, subscriptionId)}
           >
             Yes, remove
           </Button>
         </DialogActions>
       </Dialog>
+      <Snackbar
+        message={"Your subscription was successfully removed"}
+        severity={"success"}
+        open={openSnack}
+        handleClose={handleSnackClose}
+      />
     </>
   );
 }

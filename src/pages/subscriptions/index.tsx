@@ -131,7 +131,7 @@ export default function Subscriptions() {
           />
         )}
         <DeleteSubDialog
-          subscription={subscriptionRow as ExtendedSubscription}
+          subscriptionId={subscriptionRow?.id as string}
           handleDialog={handleClickClose}
           open={open}
           actorCommonName={"anna"}
