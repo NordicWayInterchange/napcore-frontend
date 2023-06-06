@@ -6,7 +6,10 @@ import {
   getNetworkCapabilities,
   getSubscriptions,
 } from "@/lib/napcoreFetchers";
-import { Subscriptions } from "@/types/napcore/subscription";
+import {
+  SubscriptionRequest,
+  Subscriptions,
+} from "@/types/napcore/subscription";
 import {
   basicDeleteFunction,
   basicDeleteParams,
@@ -18,7 +21,7 @@ import {
   extendedGetParams,
 } from "@/lib/interchangeConnector";
 import { ExtendedCapability } from "@/types/capability";
-import { Capabilities, Capability } from "@/types/napcore/capability";
+import { Capabilities } from "@/types/napcore/capability";
 import { getToken } from "next-auth/jwt";
 import { CauseCodes } from "@/lib/causeCodes";
 
@@ -42,7 +45,7 @@ const fetchCapabilityCounter = async (
   return [status, body];
 };
 
-const fetchAggregate = async (params: basicGetParams, token: string) => {
+/*const fetchAggregate = async (params: basicGetParams, token: string) => {
   const { actorCommonName, selector } = params;
   const [status, body] = await fetchNetworkCapabilities(
     {
@@ -77,7 +80,7 @@ const fetchAggregate = async (params: basicGetParams, token: string) => {
     return [status, aggregatedCapabilities];
   }
   return [status, body];
-};
+};*/
 
 const fetchSubscriptions = async (params: extendedGetParams, token: string) => {
   const { actorCommonName, selector = "", pathParam = "" } = params;
@@ -100,7 +103,11 @@ export const addSubscriptions: basicPostFunction = async (
   token: string
 ) => {
   const { actorCommonName, body = {} } = params;
-  const res = await createSubscription(actorCommonName, body, token);
+  const res = await createSubscription(
+    actorCommonName,
+    body as SubscriptionRequest,
+    token
+  );
   const data = await res.json();
   return [res.status, data];
 };
@@ -110,7 +117,11 @@ export const removeSubscription: basicDeleteFunction = async (
   token: string
 ) => {
   const { actorCommonName, pathParam } = params;
-  const res = await deleteSubscriptions(actorCommonName, pathParam, token);
+  const res = await deleteSubscriptions(
+    actorCommonName,
+    pathParam as string,
+    token
+  );
   const data = await res.json();
   return [res.status, data];
 };
@@ -136,7 +147,7 @@ const fetchNetworkCapabilities = async (
             return {
               code: causeCode,
               /*TODO: Fix*/
-              message: CauseCodes[causeCode],
+              message: CauseCodes[causeCode as keyof typeof CauseCodes],
             };
           });
         }
@@ -174,7 +185,7 @@ const fetchCapabilities = async (params: basicGetParams, token: string) => {
 const getPaths: {
   [key: string]: basicGetFunction | extendedGetFunction;
 } = {
-  aggregate: fetchAggregate,
+  //aggregate: fetchAggregate,
   "capability-count": fetchCapabilityCounter,
   subscriptions: fetchSubscriptions,
   "network/capabilities": fetchNetworkCapabilities,

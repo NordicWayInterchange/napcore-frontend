@@ -2,30 +2,21 @@ import {
   Box,
   Button,
   Chip,
-  Divider,
   Drawer,
   FormControl,
   IconButton,
-  InputAdornment,
   List,
   ListItem,
-  ListItemButton,
-  ListItemIcon,
   ListItemText,
   TextField,
   Toolbar,
   Typography,
-  useTheme,
 } from "@mui/material";
-import Link from "next/link";
 import React, { useState } from "react";
 import { ExtendedSubscription } from "@/types/subscription";
 import { statusChips } from "@/lib/statusChips";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import CloseIcon from "@mui/icons-material/Close";
-import { left } from "@popperjs/core";
 import DeleteSubDialog from "@/components/subscriptions/DeleteSubDialog";
-import { writeToClipboard } from "@/lib/clipboard";
 import { ContentCopy } from "@/components/shared/ContentCopy";
 
 const width = 600;
@@ -42,7 +33,6 @@ const SubscriptionsDrawer = ({
   handleMoreClose,
 }: Props) => {
   console.log(subscription);
-  const theme = useTheme();
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
   const handleClickClose = (close: boolean) => {

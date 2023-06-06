@@ -1,36 +1,17 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Chip,
-  CircularProgress,
-  Divider,
-  Grid,
-  IconButton,
-  Typography,
-} from "@mui/material";
+import { Box, Chip, Divider, IconButton, Typography } from "@mui/material";
 import Link from "next/link";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
-import {
-  GridColDef,
-  GridEventListener,
-  GridPagination,
-  GridRowParams,
-} from "@mui/x-data-grid";
-import { ButtonComponent } from "@/components/shared/index";
-import SubscriptionDetails from "@/components/details/SubscriptionDetails";
+import { GridColDef } from "@mui/x-data-grid";
 import { useSession } from "next-auth/react";
 import { dataGridTemplate } from "@/components/datagrid/DataGridTemplate";
 import DataGrid from "@/components/datagrid/DataGrid";
 import { statusChips } from "@/lib/statusChips";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { DeleteSubDialog } from "@/components/details";
-import { SubscriptionsSubscription } from "@/types/napcore/subscription";
+import DeleteSubDialog from "@/components/subscriptions/DeleteSubDialog";
 import { ExtendedSubscription } from "@/types/subscription";
 import SubscriptionsDrawer from "@/components/subscriptions/SubscriptionsDrawer";
-import DownloadIcon from "@mui/icons-material/Download";
-import AddIcon from "@mui/icons-material/Add";
 import { CustomFooter } from "@/components/datagrid/CustomFooter";
 
 export default function Subscriptions() {

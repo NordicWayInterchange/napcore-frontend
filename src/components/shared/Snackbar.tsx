@@ -1,19 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Alert,
   AlertColor,
-  AlertProps,
   Snackbar as MuiSnackbar,
   SnackbarProps,
-  SnackbarOrigin,
 } from "@mui/material";
 
 interface Props extends SnackbarProps {
-  severity: AlertColor;
   open: boolean;
-
-  handleClose: (event?: React.SyntheticEvent | Event, reason?: string) => void;
   message: string;
+  severity: AlertColor;
+  handleClose: (event?: React.SyntheticEvent | Event, reason?: string) => void;
 }
 
 const Snackbar = (props: Props) => {
@@ -22,7 +19,7 @@ const Snackbar = (props: Props) => {
     <MuiSnackbar
       anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       open={open}
-      autoHideDuration={6000}
+      autoHideDuration={4000}
       onClose={handleClose}
     >
       <Alert

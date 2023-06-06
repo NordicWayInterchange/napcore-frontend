@@ -5,20 +5,16 @@ import {
   Card,
   Divider,
   FormControl,
-  IconButton,
-  InputAdornment,
   List,
   ListItem,
   ListItemText,
   TextField,
   Typography,
 } from "@mui/material";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React, { useState } from "react";
 import { createPKCS10 } from "@/components/csr/pkcs10Generator";
-import { DeleteSubDialog } from "@/components/details";
-import { ExtendedSubscription } from "@/types/subscription";
 import CertificateDialog from "@/components/csr/CertificateDialog";
 
 interface ICsr {
