@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Chip, Divider, IconButton, Typography } from "@mui/material";
+import { Box, Divider, IconButton, Typography } from "@mui/material";
 import { useNetworkCapabilities } from "@/hooks/useNetworkCapabilities";
 import { GridColDef } from "@mui/x-data-grid";
 import DataGrid from "@/components/shared/datagrid/DataGrid";
@@ -10,6 +10,7 @@ import { ExtendedSubscription } from "@/types/subscription";
 import { ExtendedCapability } from "@/types/capability";
 import CapabilitiesDrawer from "@/components/capabilities/CapabilitiesDrawer";
 import { messageTypeChips } from "@/lib/statusChips";
+import { Chip } from "@/components/shared/display/Chip";
 
 export default function NetworkCapabilities() {
   const { data: session } = useSession();
@@ -42,14 +43,7 @@ export default function NetworkCapabilities() {
       headerName: "Message Type",
       // TODO: Add colors (currently flickering when rerender)
       renderCell: (cell) => {
-        return (
-          <Chip
-            sx={{ borderRadius: 1 }}
-            // TODO: Fix
-            color={messageTypeChips[cell.value]}
-            label={cell.value}
-          />
-        );
+        return <Chip color={messageTypeChips[cell.value]} label={cell.value} />;
       },
     },
     {

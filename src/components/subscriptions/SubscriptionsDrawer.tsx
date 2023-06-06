@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Chip,
   Drawer,
   FormControl,
   IconButton,
@@ -18,6 +17,7 @@ import { statusChips } from "@/lib/statusChips";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteSubDialog from "@/components/subscriptions/DeleteSubDialog";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
+import { Chip } from "@/components/shared/display/Chip";
 
 const width = 600;
 
@@ -84,11 +84,13 @@ const SubscriptionsDrawer = ({
               >
                 <Typography>Subscription details</Typography>
                 <Chip
-                  sx={{ borderRadius: 1 }}
-                  // TODO: Fix
                   color={statusChips[subscription.status]}
                   label={subscription.status}
                 />
+
+                {/*color?: OverridableStringUnion<
+                  'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning',
+                  ChipPropsColorOverrides*/}
               </Box>
             </ListItem>
             <ListItem>

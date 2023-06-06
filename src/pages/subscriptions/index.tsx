@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Chip, Divider, IconButton, Typography } from "@mui/material";
+import { Box, Divider, IconButton, Typography } from "@mui/material";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
 import { GridColDef } from "@mui/x-data-grid";
 import { useSession } from "next-auth/react";
@@ -12,6 +12,7 @@ import DeleteSubDialog from "@/components/subscriptions/DeleteSubDialog";
 import { ExtendedSubscription } from "@/types/subscription";
 import SubscriptionsDrawer from "@/components/subscriptions/SubscriptionsDrawer";
 import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
+import { Chip } from "@/components/shared/display/Chip";
 
 export default function Subscriptions() {
   const { data: session } = useSession();
@@ -50,14 +51,7 @@ export default function Subscriptions() {
       field: "status",
       headerName: "Status",
       renderCell: (cell) => {
-        return (
-          <Chip
-            sx={{ borderRadius: 1 }}
-            // TODO: Fix
-            color={statusChips[cell.value]}
-            label={cell.value}
-          />
-        );
+        return <Chip color={statusChips[cell.value]} label={cell.value} />;
       },
     },
     {
