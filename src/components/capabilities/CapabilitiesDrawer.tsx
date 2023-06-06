@@ -1,37 +1,24 @@
 import {
   Box,
   Button,
-  Chip,
-  Divider,
   Drawer,
   FormControl,
   IconButton,
-  InputAdornment,
   InputLabel,
   List,
   ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   MenuItem,
   Select,
   TextField,
   Toolbar,
   Typography,
-  useTheme,
 } from "@mui/material";
-import Link from "next/link";
 import React, { useState } from "react";
-import { ExtendedSubscription } from "@/types/subscription";
-import { statusChips } from "@/lib/statusChips";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import CloseIcon from "@mui/icons-material/Close";
-import { left } from "@popperjs/core";
 import { ExtendedCapability } from "@/types/capability";
-import { OriginatingCountry } from "@/types/originatingCountry";
 import Map from "@/components/map/Map";
 import { createSubscription } from "@/lib/internalFetchers";
-import Snackbar from "@/components/shared/Snackbar";
+import Snackbar from "@/components/shared/feedback/Snackbar";
 
 const width = 750;
 

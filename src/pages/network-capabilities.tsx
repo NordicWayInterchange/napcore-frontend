@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import { Box, Chip, Divider, IconButton, Typography } from "@mui/material";
 import { useNetworkCapabilities } from "@/hooks/useNetworkCapabilities";
-import { GridColDef, GridEventListener, GridRowParams } from "@mui/x-data-grid";
-import DataGrid from "@/components/datagrid/DataGrid";
-import { dataGridTemplate } from "@/components/datagrid/DataGridTemplate";
-import { CapabilityDetails } from "@/components/details";
+import { GridColDef } from "@mui/x-data-grid";
+import DataGrid from "@/components/shared/datagrid/DataGrid";
+import { dataGridTemplate } from "@/components/shared/datagrid/DataGridTemplate";
 import { useSession } from "next-auth/react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { ExtendedSubscription } from "@/types/subscription";
 import { ExtendedCapability } from "@/types/capability";
-import SubscriptionsDrawer from "@/components/subscriptions/SubscriptionsDrawer";
 import CapabilitiesDrawer from "@/components/capabilities/CapabilitiesDrawer";
-import { messageTypeChips, statusChips } from "@/lib/statusChips";
+import { messageTypeChips } from "@/lib/statusChips";
 
 export default function NetworkCapabilities() {
   const { data: session } = useSession();
@@ -21,7 +19,6 @@ export default function NetworkCapabilities() {
   );
   const [capabilityRow, setCapabilityRow] = useState<ExtendedCapability>();
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
-  const [extendedCapability, setExtendedCapability] = useState();
 
   const handleMore = (capability: ExtendedSubscription) => {
     setCapabilityRow(capability);

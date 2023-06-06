@@ -14,8 +14,8 @@ import {
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React, { useState } from "react";
-import { createPKCS10 } from "@/components/csr/pkcs10Generator";
-import CertificateDialog from "@/components/csr/CertificateDialog";
+import { createPKCS10 } from "@/lib/pkcs10Generator";
+import CertificateDialog from "@/components/profile/CertificateDialog";
 
 interface ICsr {
   csr: string;

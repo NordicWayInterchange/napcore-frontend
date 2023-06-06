@@ -6,7 +6,7 @@ import {
   Snackbar,
   Typography,
 } from "@mui/material";
-import { createPKCS10 } from "@/components/csr/pkcs10Generator";
+import { createPKCS10 } from "@/lib/pkcs10Generator";
 import { TextArea, TextField } from "@/components/shared";
 import React, { useState } from "react";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";

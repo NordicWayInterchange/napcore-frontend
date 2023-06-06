@@ -12,10 +12,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import ButtonComponent from "../shared/Button";
-import { deleteSubscriptions } from "@/lib/internalFetchers";
-import { ExtendedSubscription } from "@/types/subscription";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DownloadIcon from "@mui/icons-material/Download";
 import CheckIcon from "@mui/icons-material/Check";
 import { downloadKey } from "@/lib/downloadTxt";

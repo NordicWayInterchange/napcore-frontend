@@ -7,10 +7,8 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import ButtonComponent from "../shared/Button";
 import { deleteSubscriptions } from "@/lib/internalFetchers";
-import { ExtendedSubscription } from "@/types/subscription";
-import Snackbar from "@/components/shared/Snackbar";
+import Snackbar from "@/components/shared/feedback/Snackbar";
 import { useState } from "react";
 
 type Props = {

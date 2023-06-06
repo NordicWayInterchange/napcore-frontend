@@ -1,7 +1,7 @@
 import { IconButton, InputAdornment } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import React, { useState } from "react";
-import Snackbar from "@/components/shared/Snackbar";
+import Snackbar from "@/components/shared/feedback/Snackbar";
 
 interface Props {
   value: string;

@@ -8,7 +8,6 @@ import { authOptions } from "./api/auth/[...nextauth]";
 import Image from "next/image";
 import logo from "@/../public/napcore-logo.png";
 import { Button, Card, SvgIcon, Typography } from "@mui/material";
-import DownloadIcon from "@mui/icons-material/Download";
 import * as React from "react";
 import Google from "@/../public/icons8-google.svg";
 
@@ -37,7 +36,7 @@ export default function login({
       <Typography variant="h6">Welcome to Napcore</Typography>
       <Typography variant="body1">
         Napcore is restricted to users in the organization. If you want access,
-        you can contact christian.berg.skjetne@vegvesen.no
+        you can contact christian.berg.skjetne@vegvesen.no.
       </Typography>
 
       {Object.values(providers).map((provider) => (

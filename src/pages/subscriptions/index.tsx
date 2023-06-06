@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import { Box, Chip, Divider, IconButton, Typography } from "@mui/material";
-import Link from "next/link";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
 import { GridColDef } from "@mui/x-data-grid";
 import { useSession } from "next-auth/react";
-import { dataGridTemplate } from "@/components/datagrid/DataGridTemplate";
-import DataGrid from "@/components/datagrid/DataGrid";
+import { dataGridTemplate } from "@/components/shared/datagrid/DataGridTemplate";
+import DataGrid from "@/components/shared/datagrid/DataGrid";
 import { statusChips } from "@/lib/statusChips";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteSubDialog from "@/components/subscriptions/DeleteSubDialog";
 import { ExtendedSubscription } from "@/types/subscription";
 import SubscriptionsDrawer from "@/components/subscriptions/SubscriptionsDrawer";
-import { CustomFooter } from "@/components/datagrid/CustomFooter";
+import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
 
 export default function Subscriptions() {
   const { data: session } = useSession();
@@ -98,13 +97,6 @@ export default function Subscriptions() {
     <>
       <Typography variant="h4">Subscriptions</Typography>
       <Divider sx={{ marginY: 3 }} />
-      <Link
-        style={{
-          textDecoration: "none",
-          color: "black",
-        }}
-        href="/subscriptions/new-subscription"
-      ></Link>
       <DataGrid
         columns={tableHeaders}
         rows={data || []}

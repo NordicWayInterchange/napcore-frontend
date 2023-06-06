@@ -1,23 +1,16 @@
 import { ExtendedCapability } from "@/types/capability";
 import { MessageTypes } from "@/types/messageType";
 import { OriginatingCountry } from "@/types/originatingCountry";
-import {
-  AlertColor,
-  Button,
-  Grid,
-  SelectChangeEvent,
-  Typography,
-} from "@mui/material";
+import { AlertColor, Button, Grid, SelectChangeEvent } from "@mui/material";
 import React, { ChangeEvent, useEffect, useState } from "react";
-import TextField from "../shared/TextField";
-import Select from "../shared/Select";
+import TextField from "../shared/input/TextField";
+import Select from "../shared/input/Select";
 import { generateSelector } from "@/lib/generateSelector";
-import TextArea from "../shared/TextArea";
+import TextArea from "../shared/input/TextArea";
 import { ButtonComponent } from "../shared";
-import { CauseCodes } from "@/lib/causeCodes";
 import { createSubscription } from "@/lib/internalFetchers";
 import MapDialog from "../map/MapDialog";
-import Alert from "../shared/Alert";
+import Alert from "../shared/feedback/Alert";
 
 type Props = {
   name: string;
@@ -53,11 +46,9 @@ const defaultSelector: ISelector = {
 const DENM = MessageTypes.DENM;
 
 const SelectorBuilder = (props: Props) => {
-  const { name, version, extendedCapability, selectorCallback } = props;
+  const { name, selectorCallback } = props;
   const [selector, setSelector] = useState<string>("");
   const [formState, setFormState] = useState<ISelector>(defaultSelector);
-  const [errors, setErrors] = useState({}); // TODO: Handle errors
-  const [showCauseCode, setShowCauseCode] = useState<boolean>();
   const [advancedMode, setAdvancedMode] = useState<boolean>(false);
   const [persistSelector, setPersistSelector] = useState<string>("");
   const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>([]);

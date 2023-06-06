@@ -17,7 +17,7 @@ import { ExtendedSubscription } from "@/types/subscription";
 import { statusChips } from "@/lib/statusChips";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteSubDialog from "@/components/subscriptions/DeleteSubDialog";
-import { ContentCopy } from "@/components/shared/ContentCopy";
+import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 
 const width = 600;
 

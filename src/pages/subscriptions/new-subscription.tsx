@@ -1,11 +1,11 @@
 import { useState } from "react";
-import SelectorBuilder from "@/components/selectorbuilder/SelectorBuilder";
-import { Box, Chip, Divider, Grid, Typography } from "@mui/material";
+import SelectorBuilder from "@/components/subscriptions/SelectorBuilder";
+import { Chip, Divider, Grid, Typography } from "@mui/material";
 import React from "react";
 import { GridColDef } from "@mui/x-data-grid";
 import { useMatchingCapabilities } from "@/hooks/useMatchingCapabilities";
-import DataGrid from "@/components/datagrid/DataGrid";
-import { dataGridTemplate } from "@/components/datagrid/DataGridTemplate";
+import DataGrid from "@/components/shared/datagrid/DataGrid";
+import { dataGridTemplate } from "@/components/shared/datagrid/DataGridTemplate";
 import { useSession } from "next-auth/react";
 import { messageTypeChips } from "@/lib/statusChips";
 
@@ -62,27 +62,27 @@ const NewSubscription = () => {
   };
 
   return (
-    <Box>
+    <>
       <Typography variant="h4">Create subscription</Typography>
       <Divider sx={{ marginY: 3 }} />
-      <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-        <Box sx={{ flexGrow: 1, flexBasis: "50%" }}>
+      <Grid container spacing={3}>
+        <Grid item xs={6}>
           <SelectorBuilder
             name="anna"
             version="version"
             selectorCallback={handleChange}
           />
-        </Box>
-        <Box sx={{ flexGrow: 1, flexBasis: "50%" }}>
+        </Grid>
+        <Grid item xs={6}>
           <DataGrid
             columns={tableHeaders}
             rows={matchingCapabilities.data || []}
             loading={matchingCapabilities.isLoading}
             getRowId={(row) => row.publicationId}
           />
-        </Box>
-      </Box>
-    </Box>
+        </Grid>
+      </Grid>
+    </>
   );
 };
 
