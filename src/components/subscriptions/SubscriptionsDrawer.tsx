@@ -25,6 +25,8 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import CloseIcon from "@mui/icons-material/Close";
 import { left } from "@popperjs/core";
 import DeleteSubDialog from "@/components/subscriptions/DeleteSubDialog";
+import { writeToClipboard } from "@/lib/clipboard";
+import { ContentCopy } from "@/components/shared/ContentCopy";
 
 const width = 600;
 
@@ -45,11 +47,6 @@ const SubscriptionsDrawer = ({
 
   const handleClickClose = (close: boolean) => {
     setDialogOpen(close);
-  };
-
-  const copyPrivateKey = (value: string) => {
-    // TODO: Promise retured are ignored
-    navigator.clipboard.writeText(value);
   };
 
   const handleClose = () => {
@@ -152,16 +149,7 @@ const SubscriptionsDrawer = ({
                     label={"Host"}
                     margin="normal"
                     InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={() => copyPrivateKey("ampqs://myserver")}
-                            edge="end"
-                          >
-                            <ContentCopyIcon />
-                          </IconButton>
-                        </InputAdornment>
-                      ),
+                      endAdornment: <ContentCopy value={"ampqs://myserver"} />,
                     }}
                   />
                   <TextField
@@ -171,16 +159,7 @@ const SubscriptionsDrawer = ({
                     margin="normal"
                     InputProps={{
                       endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={() =>
-                              copyPrivateKey("Serviceprovider 1-1")
-                            }
-                            edge="end"
-                          >
-                            <ContentCopyIcon />
-                          </IconButton>
-                        </InputAdornment>
+                        <ContentCopy value={"Serviceprovider 1-1"} />
                       ),
                     }}
                   />
@@ -190,16 +169,7 @@ const SubscriptionsDrawer = ({
                     label={"Port"}
                     margin="normal"
                     InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={() => copyPrivateKey("5671")}
-                            edge="end"
-                          >
-                            <ContentCopyIcon />
-                          </IconButton>
-                        </InputAdornment>
-                      ),
+                      endAdornment: <ContentCopy value={"5671"} />,
                     }}
                   />
                 </FormControl>
@@ -224,16 +194,7 @@ const SubscriptionsDrawer = ({
                     rows={4}
                     InputProps={{
                       endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={() =>
-                              copyPrivateKey(subscription.selector)
-                            }
-                            edge="end"
-                          >
-                            <ContentCopyIcon />
-                          </IconButton>
-                        </InputAdornment>
+                        <ContentCopy value={subscription.selector} />
                       ),
                     }}
                   />

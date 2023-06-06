@@ -41,7 +41,7 @@ type Props = {
   handleMoreClose: () => void;
 };
 
-const SubscriptionsDrawer = ({ capability, open, handleMoreClose }: Props) => {
+const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
   const [viewMap, setViewMap] = useState(false);
   const [openSnack, setOpenSnack] = useState<boolean>(false);
 
@@ -162,17 +162,25 @@ const SubscriptionsDrawer = ({ capability, open, handleMoreClose }: Props) => {
                       </Select>
                     </FormControl>
                   )}
-                  <Box sx={{ display: "flex", flexDirection: "row" }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                    }}
+                  >
                     <TextField
                       contentEditable={false}
                       value={capability.quadTree}
                       label={"Quadtree"}
-                      sx={{ flexGrow: 1 }}
+                      sx={{
+                        flexGrow: 1,
+                        marginRight: 1,
+                      }}
                     />
                     <Button
                       sx={{
                         borderRadius: 100,
-                        marginX: 2,
+                        width: 150,
                       }}
                       variant={"outlined"}
                       onClick={() => setViewMap((current) => !current)}
@@ -216,4 +224,4 @@ const SubscriptionsDrawer = ({ capability, open, handleMoreClose }: Props) => {
   );
 };
 
-export default SubscriptionsDrawer;
+export default CapabilitiesDrawer;
