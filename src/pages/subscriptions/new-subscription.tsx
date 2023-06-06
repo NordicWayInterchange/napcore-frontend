@@ -65,23 +65,23 @@ const NewSubscription = () => {
     <Box>
       <Typography variant="h4">Create subscription</Typography>
       <Divider sx={{ marginY: 3 }} />
-      <Grid container spacing={3}>
-        <Grid item xs={6}>
+      <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+        <Box sx={{ flexGrow: 1, flexBasis: "50%" }}>
           <SelectorBuilder
             name="anna"
             version="version"
             selectorCallback={handleChange}
           />
-        </Grid>
-        <Grid item xs={6}>
+        </Box>
+        <Box sx={{ flexGrow: 1, flexBasis: "50%" }}>
           <DataGrid
             columns={tableHeaders}
             rows={matchingCapabilities.data || []}
             loading={matchingCapabilities.isLoading}
             getRowId={(row) => row.publicationId}
           />
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Box>
   );
 };

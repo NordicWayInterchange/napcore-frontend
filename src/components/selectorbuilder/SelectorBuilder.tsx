@@ -1,7 +1,13 @@
 import { ExtendedCapability } from "@/types/capability";
 import { MessageTypes } from "@/types/messageType";
 import { OriginatingCountry } from "@/types/originatingCountry";
-import { AlertColor, Grid, SelectChangeEvent, Typography } from "@mui/material";
+import {
+  AlertColor,
+  Button,
+  Grid,
+  SelectChangeEvent,
+  Typography,
+} from "@mui/material";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import TextField from "../shared/TextField";
 import Select from "../shared/Select";
@@ -149,17 +155,16 @@ const SelectorBuilder = (props: Props) => {
         />
       </Grid>
       {/* FIXME */}
-      {formState.messageType.includes(DENM) && (
-        <Grid item xs={6}>
-          <TextField
-            value={formState.causeCodes}
-            label={"Cause Codes"}
-            name={"causeCodes"}
-            onChange={handleTextField}
-            disabled={advancedMode}
-          />
-        </Grid>
-      )}
+      <Grid item xs={6}>
+        <TextField
+          value={formState.causeCodes}
+          label={"Cause Codes"}
+          name={"causeCodes"}
+          onChange={handleTextField}
+          disabled={advancedMode || !formState.messageType.includes(DENM)}
+          helperText="Enable with Message Type DENM"
+        />
+      </Grid>
       <Grid item xs={6}>
         <TextField
           value={formState.protocolVersion}
@@ -196,19 +201,24 @@ const SelectorBuilder = (props: Props) => {
           disabled={true}
         />
       </Grid>
-      <Grid item xs={12}>
-        <TextArea
-          value={selector}
-          disabled={!advancedMode}
-          onChange={handleTextArea}
-        />
-      </Grid>
+      {advancedMode && (
+        <Grid item xs={12}>
+          <TextArea
+            value={selector}
+            disabled={!advancedMode}
+            onChange={handleTextArea}
+          />
+        </Grid>
+      )}
       <Grid item>
-        <ButtonComponent
+        <Button
           color={advancedMode ? "error" : "success"}
-          text={"Advanced mode"}
           onClick={handleAdvancedMode}
-        />
+          variant={"outlined"}
+          sx={{ borderRadius: 100 }}
+        >
+          {advancedMode ? "Normal mode" : "Advanced mode"}
+        </Button>
       </Grid>
       <Grid item>
         <ButtonComponent
