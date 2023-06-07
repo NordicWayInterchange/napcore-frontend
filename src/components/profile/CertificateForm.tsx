@@ -5,6 +5,8 @@ import { createPKCS10 } from "@/lib/pkcs10Generator";
 import { Box } from "@mui/system";
 import { styled } from "@mui/material/styles";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { SecondHeading } from "@/components/shared/display/heading/SecondHeading";
+import { BodyHeading } from "@/components/shared/display/heading/BodyHeading";
 
 interface IFormInputs {
   countryCode: string;
@@ -49,7 +51,10 @@ export const CertificateForm = () => {
 
   return (
     <StyledBox>
-      <Typography>Certificate</Typography>
+      <SecondHeading heading={"Certificate"} />
+      <BodyHeading
+        heading={"Please fill in your details in order to create a certificate"}
+      />
       <form onSubmit={handleSubmit(onSubmit)}>
         <StyledBox>
           <Controller
