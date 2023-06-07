@@ -12,9 +12,10 @@ import {
   useTheme,
   ListItemIcon,
   IconButton,
+  Button,
 } from "@mui/material";
 import Link from "next/link";
-import React from "react";
+import React, { ReactElement } from "react";
 import { useRouter } from "next/router";
 import Navbar from "./Navbar";
 import HouseIcon from "@mui/icons-material/House";
@@ -24,8 +25,15 @@ import { signOut, useSession } from "next-auth/react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { styled } from "@mui/material/styles";
+import AddIcon from "@mui/icons-material/Add";
 
-const pages = [
+interface IPages {
+  text: string;
+  url: string;
+  icon: ReactElement;
+}
+
+const MAIN_PAGES: Array<IPages> = [
   { text: "My intersection", url: "/", icon: <HouseIcon /> },
   { text: "Subscriptions", url: "/subscriptions", icon: <SubscriptionsIcon /> },
   {
@@ -35,84 +43,83 @@ const pages = [
   },
 ];
 
+const SECONDARY_PAGES: Array<IPages> = [
+  {
+    text: "Profile settings",
+    url: "/profile",
+    icon: <SettingsIcon />,
+  },
+];
+
 export default function Sidebar() {
   const router = useRouter();
   const theme = useTheme();
   const { data: session } = useSession();
 
-  const handleSignOut = () => {
-    //TODO: Fix
-    signOut();
+  const mapPages = (pages: Array<IPages>) => {
+    return pages.map((page: IPages, key: number) => (
+      <Link
+        href={page.url}
+        key={key}
+        style={{
+          textDecoration: "none",
+          color: "inherit",
+        }}
+      >
+        <ListItem
+          sx={{
+            borderRadius: 100,
+            backgroundColor:
+              router.asPath === page.url
+                ? theme.palette.sidebarActiveColor
+                : null,
+          }}
+          disablePadding
+        >
+          <StyledListItemButton>
+            <ListItemIcon>{page.icon}</ListItemIcon>
+            <ListItemText primary={page.text} />
+          </StyledListItemButton>
+        </ListItem>
+      </Link>
+    ));
   };
 
   return (
     <Box sx={{ display: "flex" }}>
+      {/*TODO: Include?*/}
       <CssBaseline />
       <Navbar />
       <StyledDrawer variant="permanent" anchor="left">
         <Toolbar />
-        <Divider />
-        <List sx={{ padding: 2 }}>
-          {pages.map((link, key) => (
-            <Link
-              href={link.url}
-              key={key}
-              style={{
-                textDecoration: "none",
-                color: "inherit",
-              }}
+
+        <Box sx={{ padding: 2 }}>
+          <Link
+            href={"/subscriptions/new-subscription"}
+            style={{ textDecoration: "none" }}
+          >
+            <StyledButton
+              startIcon={<AddIcon />}
+              variant="contained"
+              color="greenDark"
+              disableElevation
+              fullWidth
             >
-              <ListItem
-                sx={{
-                  borderRadius: 100,
-                  backgroundColor:
-                    router.asPath === link.url
-                      ? theme.palette.sidebarActiveColor
-                      : null,
-                }}
-                disablePadding
-              >
-                <StyledListItemButton>
-                  <ListItemIcon>{link.icon}</ListItemIcon>
-                  <ListItemText primary={link.text} />
-                </StyledListItemButton>
-              </ListItem>
-            </Link>
-          ))}
-        </List>
+              Add subscription
+            </StyledButton>
+          </Link>
+
+          <Divider sx={{ marginY: 1 }} />
+
+          <List>{mapPages(MAIN_PAGES)}</List>
+        </Box>
 
         <Box sx={{ marginTop: "auto", padding: 2 }}>
-          <List>
-            <Link
-              href={"/profile"}
-              style={{
-                textDecoration: "none",
-                color: "inherit",
-              }}
-            >
-              <ListItem
-                sx={{
-                  borderRadius: 100,
-                  backgroundColor:
-                    router.asPath === "/profile"
-                      ? theme.palette.sidebarActiveColor
-                      : null,
-                }}
-                disablePadding
-              >
-                <StyledListItemButton>
-                  <ListItemIcon>
-                    <SettingsIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={"Profile settings"} />
-                </StyledListItemButton>
-              </ListItem>
-            </Link>
-          </List>
+          <List>{mapPages(SECONDARY_PAGES)}</List>
           <Divider sx={{ marginY: 2 }} />
           <StyledSignOutBox>
             <Typography>{session?.user?.name}</Typography>
-            <IconButton onClick={handleSignOut}>
+            <IconButton onClick={() => signOut()}>
               <LogoutIcon />
             </IconButton>
           </StyledSignOutBox>
@@ -121,6 +128,12 @@ export default function Sidebar() {
     </Box>
   );
 }
+
+const StyledButton = styled(Button)(({}) => ({
+  borderRadius: 100,
+  textTransform: "none",
+  height: 56,
+}));
 
 const StyledListItemButton = styled(ListItemButton)(({}) => ({
   "&:hover": {
