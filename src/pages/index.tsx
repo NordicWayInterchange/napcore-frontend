@@ -28,12 +28,6 @@ export default function Home() {
       avatar: "S",
     },
     {
-      header: "Add subscription",
-      description: "Create and add new subscription",
-      url: "/subscriptions/new-subscription",
-      avatar: "S",
-    },
-    {
       header: "Network capabilities",
       description: "View network capabilities",
       url: "network-capabilities",

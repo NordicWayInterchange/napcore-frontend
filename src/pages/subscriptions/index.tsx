@@ -43,6 +43,7 @@ export default function Subscriptions() {
   const tableHeaders: GridColDef[] = [
     {
       ...dataGridTemplate,
+      /*flex: 0,*/
       field: "id",
       headerName: "ID",
     },

@@ -23,8 +23,7 @@ import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
 import { signOut, useSession } from "next-auth/react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SettingsIcon from "@mui/icons-material/Settings";
-
-const width = 360;
+import { styled } from "@mui/material/styles";
 
 const pages = [
   { text: "My intersection", url: "/", icon: <HouseIcon /> },
@@ -50,18 +49,7 @@ export default function Sidebar() {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <Navbar />
-      <Drawer
-        sx={{
-          width: width,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: width,
-            boxSizing: "border-box",
-          },
-        }}
-        variant="permanent"
-        anchor="left"
-      >
+      <StyledDrawer variant="permanent" anchor="left">
         <Toolbar />
         <Divider />
         <List sx={{ padding: 2 }}>
@@ -84,17 +72,10 @@ export default function Sidebar() {
                 }}
                 disablePadding
               >
-                <ListItemButton
-                  sx={{
-                    "&:hover": {
-                      backgroundColor: "transparent",
-                      borderRadius: 100,
-                    },
-                  }}
-                >
+                <StyledListItemButton>
                   <ListItemIcon>{link.icon}</ListItemIcon>
                   <ListItemText primary={link.text} />
-                </ListItemButton>
+                </StyledListItemButton>
               </ListItem>
             </Link>
           ))}
@@ -119,37 +100,46 @@ export default function Sidebar() {
                 }}
                 disablePadding
               >
-                <ListItemButton
-                  sx={{
-                    "&:hover": {
-                      backgroundColor: "transparent",
-                      borderRadius: 100,
-                    },
-                  }}
-                >
+                <StyledListItemButton>
                   <ListItemIcon>
                     <SettingsIcon />
                   </ListItemIcon>
                   <ListItemText primary={"Profile settings"} />
-                </ListItemButton>
+                </StyledListItemButton>
               </ListItem>
             </Link>
           </List>
           <Divider sx={{ marginY: 2 }} />
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
+          <StyledSignOutBox>
             <Typography>{session?.user?.name}</Typography>
             <IconButton onClick={handleSignOut}>
               <LogoutIcon />
             </IconButton>
-          </Box>
+          </StyledSignOutBox>
         </Box>
-      </Drawer>
+      </StyledDrawer>
     </Box>
   );
 }
+
+const StyledListItemButton = styled(ListItemButton)(({}) => ({
+  "&:hover": {
+    backgroundColor: "transparent",
+    borderRadius: 100,
+  },
+}));
+
+const StyledDrawer = styled(Drawer)(({}) => ({
+  width: 360,
+  flexShrink: 0,
+  "& .MuiDrawer-paper": {
+    width: 360,
+    boxSizing: "border-box",
+  },
+}));
+
+const StyledSignOutBox = styled(Box)(({}) => ({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+}));
