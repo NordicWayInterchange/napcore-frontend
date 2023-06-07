@@ -1,15 +1,18 @@
 import {
   Box,
   Button,
+  Card,
   Drawer,
   FormControl,
   IconButton,
   List,
   ListItem,
   ListItemText,
+  TextField as MuiTextField,
   TextField,
   Toolbar,
   Typography,
+  useTheme,
 } from "@mui/material";
 import React, { useState } from "react";
 import { ExtendedSubscription } from "@/types/subscription";
@@ -18,6 +21,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import DeleteSubDialog from "@/components/subscriptions/DeleteSubDialog";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { Chip } from "@/components/shared/display/Chip";
+import { styled } from "@mui/material/styles";
 
 const width = 600;
 
@@ -39,10 +43,6 @@ const SubscriptionsDrawer = ({
     setDialogOpen(close);
   };
 
-  const handleClose = () => {
-    handleMoreClose();
-  };
-
   return (
     <>
       <Drawer
@@ -59,14 +59,13 @@ const SubscriptionsDrawer = ({
             backgroundColor: "#F9F9F9",
           },
         }}
-        //TODO: change to persistent
         variant="temporary"
         anchor="right"
         open={open}
-        onClose={handleClose}
+        onClose={handleMoreClose}
       >
         <Toolbar />
-        <Box sx={{ padding: 1, width: 1 }}>
+        <Box sx={{ padding: 1 }}>
           <List>
             <ListItem sx={{ justifyContent: "flex-end" }}>
               <IconButton onClick={handleMoreClose}>
@@ -74,34 +73,16 @@ const SubscriptionsDrawer = ({
               </IconButton>
             </ListItem>
             <ListItem>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  width: 1,
-                }}
-              >
+              <StyledHeaderBox>
                 <Typography>Subscription details</Typography>
                 <Chip
                   color={statusChips[subscription.status]}
                   label={subscription.status}
                 />
-
-                {/*color?: OverridableStringUnion<
-                  'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning',
-                  ChipPropsColorOverrides*/}
-              </Box>
+              </StyledHeaderBox>
             </ListItem>
             <ListItem>
-              <Box
-                sx={{
-                  backgroundColor: "#FFFFFF",
-                  padding: 2,
-                  borderRadius: 2,
-                  width: 1,
-                }}
-              >
+              <StyledCard variant={"outlined"}>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                   <Box>
                     <ListItemText primary={"ID"} secondary={subscription.id} />
@@ -118,17 +99,10 @@ const SubscriptionsDrawer = ({
                     />
                   </Box>
                 </Box>
-              </Box>
+              </StyledCard>
             </ListItem>
             <ListItem>
-              <Box
-                sx={{
-                  backgroundColor: "#FFFFFF",
-                  padding: 2,
-                  borderRadius: 2,
-                  width: 1,
-                }}
-              >
+              <StyledCard variant={"outlined"}>
                 {/*TODO: add endpoints (currently not existing)*/}
                 {/*<Box>{subscription.endpoints[0].host}</Box>
           <Box>{subscription.endpoints[0].source}</Box>
@@ -165,18 +139,11 @@ const SubscriptionsDrawer = ({
                     }}
                   />
                 </FormControl>
-              </Box>
+              </StyledCard>
             </ListItem>
 
             <ListItem>
-              <Box
-                sx={{
-                  backgroundColor: "#FFFFFF",
-                  padding: 2,
-                  borderRadius: 2,
-                  width: 1,
-                }}
-              >
+              <StyledCard variant={"outlined"}>
                 <Typography>SELECTOR</Typography>
                 <FormControl fullWidth>
                   <TextField
@@ -191,14 +158,18 @@ const SubscriptionsDrawer = ({
                     }}
                   />
                 </FormControl>
-              </Box>
+              </StyledCard>
             </ListItem>
             <ListItem>
               <Button
-                sx={{ borderRadius: 100, textTransform: "none" }}
+                sx={{
+                  borderRadius: 100,
+                  textTransform: "none",
+                }}
                 variant={"contained"}
                 color={"depricatedLight"}
                 onClick={() => setDialogOpen(true)}
+                disableElevation
               >
                 Remove subscription
               </Button>
@@ -215,5 +186,17 @@ const SubscriptionsDrawer = ({
     </>
   );
 };
+
+const StyledCard = styled(Card)(({}) => ({
+  padding: "16px",
+  width: "100%",
+}));
+
+const StyledHeaderBox = styled(Box)(({}) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  width: "100%",
+}));
 
 export default SubscriptionsDrawer;
