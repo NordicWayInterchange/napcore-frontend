@@ -41,7 +41,7 @@ interface IFormInputs {
   causeCodes: string[];
   protocolVersion: string;
   originatingCountry: string[];
-  publisherId: string;
+  publicationId: string;
   quadTree: string[];
   selector: string;
 }
@@ -59,6 +59,9 @@ const SelectorBuilder = (props: Props) => {
   const {
     handleSubmit,
     control,
+    getValues,
+    getFieldState,
+    watch,
     formState: { errors },
   } = useForm<IFormInputs>({
     defaultValues: {
@@ -66,7 +69,7 @@ const SelectorBuilder = (props: Props) => {
       causeCodes: [],
       protocolVersion: "",
       originatingCountry: [],
-      publisherId: "",
+      publicationId: "",
       quadTree: [],
       selector: "",
     },
@@ -77,10 +80,20 @@ const SelectorBuilder = (props: Props) => {
   Send the selector backwards via selectorCallback(selector) to find matching capabilities.
   */
   /*  useEffect(() => {
-    const selector = generateSelector(formState);
+    const watchAllFields = watch();
+    const selector = generateSelector(watchAllFields);
+    console.log(selector);
     setSelector(selector);
     selectorCallback(selector);
-  }, [formState]);*/
+  }, [watch]);*/
+  useEffect(() => {
+    const watchAllFields = watch((value) => {
+      /*console.log(value)*/
+      console.log(generateSelector(value));
+      selectorCallback(generateSelector(value));
+    });
+    return () => watchAllFields.unsubscribe();
+  }, [watch]);
 
   /* 
   Switching to advanced mode will persist the selector.
@@ -133,6 +146,21 @@ const SelectorBuilder = (props: Props) => {
     <StyledBox>
       <form onSubmit={handleSubmit(onSubmit)}>
         <StyledBox>
+          <Controller
+            name="publicationId"
+            control={control}
+            rules={{ required: true, pattern: /^[-,0-9 ]+$/i }}
+            render={({ field }) => (
+              <StyledTextField
+                {...field}
+                label="Publication ID *"
+                error={Boolean(errors.publicationId)}
+                helperText={
+                  Boolean(errors.publicationId) && "Mandatory to be filled in"
+                }
+              />
+            )}
+          />
           {/*https://stackoverflow.com/a/72688980*/}
           <Controller
             name="messageType"
@@ -166,6 +194,7 @@ const SelectorBuilder = (props: Props) => {
               </FormControl>
             )}
           />
+          {/*TODO: Only show if DENM*/}
           <Controller
             name="causeCodes"
             control={control}
