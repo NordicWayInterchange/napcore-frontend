@@ -6,6 +6,6 @@ export type ExtendedCapability = Application & {
 };
 
 type causeCodesDictionary = {
-  code: number;
-  message: string;
+  value: number;
+  label: string;
 };

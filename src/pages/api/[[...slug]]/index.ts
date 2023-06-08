@@ -23,7 +23,7 @@ import {
 import { ExtendedCapability } from "@/types/capability";
 import { Capabilities } from "@/types/napcore/capability";
 import { getToken } from "next-auth/jwt";
-import { CauseCodes } from "@/lib/causeCodes";
+import { causeCodes as causeCodesList } from "@/lib/causeCodes";
 
 const fetchCapabilityCounter = async (
   params: basicGetParams,
@@ -144,18 +144,13 @@ const fetchNetworkCapabilities = async (
           capability.application.causeCodes
         ) {
           causeCodes = capability.application.causeCodes.map((causeCode) => {
-            return {
-              code: causeCode,
-              /*TODO: Fix*/
-              message: CauseCodes[causeCode as keyof typeof CauseCodes],
-            };
+            return causeCodesList.find((c) => c.value === causeCode);
           });
         }
 
         return {
           ...capability.application,
-          /*id: ix,*/ // may be needed for a ID in the datagrid, using publication id for now
-          causeCodesDictionary: causeCodes,
+          causeCodesDictionary: causeCodes && causeCodes.filter(Boolean),
         };
       }),
     ];

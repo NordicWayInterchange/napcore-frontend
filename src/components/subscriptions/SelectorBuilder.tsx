@@ -27,6 +27,7 @@ import { styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
 import { messageTypes } from "@/lib/messageTypes";
 import { originatingCountries } from "@/lib/originatingCountries";
+import { causeCodes } from "@/lib/causeCodes";
 
 type Props = {
   name: string;
@@ -159,6 +160,22 @@ const SelectorBuilder = (props: Props) => {
                   {originatingCountries.map((country, index) => (
                     <MenuItem key={index} value={country.value}>
                       {country.value}
+                    </MenuItem>
+                  ))}
+                </StyledSelect>
+              </FormControl>
+            )}
+          />
+          <Controller
+            name="causeCodes"
+            control={control}
+            render={({ field }) => (
+              <FormControl>
+                <InputLabel>Cause codes</InputLabel>
+                <StyledSelect multiple label="Cause codes" {...field}>
+                  {causeCodes.map((country, index) => (
+                    <MenuItem key={index} value={country.value}>
+                      {country.value}: {country.label}
                     </MenuItem>
                   ))}
                 </StyledSelect>

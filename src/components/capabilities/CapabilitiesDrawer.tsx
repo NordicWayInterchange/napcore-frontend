@@ -137,14 +137,12 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                     <FormControl margin="normal">
                       <InputLabel>Cause codes</InputLabel>
                       <Select label={"Cause codes"}>
-                        {capability.causeCodesDictionary.map((cause) => {
-                          if (cause.message != undefined) {
-                            return (
-                              <MenuItem key={cause.code} value={cause.message}>
-                                {`${cause.code}: ${cause.message}`}
-                              </MenuItem>
-                            );
-                          }
+                        {capability.causeCodesDictionary.map((cause, index) => {
+                          return (
+                            <MenuItem key={index} value={cause.value}>
+                              {cause.value}: {cause.label}
+                            </MenuItem>
+                          );
                         })}
                       </Select>
                     </FormControl>
