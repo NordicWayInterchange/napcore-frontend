@@ -1,16 +1,32 @@
 import { ExtendedCapability } from "@/types/capability";
 import { MessageTypes } from "@/types/messageType";
 import { OriginatingCountry } from "@/types/originatingCountry";
-import { AlertColor, Button, Grid, SelectChangeEvent } from "@mui/material";
+import {
+  AlertColor,
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import TextField from "../shared/input/TextField";
-import Select from "../shared/input/Select";
 import { generateSelector } from "@/lib/generateSelector";
 import TextArea from "../shared/input/TextArea";
 import { ButtonComponent } from "../shared";
 import { createSubscription } from "@/lib/internalFetchers";
 import MapDialog from "../map/MapDialog";
 import Alert from "../shared/feedback/Alert";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { SecondHeading } from "@/components/shared/display/heading/SecondHeading";
+import { BodyHeading } from "@/components/shared/display/heading/BodyHeading";
+import CertificateDialog from "@/components/profile/CertificateDialog";
+import { styled } from "@mui/material/styles";
+import { Box } from "@mui/system";
+import { messageTypes } from "@/lib/messageTypes";
+import { originatingCountries } from "@/lib/originatingCountries";
 
 type Props = {
   name: string;
@@ -19,68 +35,51 @@ type Props = {
   selectorCallback: (selector: string) => void;
 };
 
-interface IAlert {
-  title: string;
-  information: string;
-  severity?: AlertColor;
-}
-
-interface ISelector {
-  messageType: MessageTypes[];
+interface IFormInputs {
+  messageType: string[];
   causeCodes: string[];
   protocolVersion: string;
   originatingCountry: string[];
   publisherId: string;
   quadTree: string[];
+  selector: string;
 }
-
-const defaultSelector: ISelector = {
-  messageType: [],
-  causeCodes: [],
-  protocolVersion: "",
-  originatingCountry: [],
-  publisherId: "",
-  quadTree: [],
-};
 
 const DENM = MessageTypes.DENM;
 
 const SelectorBuilder = (props: Props) => {
   const { name, selectorCallback } = props;
   const [selector, setSelector] = useState<string>("");
-  const [formState, setFormState] = useState<ISelector>(defaultSelector);
   const [advancedMode, setAdvancedMode] = useState<boolean>(false);
   const [persistSelector, setPersistSelector] = useState<string>("");
   const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
 
-  const [alert, setAlert] = useState<IAlert>();
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<IFormInputs>({
+    defaultValues: {
+      messageType: [],
+      causeCodes: [],
+      protocolVersion: "",
+      originatingCountry: [],
+      publisherId: "",
+      quadTree: [],
+      selector: "",
+    },
+  });
 
   /*
   Generate a new selector when the form state changes.
   Send the selector backwards via selectorCallback(selector) to find matching capabilities.
   */
-  useEffect(() => {
+  /*  useEffect(() => {
     const selector = generateSelector(formState);
     setSelector(selector);
     selectorCallback(selector);
-  }, [formState]);
-
-  const handleSelect = (event: SelectChangeEvent<unknown>) => {
-    const { name, value } = event.target;
-    setFormState((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleTextField = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormState((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleTextArea = (event: any) => {
-    const value = event.target.value;
-    setSelector(value);
-    //selectorCallback(selector);
-  };
+  }, [formState]);*/
 
   /* 
   Switching to advanced mode will persist the selector.
@@ -95,12 +94,14 @@ const SelectorBuilder = (props: Props) => {
     }
   };
 
+  const onSubmit: SubmitHandler<IFormInputs> = (data) => {};
+
   const saveSubscription = async (name: string, selector: string) => {
     const response = await createSubscription(name, selector);
     const data = await response.json();
     console.log(data);
 
-    if (response.ok) {
+    /*    if (response.ok) {
       setAlert({
         title: "Subscription have been created",
         severity: "success",
@@ -112,131 +113,109 @@ const SelectorBuilder = (props: Props) => {
         severity: "error",
         information: "This is meant to display an error message - Try again!",
       });
-    }
+    }*/
   };
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
+  /*  const handleClose = () => {
     setFormState((prevData) => ({
       ...prevData,
       quadTree: predefinedQuadtree,
     }));
     setOpen(false);
-  };
+  };*/
 
   const quadtreeCallback = (value: string[]) => {
     setPredefinedQuadtree(value);
   };
 
   return (
-    // TODO: add form component
-    // validate fields before submitting
-    <Grid container spacing={1}>
-      <Grid item xs={6}>
-        <Select
-          value={formState.messageType}
-          label={"Message Type"}
-          name={"messageType"}
-          data={MessageTypes}
-          onChange={handleSelect}
-          disabled={advancedMode}
-        />
-      </Grid>
-      {/* FIXME */}
-      <Grid item xs={6}>
-        <TextField
-          value={formState.causeCodes}
-          label={"Cause Codes"}
-          name={"causeCodes"}
-          onChange={handleTextField}
-          disabled={advancedMode || !formState.messageType.includes(DENM)}
-          helperText="Enable with Message Type DENM"
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <TextField
-          value={formState.protocolVersion}
-          name={"protocolVersion"}
-          label="Protocol Version"
-          onChange={handleTextField}
-          disabled={advancedMode}
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <Select
-          value={formState.originatingCountry}
-          label={"Originating Country"}
-          name={"originatingCountry"}
-          data={OriginatingCountry}
-          onChange={handleSelect}
-          disabled={advancedMode}
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <TextField
-          value={formState.publisherId}
-          name={"publisherId"}
-          label="Publisher ID"
-          onChange={handleTextField}
-          disabled={advancedMode}
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <TextField
-          value={formState.quadTree}
-          name={"quadtree"}
-          label={"Quadtree"}
-          disabled={true}
-        />
-      </Grid>
-      {advancedMode && (
-        <Grid item xs={12}>
-          <TextArea
-            value={selector}
-            disabled={!advancedMode}
-            onChange={handleTextArea}
+    <StyledBox>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <StyledBox>
+          {/*https://stackoverflow.com/a/72688980*/}
+          <Controller
+            name="messageType"
+            control={control}
+            render={({ field }) => (
+              <FormControl>
+                <InputLabel>Message type</InputLabel>
+                <StyledSelect multiple label="Message type" {...field}>
+                  {messageTypes.map((messageType, index) => (
+                    <MenuItem key={index} value={messageType.value}>
+                      {messageType.value}
+                    </MenuItem>
+                  ))}
+                </StyledSelect>
+              </FormControl>
+            )}
           />
-        </Grid>
-      )}
-      <Grid item>
-        <Button
-          color={advancedMode ? "error" : "success"}
-          onClick={handleAdvancedMode}
-          variant={"outlined"}
-          sx={{ borderRadius: 100 }}
-        >
-          {advancedMode ? "Normal mode" : "Advanced mode"}
-        </Button>
-      </Grid>
-      <Grid item>
-        <ButtonComponent
-          text={"Save Subscription"}
-          onClick={() => saveSubscription(name, selector)}
-        />
-      </Grid>
-      <Grid item>
-        <ButtonComponent text={"Quadtree"} onClick={handleClickOpen} />
-      </Grid>
-      <MapDialog
-        open={open}
-        onClose={handleClose}
-        quadtree={formState.quadTree}
-        quadtreeCallback={quadtreeCallback}
-      />
-      {alert && (
-        <Grid item xs={12}>
-          <Alert
-            title={alert.title}
-            severity={alert.severity}
-            information={alert.information}
+          <Controller
+            name="originatingCountry"
+            control={control}
+            render={({ field }) => (
+              <FormControl>
+                <InputLabel>Originating country</InputLabel>
+                <StyledSelect multiple label="Originating country" {...field}>
+                  {originatingCountries.map((country, index) => (
+                    <MenuItem key={index} value={country.value}>
+                      {country.value}
+                    </MenuItem>
+                  ))}
+                </StyledSelect>
+              </FormControl>
+            )}
           />
-        </Grid>
-      )}
-    </Grid>
+          {/*TODO: dont allow to start or end with comma*/}
+          <Controller
+            name="quadTree"
+            control={control}
+            rules={{ required: false, pattern: /^[-,0-9 ]+$/i }}
+            render={({ field }) => (
+              <StyledTextField
+                {...field}
+                label="Quadtree"
+                error={Boolean(errors.quadTree)}
+                helperText={
+                  Boolean(errors.quadTree) &&
+                  "Only numbers and comma (,) is allowed"
+                }
+              />
+            )}
+          />
+          <StyledButton
+            fullWidth
+            color="greenDark"
+            variant="contained"
+            type="submit"
+          >
+            Save subscription
+          </StyledButton>
+        </StyledBox>
+      </form>
+    </StyledBox>
   );
 };
+
+const StyledTextField = styled(TextField)(({}) => ({
+  width: "344px",
+  "& .MuiInputBase-input": { background: "white" },
+}));
+
+const StyledSelect = styled(Select)(({}) => ({
+  width: "344px",
+  background: "white",
+}));
+
+const StyledBox = styled(Box)(({}) => ({
+  display: "flex",
+  flexDirection: "column",
+  gap: "24px",
+}));
+
+const StyledButton = styled(Button)(({}) => ({
+  width: "200px",
+  textTransform: "none",
+  borderRadius: 100,
+}));
 
 export default SelectorBuilder;
