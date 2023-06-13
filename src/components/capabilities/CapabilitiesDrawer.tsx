@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Card,
   Drawer,
   FormControl,
   IconButton,
@@ -19,6 +20,8 @@ import { ExtendedCapability } from "@/types/capability";
 import Map from "@/components/map/Map";
 import { createSubscription } from "@/lib/internalFetchers";
 import Snackbar from "@/components/shared/feedback/Snackbar";
+import { styled } from "@mui/material/styles";
+import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 
 const width = 750;
 
@@ -88,55 +91,86 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
             </ListItem>
 
             <ListItem>
-              <Box
-                sx={{
-                  backgroundColor: "#FFFFFF",
-                  padding: 2,
-                  borderRadius: 2,
-                  width: 1,
-                }}
-              >
-                {/*TODO: add endpoints (currently not existing)*/}
-                {/*<Box>{subscription.endpoints[0].host}</Box>
-          <Box>{subscription.endpoints[0].source}</Box>
-          <Box>{subscription.endpoints[0].port}</Box>*/}
-                <Typography>DETAILS</Typography>
+              <StyledCard variant={"outlined"}>
+                <Typography>Publisher</Typography>
                 <FormControl fullWidth>
-                  <TextField
-                    contentEditable={false}
-                    value={capability.messageType}
-                    label={"Message Type"}
-                    margin="normal"
-                  />
                   <TextField
                     contentEditable={false}
                     value={capability.publisherId}
                     label={"Publisher ID"}
                     margin="normal"
+                    InputProps={{
+                      endAdornment: (
+                        <ContentCopy value={capability.publisherId} />
+                      ),
+                    }}
                   />
                   <TextField
                     contentEditable={false}
                     value={capability.publicationId}
                     label={"Publication ID"}
                     margin="normal"
+                    InputProps={{
+                      endAdornment: (
+                        <ContentCopy value={capability.publicationId} />
+                      ),
+                    }}
                   />
                   <TextField
                     contentEditable={false}
                     value={capability.originatingCountry}
                     label={"Originating Country"}
                     margin="normal"
+                    InputProps={{
+                      endAdornment: (
+                        <ContentCopy value={capability.originatingCountry} />
+                      ),
+                    }}
+                  />
+                </FormControl>
+              </StyledCard>
+            </ListItem>
+
+            <ListItem>
+              <StyledCard variant={"outlined"}>
+                <Typography>Message</Typography>
+                <FormControl fullWidth>
+                  <TextField
+                    contentEditable={false}
+                    value={capability.messageType}
+                    label={"Message Type"}
+                    margin="normal"
+                    InputProps={{
+                      endAdornment: (
+                        <ContentCopy value={capability.messageType} />
+                      ),
+                    }}
                   />
                   <TextField
                     contentEditable={false}
                     value={capability.protocolVersion}
-                    label={"Originating Country"}
+                    label={"Protocol Version"}
                     margin="normal"
+                    InputProps={{
+                      endAdornment: (
+                        <ContentCopy value={capability.protocolVersion} />
+                      ),
+                    }}
                   />
-                  {/*TODO: Cause Codes*/}
+                  {/*TODO: Show cause code placeholder*/}
                   {capability.causeCodesDictionary && (
                     <FormControl margin="normal">
                       <InputLabel>Cause codes</InputLabel>
-                      <Select label={"Cause codes"}>
+                      <Select
+                        MenuProps={{ PaperProps: { sx: { maxHeight: 200 } } }}
+                        label={"Cause codes"}
+                        multiple
+                        defaultValue={capability.causeCodesDictionary.map(
+                          (cause) => {
+                            return cause["value"];
+                          }
+                        )}
+                      >
                         {capability.causeCodesDictionary.map((cause, index) => {
                           return (
                             <MenuItem key={index} value={cause.value}>
@@ -147,32 +181,46 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                       </Select>
                     </FormControl>
                   )}
-                  <Box
+                </FormControl>
+              </StyledCard>
+            </ListItem>
+
+            <ListItem>
+              <StyledCard variant={"outlined"}>
+                <Typography>Quadtree</Typography>
+                <FormControl
+                  fullWidth
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <TextField
+                    contentEditable={false}
+                    value={capability.quadTree}
+                    label={"Hash"}
+                    margin="normal"
                     sx={{
-                      display: "flex",
-                      flexDirection: "row",
+                      flexGrow: 1,
+                      marginRight: 1,
                     }}
+                    InputProps={{
+                      endAdornment: (
+                        <ContentCopy value={capability.quadTree.toString()} />
+                      ),
+                    }}
+                  />
+                  <Button
+                    sx={{
+                      borderRadius: 100,
+                      width: 150,
+                    }}
+                    variant={"outlined"}
+                    onClick={() => setViewMap((current) => !current)}
                   >
-                    <TextField
-                      contentEditable={false}
-                      value={capability.quadTree}
-                      label={"Quadtree"}
-                      sx={{
-                        flexGrow: 1,
-                        marginRight: 1,
-                      }}
-                    />
-                    <Button
-                      sx={{
-                        borderRadius: 100,
-                        width: 150,
-                      }}
-                      variant={"outlined"}
-                      onClick={() => setViewMap((current) => !current)}
-                    >
-                      {viewMap ? "Show map" : "Hide map"}
-                    </Button>
-                  </Box>
+                    {viewMap ? "Hide map" : "Show map"}
+                  </Button>
                 </FormControl>
                 {viewMap && (
                   <Map
@@ -182,7 +230,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                     height={400}
                   />
                 )}
-              </Box>
+              </StyledCard>
             </ListItem>
 
             <ListItem>
@@ -208,5 +256,10 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
     </>
   );
 };
+
+const StyledCard = styled(Card)(({}) => ({
+  padding: "16px",
+  width: "100%",
+}));
 
 export default CapabilitiesDrawer;

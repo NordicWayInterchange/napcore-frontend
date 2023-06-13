@@ -1,5 +1,6 @@
-import { Dialog, DialogContent } from "@mui/material";
+import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import Map from "./Map";
+import React from "react";
 
 type Props = {
   quadtreeCallback?: (value: string[]) => void;
@@ -24,12 +25,14 @@ export default function MapDialog(props: Props) {
 
   return (
     <Dialog maxWidth={"xl"} open={open} onClose={handleClose}>
-      {/* <DialogTitle>Are you sure?</DialogTitle> */}
+      <DialogTitle>Are you sure?</DialogTitle>
       <DialogContent>
         <Map
           quadtree={quadtree}
           quadtreeCallback={quadtreeCallback}
           interactive={interactive}
+          height={1000}
+          width={"100%"}
         />
       </DialogContent>
       {/* <DialogActions>
