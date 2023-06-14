@@ -43,7 +43,7 @@ export default function MapDialog(props: Props) {
   }, [discard]);
 
   return (
-    <Dialog maxWidth={"xl"} open={open} onClose={onClose}>
+    <Dialog fullWidth maxWidth={"xl"} open={open} onClose={onClose}>
       <DialogTitle>Quadtree</DialogTitle>
       <DialogContent>
         <DialogContentText sx={{ marginBottom: 2 }}>
@@ -55,8 +55,6 @@ export default function MapDialog(props: Props) {
           quadtree={quadtree}
           quadtreeCallback={quadtreeCallback}
           interactive={interactive}
-          height={"100vh"}
-          width={"100vh"}
         />
       </DialogContent>
       <DialogActions>

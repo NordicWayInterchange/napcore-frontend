@@ -6,29 +6,27 @@ import {
   Button,
   FormControl,
   FormHelperText,
-  Grid,
+  IconButton,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
-  SelectChangeEvent,
 } from "@mui/material";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextField from "../shared/input/TextField";
 import { generateSelector } from "@/lib/generateSelector";
 import TextArea from "../shared/input/TextArea";
-import { ButtonComponent } from "../shared";
 import { createSubscription } from "@/lib/internalFetchers";
 import MapDialog from "../map/MapDialog";
-import Alert from "../shared/feedback/Alert";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { SecondHeading } from "@/components/shared/display/heading/SecondHeading";
 import { BodyHeading } from "@/components/shared/display/heading/BodyHeading";
-import CertificateDialog from "@/components/profile/CertificateDialog";
 import { styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
 import { messageTypes } from "@/lib/messageTypes";
 import { originatingCountries } from "@/lib/originatingCountries";
 import { causeCodes } from "@/lib/causeCodes";
+import ClearIcon from "@mui/icons-material/Clear";
 
 type Props = {
   name: string;
@@ -209,6 +207,17 @@ const SelectorBuilder = (props: Props) => {
                   {...field}
                   label="Quadtree"
                   error={Boolean(errors.quadTree)}
+                  sx={{ marginRight: 1 }}
+                  /*InputProps={{
+                    endAdornment: (
+                      <IconButton
+                        onClick={() => setValue("quadTree", [])}
+                        edge="end"
+                      >
+                        <ClearIcon />
+                      </IconButton>
+                    ),
+                  }}*/
                   helperText={
                     Boolean(errors.quadTree) &&
                     "Only numbers and comma (,) is allowed"

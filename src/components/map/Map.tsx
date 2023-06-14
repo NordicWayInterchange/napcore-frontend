@@ -7,7 +7,7 @@ type Props = {
   quadtree: string[];
   interactive?: boolean;
   width?: string;
-  height?: string;
+  height?: number;
 };
 
 export default function Map(props: Props) {
