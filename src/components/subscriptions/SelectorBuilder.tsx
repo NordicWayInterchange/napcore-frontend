@@ -5,6 +5,7 @@ import {
   AlertColor,
   Button,
   FormControl,
+  FormHelperText,
   Grid,
   InputLabel,
   MenuItem,
@@ -71,7 +72,6 @@ const SelectorBuilder = (props: Props) => {
       originatingCountry: [],
       publicationId: "",
       quadTree: [],
-      selector: "",
     },
   });
 
@@ -79,18 +79,12 @@ const SelectorBuilder = (props: Props) => {
   Generate a new selector when the form state changes.
   Send the selector backwards via selectorCallback(selector) to find matching capabilities.
   */
-  /*  useEffect(() => {
-    const watchAllFields = watch();
-    const selector = generateSelector(watchAllFields);
-    console.log(selector);
-    setSelector(selector);
-    selectorCallback(selector);
-  }, [watch]);*/
   useEffect(() => {
     const watchAllFields = watch((value) => {
-      /*console.log(value)*/
-      console.log(generateSelector(value));
-      selectorCallback(generateSelector(value));
+      const selector = generateSelector(value);
+      selectorCallback(selector);
+      console.log(selector);
+      setSelector(selector);
     });
     return () => watchAllFields.unsubscribe();
   }, [watch]);
@@ -108,26 +102,11 @@ const SelectorBuilder = (props: Props) => {
     }
   };
 
-  const onSubmit: SubmitHandler<IFormInputs> = (data) => {};
-
-  const saveSubscription = async (name: string, selector: string) => {
+  const onSubmit: SubmitHandler<IFormInputs> = async () => {
+    const name = "anna";
     const response = await createSubscription(name, selector);
     const data = await response.json();
     console.log(data);
-
-    /*    if (response.ok) {
-      setAlert({
-        title: "Subscription have been created",
-        severity: "success",
-        information: "This is meant to display an success message!",
-      });
-    } else {
-      setAlert({
-        title: data.errorCode,
-        severity: "error",
-        information: "This is meant to display an error message - Try again!",
-      });
-    }*/
   };
 
   /*  const handleClose = () => {
@@ -143,116 +122,112 @@ const SelectorBuilder = (props: Props) => {
   };
 
   return (
-    <StyledBox>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <StyledBox>
-          <Controller
-            name="publicationId"
-            control={control}
-            rules={{ required: true, pattern: /^[-,0-9 ]+$/i }}
-            render={({ field }) => (
-              <StyledTextField
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <StyledFormControl>
+        <Controller
+          name="publicationId"
+          control={control}
+          render={({ field }) => (
+            <StyledTextField {...field} label="Publication ID" />
+          )}
+        />
+        {/*https://stackoverflow.com/a/72688980*/}
+        <Controller
+          name="messageType"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <FormControl error={Boolean(errors.messageType)}>
+              <InputLabel>Message type *</InputLabel>
+              <StyledSelect {...field} multiple label="Message type *">
+                {messageTypes.map((messageType, index) => (
+                  <MenuItem key={index} value={messageType.value}>
+                    {messageType.value}
+                  </MenuItem>
+                ))}
+              </StyledSelect>
+              {Boolean(errors.messageType) && (
+                <FormHelperText>Message type is required</FormHelperText>
+              )}
+            </FormControl>
+          )}
+        />
+        <Controller
+          name="originatingCountry"
+          control={control}
+          render={({ field }) => (
+            <FormControl>
+              <InputLabel>Originating country</InputLabel>
+              <StyledSelect multiple label="Originating country" {...field}>
+                {originatingCountries.map((country, index) => (
+                  <MenuItem key={index} value={country.value}>
+                    {country.value}
+                  </MenuItem>
+                ))}
+              </StyledSelect>
+            </FormControl>
+          )}
+        />
+        {/*TODO: Only show if DENM*/}
+        <Controller
+          name="causeCodes"
+          control={control}
+          render={({ field }) => (
+            <FormControl>
+              <InputLabel>Cause codes</InputLabel>
+              <StyledSelect
+                MenuProps={{ PaperProps: { sx: { maxHeight: 200 } } }}
+                multiple
+                label="Cause codes"
                 {...field}
-                label="Publication ID *"
-                error={Boolean(errors.publicationId)}
-                helperText={
-                  Boolean(errors.publicationId) && "Mandatory to be filled in"
-                }
-              />
-            )}
-          />
-          {/*https://stackoverflow.com/a/72688980*/}
-          <Controller
-            name="messageType"
-            control={control}
-            render={({ field }) => (
-              <FormControl>
-                <InputLabel>Message type</InputLabel>
-                <StyledSelect multiple label="Message type" {...field}>
-                  {messageTypes.map((messageType, index) => (
-                    <MenuItem key={index} value={messageType.value}>
-                      {messageType.value}
-                    </MenuItem>
-                  ))}
-                </StyledSelect>
-              </FormControl>
-            )}
-          />
-          <Controller
-            name="originatingCountry"
-            control={control}
-            render={({ field }) => (
-              <FormControl>
-                <InputLabel>Originating country</InputLabel>
-                <StyledSelect multiple label="Originating country" {...field}>
-                  {originatingCountries.map((country, index) => (
-                    <MenuItem key={index} value={country.value}>
-                      {country.value}
-                    </MenuItem>
-                  ))}
-                </StyledSelect>
-              </FormControl>
-            )}
-          />
-          {/*TODO: Only show if DENM*/}
-          <Controller
-            name="causeCodes"
-            control={control}
-            render={({ field }) => (
-              <FormControl>
-                <InputLabel>Cause codes</InputLabel>
-                <StyledSelect multiple label="Cause codes" {...field}>
-                  {causeCodes.map((country, index) => (
-                    <MenuItem key={index} value={country.value}>
-                      {country.value}: {country.label}
-                    </MenuItem>
-                  ))}
-                </StyledSelect>
-              </FormControl>
-            )}
-          />
-          {/*TODO: dont allow to start or end with comma*/}
-          <Controller
-            name="quadTree"
-            control={control}
-            rules={{ required: false, pattern: /^[-,0-9 ]+$/i }}
-            render={({ field }) => (
-              <StyledTextField
-                {...field}
-                label="Quadtree"
-                error={Boolean(errors.quadTree)}
-                helperText={
-                  Boolean(errors.quadTree) &&
-                  "Only numbers and comma (,) is allowed"
-                }
-              />
-            )}
-          />
-          <StyledButton
-            fullWidth
-            color="greenDark"
-            variant="contained"
-            type="submit"
-          >
-            Save subscription
-          </StyledButton>
-        </StyledBox>
-      </form>
-    </StyledBox>
+              >
+                {causeCodes.map((country, index) => (
+                  <MenuItem key={index} value={country.value}>
+                    {country.value}: {country.label}
+                  </MenuItem>
+                ))}
+              </StyledSelect>
+            </FormControl>
+          )}
+        />
+        {/*TODO: dont allow to start or end with comma*/}
+        <Controller
+          name="quadTree"
+          control={control}
+          rules={{ required: false, pattern: /^[-,0-9 ]+$/i }}
+          render={({ field }) => (
+            <StyledTextField
+              {...field}
+              label="Quadtree"
+              error={Boolean(errors.quadTree)}
+              helperText={
+                Boolean(errors.quadTree) &&
+                "Only numbers and comma (,) is allowed"
+              }
+            />
+          )}
+        />
+        <StyledButton color="greenDark" variant="contained" type="submit">
+          Save subscription
+        </StyledButton>
+      </StyledFormControl>
+    </form>
   );
 };
 
 const StyledTextField = styled(TextField)(({}) => ({
+  /*
   width: "344px",
+*/
   "& .MuiInputBase-input": { background: "white" },
 }));
 
 const StyledSelect = styled(Select)(({}) => ({
-  width: "344px",
+  /*  width: "344px",*/
   background: "white",
 }));
 
-const StyledBox = styled(Box)(({}) => ({
+const StyledFormControl = styled(FormControl)(({}) => ({
   display: "flex",
   flexDirection: "column",
   gap: "24px",

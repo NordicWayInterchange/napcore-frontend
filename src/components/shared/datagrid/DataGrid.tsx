@@ -7,9 +7,10 @@ interface Props extends DataGridProps {}
 
 export default function DataGrid(props: Props) {
   return (
-    <Box sx={{ height: "70vh" }}>
+    <Box sx={{ height: "70vh", width: "100%" }}>
       <StyledDataGrid
         {...props}
+        autoHeight
         disableRowSelectionOnClick={true}
         sx={{ backgroundColor: "white" }}
         initialState={{

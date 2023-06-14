@@ -12,7 +12,6 @@ export const generateSelector = (formState: any): string => {
     "publicationTypes",
     "stationTypes",
     "iviType",
-    "selector",
   ];
 
   return Object.keys(formState).reduce(
