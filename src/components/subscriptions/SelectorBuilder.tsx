@@ -47,8 +47,6 @@ interface IFormInputs {
   selector: string;
 }
 
-const DENM = MessageTypes.DENM;
-
 const SelectorBuilder = (props: Props) => {
   const { name, selectorCallback } = props;
   const [selector, setSelector] = useState<string>("");
@@ -63,6 +61,7 @@ const SelectorBuilder = (props: Props) => {
     getValues,
     getFieldState,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<IFormInputs>({
     defaultValues: {
@@ -74,6 +73,9 @@ const SelectorBuilder = (props: Props) => {
       quadTree: [],
     },
   });
+
+  const watchMessageType = watch("messageType");
+  const DENM = MessageTypes.DENM;
 
   /*
   Generate a new selector when the form state changes.
@@ -88,6 +90,13 @@ const SelectorBuilder = (props: Props) => {
     });
     return () => watchAllFields.unsubscribe();
   }, [watch]);
+
+  /*
+  Remove cause codes from form, if the message type DENM is removed.
+  */
+  useEffect(() => {
+    if (!watchMessageType.includes(DENM)) setValue("causeCodes", []);
+  }, [watchMessageType]);
 
   /* 
   Switching to advanced mode will persist the selector.
@@ -109,109 +118,124 @@ const SelectorBuilder = (props: Props) => {
     console.log(data);
   };
 
-  /*  const handleClose = () => {
-    setFormState((prevData) => ({
-      ...prevData,
-      quadTree: predefinedQuadtree,
-    }));
+  const handleClose = () => {
+    setValue("quadTree", predefinedQuadtree);
     setOpen(false);
-  };*/
+  };
 
   const quadtreeCallback = (value: string[]) => {
     setPredefinedQuadtree(value);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <StyledFormControl>
-        <Controller
-          name="publicationId"
-          control={control}
-          render={({ field }) => (
-            <StyledTextField {...field} label="Publication ID" />
-          )}
-        />
-        {/*https://stackoverflow.com/a/72688980*/}
-        <Controller
-          name="messageType"
-          control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <FormControl error={Boolean(errors.messageType)}>
-              <InputLabel>Message type *</InputLabel>
-              <StyledSelect {...field} multiple label="Message type *">
-                {messageTypes.map((messageType, index) => (
-                  <MenuItem key={index} value={messageType.value}>
-                    {messageType.value}
-                  </MenuItem>
-                ))}
-              </StyledSelect>
-              {Boolean(errors.messageType) && (
-                <FormHelperText>Message type is required</FormHelperText>
+    <>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <StyledFormControl>
+          <Controller
+            name="publicationId"
+            control={control}
+            render={({ field }) => (
+              <StyledTextField {...field} label="Publication ID" />
+            )}
+          />
+          {/*https://stackoverflow.com/a/72688980*/}
+          <Controller
+            name="messageType"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.messageType)}>
+                <InputLabel>Message type *</InputLabel>
+                <StyledSelect {...field} multiple label="Message type *">
+                  {messageTypes.map((messageType, index) => (
+                    <MenuItem key={index} value={messageType.value}>
+                      {messageType.value}
+                    </MenuItem>
+                  ))}
+                </StyledSelect>
+                {Boolean(errors.messageType) && (
+                  <FormHelperText>Message type is required</FormHelperText>
+                )}
+              </FormControl>
+            )}
+          />
+          <Controller
+            name="originatingCountry"
+            control={control}
+            render={({ field }) => (
+              <FormControl>
+                <InputLabel>Originating country</InputLabel>
+                <StyledSelect multiple label="Originating country" {...field}>
+                  {originatingCountries.map((country, index) => (
+                    <MenuItem key={index} value={country.value}>
+                      {country.value}
+                    </MenuItem>
+                  ))}
+                </StyledSelect>
+              </FormControl>
+            )}
+          />
+          {watchMessageType.includes(DENM) && (
+            <Controller
+              name="causeCodes"
+              control={control}
+              render={({ field }) => (
+                <FormControl>
+                  <InputLabel>Cause codes</InputLabel>
+                  <StyledSelect
+                    MenuProps={{ PaperProps: { sx: { maxHeight: 200 } } }}
+                    multiple
+                    label="Cause codes"
+                    {...field}
+                  >
+                    {causeCodes.map((country, index) => (
+                      <MenuItem key={index} value={country.value}>
+                        {country.value}: {country.label}
+                      </MenuItem>
+                    ))}
+                  </StyledSelect>
+                </FormControl>
               )}
-            </FormControl>
-          )}
-        />
-        <Controller
-          name="originatingCountry"
-          control={control}
-          render={({ field }) => (
-            <FormControl>
-              <InputLabel>Originating country</InputLabel>
-              <StyledSelect multiple label="Originating country" {...field}>
-                {originatingCountries.map((country, index) => (
-                  <MenuItem key={index} value={country.value}>
-                    {country.value}
-                  </MenuItem>
-                ))}
-              </StyledSelect>
-            </FormControl>
-          )}
-        />
-        {/*TODO: Only show if DENM*/}
-        <Controller
-          name="causeCodes"
-          control={control}
-          render={({ field }) => (
-            <FormControl>
-              <InputLabel>Cause codes</InputLabel>
-              <StyledSelect
-                MenuProps={{ PaperProps: { sx: { maxHeight: 200 } } }}
-                multiple
-                label="Cause codes"
-                {...field}
-              >
-                {causeCodes.map((country, index) => (
-                  <MenuItem key={index} value={country.value}>
-                    {country.value}: {country.label}
-                  </MenuItem>
-                ))}
-              </StyledSelect>
-            </FormControl>
-          )}
-        />
-        {/*TODO: dont allow to start or end with comma*/}
-        <Controller
-          name="quadTree"
-          control={control}
-          rules={{ required: false, pattern: /^[-,0-9 ]+$/i }}
-          render={({ field }) => (
-            <StyledTextField
-              {...field}
-              label="Quadtree"
-              error={Boolean(errors.quadTree)}
-              helperText={
-                Boolean(errors.quadTree) &&
-                "Only numbers and comma (,) is allowed"
-              }
             />
           )}
-        />
-        <StyledButton color="greenDark" variant="contained" type="submit">
-          Save subscription
-        </StyledButton>
-      </StyledFormControl>
-    </form>
+          {/*TODO: dont allow to start or end with comma*/}
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Controller
+              name="quadTree"
+              control={control}
+              rules={{ required: false, pattern: /^[-,0-9 ]+$/i }}
+              render={({ field }) => (
+                <StyledTextField
+                  {...field}
+                  label="Quadtree"
+                  error={Boolean(errors.quadTree)}
+                  helperText={
+                    Boolean(errors.quadTree) &&
+                    "Only numbers and comma (,) is allowed"
+                  }
+                />
+              )}
+            />
+            <StyledButton
+              color="greenDark"
+              variant="outlined"
+              onClick={() => setOpen(true)}
+            >
+              Map
+            </StyledButton>
+          </Box>
+          <StyledButton color="greenDark" variant="contained" type="submit">
+            Save subscription
+          </StyledButton>
+        </StyledFormControl>
+      </form>
+      <MapDialog
+        open={open}
+        onClose={handleClose}
+        quadtree={getValues("quadTree")}
+        quadtreeCallback={quadtreeCallback}
+      />
+    </>
   );
 };
 

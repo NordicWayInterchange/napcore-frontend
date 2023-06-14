@@ -9,8 +9,8 @@ type Props = {
   quadtreeCallback?: (value: string[]) => void;
   quadtree: string[];
   interactive?: boolean;
-  width: string;
-  height: number;
+  width?: string;
+  height?: string;
 };
 
 export default function DynamicMap(props: Props) {
