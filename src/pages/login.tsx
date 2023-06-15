@@ -39,28 +39,28 @@ export default function login({
         you can contact christian.berg.skjetne@vegvesen.no.
       </Typography>
 
-      {Object.values(providers).map((provider) => (
-        <div key={provider.name}>
-          <Button
-            startIcon={
-              <SvgIcon
-                sx={{
-                  width: "inherit",
-                  height: "inherit",
-                }}
-                component={Google}
-                inheritViewBox
-              />
-            }
-            variant="outlined"
-            fullWidth
-            sx={{ borderColor: "gray", color: "black", textTransform: "none" }}
-            onClick={() => signIn(provider.id)}
-          >
-            <Typography>Sign in with {provider.name}</Typography>
-          </Button>
-        </div>
-      ))}
+      <Button
+        startIcon={
+          <SvgIcon
+            sx={{
+              width: "inherit",
+              height: "inherit",
+            }}
+            component={Google}
+            inheritViewBox
+          />
+        }
+        variant="outlined"
+        fullWidth
+        sx={{ borderColor: "gray", color: "black", textTransform: "none" }}
+        onClick={(e) => {
+          /*https://stackoverflow.com/questions/74180557/next-auth-next-autherrorclient-fetch-error-networkerror-when-attempting-to*/
+          e.preventDefault();
+          signIn("google", { callbackUrl: "/" });
+        }}
+      >
+        <Typography>Sign in with Google</Typography>
+      </Button>
     </Card>
   );
 }

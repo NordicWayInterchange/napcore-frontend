@@ -34,19 +34,7 @@ export default function CertificateDialog(props: Props) {
   return (
     <>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Box>
-            <CheckIcon fontSize="large" />
-          </Box>
-          <Typography variant={"h5"}>Certificate generated</Typography>
-        </DialogTitle>
+        <DialogTitle>Certificate generated</DialogTitle>
         <DialogContent>
           <DialogContentText sx={{ marginY: 1 }}>
             The certificate was successfully created.
