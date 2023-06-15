@@ -29,7 +29,7 @@ export const generateSelector = (formState: any): string => {
           }
           const reduce = valueArray.reduce(
             (acc: string, value: string, index: number) =>
-              reducer(acc, value.trim(), index, key),
+              reducer(acc, value.toString().trim(), index, key),
             ""
           );
           acc += valueArray.length > 1 ? `(${reduce})` : reduce;

@@ -9,7 +9,7 @@ export const authOptions = {
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
-  callbacks: {
+  /*  callbacks: {
     async jwt({ token, account }) {
       // Persist the OAuth access_token to the token right after signin
       if (account) {
@@ -25,7 +25,7 @@ export const authOptions = {
     authorized({ req, token }) {
       if (token) return true; // If there is a token, the user is authenticated
     },
-  },
+  },*/
   pages: {
     signIn: "/login",
   },

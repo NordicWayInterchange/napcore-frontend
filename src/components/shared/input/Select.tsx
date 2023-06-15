@@ -1,3 +1,4 @@
+/*
 import { getEnumValues } from "@/lib/getEnumValues";
 import {
   FormControl,
@@ -28,7 +29,7 @@ const Select = (props: Props) => {
       >
         {getEnumValues(data).map((value, index) => (
           <MenuItem value={value} key={index}>
-            {/* FIXME: */}
+            {/!* FIXME: *!/}
             {value}
           </MenuItem>
         ))}
@@ -38,3 +39,4 @@ const Select = (props: Props) => {
 };
 
 export default Select;
+*/

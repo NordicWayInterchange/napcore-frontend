@@ -1,10 +1,11 @@
 import dynamic from "next/dynamic";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Subscriptions from "./subscriptions";
 import {
   Avatar,
   Card,
   Divider,
+  IconButton,
   List,
   ListItem,
   ListItemText,
@@ -12,13 +13,33 @@ import {
   useTheme,
 } from "@mui/material";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import { Box } from "@mui/system";
 import Link from "next/link";
+import DataGrid from "@/components/shared/datagrid/DataGrid";
+import { GridColDef } from "@mui/x-data-grid";
+import { dataGridTemplate } from "@/components/shared/datagrid/DataGridTemplate";
+import { Chip } from "@/components/shared/display/Chip";
+import { statusChips } from "@/lib/statusChips";
+import { useSubscriptions } from "@/hooks/useSubscriptions";
+import { ExtendedSubscription } from "@/types/subscription";
 
 export default function Home() {
   const { data: session } = useSession();
   const theme = useTheme();
+  const { data, isLoading } = useSubscriptions(session?.user?.email as string);
+  /*
+  const [sort, setSort] = useState<ExtendedSubscription[]>();
+
+  useEffect(() => {
+    if (data) {
+      const copyArray = [...data];
+      const sortArray = copyArray
+        .sort((a, b) => Number(b.id) - Number(a.id))
+        .slice(0, 4);
+      setSort(sortArray);
+    }
+  }, [data]);
+*/
 
   const shortcuts = [
     {
@@ -48,6 +69,42 @@ export default function Home() {
     },
   ];
 
+  const tableHeaders: GridColDef[] = [
+    {
+      ...dataGridTemplate,
+      /*flex: 0,*/
+      field: "id",
+      headerName: "ID",
+    },
+    {
+      ...dataGridTemplate,
+      field: "status",
+      headerName: "Status",
+      renderCell: (cell) => {
+        return <Chip color={statusChips[cell.value]} label={cell.value} />;
+      },
+    },
+    {
+      ...dataGridTemplate,
+      field: "capabilityMatches",
+      headerName: "Capability Matches",
+    },
+    {
+      ...dataGridTemplate,
+      field: "lastUpdatedTimeStamp",
+      headerName: "Last updated",
+    },
+    {
+      ...dataGridTemplate,
+      field: "actions",
+      headerName: "",
+      sortable: false,
+      filterable: false,
+      disableColumnMenu: true,
+      align: "right",
+    },
+  ];
+
   return (
     <>
       <Typography variant="h4">Welcome, {session?.user?.name}!</Typography>
@@ -74,7 +131,7 @@ export default function Home() {
                 padding: 2,
                 width: 400,
                 ":hover": {
-                  bgcolor: theme.palette.sidebarActiveColor, // theme.shadows[20]
+                  bgcolor: theme.palette.sidebarActiveColor,
                 },
               }}
             >
@@ -94,6 +151,13 @@ export default function Home() {
           </Link>
         ))}
       </Box>
+      <Typography variant="h5">Your latest subscriptions</Typography>
+      <DataGrid
+        columns={tableHeaders}
+        rows={data?.slice(0, 4) || []}
+        loading={isLoading}
+        hideFooterPagination={true}
+      />
     </>
   );
 }

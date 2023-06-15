@@ -9,12 +9,18 @@ type Props = {
   quadtreeCallback?: (value: string[]) => void;
   quadtree: string[];
   interactive?: boolean;
-  width: string;
-  height: number;
+  width?: string;
+  height?: number;
 };
 
 export default function DynamicMap(props: Props) {
-  const { quadtreeCallback, quadtree, interactive, width, height } = props;
+  const {
+    quadtreeCallback,
+    quadtree,
+    interactive,
+    width = "100%",
+    height = 900,
+  } = props;
   const [controlsHash, setControlsHash] = useState<string[]>([]);
 
   const controlsCallback = (hash: string) => {
