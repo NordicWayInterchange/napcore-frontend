@@ -2,12 +2,9 @@ import { ExtendedCapability } from "@/types/capability";
 import { MessageTypes } from "@/types/messageType";
 import { OriginatingCountry } from "@/types/originatingCountry";
 import {
-  AlertColor,
   Button,
   FormControl,
   FormHelperText,
-  IconButton,
-  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
@@ -113,6 +110,8 @@ const SelectorBuilder = (props: Props) => {
     const name = "anna";
     const response = await createSubscription(name, selector);
     const data = await response.json();
+
+    // todo: no matching capabilites
     console.log(data);
   };
 
@@ -206,6 +205,7 @@ const SelectorBuilder = (props: Props) => {
                 <StyledTextField
                   {...field}
                   label="Quadtree"
+                  disabled
                   error={Boolean(errors.quadTree)}
                   sx={{ marginRight: 1 }}
                   /*InputProps={{
@@ -233,9 +233,22 @@ const SelectorBuilder = (props: Props) => {
               Map
             </StyledButton>
           </Box>
-          <StyledButton color="greenDark" variant="contained" type="submit">
-            Save subscription
-          </StyledButton>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <StyledButton
+              color={advancedMode ? "error" : "success"}
+              variant="outlined"
+              onClick={handleAdvancedMode}
+            >
+              {advancedMode ? "Normal" : "Advanced"}
+            </StyledButton>
+            {/*            <FormControlLabel
+              control={<Switch defaultChecked />}
+              label="Label"
+            />*/}
+            <StyledButton color="greenDark" variant="contained" type="submit">
+              Save subscription
+            </StyledButton>
+          </Box>
         </StyledFormControl>
       </form>
       <MapDialog

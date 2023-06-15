@@ -28,6 +28,7 @@ export async function createPKCS10({ commonName, organization, country }) {
   const keyPair = await generateKeyPair(crypto, getAlgorithm(signAlg, hashAlg));
 
   return {
+    /*TODO: base64 the entire pem*/
     csr: `-----BEGIN CERTIFICATE REQUEST-----\n${formatPEM(
       toBase64(
         arrayBufferToString(

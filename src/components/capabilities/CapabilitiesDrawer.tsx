@@ -23,7 +23,7 @@ import Snackbar from "@/components/shared/feedback/Snackbar";
 import { styled } from "@mui/material/styles";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 
-const width = 750;
+const width = 600;
 
 type Props = {
   capability: ExtendedCapability;
