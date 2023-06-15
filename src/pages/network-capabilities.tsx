@@ -9,7 +9,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { ExtendedSubscription } from "@/types/subscription";
 import { ExtendedCapability } from "@/types/capability";
 import CapabilitiesDrawer from "@/components/capabilities/CapabilitiesDrawer";
-import { messageTypeChips } from "@/lib/statusChips";
+import { messageTypeChips, statusChips } from "@/lib/statusChips";
 import { Chip } from "@/components/shared/display/Chip";
 
 export default function NetworkCapabilities() {
@@ -21,7 +21,7 @@ export default function NetworkCapabilities() {
   const [capabilityRow, setCapabilityRow] = useState<ExtendedCapability>();
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
-  const handleMore = (capability: ExtendedSubscription) => {
+  const handleMore = (capability: ExtendedCapability) => {
     setCapabilityRow(capability);
     setDrawerOpen(true);
   };
@@ -43,7 +43,16 @@ export default function NetworkCapabilities() {
       headerName: "Message Type",
       // TODO: Add colors (currently flickering when rerender)
       renderCell: (cell) => {
-        return <Chip color={messageTypeChips[cell.value]} label={cell.value} />;
+        return (
+          <Chip
+            color={
+              messageTypeChips[
+                cell.value as keyof typeof messageTypeChips
+              ] as any
+            }
+            label={cell.value}
+          />
+        );
       },
     },
     {

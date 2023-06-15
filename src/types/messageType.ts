@@ -1,6 +1,3 @@
-import { Capability } from "./capability";
-import { CauseCodes } from "@/lib/causeCodes";
-
 export enum MessageTypes {
   DATEX_2 = "DATEX2",
   DENM = "DENM",
@@ -12,7 +9,7 @@ export enum MessageTypes {
   CAM = "CAM",
 }
 
-export type DatexCapability = Capability & {
+/*export type DatexCapability = Capability & {
   publicationTypes: Array<string>;
 };
 export type CamCapability = Capability & { stationTypes: Array<string> };
@@ -34,4 +31,4 @@ export type MessageTypeCapability = {
   [MessageTypes.SREM]: SremCapability;
   [MessageTypes.SSEM]: SsemCapability;
   [MessageTypes.CAM]: CamCapability;
-};
+};*/

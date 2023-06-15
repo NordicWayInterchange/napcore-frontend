@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Box, Divider, IconButton, Typography } from "@mui/material";
+import {
+  Box,
+  ChipPropsColorOverrides,
+  Divider,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
 import { GridColDef } from "@mui/x-data-grid";
 import { useSession } from "next-auth/react";
@@ -13,6 +19,7 @@ import { ExtendedSubscription } from "@/types/subscription";
 import SubscriptionsDrawer from "@/components/subscriptions/SubscriptionsDrawer";
 import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
 import { Chip } from "@/components/shared/display/Chip";
+import { OverridableStringUnion } from "@mui/types";
 
 export default function Subscriptions() {
   const { data: session } = useSession();
@@ -52,7 +59,12 @@ export default function Subscriptions() {
       field: "status",
       headerName: "Status",
       renderCell: (cell) => {
-        return <Chip color={statusChips[cell.value]} label={cell.value} />;
+        return (
+          <Chip
+            color={statusChips[cell.value as keyof typeof statusChips] as any}
+            label={cell.value}
+          />
+        );
       },
     },
     {

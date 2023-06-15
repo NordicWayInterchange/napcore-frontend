@@ -81,7 +81,12 @@ export default function Home() {
       field: "status",
       headerName: "Status",
       renderCell: (cell) => {
-        return <Chip color={statusChips[cell.value]} label={cell.value} />;
+        return (
+          <Chip
+            color={statusChips[cell.value as keyof typeof statusChips] as any}
+            label={cell.value}
+          />
+        );
       },
     },
     {

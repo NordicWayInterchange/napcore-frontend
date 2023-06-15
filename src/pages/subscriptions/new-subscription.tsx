@@ -7,7 +7,7 @@ import { useMatchingCapabilities } from "@/hooks/useMatchingCapabilities";
 import DataGrid from "@/components/shared/datagrid/DataGrid";
 import { dataGridTemplate } from "@/components/shared/datagrid/DataGridTemplate";
 import { useSession } from "next-auth/react";
-import { messageTypeChips } from "@/lib/statusChips";
+import { messageTypeChips, statusChips } from "@/lib/statusChips";
 
 const tableHeaders: GridColDef[] = [
   {
@@ -28,8 +28,9 @@ const tableHeaders: GridColDef[] = [
       return (
         <Chip
           sx={{ borderRadius: 1 }}
-          // TODO: Fix
-          color={messageTypeChips[cell.value]}
+          color={
+            messageTypeChips[cell.value as keyof typeof messageTypeChips] as any
+          }
           label={cell.value}
         />
       );

@@ -233,7 +233,7 @@ const SelectorBuilder = (props: Props) => {
               Map
             </StyledButton>
           </Box>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
             <StyledButton
               color={advancedMode ? "error" : "success"}
               variant="outlined"

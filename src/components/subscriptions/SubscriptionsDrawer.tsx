@@ -76,7 +76,11 @@ const SubscriptionsDrawer = ({
               <StyledHeaderBox>
                 <Typography>Subscription details</Typography>
                 <Chip
-                  color={statusChips[subscription.status]}
+                  color={
+                    statusChips[
+                      subscription.status.toString() as keyof typeof statusChips
+                    ] as any
+                  }
                   label={subscription.status}
                 />
               </StyledHeaderBox>
