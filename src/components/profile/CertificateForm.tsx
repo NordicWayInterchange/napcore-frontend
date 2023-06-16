@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, Card, TextField, Typography } from "@mui/material";
 import CertificateDialog from "@/components/profile/CertificateDialog";
 import { createPKCS10 } from "@/lib/pkcs10Generator";
 import { Box } from "@mui/system";
@@ -50,21 +50,22 @@ export const CertificateForm = () => {
   };
 
   return (
-    <StyledBox>
+    <StyledCard>
       <SecondHeading heading={"Certificate"} />
       <BodyHeading
         heading={"Please fill in your details in order to create a certificate"}
       />
       <form onSubmit={handleSubmit(onSubmit)}>
-        <StyledBox>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
           <Controller
             name="countryCode"
             control={control}
             rules={{ required: true, pattern: /^[a-z]{2}$/i }}
             render={({ field }) => (
               <StyledTextField
+                fullWidth
                 {...field}
-                label="Country code"
+                label="Country code *"
                 error={Boolean(errors.countryCode)}
                 helperText={
                   Boolean(errors.countryCode) &&
@@ -80,7 +81,8 @@ export const CertificateForm = () => {
             render={({ field }) => (
               <StyledTextField
                 {...field}
-                label="Organisation name"
+                fullWidth
+                label="Organisation name *"
                 error={Boolean(errors.orgName)}
                 helperText={Boolean(errors.orgName) && "Must be filled in"}
               />
@@ -94,29 +96,29 @@ export const CertificateForm = () => {
           >
             Generate certificate
           </StyledButton>
-        </StyledBox>
+        </Box>
       </form>
       <CertificateDialog
         privateKey={csr?.privateKey as string}
         handleDialog={handleClickClose}
         open={open}
       />
-    </StyledBox>
+    </StyledCard>
   );
 };
 
 const StyledTextField = styled(TextField)(({}) => ({
-  width: "344px",
   "& .MuiInputBase-input": { background: "white" },
 }));
 
-const StyledBox = styled(Box)(({}) => ({
-  display: "flex",
-  flexDirection: "column",
-  gap: "24px",
+const StyledButton = styled(Button)(({}) => ({
+  textTransform: "none",
 }));
 
-const StyledButton = styled(Button)(({}) => ({
-  width: "200px",
-  textTransform: "none",
+const StyledCard = styled(Card)(({}) => ({
+  padding: "16px",
+  display: "flex",
+  width: "50%",
+  gap: "24px",
+  flexDirection: "column",
 }));

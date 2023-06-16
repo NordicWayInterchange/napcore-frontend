@@ -19,8 +19,10 @@ export default function Profile() {
     <>
       <MainHeading heading={"Profile Settings"} />
       <Divider sx={{ marginY: 3 }} />
-      <ProfileCard />
-      <CertificateForm />
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+        <ProfileCard />
+        <CertificateForm />
+      </Box>
     </>
   );
 }
