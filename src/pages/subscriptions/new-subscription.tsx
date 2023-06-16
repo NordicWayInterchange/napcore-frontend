@@ -8,6 +8,7 @@ import DataGrid from "@/components/shared/datagrid/DataGrid";
 import { dataGridTemplate } from "@/components/shared/datagrid/DataGridTemplate";
 import { useSession } from "next-auth/react";
 import { messageTypeChips, statusChips } from "@/lib/statusChips";
+import { useNetworkCapabilities } from "@/hooks/useNetworkCapabilities";
 
 const tableHeaders: GridColDef[] = [
   {
@@ -57,6 +58,11 @@ const NewSubscription = () => {
     selector
   );
 
+  const { data, isLoading } = useMatchingCapabilities(
+    session?.user?.email as string,
+    selector
+  );
+
   const handleChange = (selector: string) => {
     setSelector(selector);
     matchingCapabilities.remove();
@@ -77,8 +83,8 @@ const NewSubscription = () => {
         <Grid item xs={6}>
           <DataGrid
             columns={tableHeaders}
-            rows={matchingCapabilities.data || []}
-            loading={matchingCapabilities.isLoading}
+            rows={data || []}
+            loading={isLoading}
             getRowId={(row) => row.publicationId}
           />
         </Grid>

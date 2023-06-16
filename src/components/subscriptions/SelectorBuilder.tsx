@@ -8,6 +8,7 @@ import {
   FormControl,
   FormControlLabel,
   FormHelperText,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
@@ -119,6 +120,16 @@ const SelectorBuilder = (props: Props) => {
     console.log(data);
   };
 
+  const handleVerify = () => {
+    selectorCallback(selector);
+  };
+
+  const handleTextArea = (event: any) => {
+    const value = event.target.value;
+    setSelector(value);
+    //selectorCallback(selector);
+  };
+
   const handleClose = () => {
     setValue("quadTree", predefinedQuadtree);
     setOpen(false);
@@ -130,6 +141,11 @@ const SelectorBuilder = (props: Props) => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAdvancedMode(event.target.checked);
+    if (!advancedMode) {
+      setPersistSelector(selector);
+    } else {
+      setSelector(persistSelector);
+    }
   };
 
   return (
@@ -240,16 +256,16 @@ const SelectorBuilder = (props: Props) => {
                     disabled={advancedMode}
                     error={Boolean(errors.quadTree)}
                     sx={{ marginRight: 1 }}
-                    /*InputProps={{
-                    endAdornment: (
-                      <IconButton
-                        onClick={() => setValue("quadTree", [])}
-                        edge="end"
-                      >
-                        <ClearIcon />
-                      </IconButton>
-                    ),
-                  }}*/
+                    /*                    InputProps={{
+                      endAdornment: (
+                        <IconButton
+                          onClick={() => setValue("quadTree", [])}
+                          edge="end"
+                        >
+                          <ClearIcon />
+                        </IconButton>
+                      ),
+                    }}*/
                     helperText={
                       Boolean(errors.quadTree) &&
                       "Only numbers and comma (,) is allowed"
@@ -259,7 +275,7 @@ const SelectorBuilder = (props: Props) => {
               />
               <StyledButton
                 color="greenDark"
-                variant="contained"
+                variant="text"
                 disabled={advancedMode}
                 onClick={() => setOpen(true)}
               >
@@ -280,18 +296,18 @@ const SelectorBuilder = (props: Props) => {
                     value={selector}
                     label="Selector"
                     sx={{ marginRight: 1 }}
+                    onChange={handleTextArea}
                   />
                   <StyledButton
                     color="greenDark"
-                    variant="contained"
-                    onClick={() => console.log("hei")}
+                    variant="text"
+                    onClick={handleVerify}
                   >
                     Verify
                   </StyledButton>
                 </Box>
               </>
             )}
-
             <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
               {/*              <StyledButton
                 color={advancedMode ? "error" : "success"}

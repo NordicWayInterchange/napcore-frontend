@@ -4,12 +4,14 @@ import {
   Card,
   Drawer,
   FormControl,
+  FormControlLabel,
   IconButton,
   InputLabel,
   List,
   ListItem,
   MenuItem,
   Select,
+  Switch,
   TextField,
   Toolbar,
   Typography,
@@ -32,7 +34,7 @@ type Props = {
 };
 
 const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
-  const [viewMap, setViewMap] = useState(false);
+  const [viewMap, setViewMap] = useState<boolean>(false);
   const [openSnack, setOpenSnack] = useState<boolean>(false);
 
   const selector = `(publicationId = '${capability.publicationId}')`;
@@ -46,6 +48,10 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
     }
 
     setOpenSnack(false);
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setViewMap(event.target.checked);
   };
 
   const saveSubscription = async (name: string, selector: string) => {
@@ -211,16 +217,12 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                       ),
                     }}
                   />
-                  <Button
-                    sx={{
-                      borderRadius: 100,
-                      width: 150,
-                    }}
-                    variant={"outlined"}
-                    onClick={() => setViewMap((current) => !current)}
-                  >
-                    {viewMap ? "Hide map" : "Show map"}
-                  </Button>
+
+                  {/*{viewMap ? "Hide map" : "Show map"}*/}
+                  <FormControlLabel
+                    control={<Switch onChange={handleChange} />}
+                    label="Show map"
+                  />
                 </FormControl>
                 {viewMap && (
                   <Map
