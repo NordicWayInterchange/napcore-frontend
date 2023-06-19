@@ -102,6 +102,7 @@ export default function Subscriptions() {
         rows={data || []}
         loading={isLoading}
         slots={{ footer: CustomFooter }}
+        sortModel={[{ field: "id", sort: "asc" }]}
       />
       {subscriptionRow && (
         <SubscriptionsDrawer

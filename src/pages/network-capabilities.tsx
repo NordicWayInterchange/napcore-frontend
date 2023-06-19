@@ -6,10 +6,9 @@ import DataGrid from "@/components/shared/datagrid/DataGrid";
 import { dataGridTemplate } from "@/components/shared/datagrid/DataGridTemplate";
 import { useSession } from "next-auth/react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { ExtendedSubscription } from "@/types/subscription";
 import { ExtendedCapability } from "@/types/capability";
 import CapabilitiesDrawer from "@/components/capabilities/CapabilitiesDrawer";
-import { messageTypeChips, statusChips } from "@/lib/statusChips";
+import { messageTypeChips } from "@/lib/statusChips";
 import { Chip } from "@/components/shared/display/Chip";
 
 export default function NetworkCapabilities() {
@@ -96,6 +95,7 @@ export default function NetworkCapabilities() {
             rows={data || []}
             loading={isLoading}
             getRowId={(row) => row.publicationId}
+            sortModel={[{ field: "publicationId", sort: "desc" }]}
           />
         </Box>
         {capabilityRow && (

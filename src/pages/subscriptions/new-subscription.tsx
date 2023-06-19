@@ -7,8 +7,7 @@ import { useMatchingCapabilities } from "@/hooks/useMatchingCapabilities";
 import DataGrid from "@/components/shared/datagrid/DataGrid";
 import { dataGridTemplate } from "@/components/shared/datagrid/DataGridTemplate";
 import { useSession } from "next-auth/react";
-import { messageTypeChips, statusChips } from "@/lib/statusChips";
-import { useNetworkCapabilities } from "@/hooks/useNetworkCapabilities";
+import { messageTypeChips } from "@/lib/statusChips";
 
 const tableHeaders: GridColDef[] = [
   {
@@ -86,6 +85,7 @@ const NewSubscription = () => {
             rows={data || []}
             loading={isLoading}
             getRowId={(row) => row.publicationId}
+            sortModel={[{ field: "publicationId", sort: "desc" }]}
           />
         </Grid>
       </Grid>
