@@ -57,7 +57,6 @@ const fetchCapabilityCounter = async (
   if (status == 200) {
     const capabilities = body as ExtendedCapability[];
     const aggregatedCapabilities = capabilities.reduce(
-      // TODO: Fix overload
       (acc: { [key: string]: any }, capability: Capability) => {
         (Object.keys(capability) as Array<keyof typeof capability>).forEach(
           (capabilityProp) => {

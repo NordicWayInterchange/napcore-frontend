@@ -23,15 +23,21 @@ export const ContentCopy = (props: Props) => {
     setOpenSnack(false);
   };
 
-  const handleIconClick = () => {
-    writeToClipboard(value);
+  const useClipboard = () => {
+    navigator.clipboard.writeText(value).then(
+      () => {},
+      (error) => {
+        alert("Failed to copy text to clipboard: " + error.message);
+      }
+    );
+
     setOpenSnack(true);
   };
 
   return (
     <>
       <InputAdornment position="end">
-        <IconButton onClick={handleIconClick} edge="end">
+        <IconButton onClick={useClipboard} edge="end">
           <ContentCopyIcon />
         </IconButton>
       </InputAdornment>
@@ -43,9 +49,4 @@ export const ContentCopy = (props: Props) => {
       />
     </>
   );
-};
-
-const writeToClipboard = (value: string) => {
-  // TODO: Promise retured are ignored
-  navigator.clipboard.writeText(value);
 };

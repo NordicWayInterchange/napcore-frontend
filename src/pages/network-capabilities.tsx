@@ -41,7 +41,6 @@ export default function NetworkCapabilities() {
       ...dataGridTemplate,
       field: "messageType",
       headerName: "Message Type",
-      // TODO: Add colors (currently flickering when rerender)
       renderCell: (cell) => {
         return (
           <Chip

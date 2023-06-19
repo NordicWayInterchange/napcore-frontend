@@ -95,7 +95,6 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
             backgroundColor: "#F9F9F9",
           },
         }}
-        //TODO: change to persistent
         variant="temporary"
         anchor="right"
         open={open}
@@ -180,7 +179,6 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                       ),
                     }}
                   />
-                  {/*TODO: Show cause code placeholder*/}
                   {capability.causeCodesDictionary && (
                     <FormControl margin="normal">
                       <InputLabel>Cause codes</InputLabel>
