@@ -5,11 +5,8 @@ import { useSession } from "next-auth/react";
 import { Box } from "@mui/system";
 import Link from "next/link";
 import DataGrid from "@/components/shared/datagrid/DataGrid";
-import { GridColDef } from "@mui/x-data-grid";
-import { dataGridTemplate } from "@/components/shared/datagrid/DataGridTemplate";
-import { Chip } from "@/components/shared/display/Chip";
-import { statusChips } from "@/lib/statusChips";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
+import { SubscriptionDatagrid } from "@/components/shared/datagrid/GridColumns/SubscriptionDatagrid";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -41,47 +38,6 @@ export default function Home() {
       // TODO: Add link
       url: "",
       avatar: "?",
-    },
-  ];
-
-  const tableHeaders: GridColDef[] = [
-    {
-      ...dataGridTemplate,
-      /*flex: 0,*/
-      field: "id",
-      headerName: "ID",
-    },
-    {
-      ...dataGridTemplate,
-      field: "status",
-      headerName: "Status",
-      renderCell: (cell) => {
-        return (
-          <Chip
-            color={statusChips[cell.value as keyof typeof statusChips] as any}
-            label={cell.value}
-          />
-        );
-      },
-    },
-    {
-      ...dataGridTemplate,
-      field: "capabilityMatches",
-      headerName: "Capability Matches",
-    },
-    {
-      ...dataGridTemplate,
-      field: "lastUpdatedTimeStamp",
-      headerName: "Last updated",
-    },
-    {
-      ...dataGridTemplate,
-      field: "actions",
-      headerName: "",
-      sortable: false,
-      filterable: false,
-      disableColumnMenu: true,
-      align: "right",
     },
   ];
 
@@ -134,7 +90,7 @@ export default function Home() {
         </Box>
         <Typography variant="h5">Your latest subscriptions</Typography>
         <DataGrid
-          columns={tableHeaders}
+          columns={SubscriptionDatagrid}
           rows={data?.slice(0, 4) || []}
           loading={isLoading}
           hideFooterPagination={true}

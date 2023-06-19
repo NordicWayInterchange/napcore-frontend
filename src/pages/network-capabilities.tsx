@@ -29,6 +29,7 @@ export default function NetworkCapabilities() {
     setDrawerOpen(false);
   };
 
+  // TODO: Extract
   const tableHeaders: GridColDef[] = [
     { ...dataGridTemplate, field: "publisherId", headerName: "Publisher ID" },
     {

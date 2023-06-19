@@ -1,52 +1,11 @@
 import { useState } from "react";
 import SelectorBuilder from "@/components/subscriptions/SelectorBuilder";
-import { Chip, Divider, Grid, Typography } from "@mui/material";
+import { Divider, Grid, Typography } from "@mui/material";
 import React from "react";
-import { GridColDef } from "@mui/x-data-grid";
 import { useMatchingCapabilities } from "@/hooks/useMatchingCapabilities";
 import DataGrid from "@/components/shared/datagrid/DataGrid";
-import { dataGridTemplate } from "@/components/shared/datagrid/DataGridTemplate";
 import { useSession } from "next-auth/react";
-import { messageTypeChips } from "@/lib/statusChips";
-
-const tableHeaders: GridColDef[] = [
-  {
-    ...dataGridTemplate,
-    field: "publisherId",
-    headerName: "Publisher ID",
-  },
-  {
-    ...dataGridTemplate,
-    field: "publicationId",
-    headerName: "Publication ID",
-  },
-  {
-    ...dataGridTemplate,
-    field: "messageType",
-    headerName: "Message Type",
-    renderCell: (cell) => {
-      return (
-        <Chip
-          sx={{ borderRadius: 1 }}
-          color={
-            messageTypeChips[cell.value as keyof typeof messageTypeChips] as any
-          }
-          label={cell.value}
-        />
-      );
-    },
-  },
-  {
-    ...dataGridTemplate,
-    field: "protocolVersion",
-    headerName: "Protocol Version",
-  },
-  {
-    ...dataGridTemplate,
-    field: "originatingCountry",
-    headerName: "Originating Country",
-  },
-];
+import { NewSubscriptionDatagrid } from "@/components/shared/datagrid/GridColumns/NewSubscriptionDatagrid";
 
 const NewSubscription = () => {
   const { data: session } = useSession();
@@ -81,7 +40,7 @@ const NewSubscription = () => {
         </Grid>
         <Grid item xs={6}>
           <DataGrid
-            columns={tableHeaders}
+            columns={NewSubscriptionDatagrid}
             rows={data || []}
             loading={isLoading}
             getRowId={(row) => row.publicationId}
