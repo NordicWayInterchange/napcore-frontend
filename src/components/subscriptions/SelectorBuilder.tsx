@@ -1,23 +1,20 @@
 import { ExtendedCapability } from "@/types/capability";
 import { MessageTypes } from "@/types/messageType";
-import { OriginatingCountry } from "@/types/originatingCountry";
 import {
-  AlertColor,
   Button,
   Card,
   Divider,
   FormControl,
   FormControlLabel,
   FormHelperText,
-  IconButton,
   InputLabel,
   MenuItem,
   Select,
   Switch,
+  TextField,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import TextField from "../shared/input/TextField";
 import { generateSelector } from "@/lib/generateSelector";
 import { createSubscription } from "@/lib/fetchers/internalFetchers";
 import MapDialog from "../map/MapDialog";
@@ -55,7 +52,6 @@ const SelectorBuilder = (props: Props) => {
     handleSubmit,
     control,
     getValues,
-    getFieldState,
     watch,
     setValue,
     formState: { errors },
@@ -81,7 +77,6 @@ const SelectorBuilder = (props: Props) => {
     const watchAllFields = watch((value) => {
       const selector = generateSelector(value);
       selectorCallback(selector);
-      console.log(selector);
       setSelector(selector);
     });
     return () => watchAllFields.unsubscribe();
@@ -93,19 +88,6 @@ const SelectorBuilder = (props: Props) => {
   useEffect(() => {
     if (!watchMessageType.includes(DENM)) setValue("causeCode", []);
   }, [watchMessageType]);
-
-  /*
-  Switching to advanced mode will persist the selector.
-  When turning off advanced mode, the selector will be set to the persisted value.
-  */
-  const handleAdvancedMode = () => {
-    setAdvancedMode((prevCheck) => !prevCheck);
-    if (!advancedMode) {
-      setPersistSelector(selector);
-    } else {
-      setSelector(persistSelector);
-    }
-  };
 
   const onSubmit: SubmitHandler<IFormInputs> = async () => {
     // todo: no matching capabilites
@@ -135,7 +117,6 @@ const SelectorBuilder = (props: Props) => {
   const handleTextArea = (event: any) => {
     const value = event.target.value;
     setSelector(value);
-    //selectorCallback(selector);
   };
 
   const handleClose = () => {
@@ -158,6 +139,10 @@ const SelectorBuilder = (props: Props) => {
     setPredefinedQuadtree(value);
   };
 
+  /*
+  Switching to advanced mode will persist the selector.
+  When turning off advanced mode, the selector will be set to the persisted value.
+  */
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAdvancedMode(event.target.checked);
     if (!advancedMode) {
@@ -179,7 +164,7 @@ const SelectorBuilder = (props: Props) => {
                 name="publicationId"
                 control={control}
                 render={({ field }) => (
-                  <StyledTextField
+                  <TextField
                     {...field}
                     disabled={advancedMode}
                     fullWidth
@@ -193,17 +178,13 @@ const SelectorBuilder = (props: Props) => {
                 render={({ field }) => (
                   <FormControl fullWidth disabled={advancedMode}>
                     <InputLabel>Originating country</InputLabel>
-                    <StyledSelect
-                      multiple
-                      label="Originating country"
-                      {...field}
-                    >
+                    <Select multiple label="Originating country" {...field}>
                       {originatingCountries.map((country, index) => (
                         <MenuItem key={index} value={country.value}>
                           {country.value}
                         </MenuItem>
                       ))}
-                    </StyledSelect>
+                    </Select>
                   </FormControl>
                 )}
               />
@@ -220,13 +201,13 @@ const SelectorBuilder = (props: Props) => {
                     error={Boolean(errors.messageType)}
                   >
                     <InputLabel>Message type *</InputLabel>
-                    <StyledSelect {...field} multiple label="Message type *">
+                    <Select {...field} multiple label="Message type *">
                       {messageTypes.map((messageType, index) => (
                         <MenuItem key={index} value={messageType.value}>
                           {messageType.value}
                         </MenuItem>
                       ))}
-                    </StyledSelect>
+                    </Select>
                     {Boolean(errors.messageType) && (
                       <FormHelperText>Message type is required</FormHelperText>
                     )}
@@ -242,7 +223,7 @@ const SelectorBuilder = (props: Props) => {
                     disabled={!watchMessageType.includes(DENM) || advancedMode}
                   >
                     <InputLabel>Cause codes</InputLabel>
-                    <StyledSelect
+                    <Select
                       MenuProps={{ PaperProps: { sx: { maxHeight: 200 } } }}
                       multiple
                       label="Cause codes"
@@ -253,7 +234,7 @@ const SelectorBuilder = (props: Props) => {
                           {country.value}: {country.label}
                         </MenuItem>
                       ))}
-                    </StyledSelect>
+                    </Select>
                     {!watchMessageType.includes(DENM) && (
                       <FormHelperText>Enable with DENM</FormHelperText>
                     )}
@@ -269,22 +250,13 @@ const SelectorBuilder = (props: Props) => {
                 control={control}
                 rules={{ required: false, pattern: /^[-,0-9 ]+$/i }}
                 render={({ field }) => (
-                  <StyledTextField
+                  <TextField
                     {...field}
                     label="Quadtree"
+                    fullWidth
                     disabled={advancedMode}
                     error={Boolean(errors.quadTree)}
                     sx={{ marginRight: 1 }}
-                    /*                    InputProps={{
-                      endAdornment: (
-                        <IconButton
-                          onClick={() => setValue("quadTree", [])}
-                          edge="end"
-                        >
-                          <ClearIcon />
-                        </IconButton>
-                      ),
-                    }}*/
                     helperText={
                       Boolean(errors.quadTree) &&
                       "Only numbers and comma (,) is allowed"
@@ -309,10 +281,11 @@ const SelectorBuilder = (props: Props) => {
               <>
                 <Divider />{" "}
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <StyledTextField
+                  <TextField
                     multiline
                     rows={4}
                     value={selector}
+                    fullWidth
                     label="Selector"
                     sx={{ marginRight: 1 }}
                     onChange={handleTextArea}
@@ -328,17 +301,6 @@ const SelectorBuilder = (props: Props) => {
               </>
             )}
             <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
-              {/*              <StyledButton
-                color={advancedMode ? "error" : "success"}
-                variant="outlined"
-                onClick={handleAdvancedMode}
-              >
-                {advancedMode ? "Normal" : "Advanced"}
-              </StyledButton>*/}
-              {/*            <FormControlLabel
-              control={<Switch defaultChecked />}
-              label="Label"
-            />*/}
               <StyledButton color="greenDark" variant="contained" type="submit">
                 Save subscription
               </StyledButton>
@@ -363,19 +325,6 @@ const SelectorBuilder = (props: Props) => {
     </>
   );
 };
-
-const StyledTextField = styled(TextField)(({}) => ({
-  /*
-  width: "344px",
-*/
-  backgroundColor: "white",
-  "& .MuiInputBase-input": { background: "white" },
-}));
-
-const StyledSelect = styled(Select)(({}) => ({
-  /*  width: "344px",*/
-  background: "white",
-}));
 
 const StyledFormControl = styled(FormControl)(({}) => ({
   display: "flex",
