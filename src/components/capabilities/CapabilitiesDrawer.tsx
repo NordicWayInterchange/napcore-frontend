@@ -1,5 +1,4 @@
 import {
-  AlertColor,
   Box,
   Button,
   Card,
@@ -21,7 +20,7 @@ import React, { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { ExtendedCapability } from "@/types/capability";
 import Map from "@/components/map/Map";
-import { createSubscription } from "@/lib/internalFetchers";
+import { createSubscription } from "@/lib/fetchers/internalFetchers";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import { styled } from "@mui/material/styles";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";

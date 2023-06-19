@@ -20,7 +20,6 @@ export default function login({
       sx={{
         display: "flex",
         flexDirection: "column",
-        //alignItems: "center",
         padding: 5,
         gap: 3,
         width: "45vh",

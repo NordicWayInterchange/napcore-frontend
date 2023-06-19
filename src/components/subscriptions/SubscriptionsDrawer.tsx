@@ -8,11 +8,9 @@ import {
   List,
   ListItem,
   ListItemText,
-  TextField as MuiTextField,
   TextField,
   Toolbar,
   Typography,
-  useTheme,
 } from "@mui/material";
 import React, { useState } from "react";
 import { ExtendedSubscription } from "@/types/subscription";

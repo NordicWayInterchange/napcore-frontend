@@ -1,4 +1,4 @@
-import { getTLSAgent } from "@/lib/sslAgent";
+import { getTLSAgent } from "@/lib/fetchers/sslAgent";
 import { SubscriptionRequest } from "@/types/napcore/subscription";
 import axios from "axios";
 

@@ -14,7 +14,7 @@ import {
   basicPostParams,
   basicGetParams,
   extendedGetParams,
-} from "@/lib/interchangeConnector";
+} from "@/lib/fetchers/interchangeConnector";
 import { getToken } from "next-auth/jwt";
 
 // all getter methods on path

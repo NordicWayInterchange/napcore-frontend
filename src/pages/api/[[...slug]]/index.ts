@@ -5,7 +5,7 @@ import {
   getCapabilities,
   getNetworkCapabilities,
   getSubscriptions,
-} from "@/lib/napcoreFetchers";
+} from "@/lib/fetchers/napcoreFetchers";
 import {
   SubscriptionRequest,
   Subscriptions,
@@ -19,11 +19,11 @@ import {
   basicPostParams,
   extendedGetFunction,
   extendedGetParams,
-} from "@/lib/interchangeConnector";
+} from "@/lib/fetchers/interchangeConnector";
 import { ExtendedCapability } from "@/types/capability";
 import { Capabilities } from "@/types/napcore/capability";
 import { getToken } from "next-auth/jwt";
-import { causeCodes as causeCodesList } from "@/lib/causeCodes";
+import { causeCodes as causeCodesList } from "@/lib/data/causeCodes";
 
 const fetchCapabilityCounter = async (
   params: basicGetParams,

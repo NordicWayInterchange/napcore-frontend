@@ -5,8 +5,6 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  useMediaQuery,
-  useTheme,
 } from "@mui/material";
 import Map from "./Map";
 import React, { useEffect, useState } from "react";

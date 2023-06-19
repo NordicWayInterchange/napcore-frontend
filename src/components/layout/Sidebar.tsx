@@ -15,7 +15,7 @@ import {
   Button,
 } from "@mui/material";
 import Link from "next/link";
-import React, { ReactElement } from "react";
+import React from "react";
 import { useRouter } from "next/router";
 import Navbar from "./Navbar";
 import HouseIcon from "@mui/icons-material/House";

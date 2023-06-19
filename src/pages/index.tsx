@@ -1,17 +1,6 @@
-import dynamic from "next/dynamic";
-import React, { useEffect, useMemo, useState } from "react";
+import React from "react";
 import Subscriptions from "./subscriptions";
-import {
-  Avatar,
-  Card,
-  Divider,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Avatar, Card, Divider, Typography, useTheme } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { Box } from "@mui/system";
 import Link from "next/link";
@@ -21,25 +10,11 @@ import { dataGridTemplate } from "@/components/shared/datagrid/DataGridTemplate"
 import { Chip } from "@/components/shared/display/Chip";
 import { statusChips } from "@/lib/statusChips";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
-import { ExtendedSubscription } from "@/types/subscription";
 
 export default function Home() {
   const { data: session } = useSession();
   const theme = useTheme();
   const { data, isLoading } = useSubscriptions(session?.user?.email as string);
-  /*
-  const [sort, setSort] = useState<ExtendedSubscription[]>();
-
-  useEffect(() => {
-    if (data) {
-      const copyArray = [...data];
-      const sortArray = copyArray
-        .sort((a, b) => Number(b.id) - Number(a.id))
-        .slice(0, 4);
-      setSort(sortArray);
-    }
-  }, [data]);
-*/
 
   const shortcuts = [
     {

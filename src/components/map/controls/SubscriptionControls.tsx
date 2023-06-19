@@ -1,6 +1,6 @@
-import { TextField, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { POSITIONS } from "@/components/map/controls/Positions";
 
 type MapControlsProps = {

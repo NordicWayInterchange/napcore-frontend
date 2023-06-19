@@ -10,12 +10,9 @@ import {
   IconButton,
   InputAdornment,
   TextField,
-  Typography,
 } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
-import CheckIcon from "@mui/icons-material/Check";
 import { downloadKey } from "@/lib/downloadTxt";
-import { Box } from "@mui/system";
 
 type Props = {
   privateKey: string;

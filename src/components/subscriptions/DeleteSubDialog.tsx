@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  AlertColor,
   Button,
   Dialog,
   DialogActions,
@@ -8,7 +7,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { deleteSubscriptions } from "@/lib/internalFetchers";
+import { deleteSubscriptions } from "@/lib/fetchers/internalFetchers";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import { useState } from "react";
 import { IFeedback } from "@/interface/IFeedback";

@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  Box,
-  ChipPropsColorOverrides,
-  Divider,
-  IconButton,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, IconButton, Typography } from "@mui/material";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
 import { GridColDef } from "@mui/x-data-grid";
 import { useSession } from "next-auth/react";
@@ -19,7 +13,6 @@ import { ExtendedSubscription } from "@/types/subscription";
 import SubscriptionsDrawer from "@/components/subscriptions/SubscriptionsDrawer";
 import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
 import { Chip } from "@/components/shared/display/Chip";
-import { OverridableStringUnion } from "@mui/types";
 
 export default function Subscriptions() {
   const { data: session } = useSession();
