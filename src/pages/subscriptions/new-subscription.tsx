@@ -9,21 +9,16 @@ import { NewSubscriptionDatagrid } from "@/components/shared/datagrid/GridColumn
 
 const NewSubscription = () => {
   const { data: session } = useSession();
-  const [selector, setSelector] = useState<string>("");
+  const [selector, setSelector] = useState<string>(" ");
 
-  const matchingCapabilities = useMatchingCapabilities(
-    session?.user?.email || "",
-    selector
-  );
-
-  const { data, isLoading } = useMatchingCapabilities(
+  const { data, isLoading, remove } = useMatchingCapabilities(
     session?.user?.email as string,
     selector
   );
 
   const handleChange = (selector: string) => {
     setSelector(selector);
-    matchingCapabilities.remove();
+    remove();
   };
 
   return (
