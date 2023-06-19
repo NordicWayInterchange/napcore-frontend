@@ -115,54 +115,56 @@ export default function Home() {
       <Typography variant="h4">Welcome, {session?.user?.name}!</Typography>
       <Divider sx={{ marginY: 3 }} />
       <Typography variant="h5">Shortcuts</Typography>
-      <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-        }}
-      >
-        {shortcuts.map((shortcut, key) => (
-          <Link
-            key={key}
-            href={shortcut.url}
-            style={{ textDecoration: "none", marginRight: 10, marginTop: 10 }}
-          >
-            <Card
-              variant="outlined"
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                padding: 2,
-                width: 400,
-                ":hover": {
-                  bgcolor: theme.palette.sidebarActiveColor,
-                },
-              }}
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+          }}
+        >
+          {shortcuts.map((shortcut, key) => (
+            <Link
+              key={key}
+              href={shortcut.url}
+              style={{ textDecoration: "none", marginRight: 10, marginTop: 10 }}
             >
-              <Avatar sx={{ bgcolor: "green", marginRight: 3 }}>
-                {shortcut.avatar}
-              </Avatar>
-              <Box
+              <Card
+                variant="outlined"
                 sx={{
                   display: "flex",
-                  flexDirection: "column",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  padding: 2,
+                  width: 400,
+                  ":hover": {
+                    bgcolor: theme.palette.sidebarActiveColor,
+                  },
                 }}
               >
-                <Typography>{shortcut.header}</Typography>
-                <Typography>{shortcut.description}</Typography>
-              </Box>
-            </Card>
-          </Link>
-        ))}
+                <Avatar sx={{ bgcolor: "green", marginRight: 3 }}>
+                  {shortcut.avatar}
+                </Avatar>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Typography>{shortcut.header}</Typography>
+                  <Typography>{shortcut.description}</Typography>
+                </Box>
+              </Card>
+            </Link>
+          ))}
+        </Box>
+        <Typography variant="h5">Your latest subscriptions</Typography>
+        <DataGrid
+          columns={tableHeaders}
+          rows={data?.slice(0, 4) || []}
+          loading={isLoading}
+          hideFooterPagination={true}
+        />
       </Box>
-      <Typography variant="h5">Your latest subscriptions</Typography>
-      <DataGrid
-        columns={tableHeaders}
-        rows={data?.slice(0, 4) || []}
-        loading={isLoading}
-        hideFooterPagination={true}
-      />
     </>
   );
 }

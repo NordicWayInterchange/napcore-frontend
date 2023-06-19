@@ -2,6 +2,7 @@ import { ExtendedCapability } from "@/types/capability";
 import { MessageTypes } from "@/types/messageType";
 import { OriginatingCountry } from "@/types/originatingCountry";
 import {
+  AlertColor,
   Button,
   Card,
   Divider,
@@ -30,6 +31,7 @@ import { messageTypes } from "@/lib/messageTypes";
 import { originatingCountries } from "@/lib/originatingCountries";
 import { causeCodes } from "@/lib/causeCodes";
 import ClearIcon from "@mui/icons-material/Clear";
+import Snackbar from "@/components/shared/feedback/Snackbar";
 
 type Props = {
   name: string;
@@ -40,11 +42,17 @@ type Props = {
 
 interface IFormInputs {
   messageType: string[];
-  causeCodes: string[];
+  causeCode: string[];
   protocolVersion: string;
   originatingCountry: string[];
   publicationId: string;
   quadTree: string[];
+}
+
+interface IError {
+  error: boolean;
+  message: string;
+  severity: AlertColor;
 }
 
 const SelectorBuilder = (props: Props) => {
@@ -54,6 +62,12 @@ const SelectorBuilder = (props: Props) => {
   const [persistSelector, setPersistSelector] = useState<string>("");
   const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
+  const [openSnack, setOpenSnack] = useState<boolean>(false);
+  const [error, setError] = useState<IError>({
+    error: false,
+    message: "",
+    severity: "success",
+  });
 
   const {
     handleSubmit,
@@ -66,7 +80,7 @@ const SelectorBuilder = (props: Props) => {
   } = useForm<IFormInputs>({
     defaultValues: {
       messageType: [],
-      causeCodes: [],
+      causeCode: [],
       protocolVersion: "",
       originatingCountry: [],
       publicationId: "",
@@ -95,7 +109,7 @@ const SelectorBuilder = (props: Props) => {
   Remove cause codes from form, if the message type DENM is removed.
   */
   useEffect(() => {
-    if (!watchMessageType.includes(DENM)) setValue("causeCodes", []);
+    if (!watchMessageType.includes(DENM)) setValue("causeCode", []);
   }, [watchMessageType]);
 
   /*
@@ -112,12 +126,24 @@ const SelectorBuilder = (props: Props) => {
   };
 
   const onSubmit: SubmitHandler<IFormInputs> = async () => {
+    // todo: no matching capabilites
+
     const name = "anna";
     const response = await createSubscription(name, selector);
-    const data = await response.json();
 
-    // todo: no matching capabilites
-    console.log(data);
+    if (response.ok) {
+      setError({
+        error: true,
+        message: "Subscription successfully created",
+        severity: "success",
+      });
+    } else {
+      setError({
+        error: true,
+        message: "Subscription could not be created, try again!",
+        severity: "warning",
+      });
+    }
   };
 
   const handleVerify = () => {
@@ -133,6 +159,17 @@ const SelectorBuilder = (props: Props) => {
   const handleClose = () => {
     setValue("quadTree", predefinedQuadtree);
     setOpen(false);
+  };
+
+  const handleSnackClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setError({ error: false, message: "", severity: "success" });
   };
 
   const quadtreeCallback = (value: string[]) => {
@@ -215,7 +252,7 @@ const SelectorBuilder = (props: Props) => {
                 )}
               />
               <Controller
-                name="causeCodes"
+                name="causeCode"
                 control={control}
                 render={({ field }) => (
                   <FormControl
@@ -333,6 +370,14 @@ const SelectorBuilder = (props: Props) => {
         quadtree={getValues("quadTree")}
         quadtreeCallback={quadtreeCallback}
       />
+      {error.error && (
+        <Snackbar
+          message={error.message}
+          severity={error.severity}
+          open={error.error}
+          handleClose={handleSnackClose}
+        />
+      )}
     </>
   );
 };

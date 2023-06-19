@@ -217,8 +217,6 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                       ),
                     }}
                   />
-
-                  {/*{viewMap ? "Hide map" : "Show map"}*/}
                   <FormControlLabel
                     control={<Switch onChange={handleChange} />}
                     label="Show map"
