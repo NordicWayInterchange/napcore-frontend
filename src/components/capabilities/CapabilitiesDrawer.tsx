@@ -25,6 +25,7 @@ import { createSubscription } from "@/lib/internalFetchers";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import { styled } from "@mui/material/styles";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
+import { IFeedback } from "@/interface/IFeedback";
 
 const width = 600;
 
@@ -33,12 +34,6 @@ type Props = {
   open: boolean;
   handleMoreClose: () => void;
 };
-
-interface IFeedback {
-  feedback: boolean;
-  message: string;
-  severity: AlertColor;
-}
 
 const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
   const [viewMap, setViewMap] = useState<boolean>(false);

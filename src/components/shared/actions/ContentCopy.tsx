@@ -3,9 +3,9 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import React, { useState } from "react";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 
-interface Props {
+type Props = {
   value: string;
-}
+};
 
 export const ContentCopy = (props: Props) => {
   const { value } = props;

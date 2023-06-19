@@ -7,23 +7,15 @@ import { styled } from "@mui/material/styles";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { SecondHeading } from "@/components/shared/display/heading/SecondHeading";
 import { BodyHeading } from "@/components/shared/display/heading/BodyHeading";
-
-interface IFormInputs {
-  countryCode: string;
-  orgName: string;
-}
-
-interface ICsr {
-  csr: string;
-  privateKey: string;
-}
+import { ICsr } from "@/interface/ICsr";
+import { ICsrForm } from "@/interface/ICsrForm";
 
 export const CertificateForm = () => {
   const {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<IFormInputs>({
+  } = useForm<ICsrForm>({
     defaultValues: {
       countryCode: "",
       orgName: "",
@@ -32,7 +24,7 @@ export const CertificateForm = () => {
   const [csr, setCsr] = useState<ICsr>();
   const [open, setOpen] = useState<boolean>(false);
 
-  const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+  const onSubmit: SubmitHandler<ICsrForm> = (data) => {
     createPKCS10({
       commonName: "Henrik",
       country: data.countryCode,

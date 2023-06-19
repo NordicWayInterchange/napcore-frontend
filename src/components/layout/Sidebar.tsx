@@ -26,12 +26,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { styled } from "@mui/material/styles";
 import AddIcon from "@mui/icons-material/Add";
-
-interface IPages {
-  text: string;
-  url: string;
-  icon: ReactElement;
-}
+import { IPages } from "@/interface/IPages";
 
 const MAIN_PAGES: Array<IPages> = [
   { text: "My intersection", url: "/", icon: <HouseIcon /> },

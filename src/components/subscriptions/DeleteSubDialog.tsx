@@ -11,6 +11,7 @@ import {
 import { deleteSubscriptions } from "@/lib/internalFetchers";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import { useState } from "react";
+import { IFeedback } from "@/interface/IFeedback";
 
 type Props = {
   actorCommonName: string;
@@ -18,12 +19,6 @@ type Props = {
   handleDialog: (close: boolean) => void;
   subscriptionId: string;
 };
-
-interface IFeedback {
-  feedback: boolean;
-  message: string;
-  severity: AlertColor;
-}
 
 export default function DeleteSubDialog(props: Props) {
   const { actorCommonName, open, handleDialog, subscriptionId } = props;

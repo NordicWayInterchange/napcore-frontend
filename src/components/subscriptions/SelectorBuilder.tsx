@@ -32,6 +32,8 @@ import { originatingCountries } from "@/lib/originatingCountries";
 import { causeCodes } from "@/lib/causeCodes";
 import ClearIcon from "@mui/icons-material/Clear";
 import Snackbar from "@/components/shared/feedback/Snackbar";
+import { IFeedback } from "@/interface/IFeedback";
+import { IFormInputs } from "@/interface/IFormInputs";
 
 type Props = {
   name: string;
@@ -40,21 +42,6 @@ type Props = {
   selectorCallback: (selector: string) => void;
 };
 
-interface IFormInputs {
-  messageType: string[];
-  causeCode: string[];
-  protocolVersion: string;
-  originatingCountry: string[];
-  publicationId: string;
-  quadTree: string[];
-}
-
-interface IError {
-  error: boolean;
-  message: string;
-  severity: AlertColor;
-}
-
 const SelectorBuilder = (props: Props) => {
   const { name, selectorCallback } = props;
   const [selector, setSelector] = useState<string>("");
@@ -62,9 +49,8 @@ const SelectorBuilder = (props: Props) => {
   const [persistSelector, setPersistSelector] = useState<string>("");
   const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
-  const [openSnack, setOpenSnack] = useState<boolean>(false);
-  const [error, setError] = useState<IError>({
-    error: false,
+  const [feedback, setFeedback] = useState<IFeedback>({
+    feedback: false,
     message: "",
     severity: "success",
   });
@@ -132,14 +118,14 @@ const SelectorBuilder = (props: Props) => {
     const response = await createSubscription(name, selector);
 
     if (response.ok) {
-      setError({
-        error: true,
+      setFeedback({
+        feedback: true,
         message: "Subscription successfully created",
         severity: "success",
       });
     } else {
-      setError({
-        error: true,
+      setFeedback({
+        feedback: true,
         message: "Subscription could not be created, try again!",
         severity: "warning",
       });
@@ -169,7 +155,7 @@ const SelectorBuilder = (props: Props) => {
       return;
     }
 
-    setError({ error: false, message: "", severity: "success" });
+    setFeedback({ feedback: false, message: "", severity: "success" });
   };
 
   const quadtreeCallback = (value: string[]) => {
@@ -370,11 +356,11 @@ const SelectorBuilder = (props: Props) => {
         quadtree={getValues("quadTree")}
         quadtreeCallback={quadtreeCallback}
       />
-      {error.error && (
+      {feedback.feedback && (
         <Snackbar
-          message={error.message}
-          severity={error.severity}
-          open={error.error}
+          message={feedback.message}
+          severity={feedback.severity}
+          open={feedback.feedback}
           handleClose={handleSnackClose}
         />
       )}
