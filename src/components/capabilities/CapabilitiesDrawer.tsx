@@ -1,4 +1,5 @@
 import {
+  AlertColor,
   Box,
   Button,
   Card,
@@ -33,9 +34,19 @@ type Props = {
   handleMoreClose: () => void;
 };
 
+interface IFeedback {
+  feedback: boolean;
+  message: string;
+  severity: AlertColor;
+}
+
 const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
   const [viewMap, setViewMap] = useState<boolean>(false);
-  const [openSnack, setOpenSnack] = useState<boolean>(false);
+  const [feedback, setFeedback] = useState<IFeedback>({
+    feedback: false,
+    message: "",
+    severity: "success",
+  });
 
   const selector = `(publicationId = '${capability.publicationId}')`;
 
@@ -47,7 +58,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
       return;
     }
 
-    setOpenSnack(false);
+    setFeedback({ feedback: false, message: "", severity: "success" });
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,7 +70,19 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
     const data = await response.json();
     console.log(data);
 
-    setOpenSnack(true);
+    if (response.ok) {
+      setFeedback({
+        feedback: true,
+        message: "Subscription successfully created",
+        severity: "success",
+      });
+    } else {
+      setFeedback({
+        feedback: true,
+        message: "Subscription could not be created, try again!",
+        severity: "warning",
+      });
+    }
   };
 
   return (
@@ -247,12 +270,14 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
           </List>
         </Box>
       </Drawer>
-      <Snackbar
-        message={"Successfully subscribed to capability"}
-        severity={"success"}
-        open={openSnack}
-        handleClose={handleSnackClose}
-      />
+      {feedback.feedback && (
+        <Snackbar
+          message={feedback.message}
+          severity={feedback.severity}
+          open={feedback.feedback}
+          handleClose={handleSnackClose}
+        />
+      )}
     </>
   );
 };

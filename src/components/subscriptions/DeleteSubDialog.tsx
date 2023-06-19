@@ -1,5 +1,6 @@
 import * as React from "react";
 import {
+  AlertColor,
   Button,
   Dialog,
   DialogActions,
@@ -18,16 +19,39 @@ type Props = {
   subscriptionId: string;
 };
 
+interface IFeedback {
+  feedback: boolean;
+  message: string;
+  severity: AlertColor;
+}
+
 export default function DeleteSubDialog(props: Props) {
   const { actorCommonName, open, handleDialog, subscriptionId } = props;
 
-  const [openSnack, setOpenSnack] = useState<boolean>(false);
+  const [feedback, setFeedback] = useState<IFeedback>({
+    feedback: false,
+    message: "",
+    severity: "success",
+  });
 
   const handleDeletion = async (name: string, subscriptionId: string) => {
-    const data = await deleteSubscriptions(name, subscriptionId);
-    console.log(data.json());
+    const response = await deleteSubscriptions(name, subscriptionId);
+    console.log(response.json());
     handleDialog(false);
-    setOpenSnack(true);
+
+    if (response.ok) {
+      setFeedback({
+        feedback: true,
+        message: "Subscription successfully deleted",
+        severity: "success",
+      });
+    } else {
+      setFeedback({
+        feedback: true,
+        message: "Subscription could not be deleted, try again!",
+        severity: "warning",
+      });
+    }
   };
 
   const handleSnackClose = (
@@ -38,7 +62,7 @@ export default function DeleteSubDialog(props: Props) {
       return;
     }
 
-    setOpenSnack(false);
+    setFeedback({ feedback: false, message: "", severity: "success" });
   };
 
   return (
@@ -71,12 +95,14 @@ export default function DeleteSubDialog(props: Props) {
           </Button>
         </DialogActions>
       </Dialog>
-      <Snackbar
-        message={"Your subscription was successfully removed"}
-        severity={"success"}
-        open={openSnack}
-        handleClose={handleSnackClose}
-      />
+      {feedback.feedback && (
+        <Snackbar
+          message={feedback.message}
+          severity={feedback.severity}
+          open={feedback.feedback}
+          handleClose={handleSnackClose}
+        />
+      )}
     </>
   );
 }
