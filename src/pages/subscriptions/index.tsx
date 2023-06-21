@@ -16,7 +16,9 @@ import { Chip } from "@/components/shared/display/Chip";
 
 export default function Subscriptions() {
   const { data: session } = useSession();
-  const { data, isLoading } = useSubscriptions(session?.user?.email as string);
+  const { data, isLoading, remove } = useSubscriptions(
+    session?.user?.email as string
+  );
   const [open, setOpen] = useState<boolean>(false);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [subscriptionRow, setSubscriptionRow] =
@@ -38,6 +40,7 @@ export default function Subscriptions() {
 
   const handleClickClose = (close: boolean) => {
     setOpen(close);
+    remove();
   };
 
   // TODO: Extract

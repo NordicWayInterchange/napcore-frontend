@@ -121,7 +121,7 @@ export default async function handler(
       actorCommonName,
       selector,
     });
-    // need to handle 404 if no data found on selector or pathParam
+    // TODO: need to handle 404 if no data found on selector or pathParam
     if (executer && "fn" in executer) {
       try {
         const { fn, params } = executer;
@@ -129,6 +129,7 @@ export default async function handler(
         const response = await fn(params);
         return res.status(200).json(response.data);
       } catch (error: any) {
+        console.log("error:", error);
         return res.status(error.response.status).json(error.response.data);
       }
     }
