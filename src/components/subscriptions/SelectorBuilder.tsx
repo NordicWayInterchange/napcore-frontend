@@ -193,7 +193,7 @@ const SelectorBuilder = (props: Props) => {
               <Controller
                 name="messageType"
                 control={control}
-                rules={{ required: true }}
+                rules={{ required: !advancedMode }}
                 render={({ field }) => (
                   <FormControl
                     fullWidth

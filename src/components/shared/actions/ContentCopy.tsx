@@ -42,7 +42,7 @@ export const ContentCopy = (props: Props) => {
         </IconButton>
       </InputAdornment>
       <Snackbar
-        message={"Copied"}
+        message={"Copied to clipboard"}
         severity={"success"}
         open={openSnack}
         handleClose={handleSnackClose}
