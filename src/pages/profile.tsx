@@ -1,49 +1,27 @@
-import { Box, Button, Card, Divider, Typography } from "@mui/material";
-import { useSession, signIn, signOut } from "next-auth/react";
+import {
+  Avatar,
+  Box,
+  Card,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
+import React from "react";
+import { CertificateForm } from "@/components/profile/CertificateForm";
+import { MainHeading } from "@/components/shared/display/heading/MainHeading";
+import { ProfileCard } from "@/components/profile/ProfileCard";
 
 export default function Profile() {
-  const { data: session } = useSession();
-
-  const handleClick = () => {
-    signOut();
-  };
-
-  if (!session) {
-    return (
-      <Button variant="contained" onClick={handleClick}>
-        Sign out
-      </Button>
-    );
-  }
-
   return (
     <>
-      <Typography variant="h4">Profile</Typography>
+      <MainHeading heading={"Profile Settings"} />
       <Divider sx={{ marginY: 3 }} />
-      <Box display={"inline-block"}>
-        <Card
-          variant="outlined"
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 3,
-            p: 3,
-          }}
-        >
-          <Image
-            src={session.user?.image as string}
-            alt="Profile Image"
-            width={200}
-            height={200}
-          />
-          <Typography variant="body1">{session.user?.name}</Typography>
-          <Typography variant="body1">{session.user?.email}</Typography>
-          <Button variant="contained" onClick={handleClick}>
-            Sign out
-          </Button>
-        </Card>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+        <ProfileCard />
+        <CertificateForm />
       </Box>
     </>
   );

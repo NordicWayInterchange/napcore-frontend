@@ -1,3 +1,4 @@
+/*
 import { getDeliveries } from "@/lib/napcoreFetchers";
 import { Deliveries } from "@/types/napcore/delivery";
 import { useQuery } from "@tanstack/react-query";
@@ -23,3 +24,4 @@ const useDeliveries = (userName: string) => {
 };
 
 export { useDeliveries };
+*/

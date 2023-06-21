@@ -36,6 +36,7 @@ const useSubscriptions = (userName: string) => {
   return useQuery({
     queryKey: ["subscriptions"],
     queryFn: () => fetchSubscriptions(userName),
+    //refetchInterval: 1000, // set this to a refetch interval
   });
 };
 

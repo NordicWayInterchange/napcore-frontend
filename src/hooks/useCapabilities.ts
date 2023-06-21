@@ -1,3 +1,4 @@
+/*
 import { ExtendedCapability } from "@/types/capability";
 import { useQuery } from "@tanstack/react-query";
 
@@ -21,3 +22,4 @@ const useCapabilities = (userName: string) => {
 };
 
 export { useCapabilities };
+*/

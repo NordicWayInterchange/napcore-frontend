@@ -27,7 +27,7 @@ export default function Layout({ children }: LayoutProps) {
           sx={{
             flexGrow: 1,
             bgcolor: theme.palette.mainBackgroundColor,
-            p: 3,
+            p: 5,
             height: "100vh",
           }}
         >

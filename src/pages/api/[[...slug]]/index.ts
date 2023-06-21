@@ -5,8 +5,11 @@ import {
   getCapabilities,
   getNetworkCapabilities,
   getSubscriptions,
-} from "@/lib/napcoreFetchers";
-import { Subscriptions } from "@/types/napcore/subscription";
+} from "@/lib/fetchers/napcoreFetchers";
+import {
+  SubscriptionRequest,
+  Subscriptions,
+} from "@/types/napcore/subscription";
 import {
   basicDeleteFunction,
   basicDeleteParams,
@@ -16,10 +19,11 @@ import {
   basicPostParams,
   extendedGetFunction,
   extendedGetParams,
-} from "@/lib/interchangeConnector";
+} from "@/lib/fetchers/interchangeConnector";
 import { ExtendedCapability } from "@/types/capability";
-import { Capabilities, Capability } from "@/types/napcore/capability";
+import { Capabilities } from "@/types/napcore/capability";
 import { getToken } from "next-auth/jwt";
+import { causeCodes as causeCodesList } from "@/lib/data/causeCodes";
 
 const fetchCapabilityCounter = async (
   params: basicGetParams,
@@ -41,7 +45,7 @@ const fetchCapabilityCounter = async (
   return [status, body];
 };
 
-const fetchAggregate = async (params: basicGetParams, token: string) => {
+/*const fetchAggregate = async (params: basicGetParams, token: string) => {
   const { actorCommonName, selector } = params;
   const [status, body] = await fetchNetworkCapabilities(
     {
@@ -53,7 +57,6 @@ const fetchAggregate = async (params: basicGetParams, token: string) => {
   if (status == 200) {
     const capabilities = body as ExtendedCapability[];
     const aggregatedCapabilities = capabilities.reduce(
-      // TODO: Fix overload
       (acc: { [key: string]: any }, capability: Capability) => {
         (Object.keys(capability) as Array<keyof typeof capability>).forEach(
           (capabilityProp) => {
@@ -76,7 +79,7 @@ const fetchAggregate = async (params: basicGetParams, token: string) => {
     return [status, aggregatedCapabilities];
   }
   return [status, body];
-};
+};*/
 
 const fetchSubscriptions = async (params: extendedGetParams, token: string) => {
   const { actorCommonName, selector = "", pathParam = "" } = params;
@@ -99,7 +102,11 @@ export const addSubscriptions: basicPostFunction = async (
   token: string
 ) => {
   const { actorCommonName, body = {} } = params;
-  const res = await createSubscription(actorCommonName, body, token);
+  const res = await createSubscription(
+    actorCommonName,
+    body as SubscriptionRequest,
+    token
+  );
   const data = await res.json();
   return [res.status, data];
 };
@@ -109,7 +116,11 @@ export const removeSubscription: basicDeleteFunction = async (
   token: string
 ) => {
   const { actorCommonName, pathParam } = params;
-  const res = await deleteSubscriptions(actorCommonName, pathParam, token);
+  const res = await deleteSubscriptions(
+    actorCommonName,
+    pathParam as string,
+    token
+  );
   const data = await res.json();
   return [res.status, data];
 };
@@ -125,7 +136,21 @@ const fetchNetworkCapabilities = async (
     return [
       res.status,
       capabilities.capabilities.map((capability, ix) => {
-        return { ...capability.application, id: ix };
+        let causeCodes;
+
+        if (
+          "causeCodes" in capability.application &&
+          capability.application.causeCodes
+        ) {
+          causeCodes = capability.application.causeCodes.map((causeCode) => {
+            return causeCodesList.find((c) => c.value === causeCode);
+          });
+        }
+
+        return {
+          ...capability.application,
+          causeCodesDictionary: causeCodes && causeCodes.filter(Boolean),
+        };
       }),
     ];
   }
@@ -154,7 +179,7 @@ const fetchCapabilities = async (params: basicGetParams, token: string) => {
 const getPaths: {
   [key: string]: basicGetFunction | extendedGetFunction;
 } = {
-  aggregate: fetchAggregate,
+  //aggregate: fetchAggregate,
   "capability-count": fetchCapabilityCounter,
   subscriptions: fetchSubscriptions,
   "network/capabilities": fetchNetworkCapabilities,

@@ -6,8 +6,10 @@ import { getProviders, signIn } from "next-auth/react";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "./api/auth/[...nextauth]";
 import Image from "next/image";
-import logo from "@/../public/nordic-way-logo.png";
-import { Button, Card } from "@mui/material";
+import logo from "@/../public/napcore-logo.png";
+import { Button, Card, SvgIcon, Typography } from "@mui/material";
+import * as React from "react";
+import Google from "@/../public/icons8-google.svg";
 
 export default function login({
   providers,
@@ -18,20 +20,46 @@ export default function login({
       sx={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        padding: 8,
-        gap: 8,
+        padding: 5,
+        gap: 3,
+        width: "45vh",
       }}
     >
-      <Image src={logo} alt="Nordic Way logo" width={200} />
+      <Image
+        style={{ alignSelf: "center" }}
+        src={logo}
+        alt="Nordic Way logo"
+        width={200}
+      />
 
-      {Object.values(providers).map((provider) => (
-        <div key={provider.name}>
-          <Button variant="contained" onClick={() => signIn(provider.id)}>
-            Sign in with {provider.name}
-          </Button>
-        </div>
-      ))}
+      <Typography variant="h6">Welcome to Napcore</Typography>
+      <Typography variant="body1">
+        Napcore is restricted to users in the organization. If you want access,
+        you can contact christian.berg.skjetne@vegvesen.no.
+      </Typography>
+
+      <Button
+        startIcon={
+          <SvgIcon
+            sx={{
+              width: "inherit",
+              height: "inherit",
+            }}
+            component={Google}
+            inheritViewBox
+          />
+        }
+        variant="outlined"
+        fullWidth
+        sx={{ borderColor: "gray", color: "black", textTransform: "none" }}
+        onClick={(e) => {
+          /*https://stackoverflow.com/questions/74180557/next-auth-next-autherrorclient-fetch-error-networkerror-when-attempting-to*/
+          e.preventDefault();
+          signIn("google", { callbackUrl: "/" });
+        }}
+      >
+        <Typography>Sign in with Google</Typography>
+      </Button>
     </Card>
   );
 }
@@ -40,7 +68,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
 
   if (session) {
-    return { redirect: { destination: "/subscriptions" } };
+    return { redirect: { destination: "/" } };
   }
 
   const providers = await getProviders();
