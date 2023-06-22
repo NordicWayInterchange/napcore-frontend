@@ -9,6 +9,8 @@ import { SecondHeading } from "@/components/shared/display/heading/SecondHeading
 import { BodyHeading } from "@/components/shared/display/heading/BodyHeading";
 import { ICsr } from "@/interface/ICsr";
 import { ICsrForm } from "@/interface/ICsrForm";
+import { createCertificate } from "@/lib/fetchers/internalFetchers";
+import { useSession } from "next-auth/react";
 
 export const CertificateForm = () => {
   const {
@@ -23,18 +25,31 @@ export const CertificateForm = () => {
   });
   const [csr, setCsr] = useState<ICsr>();
   const [open, setOpen] = useState<boolean>(false);
+  const { data: session } = useSession();
 
   const onSubmit: SubmitHandler<ICsrForm> = (data) => {
     createPKCS10({
-      commonName: "Henrik",
+      commonName: session?.user?.email as string,
       country: data.countryCode,
       organization: data.orgName,
     }).then((csr) => {
       // @ts-ignore
       setCsr({ csr: csr.csr, privateKey: csr.privateKey });
       setOpen(true);
+      postCsr();
     });
     console.log(data);
+  };
+
+  const postCsr = async () => {
+    const response = await createCertificate(
+      session?.user?.email as string,
+      csr?.csr as string
+    );
+    console.log(response);
+    if (response.ok) {
+      console.log(response.json());
+    }
   };
 
   const handleClickClose = (close: boolean) => {

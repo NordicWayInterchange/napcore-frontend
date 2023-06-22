@@ -14,8 +14,8 @@ import {
   basicPostParams,
   basicGetParams,
   extendedGetParams,
+  addCertificates,
 } from "@/lib/fetchers/interchangeConnector";
-import { getToken } from "next-auth/jwt";
 
 // all getter methods on path
 const getPaths: {
@@ -32,6 +32,7 @@ const postPaths: {
   [key: string]: basicPostFunction;
 } = {
   subscriptions: addSubscriptions,
+  certificates: addCertificates,
 };
 
 // all delete methods on path

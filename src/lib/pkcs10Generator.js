@@ -28,18 +28,19 @@ export async function createPKCS10({ commonName, organization, country }) {
   const keyPair = await generateKeyPair(crypto, getAlgorithm(signAlg, hashAlg));
 
   return {
-    /*TODO: base64 the entire pem*/
-    csr: `-----BEGIN CERTIFICATE REQUEST-----\n${formatPEM(
-      toBase64(
-        arrayBufferToString(
-          await createCSR(keyPair, hashAlg, {
-            commonName,
-            organization,
-            country,
-          })
+    csr: toBase64(
+      `-----BEGIN CERTIFICATE REQUEST-----\n${formatPEM(
+        toBase64(
+          arrayBufferToString(
+            await createCSR(keyPair, hashAlg, {
+              commonName,
+              organization,
+              country,
+            })
+          )
         )
-      )
-    )}\n-----END CERTIFICATE REQUEST-----`,
+      )}\n-----END CERTIFICATE REQUEST-----`
+    ),
     /*privateKey: `-----BEGIN PRIVATE KEY-----\n${toBase64(
       arrayBufferToString(await crypto.exportKey("pkcs8", keyPair.privateKey))
     )}\n-----END PRIVATE KEY-----`,*/

@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import {
+  createCertificate,
   createSubscription,
   deleteSubscriptions,
   getCapabilities,
@@ -8,7 +9,6 @@ import {
 } from "@/lib/fetchers/napcoreFetchers";
 import {
   SubscriptionRequest,
-  Subscriptions,
   SubscriptionsSubscription,
 } from "@/types/napcore/subscription";
 import {
@@ -25,6 +25,7 @@ import { ExtendedCapability } from "@/types/capability";
 import { Capabilities, Capability } from "@/types/napcore/capability";
 import { getToken } from "next-auth/jwt";
 import { causeCodes as causeCodesList } from "@/lib/data/causeCodes";
+import { CertificateSignRequest } from "@/types/napcore/csr";
 
 const fetchCapabilityCounter = async (
   params: basicGetParams,
@@ -112,6 +113,18 @@ export const addSubscriptions: basicPostFunction = async (
   return [res.status, data];
 };
 
+export const addCerticates: basicPostFunction = async (
+  params: basicPostParams
+) => {
+  const { actorCommonName, body = {} } = params;
+  const res = await createCertificate(
+    actorCommonName,
+    body as CertificateSignRequest
+  );
+  const data = await res.json();
+  return [res.status, data];
+};
+
 export const removeSubscription: basicDeleteFunction = async (
   params: basicDeleteParams,
   token: string
@@ -136,7 +149,7 @@ const fetchNetworkCapabilities = async (
     const capabilities: Array<Capability> = await res.json();
     return [
       res.status,
-      capabilities.map((capability, ix) => {
+      capabilities.map((capability) => {
         let causeCodes;
 
         if (
@@ -192,6 +205,7 @@ const postPaths: {
   [key: string]: basicPostFunction;
 } = {
   subscriptions: addSubscriptions,
+  certificates: addCerticates,
 };
 
 // all delete methods on path

@@ -20,6 +20,7 @@ import DeleteSubDialog from "@/components/subscriptions/DeleteSubDialog";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { Chip } from "@/components/shared/display/Chip";
 import { styled } from "@mui/material/styles";
+import { useSession } from "next-auth/react";
 
 const width = 600;
 
@@ -36,6 +37,7 @@ const SubscriptionsDrawer = ({
 }: Props) => {
   console.log(subscription);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const { data: session } = useSession();
 
   const handleClickClose = (close: boolean) => {
     setDialogOpen(close);
@@ -177,7 +179,7 @@ const SubscriptionsDrawer = ({
       </Drawer>
       <DeleteSubDialog
         open={dialogOpen}
-        actorCommonName={"anna"}
+        actorCommonName={session?.user?.email as string}
         subscriptionId={subscription.id}
         handleDialog={handleClickClose}
       />

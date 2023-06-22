@@ -1,6 +1,7 @@
 import { getTLSAgent } from "@/lib/fetchers/sslAgent";
 import { SubscriptionRequest } from "@/types/napcore/subscription";
 import axios from "axios";
+import { CertificateSignRequest } from "@/types/napcore/csr";
 
 const headers = {
   Accept: "application/json",
@@ -31,7 +32,7 @@ const fetchIXN: (
 const postIXN: (
   actorCommonName: string,
   path: string,
-  body: SubscriptionRequest | {}
+  body: SubscriptionRequest | CertificateSignRequest | {}
 ) => Promise<any> = async (actorCommonName, path, body) => {
   const uri = process.env.INTERCHANGE_URI || "";
   const uriPath = `nap/${actorCommonName}${path}`;
@@ -65,7 +66,7 @@ export type extendedGetParams = {
 };
 export type basicPostParams = {
   actorCommonName: string;
-  body?: SubscriptionRequest;
+  body?: SubscriptionRequest | CertificateSignRequest;
 };
 export type basicDeleteParams = {
   actorCommonName: string;
@@ -129,4 +130,9 @@ export const addSubscriptions: basicPostFunction = async (params) => {
 export const deleteSubscriptions: basicDeleteFunction = async (params) => {
   const { actorCommonName, pathParam } = params;
   return await deleteIXN(actorCommonName, `/subscriptions/${pathParam}`);
+};
+
+export const addCertificates: basicPostFunction = async (params) => {
+  const { actorCommonName, body = {} } = params;
+  return await postIXN(actorCommonName, "/x509/csr", body);
 };

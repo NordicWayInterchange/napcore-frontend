@@ -6,9 +6,6 @@ export const createSubscription = (
     selector: selector,
   };
 
-  // TODO: remove this
-  actorCommonName = "anna";
-
   return fetch(`/api/${actorCommonName}/subscriptions`, {
     method: "post",
     headers: {
@@ -22,10 +19,20 @@ export const deleteSubscriptions = (
   actorCommonName: string,
   subscriptionId: string
 ) => {
-  // TODO: remove this
-  actorCommonName = "anna";
-
   return fetch(`/api/${actorCommonName}/subscriptions/${subscriptionId}`, {
     method: "delete",
+  });
+};
+
+export const createCertificate = (actorCommonName: string, csr: string) => {
+  const csrRequest = {
+    csr: csr,
+  };
+  return fetch(`/api/${actorCommonName}/certificates`, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(csrRequest),
   });
 };

@@ -119,7 +119,7 @@ export default function Subscriptions() {
         subscriptionId={subscriptionRow?.id as string}
         handleDialog={handleClickClose}
         open={open}
-        actorCommonName={"anna"}
+        actorCommonName={session?.user?.email as string}
       />
     </>
   );
