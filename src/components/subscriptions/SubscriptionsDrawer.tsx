@@ -105,15 +105,11 @@ const SubscriptionsDrawer = ({
             </ListItem>
             <ListItem>
               <StyledCard variant={"outlined"}>
-                {/*TODO: add endpoints (currently not existing)*/}
-                {/*<Box>{subscription.endpoints[0].host}</Box>
-          <Box>{subscription.endpoints[0].source}</Box>
-          <Box>{subscription.endpoints[0].port}</Box>*/}
                 <Typography>ENDPOINTS</Typography>
                 <FormControl fullWidth>
                   <TextField
                     contentEditable={false}
-                    value={"ampqs://myserver"}
+                    value={subscription.endpoints[0].host}
                     label={"Host"}
                     margin="normal"
                     InputProps={{
@@ -122,7 +118,7 @@ const SubscriptionsDrawer = ({
                   />
                   <TextField
                     contentEditable={false}
-                    value={"Serviceprovider 1-1"}
+                    value={subscription.endpoints[0].source}
                     label={"Source"}
                     margin="normal"
                     InputProps={{
@@ -134,7 +130,7 @@ const SubscriptionsDrawer = ({
                   <TextField
                     contentEditable={false}
                     value={"5671"}
-                    label={"Port"}
+                    label={subscription.endpoints[0].port}
                     margin="normal"
                     InputProps={{
                       endAdornment: <ContentCopy value={"5671"} />,

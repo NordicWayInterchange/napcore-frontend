@@ -16,8 +16,7 @@ export type Endpoint = {
 };
 
 export type SubscriptionsSubscription = {
-  id: string;
-  path: string;
+  id: string; // TODO: INT
   selector: string;
   lastUpdatedTimeStamp: number;
   status: SubscriptionStatus;
@@ -31,7 +30,8 @@ export type Subscriptions = {
 };
 
 export type SubscriptionRequest = {
-  name: string;
-  subscriptions: Array<{ selector: string }>;
-  version: string;
+  //name: string;
+  //subscriptions: Array<{ selector: string }>;
+  //version: string;
+  selector: string;
 };

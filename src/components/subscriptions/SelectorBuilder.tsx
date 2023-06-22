@@ -157,8 +157,10 @@ const SelectorBuilder = (props: Props) => {
       <StyledCard variant={"outlined"}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <StyledFormControl>
-            <Typography>Publisher</Typography>
-            <Typography>Description of the form</Typography>
+            <Typography>
+              Create a subscription with the form, or specify your own selector
+              in advanced mode.
+            </Typography>
             <Box sx={{ display: "flex", gap: 1 }}>
               <Controller
                 name="publicationId"

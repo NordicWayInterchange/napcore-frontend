@@ -3,8 +3,7 @@ export const createSubscription = (
   selector: string
 ) => {
   const subscriptionsRequest = {
-    name: actorCommonName,
-    subscriptions: [{ selector }],
+    selector: selector,
   };
 
   // TODO: remove this

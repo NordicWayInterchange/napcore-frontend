@@ -13,12 +13,14 @@ const fetchIXN: (
   path: string,
   selector?: string
 ) => Promise<any> = async (actorCommonName, path, selector = "") => {
+  // TODO: Get actor common name from env
   const uri = process.env.INTERCHANGE_URI || "";
-  const uriPath = `${actorCommonName}${path}`;
+  const uriPath = `nap/${actorCommonName}${path}`;
   const params: { selector?: string } = {};
   if (selector) {
     params.selector = selector;
   }
+
   return await axios.get(uri + uriPath, {
     params,
     headers,
@@ -32,7 +34,7 @@ const postIXN: (
   body: SubscriptionRequest | {}
 ) => Promise<any> = async (actorCommonName, path, body) => {
   const uri = process.env.INTERCHANGE_URI || "";
-  const uriPath = `${actorCommonName}${path}`;
+  const uriPath = `nap/${actorCommonName}${path}`;
   return await axios.post(uri + uriPath, body, {
     headers,
     httpsAgent: tlsAgent,
@@ -44,7 +46,7 @@ const deleteIXN: (
   path: string
 ) => Promise<any> = async (actorCommonName, path) => {
   const uri = process.env.INTERCHANGE_URI || "";
-  const uriPath = `${actorCommonName}${path}`;
+  const uriPath = `nap/${actorCommonName}${path}`;
   return await axios.delete(uri + uriPath, {
     headers,
     httpsAgent: tlsAgent,
@@ -90,7 +92,11 @@ export type basicDeleteFunction = (
 // exported functions
 export const fetchNetworkCapabilities: basicGetFunction = async (params) => {
   const { actorCommonName, selector = "" } = params;
-  return await fetchIXN(actorCommonName, "/network/capabilities", selector);
+  return await fetchIXN(
+    actorCommonName,
+    "/subscriptions/capabilities",
+    selector
+  );
 };
 
 export const fetchCapabilities: basicGetFunction = async (params) => {

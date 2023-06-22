@@ -9,6 +9,7 @@ import {
 import {
   SubscriptionRequest,
   Subscriptions,
+  SubscriptionsSubscription,
 } from "@/types/napcore/subscription";
 import {
   basicDeleteFunction,
@@ -21,7 +22,7 @@ import {
   extendedGetParams,
 } from "@/lib/fetchers/interchangeConnector";
 import { ExtendedCapability } from "@/types/capability";
-import { Capabilities } from "@/types/napcore/capability";
+import { Capabilities, Capability } from "@/types/napcore/capability";
 import { getToken } from "next-auth/jwt";
 import { causeCodes as causeCodesList } from "@/lib/data/causeCodes";
 
@@ -90,8 +91,8 @@ const fetchSubscriptions = async (params: extendedGetParams, token: string) => {
     token
   );
   if (res.ok) {
-    const subscriptions: Subscriptions = await res.json();
-    return [res.status, subscriptions.subscriptions];
+    const subscriptions: Array<SubscriptionsSubscription> = await res.json();
+    return [res.status, subscriptions];
   }
   const body = await res.json();
   return [res.status, body];
@@ -132,10 +133,10 @@ const fetchNetworkCapabilities = async (
   const { actorCommonName, selector = "" } = params;
   const res = await getNetworkCapabilities(actorCommonName, selector, token);
   if (res.ok) {
-    const capabilities: Capabilities = await res.json();
+    const capabilities: Array<Capability> = await res.json();
     return [
       res.status,
-      capabilities.capabilities.map((capability, ix) => {
+      capabilities.map((capability, ix) => {
         let causeCodes;
 
         if (
