@@ -16,6 +16,7 @@ import {
   extendedGetParams,
   addCertificates,
 } from "@/lib/fetchers/interchangeConnector";
+import { getToken } from "next-auth/jwt";
 
 // all getter methods on path
 const getPaths: {
@@ -99,8 +100,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  // check if the api receives headers with bearer token
-  //console.log(req.headers);
+  /*  const secret = process.env.NEXTAUTH_SECRET;
+  const token = await getToken({ req, secret, raw: true });
+  if (!token) {
+    // TODO: make it more descriptive
+    return res.status(403).json({ description: `Access denied` });
+  }*/
 
   const slug = Array.isArray(req.query.slug)
     ? req.query.slug

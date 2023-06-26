@@ -13,16 +13,18 @@ import {
 } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import { downloadKey } from "@/lib/downloadTxt";
+import { CertificateSignResponse } from "@/types/napcore/csr";
 
 type Props = {
   privateKey: string;
   // TODO: certificate
+  chain: CertificateSignResponse;
   open: boolean;
   handleDialog: (close: boolean) => void;
 };
 
 export default function CertificateDialog(props: Props) {
-  const { privateKey, open, handleDialog } = props;
+  const { privateKey, open, handleDialog, chain } = props;
 
   const handleClose = () => {
     handleDialog(false);
@@ -82,7 +84,10 @@ export default function CertificateDialog(props: Props) {
             variant="contained"
             color="greenDark"
             sx={{ borderRadius: 100, textTransform: "none" }}
-            onClick={() => console.log("Downloaded cert")}
+            href={`data:text/json;charset=utf-8,${encodeURIComponent(
+              JSON.stringify(chain)
+            )}`}
+            download={"encodedCertChain.json"}
             disableElevation
           >
             Download certificate

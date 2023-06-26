@@ -31,7 +31,7 @@ export const SubscriptionDatagrid: GridColDef[] = [
   },
   {
     ...dataGridTemplate,
-    field: "lastUpdatedTimeStamp",
+    field: "lastUpdatedTimestamp",
     headerName: "Last updated",
   },
   {

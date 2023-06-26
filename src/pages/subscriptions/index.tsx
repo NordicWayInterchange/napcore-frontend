@@ -71,7 +71,7 @@ export default function Subscriptions() {
     },
     {
       ...dataGridTemplate,
-      field: "lastUpdatedTimeStamp",
+      field: "lastUpdatedTimestamp",
       headerName: "Last updated",
     },
     {
