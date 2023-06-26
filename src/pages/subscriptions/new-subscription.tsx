@@ -6,6 +6,7 @@ import { useMatchingCapabilities } from "@/hooks/useMatchingCapabilities";
 import DataGrid from "@/components/shared/datagrid/DataGrid";
 import { useSession } from "next-auth/react";
 import { NewSubscriptionDatagrid } from "@/components/shared/datagrid/GridColumns/NewSubscriptionDatagrid";
+import { Box } from "@mui/system";
 
 const NewSubscription = () => {
   const { data: session } = useSession();
@@ -22,7 +23,7 @@ const NewSubscription = () => {
   };
 
   return (
-    <>
+    <Box flex={1}>
       <Typography variant="h4">Create subscription</Typography>
       <Divider sx={{ marginY: 3 }} />
       <Grid container spacing={3}>
@@ -39,7 +40,7 @@ const NewSubscription = () => {
           />
         </Grid>
       </Grid>
-    </>
+    </Box>
   );
 };
 

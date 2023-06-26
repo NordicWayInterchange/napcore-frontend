@@ -42,7 +42,7 @@ export default function Home() {
   ];
 
   return (
-    <>
+    <Box flex={1}>
       <Typography variant="h4">Welcome, {session?.user?.name}!</Typography>
       <Divider sx={{ marginY: 3 }} />
       <Typography variant="h5">Shortcuts</Typography>
@@ -97,6 +97,6 @@ export default function Home() {
           sortModel={[{ field: "id", sort: "desc" }]}
         />
       </Box>
-    </>
+    </Box>
   );
 }

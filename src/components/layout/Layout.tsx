@@ -29,6 +29,8 @@ export default function Layout({ children }: LayoutProps) {
             bgcolor: theme.palette.mainBackgroundColor,
             p: 5,
             height: "100vh",
+            width: "100vw",
+            overflow: "auto",
           }}
         >
           <Toolbar />

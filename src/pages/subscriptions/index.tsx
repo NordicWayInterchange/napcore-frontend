@@ -100,7 +100,7 @@ export default function Subscriptions() {
   ];
 
   return (
-    <>
+    <Box flex={1}>
       <Typography variant="h4">Subscriptions</Typography>
       <Divider sx={{ marginY: 3 }} />
       <DataGrid
@@ -123,6 +123,6 @@ export default function Subscriptions() {
         open={open}
         actorCommonName={session?.user?.email as string}
       />
-    </>
+    </Box>
   );
 }
