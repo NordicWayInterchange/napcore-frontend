@@ -13,6 +13,7 @@ import { ExtendedSubscription } from "@/types/subscription";
 import SubscriptionsDrawer from "@/components/subscriptions/SubscriptionsDrawer";
 import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
 import { Chip } from "@/components/shared/display/Chip";
+import { timeConverter } from "@/lib/timeConverter";
 
 export default function Subscriptions() {
   const { data: session } = useSession();
@@ -73,6 +74,7 @@ export default function Subscriptions() {
       ...dataGridTemplate,
       field: "lastUpdatedTimestamp",
       headerName: "Last updated",
+      valueGetter: ({ value }) => value && timeConverter(value),
     },
     {
       ...dataGridTemplate,

@@ -14,7 +14,6 @@ const fetchIXN: (
   path: string,
   selector?: string
 ) => Promise<any> = async (actorCommonName, path, selector = "") => {
-  // TODO: Get actor common name from env
   const uri = process.env.INTERCHANGE_URI || "";
   const uriPath = `nap/${actorCommonName}${path}`;
   const params: { selector?: string } = {};

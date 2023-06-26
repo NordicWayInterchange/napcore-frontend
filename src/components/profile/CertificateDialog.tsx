@@ -17,7 +17,6 @@ import { CertificateSignResponse } from "@/types/napcore/csr";
 
 type Props = {
   privateKey: string;
-  // TODO: certificate
   chain: CertificateSignResponse;
   open: boolean;
   handleDialog: (close: boolean) => void;

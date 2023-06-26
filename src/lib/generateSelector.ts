@@ -1,9 +1,3 @@
-/* TODO:
- *   - Type for parameter
- *   - Should be moved to SelectorBuilder folder
- *      - Cap. should create new sub. based on ID
- * */
-
 export const generateSelector = (formState: any): string => {
   const excludeKeys = [
     "redirect",

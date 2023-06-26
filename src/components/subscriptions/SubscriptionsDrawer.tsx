@@ -21,6 +21,7 @@ import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { Chip } from "@/components/shared/display/Chip";
 import { styled } from "@mui/material/styles";
 import { useSession } from "next-auth/react";
+import { timeConverter } from "@/lib/timeConverter";
 
 const width = 600;
 
@@ -98,8 +99,9 @@ const SubscriptionsDrawer = ({
                   <Box>
                     <ListItemText
                       primary={"Last updated"}
-                      // TODO: Update
-                      secondary={"12:46"}
+                      secondary={timeConverter(
+                        subscription.lastUpdatedTimestamp
+                      )}
                     />
                   </Box>
                 </Box>
