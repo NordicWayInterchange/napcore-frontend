@@ -1,3 +1,8 @@
+/**
+ * @Description Parse object to selector
+ * @param formState - Form object
+ * @returns {string} - JMS Message Selector
+ */
 export const generateSelector = (formState: any): string => {
   const excludeKeys = [
     "redirect",

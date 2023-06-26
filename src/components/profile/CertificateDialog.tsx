@@ -12,7 +12,6 @@ import {
   TextField,
 } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
-import { downloadKey } from "@/lib/downloadTxt";
 import { CertificateSignResponse } from "@/types/napcore/csr";
 
 type Props = {
@@ -51,8 +50,11 @@ export default function CertificateDialog(props: Props) {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
-                      onClick={() => downloadKey(privateKey)}
                       edge="end"
+                      href={`data:text/json;charset=utf-8,${encodeURIComponent(
+                        privateKey
+                      )}`}
+                      download={"privateKey.txt"}
                     >
                       <DownloadIcon />
                     </IconButton>
