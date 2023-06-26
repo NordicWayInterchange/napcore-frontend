@@ -28,7 +28,7 @@ export const createCertificate = (actorCommonName: string, csr: string) => {
   const csrRequest = {
     csr: csr,
   };
-  return fetch(`/api/${actorCommonName}/certificates`, {
+  return fetch(`/api/${actorCommonName}/x509/csr`, {
     method: "post",
     headers: {
       "Content-Type": "application/json",

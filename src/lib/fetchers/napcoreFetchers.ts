@@ -48,7 +48,7 @@ export const createCertificate = (
   userName: string,
   body: CertificateSignRequest
 ) => {
-  return fetch(`${napCoreBaseUrl}/${userName}/certificates`, {
+  return fetch(`${napCoreBaseUrl}/${userName}/x509/csr`, {
     method: "post",
     headers: {
       "Content-Type": "application/json",

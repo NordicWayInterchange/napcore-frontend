@@ -205,7 +205,7 @@ const postPaths: {
   [key: string]: basicPostFunction;
 } = {
   subscriptions: addSubscriptions,
-  certificates: addCerticates,
+  "x509/csr": addCerticates,
 };
 
 // all delete methods on path

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button, Card, TextField } from "@mui/material";
 import CertificateDialog from "@/components/profile/CertificateDialog";
 import { createPKCS10 } from "@/lib/pkcs10Generator";
@@ -11,10 +11,7 @@ import { ICsr } from "@/interface/ICsr";
 import { ICsrForm } from "@/interface/ICsrForm";
 import { createCertificate } from "@/lib/fetchers/internalFetchers";
 import { useSession } from "next-auth/react";
-import {
-  CertificateSignRequest,
-  CertificateSignResponse,
-} from "@/types/napcore/csr";
+import { CertificateSignResponse } from "@/types/napcore/csr";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 
 export const CertificateForm = () => {
@@ -79,7 +76,7 @@ export const CertificateForm = () => {
   };
 
   return (
-    <StyledCard>
+    <StyledCard variant={"outlined"}>
       <SecondHeading heading={"Certificate"} />
       <BodyHeading
         heading={"Please fill in your details in order to create a certificate"}
