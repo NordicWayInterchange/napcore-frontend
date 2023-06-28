@@ -102,7 +102,6 @@ const SelectorBuilder = (props: Props) => {
       return;
     }
 
-    // todo: no matching capabilites
     const response = await createSubscription(
       session?.user?.email as string,
       selector

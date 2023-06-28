@@ -10,6 +10,7 @@ import { ExtendedCapability } from "@/types/capability";
 import CapabilitiesDrawer from "@/components/capabilities/CapabilitiesDrawer";
 import { messageTypeChips } from "@/lib/statusChips";
 import { Chip } from "@/components/shared/display/Chip";
+import { CustomEmptyOverlayCapabilites } from "@/components/shared/datagrid/CustomEmptyOverlay";
 
 export default function NetworkCapabilities() {
   const { data: session } = useSession();
@@ -94,6 +95,9 @@ export default function NetworkCapabilities() {
         loading={isLoading}
         getRowId={(row) => row.publicationId}
         sort={{ field: "publicationId", sort: "desc" }}
+        slots={{
+          noRowsOverlay: CustomEmptyOverlayCapabilites,
+        }}
       />
       {capabilityRow && (
         <CapabilitiesDrawer
