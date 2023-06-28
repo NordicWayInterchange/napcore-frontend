@@ -30,13 +30,14 @@ import { IFormInputs } from "@/interface/IFormInputs";
 import { useSession } from "next-auth/react";
 
 type Props = {
-  version: string;
-  extendedCapability?: ExtendedCapability;
+  matchingCapabilities: ExtendedCapability[] | [];
   selectorCallback: (selector: string) => void;
 };
 
+const MATCHING_CAP_LIMIT = 1;
+
 const SelectorBuilder = (props: Props) => {
-  const { selectorCallback } = props;
+  const { selectorCallback, matchingCapabilities } = props;
   const [selector, setSelector] = useState<string>("");
   const [advancedMode, setAdvancedMode] = useState<boolean>(false);
   const [persistSelector, setPersistSelector] = useState<string>("");
@@ -91,6 +92,16 @@ const SelectorBuilder = (props: Props) => {
   }, [watchMessageType]);
 
   const onSubmit: SubmitHandler<IFormInputs> = async () => {
+    if (matchingCapabilities.length < MATCHING_CAP_LIMIT) {
+      setFeedback({
+        feedback: true,
+        message: "You need have no matching capabilities",
+        severity: "info",
+      });
+
+      return;
+    }
+
     // todo: no matching capabilites
     const response = await createSubscription(
       session?.user?.email as string,

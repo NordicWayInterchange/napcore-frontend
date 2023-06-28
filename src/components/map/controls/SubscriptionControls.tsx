@@ -2,6 +2,7 @@ import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useMemo } from "react";
 import { POSITIONS } from "@/components/map/controls/Positions";
+import { styled } from "@mui/material/styles";
 
 type MapControlsProps = {
   controlsHash: string[];
@@ -22,19 +23,9 @@ export default function SubscriptionControls({
 
   const inputBar = useMemo(
     () => (
-      <Box
-        sx={{
-          width: 400,
-          height: 40,
-          backgroundColor: "white",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          p: 3,
-        }}
-      >
+      <StyledBox sx={{}}>
         <Typography noWrap={true}>{hash && hash.join()}</Typography>
-      </Box>
+      </StyledBox>
     ),
     [hash]
   );
@@ -44,3 +35,13 @@ export default function SubscriptionControls({
     </div>
   );
 }
+
+const StyledBox = styled(Box)(({}) => ({
+  width: 400,
+  height: 40,
+  backgroundColor: "white",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  p: 3,
+}));

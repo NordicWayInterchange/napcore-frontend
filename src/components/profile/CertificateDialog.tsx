@@ -75,7 +75,7 @@ export default function CertificateDialog(props: Props) {
             variant="text"
             color="greenDark"
             sx={{ borderRadius: 100, textTransform: "none" }}
-            onClick={() => console.log("Close")}
+            onClick={handleClose}
             disableElevation
           >
             Close
