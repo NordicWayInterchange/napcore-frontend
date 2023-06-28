@@ -94,7 +94,7 @@ export default function Home() {
           rows={data?.slice(0, 4) || []}
           loading={isLoading}
           hideFooterPagination={true}
-          sortModel={[{ field: "id", sort: "desc" }]}
+          sort={{ field: "id", sort: "desc" }}
         />
       </Box>
     </Box>

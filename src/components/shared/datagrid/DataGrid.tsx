@@ -2,10 +2,14 @@ import React from "react";
 import { DataGrid as MuiDataGrid, DataGridProps } from "@mui/x-data-grid";
 import { styled } from "@mui/material/styles";
 import { Box } from "@mui/material";
+import { GridSortDirection } from "@mui/x-data-grid/models/gridSortModel";
 
-interface Props extends DataGridProps {}
+interface Props extends DataGridProps {
+  sort: { field: string; sort: GridSortDirection };
+}
 
 export default function DataGrid(props: Props) {
+  const { sort } = props;
   return (
     <Box sx={{ height: "70vh", width: "100%" }}>
       <StyledDataGrid
@@ -18,6 +22,9 @@ export default function DataGrid(props: Props) {
             paginationModel: {
               pageSize: 10,
             },
+          },
+          sorting: {
+            sortModel: [sort],
           },
         }}
         pageSizeOptions={[10, 25, 50]}

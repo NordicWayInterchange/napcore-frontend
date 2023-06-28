@@ -182,12 +182,13 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                     }}
                   />
                   {capability.causeCodesDictionary && (
-                    <FormControl margin="normal">
+                    <FormControl margin="normal" disabled>
                       <InputLabel>Cause codes</InputLabel>
                       <Select
                         MenuProps={{ PaperProps: { sx: { maxHeight: 200 } } }}
                         label={"Cause codes"}
                         multiple
+                        onClick={() => console.log("d")}
                         defaultValue={capability.causeCodesDictionary.map(
                           (cause) => {
                             return cause["value"];
