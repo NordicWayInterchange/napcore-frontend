@@ -19,7 +19,7 @@ export default function DynamicMap(props: Props) {
     quadtree,
     interactive,
     width = "100%",
-    height = 900,
+    height = "100%",
   } = props;
   const [controlsHash, setControlsHash] = useState<string[]>([]);
 
@@ -27,7 +27,7 @@ export default function DynamicMap(props: Props) {
     setControlsHash([hash]);
   };
 
-  const DEFAULT_ZOOM = 1;
+  const DEFAULT_ZOOM = 3;
   const MAX_BOUNDS = latLngBounds([
     [-90, -180],
     [90, 180],

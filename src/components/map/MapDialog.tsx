@@ -1,13 +1,17 @@
 import {
+  AppBar,
   Button,
   Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
+  IconButton,
+  Slide,
+  Toolbar,
+  useTheme,
 } from "@mui/material";
 import Map from "./Map";
 import React, { useEffect, useState } from "react";
+import { TransitionProps } from "@mui/material/transitions";
+import CloseIcon from "@mui/icons-material/Close";
+import { Box } from "@mui/system";
 
 type Props = {
   quadtreeCallback?: (value: string[]) => void;
@@ -16,6 +20,16 @@ type Props = {
   interactive?: boolean;
   onClose: () => void;
 };
+
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement;
+  },
+  ref: React.Ref<unknown>
+) {
+  // FIXME
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 export default function MapDialog(props: Props) {
   const {
@@ -27,6 +41,7 @@ export default function MapDialog(props: Props) {
   } = props;
 
   const [discard, setDiscard] = useState(false);
+  const theme = useTheme();
 
   const handleDiscard = () => {
     quadtreeCallback ? quadtreeCallback([]) : quadtreeCallback;
@@ -41,28 +56,39 @@ export default function MapDialog(props: Props) {
   }, [discard]);
 
   return (
-    <Dialog fullWidth maxWidth={"xl"} open={open} onClose={onClose}>
-      <DialogTitle>Quadtree</DialogTitle>
-      <DialogContent>
-        <DialogContentText sx={{ marginBottom: 2 }}>
-          Select a quadtree by clicking on tiles. You can remove a tile by
-          selecting it again, discard all entered tiles or save tiles to the
-          form.
-        </DialogContentText>
-        <Map
-          quadtree={quadtree}
-          quadtreeCallback={quadtreeCallback}
-          interactive={interactive}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button variant={"contained"} onClick={handleDiscard}>
-          Discard
-        </Button>
-        <Button variant={"contained"} onClick={onClose}>
-          Save
-        </Button>
-      </DialogActions>
+    <Dialog
+      fullScreen
+      TransitionComponent={Transition}
+      open={open}
+      onClose={onClose}
+    >
+      <AppBar
+        sx={{
+          position: "relative",
+          backgroundColor: theme.palette.navbarBackgroundColor,
+        }}
+      >
+        <Toolbar>
+          <Box sx={{ flex: 1 }}>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={handleDiscard}
+              aria-label="close"
+            >
+              <CloseIcon />
+            </IconButton>
+          </Box>
+          <Button autoFocus color="inherit" onClick={onClose}>
+            save
+          </Button>
+        </Toolbar>
+      </AppBar>
+      <Map
+        quadtree={quadtree}
+        quadtreeCallback={quadtreeCallback}
+        interactive={interactive}
+      />
     </Dialog>
   );
 }
