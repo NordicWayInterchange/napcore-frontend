@@ -36,7 +36,7 @@ const NewSubscription = () => {
             rows={data || []}
             loading={isLoading}
             getRowId={(row) => row.publicationId}
-            sortModel={[{ field: "publicationId", sort: "desc" }]}
+            sort={{ field: "publicationId", sort: "desc" }}
           />
         </Grid>
       </Grid>
