@@ -71,6 +71,8 @@ async function createCSR(
     })
   );
 
+  fixSubject(pkcs10.subject);
+
   pkcs10.attributes = [];
 
   await pkcs10.subjectPublicKeyInfo.importKey(keyPair.publicKey);
@@ -88,6 +90,26 @@ function getWebCrypto() {
   const crypto = getCrypto();
   if (typeof crypto === "undefined") throw "No WebCrypto extension found";
   return crypto;
+}
+
+/**
+ * @Description Temporary solution for wrong parsing of subject
+ * @param subject - PKCS#10 Subject
+ */
+function fixSubject(subject) {
+  if (subject.typesAndValues) {
+    const schema = new asn1js.Sequence({
+      value: Array.from(
+        subject.typesAndValues,
+        (element) =>
+          new asn1js.Set({
+            value: [element.toSchema()],
+          })
+      ),
+    });
+    const der = schema.toBER();
+    subject.fromSchema(asn1js.fromBER(der).result);
+  }
 }
 
 function getAlgorithm(signAlg, hashAlg) {
