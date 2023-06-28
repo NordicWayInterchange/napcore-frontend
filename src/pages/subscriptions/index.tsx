@@ -14,6 +14,7 @@ import SubscriptionsDrawer from "@/components/subscriptions/SubscriptionsDrawer"
 import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
 import { Chip } from "@/components/shared/display/Chip";
 import { timeConverter } from "@/lib/timeConverter";
+import { CustomEmptyOverlaySubscription } from "@/components/shared/datagrid/CustomEmptyOverlay";
 
 export default function Subscriptions() {
   const { data: session } = useSession();
@@ -107,7 +108,10 @@ export default function Subscriptions() {
         columns={tableHeaders}
         rows={data || []}
         loading={isLoading}
-        slots={{ footer: CustomFooter }}
+        slots={{
+          footer: CustomFooter,
+          noRowsOverlay: CustomEmptyOverlaySubscription,
+        }}
         sort={{ field: "id", sort: "desc" }}
       />
       {subscriptionRow && (

@@ -7,6 +7,7 @@ import DataGrid from "@/components/shared/datagrid/DataGrid";
 import { useSession } from "next-auth/react";
 import { NewSubscriptionDatagrid } from "@/components/shared/datagrid/GridColumns/NewSubscriptionDatagrid";
 import { Box } from "@mui/system";
+import { CustomEmptyOverlayMatching } from "@/components/shared/datagrid/CustomEmptyOverlay";
 
 const NewSubscription = () => {
   const { data: session } = useSession();
@@ -40,6 +41,9 @@ const NewSubscription = () => {
             loading={isLoading}
             getRowId={(row) => row.publicationId}
             sort={{ field: "publicationId", sort: "desc" }}
+            slots={{
+              noRowsOverlay: CustomEmptyOverlayMatching,
+            }}
           />
         </Grid>
       </Grid>
