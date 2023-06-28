@@ -11,7 +11,7 @@ interface Props extends DataGridProps {
 export default function DataGrid(props: Props) {
   const { sort } = props;
   return (
-    <Box sx={{ height: "70vh", width: "100%" }}>
+    <Box sx={{ width: "100%" }}>
       <StyledDataGrid
         {...props}
         autoHeight

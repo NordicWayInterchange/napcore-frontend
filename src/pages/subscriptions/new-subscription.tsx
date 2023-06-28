@@ -28,7 +28,10 @@ const NewSubscription = () => {
       <Divider sx={{ marginY: 3 }} />
       <Grid container spacing={3}>
         <Grid item xs={6}>
-          <SelectorBuilder version="version" selectorCallback={handleChange} />
+          <SelectorBuilder
+            matchingCapabilities={data || []}
+            selectorCallback={handleChange}
+          />
         </Grid>
         <Grid item xs={6}>
           <DataGrid
