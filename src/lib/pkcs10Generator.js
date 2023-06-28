@@ -13,33 +13,28 @@ import {
   AttributeTypeAndValue,
 } from "pkijs/build";
 import { arrayBufferToString, toBase64 } from "pvutils";
-//https://github.com/PeculiarVentures/PKI.js/blob/31c10e9bb879cac59d710102adf4fd7bd61cd66c/src/CryptoEngine.js#L1300
 const hashAlg = "SHA-256";
 const signAlg = "ECDSA";
 
-/**
- * @example
- * createPKCS10({ enrollmentID: 'user1', organizationUnit: 'Marketing', organization: 'Farmer Market', state: 'M', country: 'V' })
- *  .then(({csr, privateKey} => {...}))
- */
 export async function createPKCS10({ commonName, organization, country }) {
   const crypto = getWebCrypto();
 
   const keyPair = await generateKeyPair(crypto, getAlgorithm(signAlg, hashAlg));
 
   return {
-    /*TODO: base64 the entire pem*/
-    csr: `-----BEGIN CERTIFICATE REQUEST-----\n${formatPEM(
-      toBase64(
-        arrayBufferToString(
-          await createCSR(keyPair, hashAlg, {
-            commonName,
-            organization,
-            country,
-          })
+    csr: toBase64(
+      `-----BEGIN CERTIFICATE REQUEST-----\n${formatPEM(
+        toBase64(
+          arrayBufferToString(
+            await createCSR(keyPair, hashAlg, {
+              commonName,
+              organization,
+              country,
+            })
+          )
         )
-      )
-    )}\n-----END CERTIFICATE REQUEST-----`,
+      )}\n-----END CERTIFICATE REQUEST-----`
+    ),
     /*privateKey: `-----BEGIN PRIVATE KEY-----\n${toBase64(
       arrayBufferToString(await crypto.exportKey("pkcs8", keyPair.privateKey))
     )}\n-----END PRIVATE KEY-----`,*/
@@ -56,7 +51,7 @@ async function createCSR(
 ) {
   const pkcs10 = new CertificationRequest();
   pkcs10.version = 0;
-  //list of OID reference: http://oidref.com/2.5.4
+
   pkcs10.subject.typesAndValues.push(
     new AttributeTypeAndValue({
       type: "2.5.4.6", //countryName
@@ -76,18 +71,15 @@ async function createCSR(
     })
   );
 
-  //add attributes to make CSR valid
-  //Attributes must be "a0:00" if empty
   pkcs10.attributes = [];
 
   await pkcs10.subjectPublicKeyInfo.importKey(keyPair.publicKey);
-  //signing final PKCS#10 request
+
   await pkcs10.sign(keyPair.privateKey, hashAlg);
 
   return pkcs10.toSchema().toBER(false);
 }
 
-// add line break every 64th character
 function formatPEM(pemString) {
   return pemString.replace(/(.{64})/g, "$1\n");
 }
@@ -107,11 +99,3 @@ function getAlgorithm(signAlg, hashAlg) {
 function generateKeyPair(crypto, algorithm) {
   return crypto.generateKey(algorithm.algorithm, true, algorithm.usages);
 }
-
-/**
- * to learn more about asn1, ber & der, attributes & types used in pkcs#10
- * http://luca.ntop.org/Teaching/Appunti/asn1.html
- *
- * guides to SubtleCrypto (which PKIjs is built upon):
- * https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto
- */

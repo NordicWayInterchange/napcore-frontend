@@ -5,9 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 const fetchSubscriptions: (
   userName: string
 ) => Promise<ExtendedSubscription[]> = async (userName: string) => {
-  // TODO: remove this
-  userName = "anna";
-
   const res = await fetch(`/api/${userName}/subscriptions`);
   if (res.ok) {
     const subscriptions: SubscriptionsSubscription[] = await res.json();

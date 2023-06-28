@@ -3,6 +3,7 @@ import { dataGridTemplate } from "@/components/shared/datagrid/DataGridTemplate"
 import { Chip } from "@/components/shared/display/Chip";
 import { statusChips } from "@/lib/statusChips";
 import React from "react";
+import { timeConverter } from "@/lib/timeConverter";
 
 export const SubscriptionDatagrid: GridColDef[] = [
   {
@@ -31,8 +32,9 @@ export const SubscriptionDatagrid: GridColDef[] = [
   },
   {
     ...dataGridTemplate,
-    field: "lastUpdatedTimeStamp",
+    field: "lastUpdatedTimestamp",
     headerName: "Last updated",
+    valueGetter: ({ value }) => value && timeConverter(value),
   },
   {
     ...dataGridTemplate,

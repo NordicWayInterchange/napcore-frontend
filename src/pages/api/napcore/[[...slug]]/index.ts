@@ -14,6 +14,7 @@ import {
   basicPostParams,
   basicGetParams,
   extendedGetParams,
+  addCertificates,
 } from "@/lib/fetchers/interchangeConnector";
 import { getToken } from "next-auth/jwt";
 
@@ -32,6 +33,7 @@ const postPaths: {
   [key: string]: basicPostFunction;
 } = {
   subscriptions: addSubscriptions,
+  "x509/csr": addCertificates,
 };
 
 // all delete methods on path
@@ -98,8 +100,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  // check if the api receives headers with bearer token
-  //console.log(req.headers);
+  /*  const secret = process.env.NEXTAUTH_SECRET;
+  const token = await getToken({ req, secret, raw: true });
+  if (!token) {
+    // TODO: make it more descriptive
+    return res.status(403).json({ description: `Access denied` });
+  }*/
 
   const slug = Array.isArray(req.query.slug)
     ? req.query.slug
@@ -121,7 +127,7 @@ export default async function handler(
       actorCommonName,
       selector,
     });
-    // need to handle 404 if no data found on selector or pathParam
+    // TODO: need to handle 404 if no data found on selector or pathParam
     if (executer && "fn" in executer) {
       try {
         const { fn, params } = executer;
@@ -129,6 +135,7 @@ export default async function handler(
         const response = await fn(params);
         return res.status(200).json(response.data);
       } catch (error: any) {
+        console.log("error:", error);
         return res.status(error.response.status).json(error.response.data);
       }
     }

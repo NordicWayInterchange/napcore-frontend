@@ -1,9 +1,8 @@
-/* TODO:
- *   - Type for parameter
- *   - Should be moved to SelectorBuilder folder
- *      - Cap. should create new sub. based on ID
- * */
-
+/**
+ * @Description Parse object to selector
+ * @param formState - Form object
+ * @returns {string} - JMS Message Selector
+ */
 export const generateSelector = (formState: any): string => {
   const excludeKeys = [
     "redirect",

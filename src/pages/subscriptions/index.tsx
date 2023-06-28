@@ -13,10 +13,13 @@ import { ExtendedSubscription } from "@/types/subscription";
 import SubscriptionsDrawer from "@/components/subscriptions/SubscriptionsDrawer";
 import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
 import { Chip } from "@/components/shared/display/Chip";
+import { timeConverter } from "@/lib/timeConverter";
 
 export default function Subscriptions() {
   const { data: session } = useSession();
-  const { data, isLoading } = useSubscriptions(session?.user?.email as string);
+  const { data, isLoading, remove } = useSubscriptions(
+    session?.user?.email as string
+  );
   const [open, setOpen] = useState<boolean>(false);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [subscriptionRow, setSubscriptionRow] =
@@ -38,6 +41,7 @@ export default function Subscriptions() {
 
   const handleClickClose = (close: boolean) => {
     setOpen(close);
+    remove();
   };
 
   // TODO: Extract
@@ -68,8 +72,9 @@ export default function Subscriptions() {
     },
     {
       ...dataGridTemplate,
-      field: "lastUpdatedTimeStamp",
+      field: "lastUpdatedTimestamp",
       headerName: "Last updated",
+      valueGetter: ({ value }) => value && timeConverter(value),
     },
     {
       ...dataGridTemplate,
@@ -95,7 +100,7 @@ export default function Subscriptions() {
   ];
 
   return (
-    <>
+    <Box flex={1}>
       <Typography variant="h4">Subscriptions</Typography>
       <Divider sx={{ marginY: 3 }} />
       <DataGrid
@@ -116,8 +121,8 @@ export default function Subscriptions() {
         subscriptionId={subscriptionRow?.id as string}
         handleDialog={handleClickClose}
         open={open}
-        actorCommonName={"anna"}
+        actorCommonName={session?.user?.email as string}
       />
-    </>
+    </Box>
   );
 }

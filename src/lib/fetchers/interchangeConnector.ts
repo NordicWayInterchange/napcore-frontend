@@ -1,6 +1,7 @@
 import { getTLSAgent } from "@/lib/fetchers/sslAgent";
 import { SubscriptionRequest } from "@/types/napcore/subscription";
 import axios from "axios";
+import { CertificateSignRequest } from "@/types/napcore/csr";
 
 const headers = {
   Accept: "application/json",
@@ -14,11 +15,12 @@ const fetchIXN: (
   selector?: string
 ) => Promise<any> = async (actorCommonName, path, selector = "") => {
   const uri = process.env.INTERCHANGE_URI || "";
-  const uriPath = `${actorCommonName}${path}`;
+  const uriPath = `nap/${actorCommonName}${path}`;
   const params: { selector?: string } = {};
   if (selector) {
     params.selector = selector;
   }
+
   return await axios.get(uri + uriPath, {
     params,
     headers,
@@ -29,10 +31,10 @@ const fetchIXN: (
 const postIXN: (
   actorCommonName: string,
   path: string,
-  body: SubscriptionRequest | {}
+  body: SubscriptionRequest | CertificateSignRequest | {}
 ) => Promise<any> = async (actorCommonName, path, body) => {
   const uri = process.env.INTERCHANGE_URI || "";
-  const uriPath = `${actorCommonName}${path}`;
+  const uriPath = `nap/${actorCommonName}${path}`;
   return await axios.post(uri + uriPath, body, {
     headers,
     httpsAgent: tlsAgent,
@@ -44,7 +46,7 @@ const deleteIXN: (
   path: string
 ) => Promise<any> = async (actorCommonName, path) => {
   const uri = process.env.INTERCHANGE_URI || "";
-  const uriPath = `${actorCommonName}${path}`;
+  const uriPath = `nap/${actorCommonName}${path}`;
   return await axios.delete(uri + uriPath, {
     headers,
     httpsAgent: tlsAgent,
@@ -63,7 +65,7 @@ export type extendedGetParams = {
 };
 export type basicPostParams = {
   actorCommonName: string;
-  body?: SubscriptionRequest;
+  body?: SubscriptionRequest | CertificateSignRequest;
 };
 export type basicDeleteParams = {
   actorCommonName: string;
@@ -90,7 +92,11 @@ export type basicDeleteFunction = (
 // exported functions
 export const fetchNetworkCapabilities: basicGetFunction = async (params) => {
   const { actorCommonName, selector = "" } = params;
-  return await fetchIXN(actorCommonName, "/network/capabilities", selector);
+  return await fetchIXN(
+    actorCommonName,
+    "/subscriptions/capabilities",
+    selector
+  );
 };
 
 export const fetchCapabilities: basicGetFunction = async (params) => {
@@ -123,4 +129,9 @@ export const addSubscriptions: basicPostFunction = async (params) => {
 export const deleteSubscriptions: basicDeleteFunction = async (params) => {
   const { actorCommonName, pathParam } = params;
   return await deleteIXN(actorCommonName, `/subscriptions/${pathParam}`);
+};
+
+export const addCertificates: basicPostFunction = async (params) => {
+  const { actorCommonName, body = {} } = params;
+  return await postIXN(actorCommonName, "/x509/csr", body);
 };

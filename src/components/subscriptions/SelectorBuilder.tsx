@@ -27,16 +27,16 @@ import { causeCodes } from "@/lib/data/causeCodes";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import { IFeedback } from "@/interface/IFeedback";
 import { IFormInputs } from "@/interface/IFormInputs";
+import { useSession } from "next-auth/react";
 
 type Props = {
-  name: string;
   version: string;
   extendedCapability?: ExtendedCapability;
   selectorCallback: (selector: string) => void;
 };
 
 const SelectorBuilder = (props: Props) => {
-  const { name, selectorCallback } = props;
+  const { selectorCallback } = props;
   const [selector, setSelector] = useState<string>("");
   const [advancedMode, setAdvancedMode] = useState<boolean>(false);
   const [persistSelector, setPersistSelector] = useState<string>("");
@@ -47,6 +47,7 @@ const SelectorBuilder = (props: Props) => {
     message: "",
     severity: "success",
   });
+  const { data: session } = useSession();
 
   const {
     handleSubmit,
@@ -91,9 +92,10 @@ const SelectorBuilder = (props: Props) => {
 
   const onSubmit: SubmitHandler<IFormInputs> = async () => {
     // todo: no matching capabilites
-
-    const name = "anna";
-    const response = await createSubscription(name, selector);
+    const response = await createSubscription(
+      session?.user?.email as string,
+      selector
+    );
 
     if (response.ok) {
       setFeedback({
@@ -157,8 +159,10 @@ const SelectorBuilder = (props: Props) => {
       <StyledCard variant={"outlined"}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <StyledFormControl>
-            <Typography>Publisher</Typography>
-            <Typography>Description of the form</Typography>
+            <Typography>
+              Create a subscription with the form, or specify your own selector
+              in advanced mode.
+            </Typography>
             <Box sx={{ display: "flex", gap: 1 }}>
               <Controller
                 name="publicationId"

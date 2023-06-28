@@ -1,4 +1,5 @@
 import { SubscriptionRequest } from "@/types/napcore/subscription";
+import { CertificateSignRequest } from "@/types/napcore/csr";
 
 const napCoreBaseUrl = process.env.NEXT_PUBLIC_NAPCORE_API_URI;
 
@@ -37,6 +38,19 @@ export const createSubscription = (
     method: "post",
     headers: {
       Authorization: "Bearer " + token,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+};
+
+export const createCertificate = (
+  userName: string,
+  body: CertificateSignRequest
+) => {
+  return fetch(`${napCoreBaseUrl}/${userName}/x509/csr`, {
+    method: "post",
+    headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(body),

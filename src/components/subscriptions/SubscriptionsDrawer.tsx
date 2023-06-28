@@ -20,6 +20,8 @@ import DeleteSubDialog from "@/components/subscriptions/DeleteSubDialog";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { Chip } from "@/components/shared/display/Chip";
 import { styled } from "@mui/material/styles";
+import { useSession } from "next-auth/react";
+import { timeConverter } from "@/lib/timeConverter";
 
 const width = 600;
 
@@ -36,6 +38,7 @@ const SubscriptionsDrawer = ({
 }: Props) => {
   console.log(subscription);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const { data: session } = useSession();
 
   const handleClickClose = (close: boolean) => {
     setDialogOpen(close);
@@ -96,8 +99,9 @@ const SubscriptionsDrawer = ({
                   <Box>
                     <ListItemText
                       primary={"Last updated"}
-                      // TODO: Update
-                      secondary={"12:46"}
+                      secondary={timeConverter(
+                        subscription.lastUpdatedTimestamp
+                      )}
                     />
                   </Box>
                 </Box>
@@ -105,15 +109,11 @@ const SubscriptionsDrawer = ({
             </ListItem>
             <ListItem>
               <StyledCard variant={"outlined"}>
-                {/*TODO: add endpoints (currently not existing)*/}
-                {/*<Box>{subscription.endpoints[0].host}</Box>
-          <Box>{subscription.endpoints[0].source}</Box>
-          <Box>{subscription.endpoints[0].port}</Box>*/}
                 <Typography>ENDPOINTS</Typography>
                 <FormControl fullWidth>
                   <TextField
                     contentEditable={false}
-                    value={"ampqs://myserver"}
+                    value={subscription.endpoints[0].host}
                     label={"Host"}
                     margin="normal"
                     InputProps={{
@@ -122,7 +122,7 @@ const SubscriptionsDrawer = ({
                   />
                   <TextField
                     contentEditable={false}
-                    value={"Serviceprovider 1-1"}
+                    value={subscription.endpoints[0].source}
                     label={"Source"}
                     margin="normal"
                     InputProps={{
@@ -134,7 +134,7 @@ const SubscriptionsDrawer = ({
                   <TextField
                     contentEditable={false}
                     value={"5671"}
-                    label={"Port"}
+                    label={subscription.endpoints[0].port}
                     margin="normal"
                     InputProps={{
                       endAdornment: <ContentCopy value={"5671"} />,
@@ -181,7 +181,7 @@ const SubscriptionsDrawer = ({
       </Drawer>
       <DeleteSubDialog
         open={dialogOpen}
-        actorCommonName={"anna"}
+        actorCommonName={session?.user?.email as string}
         subscriptionId={subscription.id}
         handleDialog={handleClickClose}
       />

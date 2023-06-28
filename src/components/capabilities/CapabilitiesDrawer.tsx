@@ -25,6 +25,7 @@ import Snackbar from "@/components/shared/feedback/Snackbar";
 import { styled } from "@mui/material/styles";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { IFeedback } from "@/interface/IFeedback";
+import { useSession } from "next-auth/react";
 
 const width = 600;
 
@@ -35,6 +36,7 @@ type Props = {
 };
 
 const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
+  const { data: session } = useSession();
   const [viewMap, setViewMap] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<IFeedback>({
     feedback: false,
@@ -254,7 +256,9 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                 variant={"contained"}
                 color={"greenDark"}
                 disableElevation
-                onClick={() => saveSubscription("anna", selector)}
+                onClick={() =>
+                  saveSubscription(session?.user?.email as string, selector)
+                }
               >
                 Subscribe
               </Button>

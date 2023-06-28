@@ -85,27 +85,23 @@ export default function NetworkCapabilities() {
   ];
 
   return (
-    <>
+    <Box flex={1}>
       <Typography variant="h4">Network Capabilities</Typography>
       <Divider sx={{ marginY: 3 }} />
-      <Box sx={{ display: "flex" }}>
-        <Box sx={{ flex: 1 }}>
-          <DataGrid
-            columns={tableHeaders}
-            rows={data || []}
-            loading={isLoading}
-            getRowId={(row) => row.publicationId}
-            sortModel={[{ field: "publicationId", sort: "desc" }]}
-          />
-        </Box>
-        {capabilityRow && (
-          <CapabilitiesDrawer
-            handleMoreClose={handleMoreClose}
-            open={drawerOpen}
-            capability={capabilityRow as ExtendedCapability}
-          />
-        )}
-      </Box>
-    </>
+      <DataGrid
+        columns={tableHeaders}
+        rows={data || []}
+        loading={isLoading}
+        getRowId={(row) => row.publicationId}
+        sortModel={[{ field: "publicationId", sort: "desc" }]}
+      />
+      {capabilityRow && (
+        <CapabilitiesDrawer
+          handleMoreClose={handleMoreClose}
+          open={drawerOpen}
+          capability={capabilityRow as ExtendedCapability}
+        />
+      )}
+    </Box>
   );
 }
