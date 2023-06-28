@@ -95,7 +95,7 @@ const SelectorBuilder = (props: Props) => {
     if (matchingCapabilities.length < MATCHING_CAP_LIMIT) {
       setFeedback({
         feedback: true,
-        message: "You need have no matching capabilities",
+        message: "You have no matching capabilities",
         severity: "info",
       });
 
