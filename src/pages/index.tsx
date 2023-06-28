@@ -7,6 +7,7 @@ import Link from "next/link";
 import DataGrid from "@/components/shared/datagrid/DataGrid";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
 import { SubscriptionDatagrid } from "@/components/shared/datagrid/GridColumns/SubscriptionDatagrid";
+import { CustomEmptyOverlaySubscription } from "@/components/shared/datagrid/CustomEmptyOverlay";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -95,6 +96,9 @@ export default function Home() {
           loading={isLoading}
           hideFooterPagination={true}
           sort={{ field: "id", sort: "desc" }}
+          slots={{
+            noRowsOverlay: CustomEmptyOverlaySubscription,
+          }}
         />
       </Box>
     </Box>
