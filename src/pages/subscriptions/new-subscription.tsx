@@ -28,13 +28,13 @@ const NewSubscription = () => {
       <Typography variant="h4">Create subscription</Typography>
       <Divider sx={{ marginY: 3 }} />
       <Grid container spacing={3}>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
           <SelectorBuilder
             matchingCapabilities={data || []}
             selectorCallback={handleChange}
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
           <DataGrid
             columns={NewSubscriptionDatagrid}
             rows={data || []}
