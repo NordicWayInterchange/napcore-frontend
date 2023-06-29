@@ -268,6 +268,10 @@ const SelectorBuilder = (props: Props) => {
                     {...field}
                     label="Quadtree"
                     fullWidth
+                    onChange={(event) => {
+                      const value = event.target.value;
+                      setValue("quadTree", value.split(","));
+                    }}
                     disabled={advancedMode}
                     error={Boolean(errors.quadTree)}
                     sx={{ marginRight: 1 }}
