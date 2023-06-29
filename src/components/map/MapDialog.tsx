@@ -79,9 +79,11 @@ export default function MapDialog(props: Props) {
               <CloseIcon />
             </IconButton>
           </Box>
-          <Button autoFocus color="inherit" onClick={onClose}>
-            save
-          </Button>
+          {interactive && (
+            <Button autoFocus color="inherit" onClick={onClose}>
+              save
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
       <Map

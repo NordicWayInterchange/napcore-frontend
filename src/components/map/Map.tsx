@@ -6,8 +6,6 @@ type Props = {
   quadtreeCallback?: (value: string[]) => void;
   quadtree: string[];
   interactive?: boolean;
-  width?: string;
-  height?: number;
 };
 
 export default function Map(props: Props) {

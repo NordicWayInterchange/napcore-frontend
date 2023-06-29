@@ -271,10 +271,7 @@ const SelectorBuilder = (props: Props) => {
                     disabled={advancedMode}
                     error={Boolean(errors.quadTree)}
                     sx={{ marginRight: 1 }}
-                    helperText={
-                      Boolean(errors.quadTree) &&
-                      "Only numbers and comma (,) is allowed"
-                    }
+                    helperText={"Only numbers and comma (,) is allowed"}
                   />
                 )}
               />
@@ -284,7 +281,7 @@ const SelectorBuilder = (props: Props) => {
                 disabled={advancedMode}
                 onClick={() => setOpen(true)}
               >
-                Generate
+                Map
               </StyledButton>
             </Box>
             <FormControlLabel
