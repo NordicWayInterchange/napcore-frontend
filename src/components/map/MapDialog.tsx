@@ -44,7 +44,7 @@ export default function MapDialog(props: Props) {
   const theme = useTheme();
 
   const handleDiscard = () => {
-    quadtreeCallback ? quadtreeCallback([]) : quadtreeCallback;
+    quadtreeCallback && quadtreeCallback([]);
     setDiscard((current) => !current);
   };
 

@@ -36,7 +36,6 @@ const SubscriptionsDrawer = ({
   open,
   handleMoreClose,
 }: Props) => {
-  console.log(subscription);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const { data: session } = useSession();
 

@@ -135,7 +135,6 @@ export default async function handler(
         const response = await fn(params);
         return res.status(200).json(response.data);
       } catch (error: any) {
-        console.log("error:", error);
         return res.status(error.response.status).json(error.response.data);
       }
     }

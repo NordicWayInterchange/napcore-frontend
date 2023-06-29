@@ -30,7 +30,6 @@ export default function DeleteSubDialog(props: Props) {
 
   const handleDeletion = async (name: string, subscriptionId: string) => {
     const response = await deleteSubscriptions(name, subscriptionId);
-    console.log(response.json());
     handleDialog(false);
 
     if (response.ok) {
