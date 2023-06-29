@@ -300,7 +300,7 @@ const SelectorBuilder = (props: Props) => {
               <StyledButton
                 color="greenDark"
                 variant="text"
-                disabled={!!getFieldState("quadTree").error}
+                disabled={!!getFieldState("quadTree").error || advancedMode}
                 onClick={() => setOpen(true)}
               >
                 Map
