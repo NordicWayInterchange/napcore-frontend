@@ -287,6 +287,10 @@ const SelectorBuilder = (props: Props) => {
                       }
 
                       setPredefinedQuadtree(value.split(","));
+
+                      if (value.length < 1) {
+                        resetField("quadTree");
+                      }
                     }}
                     disabled={advancedMode}
                     error={Boolean(errors.quadTree)}
