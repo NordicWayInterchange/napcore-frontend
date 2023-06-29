@@ -169,10 +169,6 @@ const SelectorBuilder = (props: Props) => {
     }
   };
 
-  if (watch("quadTree")) {
-    console.log(getValues("quadTree"));
-  }
-
   return (
     <>
       <StyledCard variant={"outlined"}>
