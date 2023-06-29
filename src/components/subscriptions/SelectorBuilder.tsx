@@ -60,6 +60,7 @@ const SelectorBuilder = (props: Props) => {
     setError,
     getFieldState,
     clearErrors,
+    resetField,
     formState: { errors },
   } = useForm<IFormInputs>({
     defaultValues: {
@@ -167,6 +168,10 @@ const SelectorBuilder = (props: Props) => {
       setSelector(persistSelector);
     }
   };
+
+  if (watch("quadTree")) {
+    console.log(getValues("quadTree"));
+  }
 
   return (
     <>
@@ -281,9 +286,7 @@ const SelectorBuilder = (props: Props) => {
                         clearErrors("quadTree");
                       }
 
-                      if (!value.length) {
-                        clearErrors("quadTree");
-                      }
+                      setPredefinedQuadtree(value.split(","));
                     }}
                     disabled={advancedMode}
                     error={Boolean(errors.quadTree)}
