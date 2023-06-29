@@ -100,12 +100,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  /*  const secret = process.env.NEXTAUTH_SECRET;
+  const secret = process.env.NEXTAUTH_SECRET;
   const token = await getToken({ req, secret, raw: true });
   if (!token) {
     // TODO: make it more descriptive
     return res.status(403).json({ description: `Access denied` });
-  }*/
+  }
 
   const slug = Array.isArray(req.query.slug)
     ? req.query.slug
