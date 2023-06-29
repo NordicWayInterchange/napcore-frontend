@@ -3,43 +3,33 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import QuadtreeGenerator from "./quadtree/QuadtreeGenerator";
 import SubscriptionControls from "./controls/SubscriptionControls";
-import { latLngBounds } from "leaflet";
 
 type Props = {
   quadtreeCallback?: (value: string[]) => void;
   quadtree: string[];
   interactive?: boolean;
-  width?: string;
-  height?: number;
 };
 
+const SIZE = "100%";
+
 export default function DynamicMap(props: Props) {
-  const {
-    quadtreeCallback,
-    quadtree,
-    interactive,
-    width = "100%",
-    height = 900,
-  } = props;
+  const { quadtreeCallback, quadtree, interactive } = props;
   const [controlsHash, setControlsHash] = useState<string[]>([]);
 
   const controlsCallback = (hash: string) => {
     setControlsHash([hash]);
   };
 
-  const DEFAULT_ZOOM = 1;
-  const MAX_BOUNDS = latLngBounds([
-    [-90, -180],
-    [90, 180],
-  ]);
-
   return (
     <MapContainer
       center={[0, 0]}
-      zoom={DEFAULT_ZOOM}
-      maxBounds={MAX_BOUNDS}
+      zoom={3}
+      maxBounds={[
+        [-90, -180],
+        [90, 180],
+      ]}
       scrollWheelZoom={true}
-      style={{ height: height, width: width }}
+      style={{ height: SIZE, width: SIZE }}
     >
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

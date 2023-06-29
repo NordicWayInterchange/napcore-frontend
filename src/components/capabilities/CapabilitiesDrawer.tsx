@@ -4,14 +4,12 @@ import {
   Card,
   Drawer,
   FormControl,
-  FormControlLabel,
   IconButton,
   InputLabel,
   List,
   ListItem,
   MenuItem,
   Select,
-  Switch,
   TextField,
   Toolbar,
   Typography,
@@ -19,13 +17,13 @@ import {
 import React, { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { ExtendedCapability } from "@/types/capability";
-import Map from "@/components/map/Map";
 import { createSubscription } from "@/lib/fetchers/internalFetchers";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import { styled } from "@mui/material/styles";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { IFeedback } from "@/interface/IFeedback";
 import { useSession } from "next-auth/react";
+import MapDialog from "@/components/map/MapDialog";
 
 const width = 600;
 
@@ -37,7 +35,7 @@ type Props = {
 
 const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
   const { data: session } = useSession();
-  const [viewMap, setViewMap] = useState<boolean>(false);
+  const [openMap, setOpenMap] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<IFeedback>({
     feedback: false,
     message: "",
@@ -57,8 +55,8 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
     setFeedback({ feedback: false, message: "", severity: "success" });
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setViewMap(event.target.checked);
+  const handleClose = () => {
+    setOpenMap(false);
   };
 
   const saveSubscription = async (name: string, selector: string) => {
@@ -234,19 +232,14 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                       ),
                     }}
                   />
-                  <FormControlLabel
-                    control={<Switch onChange={handleChange} />}
-                    label="Show map"
-                  />
+                  <StyledButton
+                    color="greenDark"
+                    variant="text"
+                    onClick={() => setOpenMap(true)}
+                  >
+                    Map
+                  </StyledButton>
                 </FormControl>
-                {viewMap && (
-                  <Map
-                    quadtree={capability.quadTree}
-                    interactive={false}
-                    width={"100%"}
-                    height={400}
-                  />
-                )}
               </StyledCard>
             </ListItem>
 
@@ -274,6 +267,12 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
           handleClose={handleSnackClose}
         />
       )}
+      <MapDialog
+        open={openMap}
+        onClose={handleClose}
+        quadtree={capability.quadTree}
+        interactive={false}
+      />
     </>
   );
 };
@@ -281,6 +280,12 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
 const StyledCard = styled(Card)(({}) => ({
   padding: "16px",
   width: "100%",
+}));
+
+const StyledButton = styled(Button)(({}) => ({
+  width: "100px",
+  textTransform: "none",
+  borderRadius: 100,
 }));
 
 export default CapabilitiesDrawer;
