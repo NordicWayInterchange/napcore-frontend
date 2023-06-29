@@ -35,6 +35,7 @@ type Props = {
 };
 
 const MATCHING_CAP_LIMIT = 1;
+const QUADTREE_REGEX = /^[0-3]+(,[0-3]+)*$/i;
 
 const SelectorBuilder = (props: Props) => {
   const { selectorCallback, matchingCapabilities } = props;
@@ -56,6 +57,9 @@ const SelectorBuilder = (props: Props) => {
     getValues,
     watch,
     setValue,
+    setError,
+    getFieldState,
+    clearErrors,
     formState: { errors },
   } = useForm<IFormInputs>({
     defaultValues: {
@@ -256,13 +260,11 @@ const SelectorBuilder = (props: Props) => {
                 )}
               />
             </Box>
-            {/*https://stackoverflow.com/a/72688980*/}
-            {/*TODO: dont allow to start or end with comma*/}
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Controller
                 name="quadTree"
                 control={control}
-                rules={{ required: false, pattern: /^[-,0-9 ]+$/i }}
+                rules={{ required: false, pattern: QUADTREE_REGEX }}
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -270,19 +272,28 @@ const SelectorBuilder = (props: Props) => {
                     fullWidth
                     onChange={(event) => {
                       const value = event.target.value;
-                      setValue("quadTree", value.split(","));
+
+                      if (!QUADTREE_REGEX.test(value)) {
+                        setError("quadTree", { type: "pattern" });
+                        setValue("quadTree", value.split(","));
+                      } else {
+                        setValue("quadTree", value.split(","));
+                        clearErrors("quadTree");
+                      }
                     }}
                     disabled={advancedMode}
                     error={Boolean(errors.quadTree)}
                     sx={{ marginRight: 1 }}
-                    helperText={"Only numbers and comma (,) is allowed"}
+                    helperText={
+                      "Only comma (,) separated numbers between 0-3 is allowed"
+                    }
                   />
                 )}
               />
               <StyledButton
                 color="greenDark"
                 variant="text"
-                disabled={advancedMode}
+                disabled={!!getFieldState("quadTree").error}
                 onClick={() => setOpen(true)}
               >
                 Map
@@ -316,7 +327,12 @@ const SelectorBuilder = (props: Props) => {
               </>
             )}
             <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
-              <StyledButton color="greenDark" variant="contained" type="submit">
+              <StyledButton
+                color="greenDark"
+                variant="contained"
+                type="submit"
+                disabled={!!getFieldState("quadTree").error}
+              >
                 Save subscription
               </StyledButton>
             </Box>
