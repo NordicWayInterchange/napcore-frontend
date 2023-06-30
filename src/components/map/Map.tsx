@@ -17,6 +17,7 @@ export default function Map(props: Props) {
         loading: () => <CircularProgress />,
         ssr: false,
       }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [quadtree]
   );
 

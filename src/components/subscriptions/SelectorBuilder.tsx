@@ -86,6 +86,7 @@ const SelectorBuilder = (props: Props) => {
       setSelector(selector);
     });
     return () => watchAllFields.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watch]);
 
   /*
@@ -93,6 +94,7 @@ const SelectorBuilder = (props: Props) => {
   */
   useEffect(() => {
     if (!watchMessageType.includes(DENM)) setValue("causeCode", []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchMessageType]);
 
   const onSubmit: SubmitHandler<IFormInputs> = async () => {
