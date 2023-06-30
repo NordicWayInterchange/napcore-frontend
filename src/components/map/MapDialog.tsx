@@ -53,6 +53,7 @@ export default function MapDialog(props: Props) {
   */
   useEffect(() => {
     onClose();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [discard]);
 
   return (

@@ -36,6 +36,7 @@ export default function QuadtreeGenerator({
     if (quadtree.length && !Object.keys(hashAndRect).length) {
       enterHash(quadtree);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quadtree]);
 
   // drawing functions
@@ -60,7 +61,7 @@ export default function QuadtreeGenerator({
 
       const isChild = selectedHashes.filter(
         (currentHash) =>
-          currentHash != hash &&
+          currentHash !== hash &&
           (currentHash.startsWith(hash) || hash.startsWith(currentHash))
       );
 
@@ -75,7 +76,7 @@ export default function QuadtreeGenerator({
         return;
       }
 
-      let returned = {};
+      let returned;
       if (hash in hashAndRect) {
         const { [hash]: removedHash, ...rest } = hashAndRect;
         returned = rest;
@@ -87,6 +88,7 @@ export default function QuadtreeGenerator({
       quadtreeCallback(Object.keys(returned));
       controlsCallback(Object.keys(returned));
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [hashAndRect, quadtreeCallback]
   );
 
@@ -118,11 +120,11 @@ export default function QuadtreeGenerator({
   function enterHash(hashes) {
     const rectangles = {};
 
-    for (var i = 0; i < hashes.length; i++) {
-      var hash = hashes[i];
-      var bbox = adapter.bbox(hash);
+    for (let i = 0; i < hashes.length; i++) {
+      let hash = hashes[i];
+      let bbox = adapter.bbox(hash);
 
-      var bounds = L.latLngBounds(
+      let bounds = L.latLngBounds(
         L.latLng(bbox.maxlat, bbox.minlng),
         L.latLng(bbox.minlat, bbox.maxlng)
       );
@@ -186,6 +188,7 @@ export default function QuadtreeGenerator({
       drawLayer(adapter, layerKey, layers[layerKey])
     );
     setRectangles(rectangles);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [layers]);
 
   return (
