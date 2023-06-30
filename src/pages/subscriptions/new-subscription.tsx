@@ -1,6 +1,6 @@
 import { useState } from "react";
 import SelectorBuilder from "@/components/subscriptions/SelectorBuilder";
-import { Divider, Grid, Typography } from "@mui/material";
+import { Divider, Grid } from "@mui/material";
 import React from "react";
 import { useMatchingCapabilities } from "@/hooks/useMatchingCapabilities";
 import DataGrid from "@/components/shared/datagrid/DataGrid";
@@ -8,6 +8,8 @@ import { useSession } from "next-auth/react";
 import { NewSubscriptionDatagrid } from "@/components/shared/datagrid/GridColumns/NewSubscriptionDatagrid";
 import { Box } from "@mui/system";
 import { CustomEmptyOverlayMatching } from "@/components/shared/datagrid/CustomEmptyOverlay";
+import Subheading from "@/components/shared/display/typography/Subheading";
+import Mainheading from "@/components/shared/display/typography/Mainheading";
 
 const NewSubscription = () => {
   const { data: session } = useSession();
@@ -25,7 +27,11 @@ const NewSubscription = () => {
 
   return (
     <Box flex={1}>
-      <Typography variant="h4">Create subscription</Typography>
+      <Mainheading>Create subscription</Mainheading>
+      <Subheading>
+        Create a subscription with the form, or specify your own selector in
+        advanced mode.
+      </Subheading>
       <Divider sx={{ marginY: 3 }} />
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>

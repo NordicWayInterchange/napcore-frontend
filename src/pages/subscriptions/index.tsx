@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Divider, IconButton, Typography } from "@mui/material";
+import { Box, Divider, IconButton } from "@mui/material";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
 import { GridColDef } from "@mui/x-data-grid";
 import { useSession } from "next-auth/react";
@@ -15,6 +15,8 @@ import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
 import { Chip } from "@/components/shared/display/Chip";
 import { timeConverter } from "@/lib/timeConverter";
 import { CustomEmptyOverlaySubscription } from "@/components/shared/datagrid/CustomEmptyOverlay";
+import Mainheading from "@/components/shared/display/typography/Mainheading";
+import Subheading from "@/components/shared/display/typography/Subheading";
 
 export default function Subscriptions() {
   const { data: session } = useSession();
@@ -102,7 +104,11 @@ export default function Subscriptions() {
 
   return (
     <Box flex={1}>
-      <Typography variant="h4">Subscriptions</Typography>
+      <Mainheading>Subscriptions</Mainheading>
+      <Subheading>
+        These are all of your subscriptions. You can click a subscription to
+        view more information or unsubscribe.
+      </Subheading>
       <Divider sx={{ marginY: 3 }} />
       <DataGrid
         columns={tableHeaders}

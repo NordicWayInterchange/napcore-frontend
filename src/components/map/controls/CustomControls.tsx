@@ -9,7 +9,7 @@ type MapControlsProps = {
   quadtree: string[];
 };
 
-export default function SubscriptionControls({
+export default function CustomControls({
   controlsHash,
   quadtree,
 }: MapControlsProps) {
@@ -23,7 +23,7 @@ export default function SubscriptionControls({
 
   const inputBar = useMemo(
     () => (
-      <StyledBox sx={{}}>
+      <StyledBox>
         <Typography noWrap={true}>{hash && hash.join()}</Typography>
       </StyledBox>
     ),

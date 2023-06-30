@@ -111,7 +111,7 @@ export default function Sidebar() {
 
         <Box sx={{ marginTop: "auto", padding: 2 }}>
           <List>{mapPages(SECONDARY_PAGES)}</List>
-          <Divider sx={{ marginY: 2 }} />
+          <Divider sx={{ marginY: 1 }} />
           <StyledSignOutBox>
             <Typography>{session?.user?.name}</Typography>
             <IconButton onClick={() => signOut()}>

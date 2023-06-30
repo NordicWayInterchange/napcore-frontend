@@ -12,7 +12,6 @@ import {
   Select,
   Switch,
   TextField,
-  Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { generateSelector } from "@/lib/generateSelector";
@@ -174,10 +173,6 @@ const SelectorBuilder = (props: Props) => {
       <StyledCard variant={"outlined"}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <StyledFormControl>
-            <Typography>
-              Create a subscription with the form, or specify your own selector
-              in advanced mode.
-            </Typography>
             <Box sx={{ display: "flex", gap: 1 }}>
               <Controller
                 name="publicationId"

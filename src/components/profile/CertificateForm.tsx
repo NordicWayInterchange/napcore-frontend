@@ -5,14 +5,13 @@ import { createPKCS10 } from "@/lib/pkcs10Generator";
 import { Box } from "@mui/system";
 import { styled } from "@mui/material/styles";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { SecondHeading } from "@/components/shared/display/heading/SecondHeading";
-import { BodyHeading } from "@/components/shared/display/heading/BodyHeading";
 import { ICsr } from "@/interface/ICsr";
 import { ICsrForm } from "@/interface/ICsrForm";
 import { createCertificate } from "@/lib/fetchers/internalFetchers";
 import { useSession } from "next-auth/react";
 import { CertificateSignResponse } from "@/types/napcore/csr";
 import Snackbar from "@/components/shared/feedback/Snackbar";
+import Subheading from "@/components/shared/display/typography/Subheading";
 
 export const CertificateForm = () => {
   const {
@@ -77,10 +76,7 @@ export const CertificateForm = () => {
 
   return (
     <StyledCard variant={"outlined"}>
-      <SecondHeading heading={"Certificate"} />
-      <BodyHeading
-        heading={"Please fill in your details in order to create a certificate"}
-      />
+      <Subheading>Certificate</Subheading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
           <Controller
@@ -149,7 +145,7 @@ const StyledButton = styled(Button)(({}) => ({
 const StyledCard = styled(Card)(({}) => ({
   padding: "16px",
   display: "flex",
-  width: "50%",
+  width: "500px",
   gap: "24px",
   flexDirection: "column",
 }));

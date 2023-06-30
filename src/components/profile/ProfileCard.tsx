@@ -44,7 +44,7 @@ const StyledCard = styled(Card)(({}) => ({
   alignItems: "center",
   gap: 3,
   padding: 24,
-  width: "50%",
+  width: "500px",
 }));
 
 const StyledBox = styled(Box)(({}) => ({

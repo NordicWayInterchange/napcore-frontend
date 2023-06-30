@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import QuadtreeGenerator from "./quadtree/QuadtreeGenerator";
-import SubscriptionControls from "./controls/SubscriptionControls";
+import CustomControls from "./controls/CustomControls";
 
 type Props = {
   quadtreeCallback?: (value: string[]) => void;
@@ -42,7 +42,7 @@ export default function DynamicMap(props: Props) {
         interactive={interactive}
       />
       {interactive && (
-        <SubscriptionControls controlsHash={controlsHash} quadtree={quadtree} />
+        <CustomControls controlsHash={controlsHash} quadtree={quadtree} />
       )}
     </MapContainer>
   );
