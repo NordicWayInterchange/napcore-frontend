@@ -78,7 +78,14 @@ export const CertificateForm = () => {
     <StyledCard variant={"outlined"}>
       <Subheading>Certificate</Subheading>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            alignItems: "center",
+          }}
+        >
           <Controller
             name="countryCode"
             control={control}
@@ -139,7 +146,9 @@ export const CertificateForm = () => {
 };
 
 const StyledButton = styled(Button)(({}) => ({
+  width: "200px",
   textTransform: "none",
+  borderRadius: 100,
 }));
 
 const StyledCard = styled(Card)(({}) => ({

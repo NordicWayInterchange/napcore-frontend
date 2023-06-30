@@ -4,7 +4,7 @@ import React from "react";
 import { useSession } from "next-auth/react";
 import { styled } from "@mui/material/styles";
 
-const widthHeight = 200;
+const widthHeight = 150;
 
 export const ProfileCard = () => {
   const { data: session } = useSession();

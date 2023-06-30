@@ -82,7 +82,6 @@ export default function Sidebar() {
 
   return (
     <Box sx={{ display: "flex" }}>
-      {/*TODO: Include?*/}
       <CssBaseline />
       <Navbar />
       <StyledDrawer variant="permanent" anchor="left">

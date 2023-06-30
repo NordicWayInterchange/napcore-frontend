@@ -294,11 +294,11 @@ const SelectorBuilder = (props: Props) => {
               />
               <StyledButton
                 color="greenDark"
-                variant="text"
+                variant="outlined"
                 disabled={!!getFieldState("quadTree").error || advancedMode}
                 onClick={() => setOpen(true)}
               >
-                Map
+                Show map
               </StyledButton>
             </Box>
             <FormControlLabel
@@ -320,7 +320,7 @@ const SelectorBuilder = (props: Props) => {
                   />
                   <StyledButton
                     color="greenDark"
-                    variant="text"
+                    variant="outlined"
                     onClick={handleVerify}
                   >
                     Verify

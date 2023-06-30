@@ -46,11 +46,13 @@ export const createSubscription = (
 
 export const createCertificate = (
   userName: string,
-  body: CertificateSignRequest
+  body: CertificateSignRequest,
+  token: string
 ) => {
   return fetch(`${napCoreBaseUrl}/${userName}/x509/csr`, {
     method: "post",
     headers: {
+      Authorization: "Bearer " + token,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(body),
