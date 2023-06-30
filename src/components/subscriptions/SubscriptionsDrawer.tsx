@@ -108,7 +108,7 @@ const SubscriptionsDrawer = ({
             </ListItem>
             <ListItem>
               <StyledCard variant={"outlined"}>
-                <Typography>ENDPOINTS</Typography>
+                <Typography>Endpoints</Typography>
                 <FormControl fullWidth>
                   <TextField
                     contentEditable={false}
@@ -145,7 +145,7 @@ const SubscriptionsDrawer = ({
 
             <ListItem>
               <StyledCard variant={"outlined"}>
-                <Typography>SELECTOR</Typography>
+                <Typography>Selector</Typography>
                 <FormControl fullWidth>
                   <TextField
                     margin="normal"

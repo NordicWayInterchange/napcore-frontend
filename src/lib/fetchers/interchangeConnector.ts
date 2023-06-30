@@ -15,7 +15,7 @@ const fetchIXN: (
   selector?: string
 ) => Promise<any> = async (actorCommonName, path, selector = "") => {
   const uri = process.env.INTERCHANGE_URI || "";
-  const uriPath = `nap/${actorCommonName}${path}`;
+  const uriPath = `${actorCommonName}${path}`;
   const params: { selector?: string } = {};
   if (selector) {
     params.selector = selector;
@@ -34,7 +34,7 @@ const postIXN: (
   body: SubscriptionRequest | CertificateSignRequest | {}
 ) => Promise<any> = async (actorCommonName, path, body) => {
   const uri = process.env.INTERCHANGE_URI || "";
-  const uriPath = `nap/${actorCommonName}${path}`;
+  const uriPath = `${actorCommonName}${path}`;
   return await axios.post(uri + uriPath, body, {
     headers,
     httpsAgent: tlsAgent,
@@ -46,7 +46,7 @@ const deleteIXN: (
   path: string
 ) => Promise<any> = async (actorCommonName, path) => {
   const uri = process.env.INTERCHANGE_URI || "";
-  const uriPath = `nap/${actorCommonName}${path}`;
+  const uriPath = `${actorCommonName}${path}`;
   return await axios.delete(uri + uriPath, {
     headers,
     httpsAgent: tlsAgent,

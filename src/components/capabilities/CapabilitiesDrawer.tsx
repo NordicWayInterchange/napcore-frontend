@@ -234,10 +234,10 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                   />
                   <StyledButton
                     color="greenDark"
-                    variant="text"
+                    variant="outlined"
                     onClick={() => setOpenMap(true)}
                   >
-                    Map
+                    Show map
                   </StyledButton>
                 </FormControl>
               </StyledCard>
@@ -283,7 +283,7 @@ const StyledCard = styled(Card)(({}) => ({
 }));
 
 const StyledButton = styled(Button)(({}) => ({
-  width: "100px",
+  width: "150px",
   textTransform: "none",
   borderRadius: 100,
 }));

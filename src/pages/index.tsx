@@ -8,6 +8,8 @@ import DataGrid from "@/components/shared/datagrid/DataGrid";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
 import { SubscriptionDatagrid } from "@/components/shared/datagrid/GridColumns/SubscriptionDatagrid";
 import { CustomEmptyOverlaySubscription } from "@/components/shared/datagrid/CustomEmptyOverlay";
+import Mainheading from "@/components/shared/display/typography/Mainheading";
+import Subheading from "@/components/shared/display/typography/Subheading";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -44,9 +46,9 @@ export default function Home() {
 
   return (
     <Box flex={1}>
-      <Typography variant="h4">Welcome, {session?.user?.name}!</Typography>
+      <Mainheading>Welcome, {session?.user?.name}!</Mainheading>
       <Divider sx={{ marginY: 3 }} />
-      <Typography variant="h5">Shortcuts</Typography>
+      <Subheading>Shortcuts</Subheading>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
         <Box
           sx={{
@@ -89,7 +91,7 @@ export default function Home() {
             </Link>
           ))}
         </Box>
-        <Typography variant="h5">Your latest subscriptions</Typography>
+        <Subheading>Your latest subscriptions</Subheading>
         <DataGrid
           columns={SubscriptionDatagrid}
           rows={data?.slice(0, 4) || []}

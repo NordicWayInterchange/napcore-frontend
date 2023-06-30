@@ -114,12 +114,14 @@ export const addSubscriptions: basicPostFunction = async (
 };
 
 export const addCerticates: basicPostFunction = async (
-  params: basicPostParams
+  params: basicPostParams,
+  token: string
 ) => {
   const { actorCommonName, body = {} } = params;
   const res = await createCertificate(
     actorCommonName,
-    body as CertificateSignRequest
+    body as CertificateSignRequest,
+    token
   );
   const data = await res.json();
   return [res.status, data];

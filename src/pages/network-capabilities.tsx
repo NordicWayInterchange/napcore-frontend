@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Divider, IconButton, Typography } from "@mui/material";
+import { Box, Divider, IconButton } from "@mui/material";
 import { useNetworkCapabilities } from "@/hooks/useNetworkCapabilities";
 import { GridColDef } from "@mui/x-data-grid";
 import DataGrid from "@/components/shared/datagrid/DataGrid";
@@ -11,6 +11,8 @@ import CapabilitiesDrawer from "@/components/capabilities/CapabilitiesDrawer";
 import { messageTypeChips } from "@/lib/statusChips";
 import { Chip } from "@/components/shared/display/Chip";
 import { CustomEmptyOverlayCapabilites } from "@/components/shared/datagrid/CustomEmptyOverlay";
+import Mainheading from "@/components/shared/display/typography/Mainheading";
+import Subheading from "@/components/shared/display/typography/Subheading";
 
 export default function NetworkCapabilities() {
   const { data: session } = useSession();
@@ -87,7 +89,11 @@ export default function NetworkCapabilities() {
 
   return (
     <Box flex={1}>
-      <Typography variant="h4">Network Capabilities</Typography>
+      <Mainheading>Network Capabilities</Mainheading>
+      <Subheading>
+        These are all of the capabilites in the network. You can click a
+        capability to view more information and subscribe.
+      </Subheading>
       <Divider sx={{ marginY: 3 }} />
       <DataGrid
         columns={tableHeaders}
