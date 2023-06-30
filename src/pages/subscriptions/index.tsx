@@ -47,7 +47,6 @@ export default function Subscriptions() {
     remove();
   };
 
-  // TODO: Extract
   const tableHeaders: GridColDef[] = [
     {
       ...dataGridTemplate,

@@ -276,8 +276,9 @@ export default async function handler(
   const secret = process.env.NEXTAUTH_SECRET;
   const token = await getToken({ req, secret, raw: true });
   if (!token) {
-    // TODO: make it more descriptive
-    return res.status(403).json({ description: `Access denied` });
+    return res
+      .status(403)
+      .json({ description: `Access denied - You don't have permission` });
   }
 
   const slug = Array.isArray(req.query.slug)

@@ -35,13 +35,6 @@ export default function Home() {
       url: "/profile",
       avatar: "P",
     },
-    {
-      header: "Help & support",
-      description: "Do you need assistance with anything?",
-      // TODO: Add link
-      url: "",
-      avatar: "?",
-    },
   ];
 
   return (
