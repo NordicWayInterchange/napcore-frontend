@@ -52,10 +52,8 @@ export default function login({
         variant="outlined"
         fullWidth
         sx={{ borderColor: "gray", color: "black", textTransform: "none" }}
-        onClick={(e) => {
-          /*https://stackoverflow.com/questions/74180557/next-auth-next-autherrorclient-fetch-error-networkerror-when-attempting-to*/
-          e.preventDefault();
-          signIn("google", { callbackUrl: "/" });
+        onClick={() => {
+          void signIn("auth0");
         }}
       >
         <Typography>Sign in with Google</Typography>
