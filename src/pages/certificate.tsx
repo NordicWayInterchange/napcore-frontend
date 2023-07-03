@@ -1,14 +1,13 @@
 import { Box, Divider } from "@mui/material";
 import React from "react";
 import { CertificateForm } from "@/components/profile/CertificateForm";
-import { ProfileCard } from "@/components/profile/ProfileCard";
 import Mainheading from "@/components/shared/display/typography/Mainheading";
 import Subheading from "@/components/shared/display/typography/Subheading";
 
 export default function Certificate() {
   return (
     <>
-      <Mainheading>Create certificate</Mainheading>
+      <Mainheading>Certificate</Mainheading>
       {/*TODO: Change text*/}
       <Subheading>
         Your profile and information and create a new certificate with the form.
