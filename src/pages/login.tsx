@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "./api/auth/[...nextauth]";
 import Image from "next/image";
 import logo from "@/../public/napcore-logo.png";
-import { Button, Card, SvgIcon, Typography } from "@mui/material";
+import { Button, Card, Typography } from "@mui/material";
 import * as React from "react";
 import { Box } from "@mui/system";
 
@@ -32,6 +32,10 @@ export default function Login({
         Access to this application is restricted to authorized users only. If
         you believe you should have access, please send an email to
         christian.berg.skjetne@vegvesen.no requesting access.
+      </Typography>
+
+      <Typography variant="body1">
+        Sign in will redirect you to our authentication provider.
       </Typography>
 
       <Button
