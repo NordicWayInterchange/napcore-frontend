@@ -9,9 +9,9 @@ import Image from "next/image";
 import logo from "@/../public/napcore-logo.png";
 import { Button, Card, SvgIcon, Typography } from "@mui/material";
 import * as React from "react";
-import Google from "@/../public/icons8-google.svg";
+import { Box } from "@mui/system";
 
-export default function login({
+export default function Login({
   providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
@@ -22,41 +22,28 @@ export default function login({
         flexDirection: "column",
         padding: 5,
         gap: 3,
-        width: "45vh",
+        width: "500px",
       }}
     >
-      <Image
-        style={{ alignSelf: "center" }}
-        src={logo}
-        alt="Nordic Way logo"
-        width={200}
-      />
-
-      <Typography variant="h6">Welcome to Napcore</Typography>
+      <Box sx={{ alignSelf: "center", mb: 3 }}>
+        <Image src={logo} alt="Nordic Way logo" width={150} />
+      </Box>
       <Typography variant="body1">
-        Napcore is restricted to users in the organization. If you want access,
-        you can contact christian.berg.skjetne@vegvesen.no.
+        Access to this application is restricted to authorized users only. If
+        you believe you should have access, please send an email to
+        christian.berg.skjetne@vegvesen.no requesting access.
       </Typography>
 
       <Button
-        startIcon={
-          <SvgIcon
-            sx={{
-              width: "inherit",
-              height: "inherit",
-            }}
-            component={Google}
-            inheritViewBox
-          />
-        }
-        variant="outlined"
+        variant="contained"
+        color={"primary"}
         fullWidth
-        sx={{ borderColor: "gray", color: "black", textTransform: "none" }}
+        sx={{ textTransform: "none" }}
         onClick={() => {
           void signIn("auth0");
         }}
       >
-        <Typography>Sign in with Google</Typography>
+        <Typography>Sign in</Typography>
       </Button>
     </Card>
   );

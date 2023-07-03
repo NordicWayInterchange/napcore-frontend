@@ -40,8 +40,8 @@ const MAIN_PAGES: Array<IPages> = [
 
 const SECONDARY_PAGES: Array<IPages> = [
   {
-    text: "Profile settings",
-    url: "/profile",
+    text: "Certificate",
+    url: "/certificate",
     icon: <SettingsIcon />,
   },
 ];
