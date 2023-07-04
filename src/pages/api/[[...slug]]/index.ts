@@ -92,9 +92,6 @@ const getPaths: {
   "capability-count": fetchCapabilityCounter,
   subscriptions: fetchSubscriptions,
   "network/capabilities": fetchNetworkCapabilities,
-  /*
-  capabilities: fetchCapabilities,
-*/
 };
 
 // all post methods on path
@@ -200,7 +197,6 @@ export default async function handler(
     if (executer && "fn" in executer) {
       try {
         const { fn, params } = executer;
-        // @ts-ignore
         const [status, data] = await fn(params);
         console.log("response:", status, data);
         return res.status(status).json(data);
