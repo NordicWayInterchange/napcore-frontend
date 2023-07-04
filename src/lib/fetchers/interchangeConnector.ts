@@ -74,10 +74,7 @@ export type basicDeleteParams = {
 
 export type basicGetFunction = (params: basicGetParams) => Promise<any>;
 export type extendedGetFunction = (params: extendedGetParams) => Promise<any>;
-export type basicPostFunction = (
-  params: basicPostParams,
-  token: string
-) => Promise<any>;
+export type basicPostFunction = (params: basicPostParams) => Promise<any>;
 export type basicDeleteFunction = (
   params: basicDeleteParams,
   token: string

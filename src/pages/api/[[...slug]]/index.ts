@@ -12,6 +12,8 @@ import {
   SubscriptionsSubscription,
 } from "@/types/napcore/subscription";
 import {
+  addNapcoreCertificates,
+  addNapcoreSubscriptions,
   basicDeleteFunction,
   basicDeleteParams,
   basicGetFunction,
@@ -42,31 +44,19 @@ const fetchSubscriptions = async (params: extendedGetParams) => {
 };
 
 export const addSubscriptions: basicPostFunction = async (
-  params: basicPostParams,
-  token: string
+  params: basicPostParams
 ) => {
-  const { actorCommonName, body = {} } = params;
-  const res = await createSubscription(
-    actorCommonName,
-    body as SubscriptionRequest,
-    token
-  );
-  const data = await res.json();
-  return [res.status, data];
+  const res = await addNapcoreSubscriptions(params);
+  const subscriptions: SubscriptionRequest = await res.data;
+  return [res.status, subscriptions];
 };
 
 export const addCerticates: basicPostFunction = async (
-  params: basicPostParams,
-  token: string
+  params: basicPostParams
 ) => {
-  const { actorCommonName, body = {} } = params;
-  const res = await createCertificate(
-    actorCommonName,
-    body as CertificateSignRequest,
-    token
-  );
-  const data = await res.json();
-  return [res.status, data];
+  const res = await addNapcoreCertificates(params);
+  const certificate: CertificateSignRequest = await res.data;
+  return [res.status, certificate];
 };
 
 export const removeSubscription: basicDeleteFunction = async (
