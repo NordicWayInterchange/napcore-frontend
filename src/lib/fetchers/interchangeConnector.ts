@@ -72,10 +72,7 @@ export type basicDeleteParams = {
   pathParam?: string;
 };
 
-export type basicGetFunction = (
-  params: basicGetParams,
-  token: string
-) => Promise<any>;
+export type basicGetFunction = (params: basicGetParams) => Promise<any>;
 export type extendedGetFunction = (
   params: extendedGetParams,
   token: string
@@ -90,7 +87,9 @@ export type basicDeleteFunction = (
 ) => Promise<any>;
 
 // exported functions
-export const fetchNetworkCapabilities: basicGetFunction = async (params) => {
+export const fetchNapcoreNetworkCapabilities: basicGetFunction = async (
+  params
+) => {
   const { actorCommonName, selector = "" } = params;
   return await fetchIXN(
     actorCommonName,

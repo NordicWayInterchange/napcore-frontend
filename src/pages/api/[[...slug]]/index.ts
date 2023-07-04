@@ -20,6 +20,7 @@ import {
   basicPostParams,
   extendedGetFunction,
   extendedGetParams,
+  fetchNapcoreNetworkCapabilities,
 } from "@/lib/fetchers/interchangeConnector";
 import { ExtendedCapability } from "@/types/capability";
 import { Capabilities, Capability } from "@/types/napcore/capability";
@@ -27,18 +28,12 @@ import { getToken } from "next-auth/jwt";
 import { causeCodes as causeCodesList } from "@/lib/data/causeCodes";
 import { CertificateSignRequest } from "@/types/napcore/csr";
 
-const fetchCapabilityCounter = async (
-  params: basicGetParams,
-  token: string
-) => {
+const fetchCapabilityCounter = async (params: basicGetParams) => {
   const { actorCommonName, selector = "" } = params;
-  const [status, body] = await fetchNetworkCapabilities(
-    {
-      actorCommonName,
-      selector,
-    },
-    token
-  );
+  const [status, body] = await fetchNetworkCapabilities({
+    actorCommonName,
+    selector,
+  });
 
   if (status == 200) {
     const capabilities = body as ExtendedCapability[];
@@ -46,42 +41,6 @@ const fetchCapabilityCounter = async (
   }
   return [status, body];
 };
-
-/*const fetchAggregate = async (params: basicGetParams, token: string) => {
-  const { actorCommonName, selector } = params;
-  const [status, body] = await fetchNetworkCapabilities(
-    {
-      actorCommonName,
-      selector,
-    },
-    token
-  );
-  if (status == 200) {
-    const capabilities = body as ExtendedCapability[];
-    const aggregatedCapabilities = capabilities.reduce(
-      (acc: { [key: string]: any }, capability: Capability) => {
-        (Object.keys(capability) as Array<keyof typeof capability>).forEach(
-          (capabilityProp) => {
-            let value = Array.isArray(capability[capabilityProp])
-              ? (capability[capabilityProp] as Array<string>)
-              : [capability[capabilityProp] as string];
-            if (capabilityProp in acc) {
-              // get only new values
-              value = value.filter((val) => !acc[capabilityProp].includes(val));
-              acc[capabilityProp] = [...acc[capabilityProp], ...value];
-            } else {
-              acc[capabilityProp] = value;
-            }
-          }
-        );
-        return acc;
-      },
-      {}
-    );
-    return [status, aggregatedCapabilities];
-  }
-  return [status, body];
-};*/
 
 const fetchSubscriptions = async (params: extendedGetParams, token: string) => {
   const { actorCommonName, selector = "", pathParam = "" } = params;
@@ -141,65 +100,43 @@ export const removeSubscription: basicDeleteFunction = async (
   return [res.status, data];
 };
 
-const fetchNetworkCapabilities = async (
-  params: basicGetParams,
-  token: string
-) => {
-  const { actorCommonName, selector = "" } = params;
-  const res = await getNetworkCapabilities(actorCommonName, selector, token);
-  if (res.ok) {
-    const capabilities: Array<Capability> = await res.json();
-    return [
-      res.status,
-      capabilities.map((capability) => {
-        let causeCodes;
+const fetchNetworkCapabilities = async (params: basicGetParams) => {
+  const res = await fetchNapcoreNetworkCapabilities(params);
+  const capabilities: Array<Capability> = res.data;
+  return [
+    res.status,
+    capabilities.map((capability) => {
+      let causeCodes;
 
-        if (
-          "causeCodes" in capability.application &&
-          capability.application.causeCodes
-        ) {
-          causeCodes = capability.application.causeCodes.map((causeCode) => {
-            return causeCodesList.find((c) => c.value === causeCode);
-          });
-        }
+      if (
+        "causeCodes" in capability.application &&
+        capability.application.causeCodes
+      ) {
+        causeCodes = capability.application.causeCodes.map((causeCode) => {
+          return causeCodesList.find((c) => c.value === causeCode);
+        });
+      }
 
-        return {
-          ...capability.application,
-          causeCodesDictionary: causeCodes && causeCodes.filter(Boolean),
-        };
-      }),
-    ];
-  }
-  const body = await res.json();
-  return [res.status, body];
-};
+      console.log(causeCodes && causeCodes.filter(Boolean));
 
-const fetchCapabilities = async (params: basicGetParams, token: string) => {
-  const { actorCommonName, selector = "" } = params;
-  const res = await getCapabilities(actorCommonName, selector, token);
-
-  if (res.ok) {
-    const capabilities: Capabilities = await res.json();
-    return [
-      res.status,
-      capabilities.capabilities.map((capability, ix) => {
-        return { ...capability, id: ix };
-      }),
-    ];
-  }
-  const body = await res.json();
-  return [res.status, body];
+      return {
+        ...capability.application,
+        causeCodesDictionary: causeCodes && causeCodes.filter(Boolean),
+      };
+    }),
+  ];
 };
 
 // all internal fetchers
 const getPaths: {
   [key: string]: basicGetFunction | extendedGetFunction;
 } = {
-  //aggregate: fetchAggregate,
   "capability-count": fetchCapabilityCounter,
   subscriptions: fetchSubscriptions,
   "network/capabilities": fetchNetworkCapabilities,
+  /*
   capabilities: fetchCapabilities,
+*/
 };
 
 // all post methods on path
@@ -303,12 +240,15 @@ export default async function handler(
     });
 
     if (executer && "fn" in executer) {
-      const { fn, params } = executer;
-      const [status, resBody] = await fn(params, token);
-      if (status != 200) {
-        console.error(resBody);
+      try {
+        const { fn, params } = executer;
+        // @ts-ignore
+        const [status, data] = await fn(params);
+        console.log("response:", data);
+        return res.status(status).json(data);
+      } catch (error: any) {
+        return res.status(error.response.status).json(error.response.data);
       }
-      return res.status(status).json(resBody);
     }
   }
   return res.status(404).json({ description: `Page not found: ${urlPath}` });
