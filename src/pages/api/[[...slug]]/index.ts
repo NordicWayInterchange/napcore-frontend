@@ -173,6 +173,8 @@ export default async function handler(
       .json({ description: `Access denied - You don't have permission` });
   }
 
+  console.log(req.query);
+
   const slug = Array.isArray(req.query.slug)
     ? req.query.slug
     : [req.query.slug];
@@ -198,7 +200,6 @@ export default async function handler(
       try {
         const { fn, params } = executer;
         const [status, data] = await fn(params);
-        console.log("response:", status, data);
         return res.status(status).json(data);
       } catch (error: any) {
         return res.status(error.response.status).json(error.response.data);
