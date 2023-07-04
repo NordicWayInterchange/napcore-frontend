@@ -1,13 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import {
-  createCertificate,
-  createSubscription,
-  deleteSubscriptions,
-  getCapabilities,
-  getNetworkCapabilities,
-  getSubscriptions,
-} from "@/lib/fetchers/napcoreFetchers";
-import {
   SubscriptionRequest,
   SubscriptionsSubscription,
 } from "@/types/napcore/subscription";
@@ -20,6 +12,7 @@ import {
   basicGetParams,
   basicPostFunction,
   basicPostParams,
+  deleteNapcoreSubscriptions,
   extendedGetFunction,
   extendedGetParams,
   fetchNapcoreNetworkCapabilities,
@@ -60,17 +53,11 @@ export const addCerticates: basicPostFunction = async (
 };
 
 export const removeSubscription: basicDeleteFunction = async (
-  params: basicDeleteParams,
-  token: string
+  params: basicDeleteParams
 ) => {
-  const { actorCommonName, pathParam } = params;
-  const res = await deleteSubscriptions(
-    actorCommonName,
-    pathParam as string,
-    token
-  );
-  const data = await res.json();
-  return [res.status, data];
+  const res = await deleteNapcoreSubscriptions(params);
+  const subscription = await res.data;
+  return [res.status, subscription];
 };
 
 const fetchNetworkCapabilities = async (params: basicGetParams) => {

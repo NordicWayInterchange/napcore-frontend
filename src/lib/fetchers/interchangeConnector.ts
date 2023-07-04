@@ -75,10 +75,7 @@ export type basicDeleteParams = {
 export type basicGetFunction = (params: basicGetParams) => Promise<any>;
 export type extendedGetFunction = (params: extendedGetParams) => Promise<any>;
 export type basicPostFunction = (params: basicPostParams) => Promise<any>;
-export type basicDeleteFunction = (
-  params: basicDeleteParams,
-  token: string
-) => Promise<any>;
+export type basicDeleteFunction = (params: basicDeleteParams) => Promise<any>;
 
 // exported functions
 export const fetchNapcoreNetworkCapabilities: basicGetFunction = async (
@@ -92,11 +89,6 @@ export const fetchNapcoreNetworkCapabilities: basicGetFunction = async (
   );
 };
 
-export const fetchNapcoreCapabilities: basicGetFunction = async (params) => {
-  const { actorCommonName, selector = "" } = params;
-  return await fetchIXN(actorCommonName, "/capabilities", selector);
-};
-
 export const fetchNapcoreSubscriptions: extendedGetFunction = async (
   params
 ) => {
@@ -106,14 +98,6 @@ export const fetchNapcoreSubscriptions: extendedGetFunction = async (
     `/subscriptions/${pathParam}`,
     selector
   );
-};
-
-export const fetchNapcoreDeliveries: basicGetFunction = async (params: {
-  actorCommonName: string;
-  selector?: string;
-}) => {
-  const { actorCommonName, selector = "" } = params;
-  return await fetchIXN(actorCommonName, "/deliveries", selector);
 };
 
 export const addNapcoreSubscriptions: basicPostFunction = async (params) => {
@@ -131,4 +115,17 @@ export const deleteNapcoreSubscriptions: basicDeleteFunction = async (
 export const addNapcoreCertificates: basicPostFunction = async (params) => {
   const { actorCommonName, body = {} } = params;
   return await postIXN(actorCommonName, "/x509/csr", body);
+};
+
+export const fetchNapcoreDeliveries: basicGetFunction = async (params: {
+  actorCommonName: string;
+  selector?: string;
+}) => {
+  const { actorCommonName, selector = "" } = params;
+  return await fetchIXN(actorCommonName, "/deliveries", selector);
+};
+
+export const fetchNapcoreCapabilities: basicGetFunction = async (params) => {
+  const { actorCommonName, selector = "" } = params;
+  return await fetchIXN(actorCommonName, "/capabilities", selector);
 };
