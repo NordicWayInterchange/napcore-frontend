@@ -21,6 +21,7 @@ import {
   extendedGetFunction,
   extendedGetParams,
   fetchNapcoreNetworkCapabilities,
+  fetchNapcoreSubscriptions,
 } from "@/lib/fetchers/interchangeConnector";
 import { ExtendedCapability } from "@/types/capability";
 import { Capabilities, Capability } from "@/types/napcore/capability";
@@ -29,33 +30,15 @@ import { causeCodes as causeCodesList } from "@/lib/data/causeCodes";
 import { CertificateSignRequest } from "@/types/napcore/csr";
 
 const fetchCapabilityCounter = async (params: basicGetParams) => {
-  const { actorCommonName, selector = "" } = params;
-  const [status, body] = await fetchNetworkCapabilities({
-    actorCommonName,
-    selector,
-  });
-
-  if (status == 200) {
-    const capabilities = body as ExtendedCapability[];
-    return [status, capabilities.length];
-  }
-  return [status, body];
+  const [status, body] = await fetchNetworkCapabilities(params);
+  const capabilities = body as ExtendedCapability[];
+  return [status, capabilities.length];
 };
 
-const fetchSubscriptions = async (params: extendedGetParams, token: string) => {
-  const { actorCommonName, selector = "", pathParam = "" } = params;
-  const res = await getSubscriptions(
-    actorCommonName,
-    selector,
-    pathParam,
-    token
-  );
-  if (res.ok) {
-    const subscriptions: Array<SubscriptionsSubscription> = await res.json();
-    return [res.status, subscriptions];
-  }
-  const body = await res.json();
-  return [res.status, body];
+const fetchSubscriptions = async (params: extendedGetParams) => {
+  const res = await fetchNapcoreSubscriptions(params);
+  const subscriptions: Array<SubscriptionsSubscription> = await res.data;
+  return [res.status, subscriptions];
 };
 
 export const addSubscriptions: basicPostFunction = async (
@@ -116,8 +99,6 @@ const fetchNetworkCapabilities = async (params: basicGetParams) => {
           return causeCodesList.find((c) => c.value === causeCode);
         });
       }
-
-      console.log(causeCodes && causeCodes.filter(Boolean));
 
       return {
         ...capability.application,
@@ -244,7 +225,7 @@ export default async function handler(
         const { fn, params } = executer;
         // @ts-ignore
         const [status, data] = await fn(params);
-        console.log("response:", data);
+        console.log("response:", status, data);
         return res.status(status).json(data);
       } catch (error: any) {
         return res.status(error.response.status).json(error.response.data);

@@ -73,10 +73,7 @@ export type basicDeleteParams = {
 };
 
 export type basicGetFunction = (params: basicGetParams) => Promise<any>;
-export type extendedGetFunction = (
-  params: extendedGetParams,
-  token: string
-) => Promise<any>;
+export type extendedGetFunction = (params: extendedGetParams) => Promise<any>;
 export type basicPostFunction = (
   params: basicPostParams,
   token: string
@@ -98,12 +95,14 @@ export const fetchNapcoreNetworkCapabilities: basicGetFunction = async (
   );
 };
 
-export const fetchCapabilities: basicGetFunction = async (params) => {
+export const fetchNapcoreCapabilities: basicGetFunction = async (params) => {
   const { actorCommonName, selector = "" } = params;
   return await fetchIXN(actorCommonName, "/capabilities", selector);
 };
 
-export const fetchSubscriptions: extendedGetFunction = async (params) => {
+export const fetchNapcoreSubscriptions: extendedGetFunction = async (
+  params
+) => {
   const { actorCommonName, selector = "", pathParam = "" } = params;
   return await fetchIXN(
     actorCommonName,
@@ -112,7 +111,7 @@ export const fetchSubscriptions: extendedGetFunction = async (params) => {
   );
 };
 
-export const fetchDeliveries: basicGetFunction = async (params: {
+export const fetchNapcoreDeliveries: basicGetFunction = async (params: {
   actorCommonName: string;
   selector?: string;
 }) => {
@@ -120,17 +119,19 @@ export const fetchDeliveries: basicGetFunction = async (params: {
   return await fetchIXN(actorCommonName, "/deliveries", selector);
 };
 
-export const addSubscriptions: basicPostFunction = async (params) => {
+export const addNapcoreSubscriptions: basicPostFunction = async (params) => {
   const { actorCommonName, body = {} } = params;
   return await postIXN(actorCommonName, "/subscriptions", body);
 };
 
-export const deleteSubscriptions: basicDeleteFunction = async (params) => {
+export const deleteNapcoreSubscriptions: basicDeleteFunction = async (
+  params
+) => {
   const { actorCommonName, pathParam } = params;
   return await deleteIXN(actorCommonName, `/subscriptions/${pathParam}`);
 };
 
-export const addCertificates: basicPostFunction = async (params) => {
+export const addNapcoreCertificates: basicPostFunction = async (params) => {
   const { actorCommonName, body = {} } = params;
   return await postIXN(actorCommonName, "/x509/csr", body);
 };

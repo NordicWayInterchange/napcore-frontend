@@ -23,10 +23,10 @@ const fetchSubscriptions: (
       }
     });
     return Promise.all(seasonedSubscription);
+  } else {
+    const errorObj = await res.json();
+    throw new Error(`${errorObj.status}: ${errorObj.error}`);
   }
-
-  const errorObj = await res.json();
-  throw new Error(`${errorObj.errorCode}: ${errorObj.message}`);
 };
 
 const useSubscriptions = (userName: string) => {

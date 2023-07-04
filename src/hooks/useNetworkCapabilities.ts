@@ -13,7 +13,6 @@ const fetchCapabilities: (
     return await res.json();
   } else {
     const errorObj = await res.json();
-    console.log("error: ", errorObj);
     throw new Error(`${errorObj.status}: ${errorObj.error}`);
   }
 };
