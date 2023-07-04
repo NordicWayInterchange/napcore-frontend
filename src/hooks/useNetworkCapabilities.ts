@@ -10,10 +10,10 @@ const fetchCapabilities: (
   );
 
   if (res.ok) {
-    return res.json();
+    return await res.json();
   } else {
     const errorObj = await res.json();
-    throw new Error(`${errorObj.errorCode}: ${errorObj.message}`);
+    throw new Error(`${errorObj.status}: ${errorObj.error}`);
   }
 };
 
