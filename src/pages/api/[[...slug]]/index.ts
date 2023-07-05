@@ -52,9 +52,7 @@ export const addSubscriptions: basicPostFunction = async (
 export const addCerticates: basicPostFunction = async (
   params: basicPostParams
 ) => {
-  console.log(params);
   const res = await addNapcoreCertificates(params);
-  console.log(res);
   const certificate: CertificateSignResponse = await res.data;
   return [res.status, certificate];
 };

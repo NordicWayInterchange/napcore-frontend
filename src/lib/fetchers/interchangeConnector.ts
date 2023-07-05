@@ -114,7 +114,6 @@ export const deleteNapcoreSubscriptions: basicDeleteFunction = async (
 
 export const addNapcoreCertificates: basicPostFunction = async (params) => {
   const { actorCommonName, body = {} } = params;
-  console.log("connector", params);
   return await postIXN(actorCommonName, "/x509/csr", body);
 };
 
