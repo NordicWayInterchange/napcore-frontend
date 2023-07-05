@@ -1,5 +1,4 @@
 export type CertificateSignRequest = {
-  actorCommonName: string;
   csr: string;
 };
 
