@@ -10,6 +10,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { AppProps } from "next/app";
 import { ThemeProvider } from "@mui/material";
 import { SessionProvider } from "next-auth/react";
+
 import { trafficdata, transportportal } from "@/theme";
 
 export default function App({
@@ -22,7 +23,7 @@ export default function App({
     <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
-          <ThemeProvider theme={trafficdata}>
+          <ThemeProvider theme={transportportal}>
             <Layout>
               <Component {...pageProps} />
             </Layout>

@@ -1,10 +1,17 @@
 import { createTheme } from "@mui/material";
+import { openSans } from "@/theme/fonts";
 const { palette } = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor: any) =>
   augmentColor({ color: { main: mainColor } });
 
 export const trafficdata = createTheme({
+  /*FONT*/
+  typography: {
+    fontFamily: `${openSans.style.fontFamily}, sans-serif`,
+  },
+
+  /*PALETTE*/
   palette: {
     navbarBackgroundColor: "#d12e2c",
     mainBackgroundColor: "#f0f1f1",

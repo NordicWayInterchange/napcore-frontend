@@ -1,10 +1,14 @@
 import { createTheme } from "@mui/material";
+import { heebo } from "@/theme/fonts";
 const { palette } = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor: any) =>
   augmentColor({ color: { main: mainColor } });
 
 export const transportportal = createTheme({
+  typography: {
+    fontFamily: heebo.style.fontFamily,
+  },
   palette: {
     navbarBackgroundColor: "rgb(68, 79, 85)",
     mainBackgroundColor: "#f0f1f1",
