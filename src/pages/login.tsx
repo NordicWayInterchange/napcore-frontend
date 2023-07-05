@@ -2,7 +2,7 @@ import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
 } from "next";
-import { getProviders, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "./api/auth/[...nextauth]";
 import Image from "next/image";
@@ -11,9 +11,9 @@ import { Button, Card, Typography } from "@mui/material";
 import * as React from "react";
 import { Box } from "@mui/system";
 
-export default function Login({
-  providers,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Login({}: InferGetServerSidePropsType<
+  typeof getServerSideProps
+>) {
   return (
     <Card
       variant="outlined"
@@ -60,9 +60,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return { redirect: { destination: "/" } };
   }
 
-  const providers = await getProviders();
-
   return {
-    props: { providers: providers ?? [] },
+    props: {},
   };
 }
