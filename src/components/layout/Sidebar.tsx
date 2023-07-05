@@ -95,7 +95,7 @@ export default function Sidebar() {
             <StyledButton
               startIcon={<AddIcon />}
               variant="contained"
-              color="greenDark"
+              color="buttonThemeColor"
               disableElevation
               fullWidth
             >

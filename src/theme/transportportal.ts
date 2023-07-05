@@ -10,6 +10,11 @@ export const transportportal = createTheme({
     mainBackgroundColor: "#f0f1f1",
     sidebarActiveColor: "#EBF5E6",
 
+    avatarBackgroundColor: "#3E7B1F",
+    buttonThemeColor: createColor("#3E7B1F"),
+
+    cardBackgroundColor: "#EBF5E6",
+
     // buttons and fonts
     depricatedRed: createColor("#F8DEDE"),
     // chip colors

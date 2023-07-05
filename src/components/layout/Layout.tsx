@@ -8,6 +8,7 @@ import {
   Toolbar,
   useTheme,
 } from "@mui/material";
+import Navbar from "@/components/layout/Navbar";
 
 type LayoutProps = {
   children: ReactNode;
@@ -53,6 +54,7 @@ export default function Layout({ children }: LayoutProps) {
       }}
     >
       <CssBaseline />
+      <Navbar />
       {authStatus == "unauthenticated" ? children : <CircularProgress />}
     </Box>
   );

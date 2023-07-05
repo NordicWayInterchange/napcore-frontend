@@ -231,7 +231,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                     }}
                   />
                   <StyledButton
-                    color="greenDark"
+                    color="buttonThemeColor"
                     variant="outlined"
                     onClick={() => setOpenMap(true)}
                   >
@@ -245,7 +245,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
               <Button
                 sx={{ borderRadius: 100, textTransform: "none" }}
                 variant={"contained"}
-                color={"greenDark"}
+                color={"buttonThemeColor"}
                 disableElevation
                 onClick={() =>
                   saveSubscription(session?.user?.email as string, selector)

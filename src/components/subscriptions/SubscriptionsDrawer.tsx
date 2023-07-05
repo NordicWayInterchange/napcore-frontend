@@ -171,7 +171,7 @@ const SubscriptionsDrawer = ({
                   textTransform: "none",
                 }}
                 variant={"contained"}
-                color={"depricatedLight"}
+                color={"buttonThemeColor"}
                 onClick={() => setDialogOpen(true)}
                 disableElevation
               >

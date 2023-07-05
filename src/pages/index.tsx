@@ -1,6 +1,6 @@
 import React from "react";
 import Subscriptions from "./subscriptions";
-import { Avatar, Card, Divider, Typography, useTheme } from "@mui/material";
+import { Avatar, Card, Divider, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { Box } from "@mui/system";
 import Link from "next/link";
@@ -13,7 +13,6 @@ import Subheading from "@/components/shared/display/typography/Subheading";
 
 export default function Home() {
   const { data: session } = useSession();
-  const theme = useTheme();
   const { data, isLoading } = useSubscriptions(session?.user?.email as string);
 
   const shortcuts = [
@@ -30,9 +29,9 @@ export default function Home() {
       avatar: "C",
     },
     {
-      header: "Profile settings",
-      description: "View your details and generate certificate",
-      url: "/profile",
+      header: "Certificate",
+      description: "Generate certificate",
+      url: "/certificate",
       avatar: "P",
     },
   ];
@@ -64,11 +63,13 @@ export default function Home() {
                   padding: 2,
                   width: 400,
                   ":hover": {
-                    bgcolor: theme.palette.sidebarActiveColor,
+                    bgcolor: "cardBackgroundColor",
                   },
                 }}
               >
-                <Avatar sx={{ bgcolor: "green", marginRight: 3 }}>
+                <Avatar
+                  sx={{ bgcolor: "avatarBackgroundColor", marginRight: 3 }}
+                >
                   {shortcut.avatar}
                 </Avatar>
                 <Box

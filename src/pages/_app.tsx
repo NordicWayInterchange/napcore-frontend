@@ -22,7 +22,7 @@ export default function App({
     <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
-          <ThemeProvider theme={transportportal}>
+          <ThemeProvider theme={trafficdata}>
             <Layout>
               <Component {...pageProps} />
             </Layout>

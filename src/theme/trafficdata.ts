@@ -1,4 +1,4 @@
-import { createTheme, PaletteColor } from "@mui/material";
+import { createTheme } from "@mui/material";
 const { palette } = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor: any) =>
@@ -8,7 +8,13 @@ export const trafficdata = createTheme({
   palette: {
     navbarBackgroundColor: "#d12e2c",
     mainBackgroundColor: "#f0f1f1",
-    sidebarActiveColor: "#EBF5E6",
+
+    sidebarActiveColor: "#E5E5E5",
+
+    avatarBackgroundColor: "#d12e2c",
+    buttonThemeColor: createColor("#d12e2c"),
+
+    cardBackgroundColor: "#E5E5E5",
 
     // buttons and fonts
     depricatedRed: createColor("#F8DEDE"),

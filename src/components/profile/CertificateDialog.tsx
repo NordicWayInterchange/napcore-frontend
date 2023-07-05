@@ -28,6 +28,8 @@ export default function CertificateDialog(props: Props) {
     handleDialog(false);
   };
 
+  /*TODO: Theme colors*/
+
   return (
     <>
       <Dialog open={open} onClose={handleClose}>

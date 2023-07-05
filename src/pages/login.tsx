@@ -40,9 +40,8 @@ export default function Login({}: InferGetServerSidePropsType<
 
       <Button
         variant="contained"
-        color={"primary"}
-        fullWidth
-        sx={{ textTransform: "none" }}
+        color={"buttonThemeColor"}
+        sx={{ textTransform: "none", width: 200, alignSelf: "center" }}
         onClick={() => {
           void signIn("auth0");
         }}

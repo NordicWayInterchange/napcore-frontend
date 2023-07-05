@@ -295,7 +295,7 @@ const SelectorBuilder = (props: Props) => {
                 )}
               />
               <StyledButton
-                color="greenDark"
+                color="buttonThemeColor"
                 variant="outlined"
                 disabled={!!getFieldState("quadTree").error || advancedMode}
                 onClick={() => setOpen(true)}
@@ -321,7 +321,7 @@ const SelectorBuilder = (props: Props) => {
                     onChange={handleTextArea}
                   />
                   <StyledButton
-                    color="greenDark"
+                    color="buttonThemeColor"
                     variant="outlined"
                     onClick={handleVerify}
                   >
@@ -332,7 +332,7 @@ const SelectorBuilder = (props: Props) => {
             )}
             <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
               <StyledButton
-                color="greenDark"
+                color="buttonThemeColor"
                 variant="contained"
                 type="submit"
                 disabled={!!getFieldState("quadTree").error}

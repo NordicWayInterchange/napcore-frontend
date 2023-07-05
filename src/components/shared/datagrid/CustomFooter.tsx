@@ -22,7 +22,7 @@ export const CustomFooter = () => {
           <Button
             sx={{ marginLeft: 2, borderRadius: 100, textTransform: "none" }}
             startIcon={<AddIcon />}
-            color={"greenDark"}
+            color={"buttonThemeColor"}
             variant={"outlined"}
           >
             Add subscription
