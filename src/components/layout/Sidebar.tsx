@@ -9,7 +9,6 @@ import {
   ListItemText,
   Toolbar,
   Typography,
-  useTheme,
   ListItemIcon,
   IconButton,
   Button,
@@ -48,7 +47,6 @@ const SECONDARY_PAGES: Array<IPages> = [
 
 export default function Sidebar() {
   const router = useRouter();
-  const theme = useTheme();
   const { data: session } = useSession();
 
   const mapPages = (pages: Array<IPages>) => {
@@ -65,9 +63,7 @@ export default function Sidebar() {
           sx={{
             borderRadius: 100,
             backgroundColor:
-              router.asPath === page.url
-                ? theme.palette.sidebarActiveColor
-                : null,
+              router.asPath === page.url ? "sidebarActiveColor" : null,
           }}
           disablePadding
         >

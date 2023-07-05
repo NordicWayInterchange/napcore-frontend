@@ -5,7 +5,6 @@ import {
   IconButton,
   Slide,
   Toolbar,
-  useTheme,
 } from "@mui/material";
 import Map from "./Map";
 import React, { useEffect, useState } from "react";
@@ -27,7 +26,6 @@ const Transition = React.forwardRef(function Transition(
   },
   ref: React.Ref<unknown>
 ) {
-  // FIXME
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
@@ -41,7 +39,6 @@ export default function MapDialog(props: Props) {
   } = props;
 
   const [discard, setDiscard] = useState(false);
-  const theme = useTheme();
 
   const handleDiscard = () => {
     quadtreeCallback && quadtreeCallback([]);
@@ -66,7 +63,7 @@ export default function MapDialog(props: Props) {
       <AppBar
         sx={{
           position: "relative",
-          backgroundColor: theme.palette.navbarBackgroundColor,
+          bgcolor: "navbarBackgroundColor",
         }}
       >
         <Toolbar>
