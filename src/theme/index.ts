@@ -7,6 +7,9 @@ declare module "@mui/material/styles/createPalette" {
     navbarBackgroundColor: string;
     mainBackgroundColor: string;
     sidebarActiveColor: string;
+    cardBackgroundColor: string;
+    avatarBackgroundColor: string;
+    buttonThemeColor: string;
     depricatedRed: string;
     grayDark: string;
     grayLight: string;
@@ -26,6 +29,9 @@ declare module "@mui/material/styles/createPalette" {
     navbarBackgroundColor: string;
     mainBackgroundColor: string;
     sidebarActiveColor: string;
+    avatarBackgroundColor: string;
+    cardBackgroundColor: string;
+    buttonThemeColor: PaletteColor;
     depricatedRed: PaletteColor;
     grayDark: PaletteColor;
     grayLight: PaletteColor;
@@ -44,6 +50,7 @@ declare module "@mui/material/styles/createPalette" {
 
 declare module "@mui/material/Button" {
   interface ButtonPropsColorOverrides {
+    buttonThemeColor: true;
     depricatedRed: true;
     grayDark: true;
     grayLight: true;

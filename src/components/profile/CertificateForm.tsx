@@ -123,7 +123,7 @@ export const CertificateForm = () => {
           />
           <StyledButton
             fullWidth
-            color="greenDark"
+            color="buttonThemeColor"
             variant="contained"
             type="submit"
           >

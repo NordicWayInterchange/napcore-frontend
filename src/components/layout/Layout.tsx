@@ -2,12 +2,8 @@ import Box from "@mui/material/Box";
 import React, { ReactNode } from "react";
 import Sidebar from "./Sidebar";
 import { useSession } from "next-auth/react";
-import {
-  CircularProgress,
-  CssBaseline,
-  Toolbar,
-  useTheme,
-} from "@mui/material";
+import { CircularProgress, CssBaseline, Toolbar } from "@mui/material";
+import Navbar from "@/components/layout/Navbar";
 
 type LayoutProps = {
   children: ReactNode;
@@ -15,7 +11,6 @@ type LayoutProps = {
 
 export default function Layout({ children }: LayoutProps) {
   const { status: authStatus } = useSession();
-  const theme = useTheme();
 
   if (authStatus == "authenticated") {
     return (
@@ -25,7 +20,7 @@ export default function Layout({ children }: LayoutProps) {
           component="main"
           sx={{
             flexGrow: 1,
-            bgcolor: theme.palette.mainBackgroundColor,
+            bgcolor: "mainBackgroundColor",
             p: 5,
             height: "100vh",
             width: "100vw",
@@ -43,7 +38,7 @@ export default function Layout({ children }: LayoutProps) {
     <Box
       component="main"
       sx={{
-        bgcolor: theme.palette.mainBackgroundColor,
+        bgcolor: "mainBackgroundColor",
         height: "100vh",
         width: "100vw",
         display: "flex",
@@ -53,6 +48,7 @@ export default function Layout({ children }: LayoutProps) {
       }}
     >
       <CssBaseline />
+      <Navbar />
       {authStatus == "unauthenticated" ? children : <CircularProgress />}
     </Box>
   );

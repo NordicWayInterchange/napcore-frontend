@@ -16,7 +16,6 @@ import Subheading from "@/components/shared/display/typography/Subheading";
 
 export default function NetworkCapabilities() {
   const { data: session } = useSession();
-  // TODO: Common name needs a prefix
   const { data, isLoading } = useNetworkCapabilities(
     session?.user?.email as string
   );
