@@ -19,14 +19,19 @@ import {
   fetchNapcoreSubscriptions,
 } from "@/lib/fetchers/interchangeConnector";
 import { ExtendedCapability } from "@/types/capability";
-import { Capabilities, Capability } from "@/types/napcore/capability";
+import { Capability } from "@/types/napcore/capability";
 import { getToken } from "next-auth/jwt";
 import { causeCodes as causeCodesList } from "@/lib/data/causeCodes";
-import { CertificateSignRequest } from "@/types/napcore/csr";
+import {
+  CertificateSignRequest,
+  CertificateSignResponse,
+} from "@/types/napcore/csr";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
 const fetchCapabilityCounter = async (params: basicGetParams) => {
   const [status, body] = await fetchNetworkCapabilities(params);
-  const capabilities = body as ExtendedCapability[];
+  const capabilities = body as Array<ExtendedCapability>;
   return [status, capabilities.length];
 };
 
@@ -40,15 +45,17 @@ export const addSubscriptions: basicPostFunction = async (
   params: basicPostParams
 ) => {
   const res = await addNapcoreSubscriptions(params);
-  const subscriptions: SubscriptionRequest = await res.data;
+  const subscriptions: SubscriptionsSubscription = await res.data;
   return [res.status, subscriptions];
 };
 
 export const addCerticates: basicPostFunction = async (
   params: basicPostParams
 ) => {
+  console.log(params);
   const res = await addNapcoreCertificates(params);
-  const certificate: CertificateSignRequest = await res.data;
+  console.log(res);
+  const certificate: CertificateSignResponse = await res.data;
   return [res.status, certificate];
 };
 
@@ -161,19 +168,32 @@ const findHandler: (params: any) =>
       return {};
   }
 };
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const secret = process.env.NEXTAUTH_SECRET;
+  const prefix = process.env.NEXT_PUBLIC_INTERCHANGE_PREFIX;
+
   const token = await getToken({ req, secret, raw: true });
-  if (!token) {
+  const session = await getServerSession(req, res, authOptions);
+
+  /**
+   * Will be an issue if the provider changes
+   * and if it does not provide email from the session
+   * */
+  if (
+    !token ||
+    !session ||
+    !req.query.slug ||
+    !session.user ||
+    `${prefix}${session.user.email}` !== req.query.slug[0]
+  ) {
     return res
       .status(403)
       .json({ description: `Access denied - You don't have permission` });
   }
-
-  console.log(req.query);
 
   const slug = Array.isArray(req.query.slug)
     ? req.query.slug
