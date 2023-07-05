@@ -2,15 +2,19 @@ import { ExtendedSubscription } from "@/types/subscription";
 import { SubscriptionsSubscription } from "@/types/napcore/subscription";
 import { useQuery } from "@tanstack/react-query";
 
+const commonNamePrefix = process.env.NEXT_PUBLIC_INTERCHANGE_PREFIX;
+
 const fetchSubscriptions: (
   userName: string
 ) => Promise<ExtendedSubscription[]> = async (userName: string) => {
-  const res = await fetch(`/api/${userName}/subscriptions`);
+  const res = await fetch(`/api/${commonNamePrefix + userName}/subscriptions`);
   if (res.ok) {
     const subscriptions: SubscriptionsSubscription[] = await res.json();
     const seasonedSubscription = subscriptions.map(async (sub) => {
       const fetchNumberOfCapabilities = await fetch(
-        `/api/${userName}/capability-count/?selector=${sub.selector}`
+        `/api/${commonNamePrefix + userName}/capability-count/?selector=${
+          sub.selector
+        }`
       );
       if (fetchNumberOfCapabilities.ok) {
         const data = await fetchNumberOfCapabilities.json();

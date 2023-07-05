@@ -106,43 +106,46 @@ const SubscriptionsDrawer = ({
                 </Box>
               </StyledCard>
             </ListItem>
-            <ListItem>
-              <StyledCard variant={"outlined"}>
-                <Typography>Endpoints</Typography>
-                <FormControl fullWidth>
-                  <TextField
-                    contentEditable={false}
-                    value={subscription.endpoints[0].host}
-                    label={"Host"}
-                    margin="normal"
-                    InputProps={{
-                      endAdornment: <ContentCopy value={"ampqs://myserver"} />,
-                    }}
-                  />
-                  <TextField
-                    contentEditable={false}
-                    value={subscription.endpoints[0].source}
-                    label={"Source"}
-                    margin="normal"
-                    InputProps={{
-                      endAdornment: (
-                        <ContentCopy value={"Serviceprovider 1-1"} />
-                      ),
-                    }}
-                  />
-                  <TextField
-                    contentEditable={false}
-                    value={"5671"}
-                    label={subscription.endpoints[0].port}
-                    margin="normal"
-                    InputProps={{
-                      endAdornment: <ContentCopy value={"5671"} />,
-                    }}
-                  />
-                </FormControl>
-              </StyledCard>
-            </ListItem>
-
+            {subscription.endpoints.length > 0 && (
+              <ListItem>
+                <StyledCard variant={"outlined"}>
+                  <Typography>Endpoints</Typography>
+                  <FormControl fullWidth>
+                    <TextField
+                      contentEditable={false}
+                      value={subscription.endpoints[0].host}
+                      label={"Host"}
+                      margin="normal"
+                      InputProps={{
+                        endAdornment: (
+                          <ContentCopy value={"ampqs://myserver"} />
+                        ),
+                      }}
+                    />
+                    <TextField
+                      contentEditable={false}
+                      value={subscription.endpoints[0].source}
+                      label={"Source"}
+                      margin="normal"
+                      InputProps={{
+                        endAdornment: (
+                          <ContentCopy value={"Serviceprovider 1-1"} />
+                        ),
+                      }}
+                    />
+                    <TextField
+                      contentEditable={false}
+                      value={"5671"}
+                      label={subscription.endpoints[0].port}
+                      margin="normal"
+                      InputProps={{
+                        endAdornment: <ContentCopy value={"5671"} />,
+                      }}
+                    />
+                  </FormControl>
+                </StyledCard>
+              </ListItem>
+            )}
             <ListItem>
               <StyledCard variant={"outlined"}>
                 <Typography>Selector</Typography>
