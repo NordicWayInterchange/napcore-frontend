@@ -192,9 +192,13 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                       >
                         {capability.causeCodesDictionary.map((cause, index) => {
                           return (
-                            <MenuItem key={index} value={cause.value}>
+                            <StyledMenuItem
+                              disabled
+                              key={index}
+                              value={cause.value}
+                            >
                               {cause.value}: {cause.label}
-                            </MenuItem>
+                            </StyledMenuItem>
                           );
                         })}
                       </Select>
@@ -284,6 +288,23 @@ const StyledButton = styled(Button)(({}) => ({
   width: "150px",
   textTransform: "none",
   borderRadius: 100,
+}));
+
+const StyledMenuItem = styled(MenuItem)(({}) => ({
+  "&.MuiMenuItem-root": {
+    color: "black",
+    opacity: 1,
+  },
+  "&.Mui-disabled": {
+    color: "black",
+    opacity: 1,
+  },
+  "&.Mui-selected": {
+    backgroundColor: "white",
+    "&.Mui-focusVisible": {
+      background: "white",
+    },
+  },
 }));
 
 export default CapabilitiesDrawer;
