@@ -1,8 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import {
-  SubscriptionRequest,
-  SubscriptionsSubscription,
-} from "@/types/napcore/subscription";
+import { SubscriptionsSubscription } from "@/types/napcore/subscription";
 import {
   addNapcoreCertificates,
   addNapcoreSubscriptions,
@@ -22,10 +19,7 @@ import { ExtendedCapability } from "@/types/capability";
 import { Capability } from "@/types/napcore/capability";
 import { getToken } from "next-auth/jwt";
 import { causeCodes as causeCodesList } from "@/lib/data/causeCodes";
-import {
-  CertificateSignRequest,
-  CertificateSignResponse,
-} from "@/types/napcore/csr";
+import { CertificateSignResponse } from "@/types/napcore/certificate";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 

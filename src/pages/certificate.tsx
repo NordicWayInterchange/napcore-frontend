@@ -9,9 +9,7 @@ export default function Certificate() {
     <>
       <Mainheading>Certificate</Mainheading>
       {/*TODO: Change text*/}
-      <Subheading>
-        Your profile and information and create a new certificate with the form.
-      </Subheading>
+      <Subheading>Create a new certificate.</Subheading>
       <Divider sx={{ marginY: 3 }} />
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
         <CertificateForm />

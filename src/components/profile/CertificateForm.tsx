@@ -9,7 +9,7 @@ import { ICsr } from "@/interface/ICsr";
 import { ICsrForm } from "@/interface/ICsrForm";
 import { createCertificate } from "@/lib/fetchers/internalFetchers";
 import { useSession } from "next-auth/react";
-import { CertificateSignResponse } from "@/types/napcore/csr";
+import { CertificateSignResponse } from "@/types/napcore/certificate";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import Subheading from "@/components/shared/display/typography/Subheading";
 

@@ -12,7 +12,7 @@ import {
   TextField,
 } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
-import { CertificateSignResponse } from "@/types/napcore/csr";
+import { CertificateSignResponse } from "@/types/napcore/certificate";
 
 type Props = {
   privateKey: string;
