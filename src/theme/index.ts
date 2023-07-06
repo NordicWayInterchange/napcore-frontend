@@ -23,6 +23,10 @@ declare module "@mui/material/styles/createPalette" {
     yellowLight: string;
     pinkDark: string;
     pinkLight: string;
+    orangeDark: string;
+    orangeLight: string;
+    purpleDark: string;
+    purpleLight: string;
   }
 
   interface PaletteOptions {
@@ -45,6 +49,10 @@ declare module "@mui/material/styles/createPalette" {
     yellowLight: PaletteColor;
     pinkDark: PaletteColor;
     pinkLight: PaletteColor;
+    orangeDark: PaletteColor;
+    orangeLight: PaletteColor;
+    purpleDark: PaletteColor;
+    purpleLight: PaletteColor;
   }
 }
 
@@ -64,6 +72,10 @@ declare module "@mui/material/Button" {
     yellowLight: true;
     pinkDark: true;
     pinkLight: true;
+    orangeDark: true;
+    orangeLight: true;
+    purpleDark: true;
+    purpleLight: true;
   }
 }
 

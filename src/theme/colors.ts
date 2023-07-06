@@ -19,6 +19,10 @@ export const SHARED_COLORS = {
   yellowLight: createColor("#FFF5C8"),
   pinkDark: createColor("#9C176F"),
   pinkLight: createColor("#EDCEF5"),
+  orangeDark: createColor("#dd7100"),
+  orangeLight: createColor("#ffbf7d"),
+  purpleDark: createColor("#7255c0"),
+  purpleLight: createColor("#c1aaff"),
 };
 
 export const TRAFFICDATA_COLORS = {
