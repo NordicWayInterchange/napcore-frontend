@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Divider,
 } from "@mui/material";
 import { deleteSubscriptions } from "@/lib/fetchers/internalFetchers";
 import Snackbar from "@/components/shared/feedback/Snackbar";
@@ -68,6 +69,7 @@ export default function DeleteSubDialog(props: Props) {
           </DialogContentText>
           <DialogContentText>This action can not be undone.</DialogContentText>
         </DialogContent>
+        <Divider />
         <DialogActions sx={{ display: "flex", justifyContent: "space-evenly" }}>
           <Button
             variant="text"

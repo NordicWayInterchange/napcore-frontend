@@ -34,7 +34,7 @@ export default function CertificateDialog(props: Props) {
   const downloadButtons = [
     {
       text: "Download private key",
-      onClick: () => handleFile(privateKey, "privateKey.txt"),
+      onClick: () => handleFile(privateKey, "privateKey.key.pem"),
     },
     {
       text: "Download chain certificate",
@@ -43,13 +43,16 @@ export default function CertificateDialog(props: Props) {
           handleDecoding(chain.chain),
           `chain.${
             ((commonNamePrefix as string) + session?.user?.email) as string
-          }.txt`
+          }.crt.pem`
         ),
     },
     {
       text: "Download root certificate",
       onClick: () =>
-        handleFile(handleDecoding(chain.chain.at(-1) as string), "root.txt"),
+        handleFile(
+          handleDecoding(chain.chain.at(-1) as string),
+          "root.crt.pem"
+        ),
     },
   ];
 
