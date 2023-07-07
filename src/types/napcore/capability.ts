@@ -27,10 +27,3 @@ export type Capability = {
   application: Application;
   metadata: Metadata;
 };
-
-export type Capabilities = {
-  name: string;
-  selector: string;
-  capabilities: Array<Capability>;
-  version: string;
-};

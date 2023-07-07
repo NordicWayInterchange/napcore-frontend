@@ -16,7 +16,7 @@ export type Endpoint = {
 };
 
 export type SubscriptionsSubscription = {
-  id: string; // TODO: INT
+  id: string;
   selector: string;
   lastUpdatedTimestamp: number;
   status: SubscriptionStatus;

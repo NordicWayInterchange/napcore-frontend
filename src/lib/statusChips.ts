@@ -14,7 +14,6 @@ export const messageTypeChips = {
   SPATEM: "pinkLight",
   MAPEM: "blueLight",
   SREM: "yellowLight",
-  // TODO: Update colors
-  SSEM: "yellowLight",
-  CAM: "yellowLight",
+  SSEM: "orangeLight",
+  CAM: "purpleLight",
 };

@@ -35,12 +35,9 @@ export async function createPKCS10({ commonName, organization, country }) {
         )
       )}\n-----END CERTIFICATE REQUEST-----`
     ),
-    /*privateKey: `-----BEGIN PRIVATE KEY-----\n${toBase64(
+    privateKey: `-----BEGIN PRIVATE KEY-----\n${toBase64(
       arrayBufferToString(await crypto.exportKey("pkcs8", keyPair.privateKey))
-    )}\n-----END PRIVATE KEY-----`,*/
-    privateKey: toBase64(
-      arrayBufferToString(await crypto.exportKey("pkcs8", keyPair.privateKey))
-    ),
+    )}\n-----END PRIVATE KEY-----`,
   };
 }
 

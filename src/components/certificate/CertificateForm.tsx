@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Card, TextField } from "@mui/material";
-import CertificateDialog from "@/components/profile/CertificateDialog";
+import CertificateDialog from "@/components/certificate/CertificateDialog";
 import { createPKCS10 } from "@/lib/pkcs10Generator";
 import { Box } from "@mui/system";
 import { styled } from "@mui/material/styles";
@@ -9,7 +9,7 @@ import { ICsr } from "@/interface/ICsr";
 import { ICsrForm } from "@/interface/ICsrForm";
 import { createCertificate } from "@/lib/fetchers/internalFetchers";
 import { useSession } from "next-auth/react";
-import { CertificateSignResponse } from "@/types/napcore/csr";
+import { CertificateSignResponse } from "@/types/napcore/certificate";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import Subheading from "@/components/shared/display/typography/Subheading";
 
@@ -78,16 +78,9 @@ export const CertificateForm = () => {
 
   return (
     <StyledCard variant={"outlined"}>
-      <Subheading>Certificate</Subheading>
+      <Subheading>Create a new certificate</Subheading>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 2,
-            alignItems: "center",
-          }}
-        >
+        <StyledBox>
           <Controller
             name="countryCode"
             control={control}
@@ -129,7 +122,7 @@ export const CertificateForm = () => {
           >
             Generate certificate
           </StyledButton>
-        </Box>
+        </StyledBox>
       </form>
       <CertificateDialog
         privateKey={csr?.privateKey as string}
@@ -146,6 +139,13 @@ export const CertificateForm = () => {
     </StyledCard>
   );
 };
+
+const StyledBox = styled(Box)(({}) => ({
+  display: "flex",
+  flexDirection: "column",
+  gap: "20px",
+  alignItems: "center",
+}));
 
 const StyledButton = styled(Button)(({}) => ({
   width: "200px",

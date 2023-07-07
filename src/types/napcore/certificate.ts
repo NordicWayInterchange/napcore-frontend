@@ -3,5 +3,5 @@ export type CertificateSignRequest = {
 };
 
 export type CertificateSignResponse = {
-  certificates: Array<string>;
+  chain: Array<string>;
 };

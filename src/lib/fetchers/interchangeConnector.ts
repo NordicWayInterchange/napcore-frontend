@@ -1,7 +1,7 @@
 import { getTLSAgent } from "@/lib/fetchers/sslAgent";
 import { SubscriptionRequest } from "@/types/napcore/subscription";
 import axios from "axios";
-import { CertificateSignRequest } from "@/types/napcore/csr";
+import { CertificateSignRequest } from "@/types/napcore/certificate";
 
 const headers = {
   Accept: "application/json",
