@@ -12,6 +12,7 @@ import { CertificateSignResponse } from "@/types/napcore/certificate";
 import { useSession } from "next-auth/react";
 import { handleDecoding, handleFile } from "@/lib/handleFile";
 import { Box } from "@mui/system";
+import { styled } from "@mui/material/styles";
 
 type Props = {
   privateKey: string;
@@ -61,79 +62,45 @@ export default function CertificateDialog(props: Props) {
             Please download your private key, chain certificate and root
             certificate before closing this window.
           </DialogContentText>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Button
-              variant="text"
-              color="greenDark"
-              sx={{ borderRadius: 100, textTransform: "none", width: 300 }}
-              onClick={() =>
-                /*handleFile(privateKey, "privateKey.key.pem"*/
-                handleFile(privateKey, "privateKey.txt")
-              }
-              disableElevation
-            >
-              Download private key
-            </Button>
-            <Button
-              variant="text"
-              color="greenDark"
-              sx={{ borderRadius: 100, textTransform: "none", width: 300 }}
-              onClick={() =>
-                /*handleFile(
-                  chain,
-                  `chain.${
-                    ((commonNamePrefix as string) +
-                      session?.user?.email) as string
-                  }.crt.pem`
-                )*/
-                handleFile(
-                  handleDecoding(chain.chain),
-                  `chain.${
-                    ((commonNamePrefix as string) +
-                      session?.user?.email) as string
-                  }.txt`
-                )
-              }
-              disableElevation
-            >
-              Download chain certificate
-            </Button>
-            <Button
-              variant="text"
-              color="greenDark"
-              sx={{ borderRadius: 100, textTransform: "none", width: 300 }}
-              onClick={() =>
-                /*handleFile(chain.certificates.at(-1), "root.crt.pem")*/
-                handleFile(
-                  handleDecoding(chain.chain.at(-1) as string),
-                  "root.txt"
-                )
-              }
-              disableElevation
-            >
-              Download root certificate
-            </Button>
-          </Box>
+          <StyledBox>
+            {downloadButtons.map((button, index) => {
+              return (
+                <StyledButton
+                  key={index}
+                  variant="text"
+                  color="greenDark"
+                  onClick={button.onClick}
+                  disableElevation
+                >
+                  {button.text}
+                </StyledButton>
+              );
+            })}
+          </StyledBox>
         </DialogContent>
         <Divider />
         <DialogActions>
-          <Button
+          <StyledButton
             variant="text"
             color="greenDark"
-            sx={{ borderRadius: 100, textTransform: "none" }}
             onClick={handleClose}
             disableElevation
           >
             Close
-          </Button>
+          </StyledButton>
         </DialogActions>
       </Dialog>
     </>
   );
 }
+
+const StyledButton = styled(Button)(({}) => ({
+  borderRadius: 100,
+  textTransform: "none",
+}));
+
+const StyledBox = styled(Box)(({}) => ({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+}));
