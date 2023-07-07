@@ -62,8 +62,15 @@ export default function Sidebar() {
         <ListItem
           sx={{
             borderRadius: 100,
+            my: 2,
             backgroundColor:
               router.asPath === page.url ? "sidebarActiveColor" : null,
+            border: "1px solid transparent",
+            "&:hover": {
+              backgroundColor: "sidebarActiveColor",
+              border: "1px solid",
+              borderColor: "sidebarBorderColor",
+            },
           }}
           disablePadding
         >
@@ -89,6 +96,7 @@ export default function Sidebar() {
             style={{ textDecoration: "none" }}
           >
             <StyledButton
+              sx={{ my: 1 }}
               startIcon={<AddIcon />}
               variant="contained"
               color="buttonThemeColor"

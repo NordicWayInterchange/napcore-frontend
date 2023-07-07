@@ -29,6 +29,7 @@ export const TRAFFICDATA_COLORS = {
   navbarBackgroundColor: "#d12e2c",
   mainBackgroundColor: "#f0f1f1",
   sidebarActiveColor: "#E5E5E5",
+  sidebarBorderColor: "#2E3539",
   avatarBackgroundColor: "#d12e2c",
   cardBackgroundColor: "#E5E5E5",
   buttonThemeColor: createColor("#d12e2c"),
@@ -36,9 +37,10 @@ export const TRAFFICDATA_COLORS = {
 };
 
 export const TRANSPORTPORTAL_COLORS = {
-  navbarBackgroundColor: "rgb(68, 79, 85)",
+  navbarBackgroundColor: "#444F55",
   mainBackgroundColor: "#f0f1f1",
   sidebarActiveColor: "#EBF5E6",
+  sidebarBorderColor: "#3E7B1F",
   avatarBackgroundColor: "#3E7B1F",
   cardBackgroundColor: "#EBF5E6",
   buttonThemeColor: createColor("#3E7B1F"),
