@@ -8,7 +8,8 @@
     "start": "next start -p 3001",
     "prod": "next build && next start -p 3001",
     "lint": "next lint",
-    "test": "jest --watch",
+    "test": "jest",
+    "watch": "jest --watch",
     "prettier": "prettier --write ."
   },
   "dependencies": {
