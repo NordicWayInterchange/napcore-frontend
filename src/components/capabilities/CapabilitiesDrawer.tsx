@@ -252,7 +252,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                 color={"buttonThemeColor"}
                 disableElevation
                 onClick={() =>
-                  saveSubscription(session?.user?.email as string, selector)
+                  saveSubscription(session?.user.commonName as string, selector)
                 }
               >
                 Subscribe

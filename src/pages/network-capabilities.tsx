@@ -17,7 +17,7 @@ import Subheading from "@/components/shared/display/typography/Subheading";
 export default function NetworkCapabilities() {
   const { data: session } = useSession();
   const { data, isLoading } = useNetworkCapabilities(
-    session?.user?.email as string
+    session?.user.commonName as string
   );
   const [capabilityRow, setCapabilityRow] = useState<ExtendedCapability>();
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);

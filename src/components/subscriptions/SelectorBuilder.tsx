@@ -109,7 +109,7 @@ const SelectorBuilder = (props: Props) => {
     }
 
     const response = await createSubscription(
-      session?.user?.email as string,
+      session?.user.commonName as string,
       selector
     );
 

@@ -19,6 +19,17 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 
   /**
+   * @Description Extend the Session object
+   */
+  callbacks: {
+    async session({ session, token }) {
+      session.user.commonName = process.env.INTERCHANGE_PREFIX + token.email;
+
+      return session;
+    },
+  },
+
+  /**
    * @Description Add custom pages for Auth routes
    */
   pages: {

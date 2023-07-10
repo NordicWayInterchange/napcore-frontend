@@ -16,7 +16,7 @@ const NewSubscription = () => {
   const [selector, setSelector] = useState<string>(" ");
 
   const { data, isLoading, remove } = useMatchingCapabilities(
-    session?.user?.email as string,
+    session?.user.commonName as string,
     selector
   );
 

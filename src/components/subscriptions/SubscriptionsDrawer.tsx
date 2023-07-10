@@ -183,7 +183,7 @@ const SubscriptionsDrawer = ({
       </Drawer>
       <DeleteSubDialog
         open={dialogOpen}
-        actorCommonName={session?.user?.email as string}
+        actorCommonName={session?.user.commonName as string}
         subscriptionId={subscription.id}
         handleDialog={handleClickClose}
       />

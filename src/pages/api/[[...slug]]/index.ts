@@ -166,21 +166,16 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const secret = process.env.NEXTAUTH_SECRET;
-  const prefix = process.env.NEXT_PUBLIC_INTERCHANGE_PREFIX;
 
   const token = await getToken({ req, secret, raw: true });
   const session = await getServerSession(req, res, authOptions);
 
-  /**
-   * Will be an issue if the provider changes
-   * and if it does not provide email from the session
-   * */
   if (
     !token ||
     !session ||
     !req.query.slug ||
     !session.user ||
-    `${prefix}${session.user.email}` !== req.query.slug[0]
+    session.user.commonName !== req.query.slug[0]
   ) {
     return res
       .status(403)
