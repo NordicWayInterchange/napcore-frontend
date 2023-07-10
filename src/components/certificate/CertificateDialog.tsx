@@ -21,8 +21,6 @@ type Props = {
   handleDialog: (close: boolean) => void;
 };
 
-const commonNamePrefix = process.env.NEXT_PUBLIC_INTERCHANGE_PREFIX;
-
 export default function CertificateDialog(props: Props) {
   const { privateKey, open, handleDialog, chain } = props;
   const { data: session } = useSession();
@@ -41,9 +39,7 @@ export default function CertificateDialog(props: Props) {
       onClick: () =>
         handleFile(
           handleDecoding(chain.chain),
-          `chain.${
-            ((commonNamePrefix as string) + session?.user?.email) as string
-          }.crt.pem`
+          `chain.${session?.user.commonName as string}.crt.pem`
         ),
     },
     {

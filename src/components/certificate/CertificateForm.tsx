@@ -13,8 +13,6 @@ import { CertificateSignResponse } from "@/types/napcore/certificate";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import Subheading from "@/components/shared/display/typography/Subheading";
 
-const commonNamePrefix = process.env.NEXT_PUBLIC_INTERCHANGE_PREFIX;
-
 export const CertificateForm = () => {
   const {
     handleSubmit,
@@ -34,7 +32,7 @@ export const CertificateForm = () => {
 
   const onSubmit: SubmitHandler<ICsrForm> = (data) => {
     createPKCS10({
-      commonName: `${(commonNamePrefix as string) + session?.user?.email}`,
+      commonName: session?.user.commonName,
       country: data.countryCode.toUpperCase(),
       organization: data.orgName,
     })
@@ -49,7 +47,7 @@ export const CertificateForm = () => {
 
   const postCsr = async (csr: ICsr) => {
     const response = await createCertificate(
-      session?.user?.email as string,
+      session?.user.commonName as string,
       csr.csr
     );
     if (response.ok) {

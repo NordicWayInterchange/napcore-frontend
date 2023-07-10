@@ -74,7 +74,7 @@ export default function Sidebar() {
           }}
           disablePadding
         >
-          <StyledListItemButton>
+          <StyledListItemButton disableRipple>
             <ListItemIcon>{page.icon}</ListItemIcon>
             <ListItemText primary={page.text} />
           </StyledListItemButton>

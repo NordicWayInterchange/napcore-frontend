@@ -1,16 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { ExtendedCapability } from "@/types/capability";
 
-const commonNamePrefix = process.env.NEXT_PUBLIC_INTERCHANGE_PREFIX;
-
 const fetchMatchingCapabilities: (
-  userName: string,
+  commonName: string,
   selector: string
-) => Promise<ExtendedCapability[]> = async (userName, selector) => {
+) => Promise<ExtendedCapability[]> = async (commonName, selector) => {
   const res = await fetch(
-    `/api/${
-      commonNamePrefix + userName
-    }/network/capabilities?selector=${selector}`
+    `/api/${commonName}/network/capabilities?selector=${selector}`
   );
 
   if (res.ok) {
@@ -22,10 +18,10 @@ const fetchMatchingCapabilities: (
   }
 };
 
-const useMatchingCapabilities = (userName: string, selector: string) => {
+const useMatchingCapabilities = (commonName: string, selector: string) => {
   return useQuery({
     queryKey: ["matchingCapabilities"],
-    queryFn: () => fetchMatchingCapabilities(userName, selector),
+    queryFn: () => fetchMatchingCapabilities(commonName, selector),
   });
 };
 

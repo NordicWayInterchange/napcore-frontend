@@ -21,7 +21,7 @@ import Subheading from "@/components/shared/display/typography/Subheading";
 export default function Subscriptions() {
   const { data: session } = useSession();
   const { data, isLoading, remove } = useSubscriptions(
-    session?.user?.email as string
+    session?.user?.commonName as string
   );
   const [open, setOpen] = useState<boolean>(false);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
@@ -130,7 +130,7 @@ export default function Subscriptions() {
         subscriptionId={subscriptionRow?.id as string}
         handleDialog={handleClickClose}
         open={open}
-        actorCommonName={session?.user?.email as string}
+        actorCommonName={session?.user.commonName as string}
       />
     </Box>
   );

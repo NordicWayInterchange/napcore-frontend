@@ -1,5 +1,4 @@
 import Layout from "@/components/layout/Layout";
-import "@/styles/globals.css";
 import React from "react";
 import {
   Hydrate,

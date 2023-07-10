@@ -2,19 +2,15 @@ import { ExtendedSubscription } from "@/types/subscription";
 import { SubscriptionsSubscription } from "@/types/napcore/subscription";
 import { useQuery } from "@tanstack/react-query";
 
-const commonNamePrefix = process.env.NEXT_PUBLIC_INTERCHANGE_PREFIX;
-
 const fetchSubscriptions: (
-  userName: string
-) => Promise<ExtendedSubscription[]> = async (userName: string) => {
-  const res = await fetch(`/api/${commonNamePrefix + userName}/subscriptions`);
+  commonName: string
+) => Promise<ExtendedSubscription[]> = async (commonName: string) => {
+  const res = await fetch(`/api/${commonName}/subscriptions`);
   if (res.ok) {
     const subscriptions: SubscriptionsSubscription[] = await res.json();
     const seasonedSubscription = subscriptions.map(async (sub) => {
       const fetchNumberOfCapabilities = await fetch(
-        `/api/${commonNamePrefix + userName}/capability-count/?selector=${
-          sub.selector
-        }`
+        `/api/${commonName}/capability-count/?selector=${sub.selector}`
       );
       if (fetchNumberOfCapabilities.ok) {
         const data = await fetchNumberOfCapabilities.json();
@@ -33,10 +29,10 @@ const fetchSubscriptions: (
   }
 };
 
-const useSubscriptions = (userName: string) => {
+const useSubscriptions = (commonName: string) => {
   return useQuery({
     queryKey: ["subscriptions"],
-    queryFn: () => fetchSubscriptions(userName),
+    queryFn: () => fetchSubscriptions(commonName),
     //refetchInterval: 1000, // set this to a refetch interval
   });
 };

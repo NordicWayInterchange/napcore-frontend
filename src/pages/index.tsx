@@ -13,7 +13,9 @@ import Subheading from "@/components/shared/display/typography/Subheading";
 
 export default function Home() {
   const { data: session } = useSession();
-  const { data, isLoading } = useSubscriptions(session?.user?.email as string);
+  const { data, isLoading } = useSubscriptions(
+    session?.user.commonName as string
+  );
 
   const shortcuts = [
     {
