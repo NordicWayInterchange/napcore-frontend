@@ -23,6 +23,6 @@ jobs:
     - name: Create tag
       run: echo "IMAGE_TAG=$(date +%s)" >> "$GITHUB_ENV"
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag eu.gcr.io/nw-shared-w3ml/napcore-frontend/napcore-frontend:${{ env.IMAGE_TAG }}
+      run: docker build . --file Dockerfile --tag eu.gcr.io/nw-shared-w3ml/napcore-frontend:${{ env.IMAGE_TAG }}
     - name: Push docker image
       run: docker push eu.gcr.io/nw-shared-w3ml/napcore-frontend:${{ env.IMAGE_TAG }}
