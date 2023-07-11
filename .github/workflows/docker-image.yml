@@ -14,5 +14,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - id: auth
+      uses: google-github-actions@v0
+      with:
+        credentials.json: ${{ secrets.SVV_GITHUB_ACTIONS_PUBLISHER_KEY }}
+    - name: gcloud auth configure-docker
+      run: gcloud auth configure-docker
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag napcore-frontend:$(date +%s)
+    - name: Push docker image
+      run: docker push eu.gcr.io/nw-shared-w3ml/napcore-frontend
