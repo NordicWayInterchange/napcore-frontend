@@ -43,5 +43,5 @@ const StyledBox = styled(Box)(({}) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  p: 3,
+  padding: "10px",
 }));
