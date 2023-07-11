@@ -55,8 +55,7 @@ export const removeSubscription: basicDeleteFunction = async (
   params: basicDeleteParams
 ) => {
   const res = await deleteNapcoreSubscriptions(params);
-  const subscription = await res.data;
-  return [res.status, subscription];
+  return [res.status];
 };
 
 const fetchNetworkCapabilities = async (params: basicGetParams) => {
