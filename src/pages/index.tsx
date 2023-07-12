@@ -1,6 +1,6 @@
 import React from "react";
 import Subscriptions from "./subscriptions";
-import { Avatar, Card, Divider, Typography } from "@mui/material";
+import { Divider } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { Box } from "@mui/system";
 import Link from "next/link";
@@ -10,6 +10,7 @@ import { SubscriptionDatagrid } from "@/components/shared/datagrid/GridColumns/S
 import { CustomEmptyOverlaySubscription } from "@/components/shared/datagrid/CustomEmptyOverlay";
 import Mainheading from "@/components/shared/display/typography/Mainheading";
 import Subheading from "@/components/shared/display/typography/Subheading";
+import ShortcutCard from "@/components/shared/display/ShortcutCard";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -54,36 +55,18 @@ export default function Home() {
             <Link
               key={key}
               href={shortcut.url}
-              style={{ textDecoration: "none", marginRight: 10, marginTop: 10 }}
+              style={{
+                textDecoration: "none",
+                marginRight: 10,
+                marginTop: 10,
+                width: "400px",
+              }}
             >
-              <Card
-                variant="outlined"
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  padding: 2,
-                  width: 400,
-                  ":hover": {
-                    bgcolor: "cardBackgroundColor",
-                  },
-                }}
-              >
-                <Avatar
-                  sx={{ bgcolor: "avatarBackgroundColor", marginRight: 3 }}
-                >
-                  {shortcut.avatar}
-                </Avatar>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <Typography>{shortcut.header}</Typography>
-                  <Typography>{shortcut.description}</Typography>
-                </Box>
-              </Card>
+              <ShortcutCard
+                avatar={shortcut.avatar}
+                header={shortcut.header}
+                description={shortcut.description}
+              />
             </Link>
           ))}
         </Box>

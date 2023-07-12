@@ -87,7 +87,11 @@ export default function Sidebar() {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <Navbar />
-      <StyledDrawer variant="permanent" anchor="left">
+      <StyledDrawer
+        sx={{ display: { xs: "none", sm: "block" } }}
+        variant="permanent"
+        anchor="left"
+      >
         <Toolbar />
 
         <Box sx={{ padding: 2 }}>
