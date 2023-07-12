@@ -1,47 +1,136 @@
 # NAPCORE
 
-## Arkitektur
+![Architecture Diagram](/doc/architecture.png)
 
-![Architecture](/public/architecture.png)
+## Technologies
 
-## Grunnlag for applikasjonen
+- Next.js
+- React
+- Leaflet
+- Tanstack
+- PKI.js
+- NextAuth.js
 
-Vi ønsker med denne applikasjonen å være et grensesnitt inn mot interchange som
-skal gjøre aktører i stand til å sette opp abonnement mot data de ønsker
-å konsumerer.
+## Installation and setup
 
-Vi skal tilrettelegge slik at de skal kunne opprette køer, og i størst mulig
-grad støtte dem i oppretting av disse slik at de finner frem til de dataene de
-ønsker å motta.
+### Development
 
-## Teknologi
+1. Clone the repository and install packages `npm install`
+2. Copy environment variables and add PFX file in root. The keys and file are provided in a Keeper vault.
+3. Available commands:
 
-Vi benytter oss av NextJS 13 som rammeverk for applikasjonen med MUI som base
-for CSS og grunnleggende react komponenter. For støtte av QuadTrees vil vi bruke
-Leaflet.
-
-## Miljø
-
-### Nøkler
-
-For at vi skal kunne knytte apiet til interchange trenger vi at man setter de to miljøvariablene:
-
-`PFX_KEY_FILENAME` - som gir navnet på pfx nøkkel som ligger i roten av prosjektet.
-`PFX_PASSPHRASE\*\* - Som gir passphrase for å åpne nøkkel
-
-### Kopi av .env.local
+```bash
+npm run dev # Development mode
+npm run build # Generate optimized version
+npm run start # Start Node.js server
+```
 
 ```
+# Certificate
 PFX_KEY_FILENAME=
 PFX_PASSPHRASE=
-NODE_TLS_REJECT_UNAUTHORIZED='0'
-INTERCHANGE_URI=https://bouvet.pilotinterchange.eu:4141/
-NEXT_PUBLIC_NAPCORE_API_URI=http://localhost:3000/api/napcore/
+
+# Interchange
+INTERCHANGE_URI=
+NEXT_PUBLIC_INTERCHANGE_PREFIX=
+
+# NextAuth
+NEXTAUTH_SECRET=
+NEXTAUTH_URL=
+
+# Auth0
+AUTH0_CLIENT_ID=
+AUTH0_CLIENT_SECRET=
+AUTH0_ISSUER=
 ```
 
-## Leaflet
+### Docker
 
-- Leaflets external depency relies on browser APIs (window)
-- We need to use ssr option to disable server-rendering for the component
-- https://nextjs.org/docs/advanced-features/dynamic-import#with-no-ssr
-- https://stackoverflow.com/questions/57704196/leaflet-with-next-js
+1. Start Docker.
+2. Create and run a shell script with the following content. The keys are provided in a Keeper vault.
+
+```bash
+#!/bin/bash -eu
+
+docker run \
+              -p 3000:3000 \
+              -v <PATH_FILE>:/app/<FILENAME> \
+              -e PFX_KEY_FILENAME=<FILENAME> \
+              -e PFX_PASSPHRASE=<PASSPHRASE> \
+              -e INTERCHANGE_URI=<URI> \
+              -e INTERCHANGE_PREFIX=<PREFIX> \
+              -e NEXTAUTH_SECRET=<SECRET> \
+              -e AUTH0_CLIENT_ID=<CLIENT_ID> \
+              -e AUTH0_CLIENT_SECRET=<CLIENT_SECRET> \
+              -e AUTH0_ISSUER=<ISSUER> \
+              -e NEXTAUTH_URL=<URL> \
+              eu.gcr.io/nw-shared-w3ml/napcore-frontend
+```
+
+## Certificate signing request
+
+We use the JavaScript library PKI.js to create a CSR. The CSR is created client-side, Base64 encoded, and then sent as a request to the server. The server responds with the signed client certificate and CA certificates as Base64 encoded PEM files.
+
+![CSR Diagram](/doc/csr.png)
+
+## Authentication
+
+NextAuth.js is an open-source authentication solution for Next.js projects. It has built-in OAuth providers, and for this project, we are using auth0. Users are managed through the auth0 dashboard.
+
+Other providers can be added in […nextAuth].js
+
+```jsx
+providers: [
+    Auth0Provider({
+      clientId: process.env.AUTH0_CLIENT_ID,
+      clientSecret: process.env.AUTH0_CLIENT_SECRET,
+      issuer: process.env.AUTH0_ISSUER,
+    })
+  ]
+```
+
+### Callbacks
+
+Whenever a session is checked we add a commonName value to the session object, which prefixes the email with the interchange prefix. 
+This allows us to send the prefix as an environment variable, instead of bundling it in the build.
+
+```jsx
+callbacks: {
+    async session({ session, token }) {
+      session.user.commonName = process.env.INTERCHANGE_PREFIX + token.email;
+
+      return session;
+    }
+  }
+```
+
+### Middleware
+
+The middleware.ts allows us to run code before a request is completed. With NextAuth we can export a config object with a regex matcher, to specify allowed routings for an unauthenticated user.
+
+Additionally, we check in the backend (for frontend), that all of these criteria are met:
+
+- Does the user have a valid token?
+- Does the user have a valid session?
+- Does the authenticated user equal the user on the request?
+
+If so, continue with the request or respond with an HTTP 403.
+
+## Styles
+
+### CSS
+
+To avoid unintended styling we do not use global CSS, and all styling is done at individual components with inline or styled components.
+
+### Theme
+
+We have created two themes for Trafficdata and Transportportal. They all include a set of shared colors, and their specific colors and fonts. The theme can be changed by importing it and specifying it
+in `_app.tsx` , as well as changing the title in `Navbar.tsx`.
+
+```jsx
+import { trafficdata, transportportal } from "@/theme";
+
+<ThemeProvider theme={trafficdata}>
+```
+
+Adjustments to the theme should be performed at `colors.ts` , `fonts.ts` and `trafficdata.ts` / `transportportal.ts` .

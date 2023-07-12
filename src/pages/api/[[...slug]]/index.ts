@@ -55,8 +55,7 @@ export const removeSubscription: basicDeleteFunction = async (
   params: basicDeleteParams
 ) => {
   const res = await deleteNapcoreSubscriptions(params);
-  const subscription = await res.data;
-  return [res.status, subscription];
+  return [res.status];
 };
 
 const fetchNetworkCapabilities = async (params: basicGetParams) => {
@@ -161,22 +160,25 @@ const findHandler: (params: any) =>
   }
 };
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+const isAuthenticated = async (req: NextApiRequest, res: NextApiResponse) => {
   const secret = process.env.NEXTAUTH_SECRET;
-
   const token = await getToken({ req, secret, raw: true });
   const session = await getServerSession(req, res, authOptions);
 
-  if (
+  return !(
     !token ||
     !session ||
     !req.query.slug ||
     !session.user ||
     session.user.commonName !== req.query.slug[0]
-  ) {
+  );
+};
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (!(await isAuthenticated(req, res))) {
     return res
       .status(403)
       .json({ description: `Access denied - You don't have permission` });

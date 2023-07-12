@@ -43,6 +43,7 @@ export default function Login({}: InferGetServerSidePropsType<
         color={"buttonThemeColor"}
         sx={{ textTransform: "none", width: 200, alignSelf: "center" }}
         onClick={() => {
+          /*TODO: get from props*/
           void signIn("auth0");
         }}
       >
