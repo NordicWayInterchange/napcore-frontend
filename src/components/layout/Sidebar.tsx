@@ -28,7 +28,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { IPages } from "@/interface/IPages";
 
 const MAIN_PAGES: Array<IPages> = [
-  { text: "My intersection", url: "/", icon: <HouseIcon /> },
+  { text: "Home", url: "/", icon: <HouseIcon /> },
   { text: "Subscriptions", url: "/subscriptions", icon: <SubscriptionsIcon /> },
   {
     text: "Network capabilities",

@@ -70,7 +70,7 @@ export default function Subscriptions() {
     {
       ...dataGridTemplate,
       field: "capabilityMatches",
-      headerName: "Capability Matches",
+      headerName: "Capability matches",
     },
     {
       ...dataGridTemplate,
