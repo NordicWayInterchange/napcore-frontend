@@ -29,6 +29,7 @@ export default function DynamicMap(props: Props) {
         [90, 180],
       ]}
       scrollWheelZoom={true}
+      doubleClickZoom={false}
       style={{ height: SIZE, width: SIZE }}
     >
       <TileLayer

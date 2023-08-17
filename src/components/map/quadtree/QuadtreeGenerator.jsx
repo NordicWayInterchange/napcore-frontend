@@ -24,25 +24,25 @@ export default function QuadtreeGenerator({
   const [prevHash, setPrevHash] = useState();
   const [mousePosition, setMousePosition] = useState();
 
-  useEffect(() => {
-    if (quadtree.length && !Object.keys(hashAndRect).length) {
-      const rectangles = {};
+  // useEffect(() => {
+  //   if (quadtree.length && !Object.keys(hashAndRect).length) {
+  //     const rectangles = {};
 
-      for (let i = 0; i < quadtree.length; i++) {
-        let hash = quadtree[i];
-        let bbox = adapter.bbox(hash);
+  //     for (let i = 0; i < quadtree.length; i++) {
+  //       let hash = quadtree[i];
+  //       let bbox = adapter.bbox(hash);
 
-        let bounds = L.latLngBounds(
-          L.latLng(bbox.maxlat, bbox.minlng),
-          L.latLng(bbox.minlat, bbox.maxlng)
-        );
+  //       let bounds = L.latLngBounds(
+  //         L.latLng(bbox.maxlat, bbox.minlng),
+  //         L.latLng(bbox.minlat, bbox.maxlng)
+  //       );
 
-        rectangles[hash] = drawSelectedRect(bounds, hash);
-      }
-      setHashAndRect(rectangles);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quadtree]);
+  //       rectangles[hash] = drawSelectedRect(bounds, hash);
+  //     }
+  //     setHashAndRect(rectangles);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [quadtree]);
 
   // TODO: Add conditional for !interactive
   useMapEvents({
@@ -50,6 +50,10 @@ export default function QuadtreeGenerator({
       setMousePosition(event);
       updateLayer();
     },
+    // mouse(event) {
+    //   console.log("move end");
+    //   updateLayer(true);
+    // },
   });
 
   const drawSelectedRect = (bounds, hash) => {
@@ -59,6 +63,8 @@ export default function QuadtreeGenerator({
         hash={hash}
         bounds={bounds}
         pathOptions={rectangleStyleSelect}
+        interactive={false}
+        // style={{ zIndex: 0 }}
       />
     );
   };
@@ -143,23 +149,18 @@ export default function QuadtreeGenerator({
 
   useEffect(() => {
     updateLayer(true);
-    console.log(selectedLayers);
   }, [selectedLayers]);
 
   return (
     <>
-      <LayerGroup>
-        {layers.length &&
-          layers.map((layer) => {
-            return layer;
-          })}
-      </LayerGroup>
-      <LayerGroup>
-        {selectedLayers.length &&
-          selectedLayers.map((layer) => {
-            return layer;
-          })}
-      </LayerGroup>
+      {layers.length &&
+        layers.map((layer) => {
+          return layer;
+        })}
+      {selectedLayers.length &&
+        selectedLayers.map((layer) => {
+          return layer;
+        })}
     </>
   );
 }
