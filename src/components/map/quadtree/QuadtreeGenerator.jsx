@@ -20,7 +20,6 @@ export default function QuadtreeGenerator({
 
   const [layers, setLayers] = useState([]);
   const [selectedLayers, setSelectedLayers] = useState([]);
-  const [hashAndRect, setHashAndRect] = useState({});
   const [prevHash, setPrevHash] = useState();
   const [mousePosition, setMousePosition] = useState();
 
@@ -37,7 +36,6 @@ export default function QuadtreeGenerator({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quadtree]);
 
-  // TODO: Add conditional for !interactive
   useMapEvents({
     mousemove(event) {
       if (interactive) {
@@ -95,6 +93,24 @@ export default function QuadtreeGenerator({
   const layerClickHandler = (event) => {
     const hash = event.target.options.hash;
     const bounds = event.target.getBounds();
+    const allHashes = selectedLayers.map((layer) => layer.key);
+
+    const isChild = allHashes.filter(
+      (currentHash) =>
+        currentHash !== hash &&
+        (currentHash.startsWith(hash) || hash.startsWith(currentHash))
+    );
+
+    if (isChild.length) {
+      L.popup()
+        .setLatLng(bounds.getCenter())
+        .setContent(
+          "<p>Selection contains already added tiles.</br>Zoom in/out and click the already selected tiles to remove them.</p>"
+        )
+        .openOn(map);
+
+      return;
+    }
 
     const rectangle = drawSelectedRect(bounds, hash);
 
