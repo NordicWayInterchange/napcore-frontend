@@ -18,7 +18,6 @@ export default function QuadtreeGenerator({
   const map = useMap();
   const adapter = quadAdapter(map);
 
-  const [rectangles, setRectangles] = useState();
   const [layers, setLayers] = useState({});
   const [hashAndRect, setHashAndRect] = useState({});
 
@@ -48,7 +47,6 @@ export default function QuadtreeGenerator({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quadtree]);
 
-  // drawing functions
   const drawLayer = (adapter, prefix, showDigit) => {
     return adapter.range.map(function (n) {
       const hash = "" + prefix + n;
@@ -58,7 +56,23 @@ export default function QuadtreeGenerator({
         L.latLng(bbox.minlat, bbox.maxlng)
       );
 
-      return drawRect(adapter, bounds, hash, showDigit);
+      return (
+        <Rectangle
+          key={hash}
+          hash={hash}
+          bounds={bounds}
+          pathOptions={rectangleStyle}
+          eventHandlers={{
+            mouseover: (event) => {
+              event.target.setStyle(rectangleStyleHover);
+            },
+            mouseout: (event) => {
+              event.target.setStyle(rectangleStyle);
+            },
+            // click: rectangleClickHandler,
+          }}
+        />
+      );
     });
   };
 
@@ -101,31 +115,6 @@ export default function QuadtreeGenerator({
   //   [hashAndRect, quadtreeCallback]
   // );
 
-  const drawRect = (adapter, bounds, hash, showDigit) => {
-    const hashAndSize = hash + " len:" + hash.length;
-    const labels = adapter.labels(hashAndSize);
-
-    return (
-      <Rectangle
-        key={hash}
-        hash={hash}
-        bounds={bounds}
-        pathOptions={rectangleStyle}
-        eventHandlers={{
-          mouseover: (event) => {
-            event.target.setStyle(rectangleStyleHover);
-          },
-          // click: rectangleClickHandler,
-        }}
-      >
-        {/* <Tooltip sticky>{labels.long}</Tooltip> */}
-        {/* <Tooltip direction="right" offset={[0, 20]} opacity={1} permanent>
-          {hashAndSize}
-        </Tooltip> */}
-      </Rectangle>
-    );
-  };
-
   function enterHash(hashes) {
     const rectangles = {};
 
@@ -157,33 +146,28 @@ export default function QuadtreeGenerator({
       const currentHash = adapter.encode(center, hashLength);
 
       let layers = adapter.layers(currentHash, zoom);
-      setLayers(layers);
+
+      const rectangles = Object.keys(layers).map((layerKey) =>
+        drawLayer(adapter, layerKey, layers[layerKey])
+      );
+
+      setLayers(rectangles);
     },
     [adapter, map, setLayers]
   );
 
-  useEffect(() => {
-    const rectangles = Object.keys(layers).map((layerKey) =>
-      drawLayer(adapter, layerKey, layers[layerKey])
-    );
-    setRectangles(rectangles);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [layers]);
-
   return (
     <LayerGroup>
-      {rectangles &&
-        rectangles.map((i) => {
-          return i.map((j) => {
-            return j;
-          });
+      {layers.length &&
+        layers.map((layer) => {
+          return layer;
         })}
-      <LayerGroup>
-        {hashAndRect &&
-          Object.values(hashAndRect).map((i) => {
-            return i;
-          })}
-      </LayerGroup>
     </LayerGroup>
+    // <LayerGroup>
+    //   {hashAndRect &&
+    //     Object.values(hashAndRect).map((i) => {
+    //       return i;
+    //     })}
+    // </LayerGroup>
   );
 }
