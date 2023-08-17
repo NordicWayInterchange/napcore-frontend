@@ -79,7 +79,15 @@ export default function QuadtreeGenerator({
 
     const rectangle = drawSelectedRect(bounds, hash);
 
-    setSelectedLayers([...selectedLayers, rectangle]);
+    const exists = selectedLayers.filter((obj) => {
+      return obj.key === hash;
+    });
+
+    if (exists.length) {
+      setSelectedLayers(selectedLayers.filter((obj) => obj.key !== hash));
+    } else {
+      setSelectedLayers([...selectedLayers, rectangle]);
+    }
   };
 
   const updateLayer = (force = false) => {
@@ -135,6 +143,7 @@ export default function QuadtreeGenerator({
 
   useEffect(() => {
     updateLayer(true);
+    console.log(selectedLayers);
   }, [selectedLayers]);
 
   return (
@@ -152,12 +161,5 @@ export default function QuadtreeGenerator({
           })}
       </LayerGroup>
     </>
-
-    // <LayerGroup>
-    //   {hashAndRect &&
-    //     Object.values(hashAndRect).map((i) => {
-    //       return i;
-    //     })}
-    // </LayerGroup>
   );
 }
