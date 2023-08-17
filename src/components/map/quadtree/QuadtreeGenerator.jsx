@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useCallback } from "react";
 import L from "leaflet";
-import { useMap, Rectangle, LayerGroup } from "react-leaflet";
+import { useMap, Rectangle, LayerGroup, useMapEvents } from "react-leaflet";
 import {
   rectangleStyle,
   rectangleStyleHover,
   rectangleStyleSelect,
 } from "./RectangleStyles";
 import quadAdapter from "../adapters/QuadAdapter";
+import { isHashChild } from "./helpers";
 
 export default function QuadtreeGenerator({
   quadtree,
@@ -20,6 +21,14 @@ export default function QuadtreeGenerator({
   const [rectangles, setRectangles] = useState();
   const [layers, setLayers] = useState({});
   const [hashAndRect, setHashAndRect] = useState({});
+
+  // TODO: Add conditional for !interactive
+  useMapEvents({
+    mousemove(event) {
+      const coords = { lat: event.latlng.lat, lng: event.latlng.lng };
+      updateLayer(coords);
+    },
+  });
 
   const drawSelectedRect = (bounds, hash) => {
     return (
@@ -53,44 +62,44 @@ export default function QuadtreeGenerator({
     });
   };
 
-  const rectangleClickHandler = useCallback(
-    (event) => {
-      const hash = event.target.options.hash;
-      const bounds = event.target.getBounds();
-      const selectedHashes = Object.keys(hashAndRect);
+  // const rectangleClickHandler = useCallback(
+  //   (event) => {
+  //     const hash = event.target.options.hash;
+  //     const bounds = event.target.getBounds();
+  //     const selectedHashes = Object.keys(hashAndRect);
 
-      const isChild = selectedHashes.filter(
-        (currentHash) =>
-          currentHash !== hash &&
-          (currentHash.startsWith(hash) || hash.startsWith(currentHash))
-      );
+  //     const isChild = selectedHashes.filter(
+  //       (currentHash) =>
+  //         currentHash !== hash &&
+  //         (currentHash.startsWith(hash) || hash.startsWith(currentHash))
+  //     );
 
-      if (isChild.length) {
-        const popup = L.popup()
-          .setLatLng(bounds.getCenter())
-          .setContent(
-            "<p>Selection contains already added tiles.</br>Zoom in/out and click the already selected tiles to remove them.</p>"
-          )
-          .openOn(map);
+  //     if (isChild.length) {
+  //       const popup = L.popup()
+  //         .setLatLng(bounds.getCenter())
+  //         .setContent(
+  //           "<p>Selection contains already added tiles.</br>Zoom in/out and click the already selected tiles to remove them.</p>"
+  //         )
+  //         .openOn(map);
 
-        return;
-      }
+  //       return;
+  //     }
 
-      let returned;
-      if (hash in hashAndRect) {
-        const { [hash]: removedHash, ...rest } = hashAndRect;
-        returned = rest;
-      } else {
-        const rectangle = drawSelectedRect(bounds, hash);
-        returned = { ...hashAndRect, [hash]: rectangle };
-      }
-      setHashAndRect(returned);
-      quadtreeCallback(Object.keys(returned));
-      controlsCallback(Object.keys(returned));
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [hashAndRect, quadtreeCallback]
-  );
+  //     let returned;
+  //     if (hash in hashAndRect) {
+  //       const { [hash]: removedHash, ...rest } = hashAndRect;
+  //       returned = rest;
+  //     } else {
+  //       const rectangle = drawSelectedRect(bounds, hash);
+  //       returned = { ...hashAndRect, [hash]: rectangle };
+  //     }
+  //     setHashAndRect(returned);
+  //     quadtreeCallback(Object.keys(returned));
+  //     controlsCallback(Object.keys(returned));
+  //   },
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  //   [hashAndRect, quadtreeCallback]
+  // );
 
   const drawRect = (adapter, bounds, hash, showDigit) => {
     const hashAndSize = hash + " len:" + hash.length;
@@ -106,7 +115,7 @@ export default function QuadtreeGenerator({
           mouseover: (event) => {
             event.target.setStyle(rectangleStyleHover);
           },
-          click: rectangleClickHandler,
+          // click: rectangleClickHandler,
         }}
       >
         {/* <Tooltip sticky>{labels.long}</Tooltip> */}
@@ -152,36 +161,6 @@ export default function QuadtreeGenerator({
     },
     [adapter, map, setLayers]
   );
-
-  const onMove = useCallback(
-    (e) => {
-      const coords = { lat: e.latlng.lat, lng: e.latlng.lng };
-      setRectangles(updateLayer(coords));
-    },
-    [updateLayer]
-  );
-
-  const onZoom = useCallback(() => {
-    setRectangles(updateLayer(map.getCenter()));
-  }, [map, updateLayer]);
-
-  useEffect(() => {
-    if (!map) return;
-
-    if (!interactive) return;
-
-    map.on("mousemove", onMove);
-    return () => map.off("mousemove", onMove);
-  }, [map, onMove, interactive]);
-
-  useEffect(() => {
-    if (!map) return;
-
-    if (!interactive) return;
-
-    map.on("zoomend", onZoom);
-    return () => map.off("zoomend", onZoom);
-  }, [map, onZoom, interactive]);
 
   useEffect(() => {
     const rectangles = Object.keys(layers).map((layerKey) =>
