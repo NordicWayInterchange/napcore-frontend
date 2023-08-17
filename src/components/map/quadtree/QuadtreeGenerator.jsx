@@ -20,11 +20,22 @@ export default function QuadtreeGenerator({
 
   const [layers, setLayers] = useState({});
   const [hashAndRect, setHashAndRect] = useState({});
+  const [prevHash, setPrevHash] = useState();
+  let mousePosition;
+  let currentHash;
+
+  useEffect(() => {
+    if (quadtree.length && !Object.keys(hashAndRect).length) {
+      enterHash(quadtree);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quadtree]);
 
   // TODO: Add conditional for !interactive
   useMapEvents({
     mousemove(event) {
       const coords = { lat: event.latlng.lat, lng: event.latlng.lng };
+      mousePosition = event;
       updateLayer(coords);
     },
   });
@@ -40,40 +51,15 @@ export default function QuadtreeGenerator({
     );
   };
 
-  useEffect(() => {
-    if (quadtree.length && !Object.keys(hashAndRect).length) {
-      enterHash(quadtree);
+  const generateCurrentHash = (precision) => {
+    var center = map.getCenter();
+
+    if (mousePosition) {
+      center = mousePosition.latlng;
+      // console.log( center );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quadtree]);
 
-  const drawLayer = (adapter, prefix, showDigit) => {
-    return adapter.range.map(function (n) {
-      const hash = "" + prefix + n;
-      const bbox = adapter.bbox(hash);
-      const bounds = L.latLngBounds(
-        L.latLng(bbox.maxlat, bbox.minlng),
-        L.latLng(bbox.minlat, bbox.maxlng)
-      );
-
-      return (
-        <Rectangle
-          key={hash}
-          hash={hash}
-          bounds={bounds}
-          pathOptions={rectangleStyle}
-          eventHandlers={{
-            mouseover: (event) => {
-              event.target.setStyle(rectangleStyleHover);
-            },
-            mouseout: (event) => {
-              event.target.setStyle(rectangleStyle);
-            },
-            // click: rectangleClickHandler,
-          }}
-        />
-      );
-    });
+    return adapter.encode(center, precision);
   };
 
   // const rectangleClickHandler = useCallback(
@@ -132,29 +118,59 @@ export default function QuadtreeGenerator({
     setHashAndRect(rectangles);
   }
 
-  // event handling on the map
-  const updateLayer = useCallback(
-    (coords) => {
-      const zoom = map.getZoom();
-      let center = map.getCenter();
-      const hashLength = zoom + 1;
+  const updateLayer = (coords) => {
+    const zoom = map.getZoom();
+    const hashLength = zoom + 1;
 
-      if (coords) {
-        center = coords;
-      }
+    currentHash = generateCurrentHash(hashLength);
+    const hashPrefix = currentHash.substr(0, hashLength);
 
-      const currentHash = adapter.encode(center, hashLength);
+    // console.log("prevHash", prevHash);
+    // console.log("hashPrefix", hashPrefix);
 
+    if (prevHash != hashPrefix) {
+      // console.log("NO EQUAL");
       let layers = adapter.layers(currentHash, zoom);
 
+      console.log(layers);
       const rectangles = Object.keys(layers).map((layerKey) =>
         drawLayer(adapter, layerKey, layers[layerKey])
       );
 
       setLayers(rectangles);
-    },
-    [adapter, map, setLayers]
-  );
+    }
+
+    setPrevHash(hashPrefix);
+  };
+
+  const drawLayer = (adapter, prefix, showDigit) => {
+    return adapter.range.map(function (n) {
+      const hash = "" + prefix + n;
+      const bbox = adapter.bbox(hash);
+      const bounds = L.latLngBounds(
+        L.latLng(bbox.maxlat, bbox.minlng),
+        L.latLng(bbox.minlat, bbox.maxlng)
+      );
+
+      return (
+        <Rectangle
+          key={hash}
+          hash={hash}
+          bounds={bounds}
+          pathOptions={rectangleStyle}
+          eventHandlers={{
+            mouseover: (event) => {
+              event.target.setStyle(rectangleStyleHover);
+            },
+            mouseout: (event) => {
+              event.target.setStyle(rectangleStyle);
+            },
+            // click: rectangleClickHandler,
+          }}
+        />
+      );
+    });
+  };
 
   return (
     <LayerGroup>
