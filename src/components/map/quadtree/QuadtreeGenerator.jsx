@@ -24,36 +24,27 @@ export default function QuadtreeGenerator({
   const [prevHash, setPrevHash] = useState();
   const [mousePosition, setMousePosition] = useState();
 
-  // useEffect(() => {
-  //   if (quadtree.length && !Object.keys(hashAndRect).length) {
-  //     const rectangles = {};
+  useEffect(() => {
+    if (!interactive) return;
 
-  //     for (let i = 0; i < quadtree.length; i++) {
-  //       let hash = quadtree[i];
-  //       let bbox = adapter.bbox(hash);
+    updateLayer(true);
+  }, [selectedLayers]);
 
-  //       let bounds = L.latLngBounds(
-  //         L.latLng(bbox.maxlat, bbox.minlng),
-  //         L.latLng(bbox.minlat, bbox.maxlng)
-  //       );
-
-  //       rectangles[hash] = drawSelectedRect(bounds, hash);
-  //     }
-  //     setHashAndRect(rectangles);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [quadtree]);
+  useEffect(() => {
+    if (quadtree.length && !selectedLayers.length) {
+      generateSelectedLayersFromQuadtree();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quadtree]);
 
   // TODO: Add conditional for !interactive
   useMapEvents({
     mousemove(event) {
-      setMousePosition(event);
-      updateLayer();
+      if (interactive) {
+        setMousePosition(event);
+        updateLayer();
+      }
     },
-    // mouse(event) {
-    //   console.log("move end");
-    //   updateLayer(true);
-    // },
   });
 
   const drawSelectedRect = (bounds, hash) => {
@@ -64,7 +55,6 @@ export default function QuadtreeGenerator({
         bounds={bounds}
         pathOptions={rectangleStyleSelect}
         interactive={false}
-        // style={{ zIndex: 0 }}
       />
     );
   };
@@ -77,6 +67,29 @@ export default function QuadtreeGenerator({
     }
 
     return adapter.encode(center, precision);
+  };
+
+  const generateSelectedLayersFromQuadtree = () => {
+    const rectangles = [];
+
+    quadtree.forEach((hash) => {
+      const bbox = adapter.bbox(hash);
+      const bounds = L.latLngBounds(
+        L.latLng(bbox.maxlat, bbox.minlng),
+        L.latLng(bbox.minlat, bbox.maxlng)
+      );
+
+      rectangles.push(
+        <Rectangle
+          key={hash}
+          hash={hash}
+          bounds={bounds}
+          pathOptions={rectangleStyleSelect}
+        />
+      );
+    });
+
+    setSelectedLayers(rectangles);
   };
 
   const layerClickHandler = (event) => {
@@ -146,10 +159,6 @@ export default function QuadtreeGenerator({
       );
     });
   };
-
-  useEffect(() => {
-    updateLayer(true);
-  }, [selectedLayers]);
 
   return (
     <>
