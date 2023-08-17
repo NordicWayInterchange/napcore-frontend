@@ -18,15 +18,28 @@ export default function QuadtreeGenerator({
   const map = useMap();
   const adapter = quadAdapter(map);
 
-  const [layers, setLayers] = useState({});
+  const [layers, setLayers] = useState([]);
+  const [selectedLayers, setSelectedLayers] = useState([]);
   const [hashAndRect, setHashAndRect] = useState({});
   const [prevHash, setPrevHash] = useState();
-  let mousePosition;
-  let currentHash;
+  const [mousePosition, setMousePosition] = useState();
 
   useEffect(() => {
     if (quadtree.length && !Object.keys(hashAndRect).length) {
-      enterHash(quadtree);
+      const rectangles = {};
+
+      for (let i = 0; i < quadtree.length; i++) {
+        let hash = quadtree[i];
+        let bbox = adapter.bbox(hash);
+
+        let bounds = L.latLngBounds(
+          L.latLng(bbox.maxlat, bbox.minlng),
+          L.latLng(bbox.minlat, bbox.maxlng)
+        );
+
+        rectangles[hash] = drawSelectedRect(bounds, hash);
+      }
+      setHashAndRect(rectangles);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quadtree]);
@@ -34,9 +47,8 @@ export default function QuadtreeGenerator({
   // TODO: Add conditional for !interactive
   useMapEvents({
     mousemove(event) {
-      const coords = { lat: event.latlng.lat, lng: event.latlng.lng };
-      mousePosition = event;
-      updateLayer(coords);
+      setMousePosition(event);
+      updateLayer();
     },
   });
 
@@ -56,83 +68,30 @@ export default function QuadtreeGenerator({
 
     if (mousePosition) {
       center = mousePosition.latlng;
-      // console.log( center );
     }
 
     return adapter.encode(center, precision);
   };
 
-  // const rectangleClickHandler = useCallback(
-  //   (event) => {
-  //     const hash = event.target.options.hash;
-  //     const bounds = event.target.getBounds();
-  //     const selectedHashes = Object.keys(hashAndRect);
+  const layerClickHandler = (event) => {
+    const hash = event.target.options.hash;
+    const bounds = event.target.getBounds();
 
-  //     const isChild = selectedHashes.filter(
-  //       (currentHash) =>
-  //         currentHash !== hash &&
-  //         (currentHash.startsWith(hash) || hash.startsWith(currentHash))
-  //     );
+    const rectangle = drawSelectedRect(bounds, hash);
 
-  //     if (isChild.length) {
-  //       const popup = L.popup()
-  //         .setLatLng(bounds.getCenter())
-  //         .setContent(
-  //           "<p>Selection contains already added tiles.</br>Zoom in/out and click the already selected tiles to remove them.</p>"
-  //         )
-  //         .openOn(map);
+    setSelectedLayers([...selectedLayers, rectangle]);
+  };
 
-  //       return;
-  //     }
-
-  //     let returned;
-  //     if (hash in hashAndRect) {
-  //       const { [hash]: removedHash, ...rest } = hashAndRect;
-  //       returned = rest;
-  //     } else {
-  //       const rectangle = drawSelectedRect(bounds, hash);
-  //       returned = { ...hashAndRect, [hash]: rectangle };
-  //     }
-  //     setHashAndRect(returned);
-  //     quadtreeCallback(Object.keys(returned));
-  //     controlsCallback(Object.keys(returned));
-  //   },
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   [hashAndRect, quadtreeCallback]
-  // );
-
-  function enterHash(hashes) {
-    const rectangles = {};
-
-    for (let i = 0; i < hashes.length; i++) {
-      let hash = hashes[i];
-      let bbox = adapter.bbox(hash);
-
-      let bounds = L.latLngBounds(
-        L.latLng(bbox.maxlat, bbox.minlng),
-        L.latLng(bbox.minlat, bbox.maxlng)
-      );
-
-      rectangles[hash] = drawSelectedRect(bounds, hash);
-    }
-    setHashAndRect(rectangles);
-  }
-
-  const updateLayer = (coords) => {
+  const updateLayer = (force = false) => {
     const zoom = map.getZoom();
     const hashLength = zoom + 1;
+    const currentHash = generateCurrentHash(hashLength);
+    const hashPrefix = currentHash.substr(0, hashLength); // TODO: Deprecated
 
-    currentHash = generateCurrentHash(hashLength);
-    const hashPrefix = currentHash.substr(0, hashLength);
-
-    // console.log("prevHash", prevHash);
-    // console.log("hashPrefix", hashPrefix);
-
-    if (prevHash != hashPrefix) {
-      // console.log("NO EQUAL");
+    if (prevHash != hashPrefix || force == true) {
       let layers = adapter.layers(currentHash, zoom);
 
-      console.log(layers);
+      console.log(Math.random(), layers);
       const rectangles = Object.keys(layers).map((layerKey) =>
         drawLayer(adapter, layerKey, layers[layerKey])
       );
@@ -165,20 +124,35 @@ export default function QuadtreeGenerator({
             mouseout: (event) => {
               event.target.setStyle(rectangleStyle);
             },
-            // click: rectangleClickHandler,
+            click: (event) => {
+              layerClickHandler(event);
+            },
           }}
         />
       );
     });
   };
 
+  useEffect(() => {
+    updateLayer(true);
+  }, [selectedLayers]);
+
   return (
-    <LayerGroup>
-      {layers.length &&
-        layers.map((layer) => {
-          return layer;
-        })}
-    </LayerGroup>
+    <>
+      <LayerGroup>
+        {layers.length &&
+          layers.map((layer) => {
+            return layer;
+          })}
+      </LayerGroup>
+      <LayerGroup>
+        {selectedLayers.length &&
+          selectedLayers.map((layer) => {
+            return layer;
+          })}
+      </LayerGroup>
+    </>
+
     // <LayerGroup>
     //   {hashAndRect &&
     //     Object.values(hashAndRect).map((i) => {
