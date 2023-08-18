@@ -22,7 +22,7 @@ import { causeCodes as causeCodesList } from "@/lib/data/causeCodes";
 import { CertificateSignResponse } from "@/types/napcore/certificate";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
-const logger = require("pino")();
+import { logger } from "@/lib/logger";
 
 const fetchCapabilityCounter = async (params: basicGetParams) => {
   const [status, body] = await fetchNetworkCapabilities(params);
@@ -223,20 +223,20 @@ export default async function handler(
         logger
           .child({
             params,
+            method: req.method,
             httpStatus: status,
-            data,
+            url: req.url,
             user: session.user,
+            slug: req.query.slug,
           })
           .info();
 
         return res.status(status).json(data);
       } catch (error: any) {
-        logger
-          .child({
-            errorStatus: error.response.status,
-            errorData: error.response.data,
-          })
-          .info();
+        logger.error({
+          errorStatus: error.response.status,
+          errorData: error.response.data,
+        });
 
         return res.status(error.response.status).json(error.response.data);
       }

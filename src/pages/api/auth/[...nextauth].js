@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import Auth0Provider from "next-auth/providers/auth0";
-const logger = require("pino")();
+import { logger } from "@/lib/logger";
 
 export const authOptions = {
   /**
