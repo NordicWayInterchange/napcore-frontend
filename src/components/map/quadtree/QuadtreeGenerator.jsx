@@ -7,7 +7,6 @@ import {
   rectangleStyleSelect,
 } from "./RectangleStyles";
 import quadAdapter from "../adapters/QuadAdapter";
-import { isHashChild } from "./helpers";
 
 export default function QuadtreeGenerator({
   quadtree,
@@ -42,6 +41,9 @@ export default function QuadtreeGenerator({
         setMousePosition(event);
         updateLayer();
       }
+    },
+    zoomend() {
+      if (interactive) updateLayer();
     },
   });
 
@@ -118,23 +120,29 @@ export default function QuadtreeGenerator({
       return obj.key === hash;
     });
 
+    let returned;
     if (exists.length) {
-      setSelectedLayers(selectedLayers.filter((obj) => obj.key !== hash));
+      returned = selectedLayers.filter((obj) => obj.key !== hash);
     } else {
-      setSelectedLayers([...selectedLayers, rectangle]);
+      returned = [...selectedLayers, rectangle];
     }
+
+    setSelectedLayers(returned);
+
+    const layerHashes = returned.map((layer) => layer.key);
+    quadtreeCallback(layerHashes);
+    controlsCallback(layerHashes);
   };
 
   const updateLayer = (force = false) => {
     const zoom = map.getZoom();
     const hashLength = zoom + 1;
     const currentHash = generateCurrentHash(hashLength);
-    const hashPrefix = currentHash.substr(0, hashLength); // TODO: Deprecated
+    const hashPrefix = currentHash.substring(0, hashLength);
 
     if (prevHash != hashPrefix || force == true) {
       let layers = adapter.layers(currentHash, zoom);
 
-      console.log(Math.random(), layers);
       const rectangles = Object.keys(layers).map((layerKey) =>
         drawLayer(adapter, layerKey, layers[layerKey])
       );
