@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import Auth0Provider from "next-auth/providers/auth0";
+const logger = require("pino")();
 
 export const authOptions = {
   /**
@@ -33,7 +34,30 @@ export const authOptions = {
       return session;
     },
   },
+  events: {
+    async signIn(message) {
+      const { email, name } = message.user;
+      const { provider, type } = message.account;
 
+      logger.child({ provider, type, name, email }).info("User logged in");
+    },
+    async signOut(message) {
+      const { email, name } = message.token;
+
+      logger.child({ name, email }).info("User logged out");
+    },
+  },
+  logger: {
+    error(code, metadata) {
+      logger.error({ code, metadata });
+    },
+    warn(code) {
+      logger.warn({ code });
+    },
+    debug(code) {
+      logger.debug({ code });
+    },
+  },
   /**
    * @Description Add custom pages for Auth routes
    */
