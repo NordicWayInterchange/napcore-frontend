@@ -20,12 +20,8 @@ jobs:
         credentials_json: ${{ secrets.SVV_GITHUB_ACTIONS_PUBLISHER_KEY }}
     - name: Configure Docker/GCP
       run: gcloud auth configure-docker
-    - name: Test new image tag
-      run: echo "NEW_IMAGE_TAG=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
-    - name: Output new image tag
-      run: echo $NEW_IMAGE_TAG
     - name: Create tag
-      run: echo "IMAGE_TAG=$(date +%s)" >> "$GITHUB_ENV"
+      run: echo "IMAGE_TAG=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag eu.gcr.io/nw-shared-w3ml/napcore-frontend --tag eu.gcr.io/nw-shared-w3ml/napcore-frontend:${{ env.IMAGE_TAG }}
     - name: Push docker image
