@@ -21,7 +21,7 @@ jobs:
     - name: Configure Docker/GCP
       run: gcloud auth configure-docker
     - name: Test new image tag
-      run: echo "NEW_IMAGE_TAG=$(git rev-parse --abbrev-ref HEAD)" >> "$GITHUB_ENV"
+      run: echo "NEW_IMAGE_TAG=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
     - name: Output new image tag
       run: echo $NEW_IMAGE_TAG
     - name: Create tag
