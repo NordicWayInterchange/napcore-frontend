@@ -16,7 +16,6 @@ export const getTLSAgent = () => {
   const options = {
     pfx,
     passphrase,
-    rejectUnauthorized: false,
   };
   return new https.Agent(options);
 };
