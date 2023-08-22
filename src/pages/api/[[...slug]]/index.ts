@@ -22,6 +22,7 @@ import { causeCodes as causeCodesList } from "@/lib/data/causeCodes";
 import { CertificateSignResponse } from "@/types/napcore/certificate";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { logger } from "@/lib/logger";
 
 const fetchCapabilityCounter = async (params: basicGetParams) => {
   const [status, body] = await fetchNetworkCapabilities(params);
@@ -178,7 +179,16 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const session = await getServerSession(req, res, authOptions);
+
   if (!(await isAuthenticated(req, res))) {
+    logger.info(
+      "Access denied - " +
+        "User with email: " +
+        session.user.email +
+        ", don't have permission to perform this action"
+    );
+
     return res
       .status(403)
       .json({ description: `Access denied - You don't have permission` });
@@ -209,11 +219,30 @@ export default async function handler(
       try {
         const { fn, params } = executer;
         const [status, data] = await fn(params);
+
+        logger
+          .child({
+            params,
+            method: req.method,
+            httpStatus: status,
+            url: req.url,
+            user: session.user,
+            slug: req.query.slug,
+          })
+          .info();
+
         return res.status(status).json(data);
       } catch (error: any) {
+        logger.error({
+          errorStatus: error.response.status,
+          errorData: error.response.data,
+        });
+
         return res.status(error.response.status).json(error.response.data);
       }
     }
   }
+
+  logger.info("Page not found: " + urlPath);
   return res.status(404).json({ description: `Page not found: ${urlPath}` });
 }

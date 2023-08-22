@@ -26,6 +26,7 @@ export default function QuadtreeGenerator({
     if (!interactive) return;
 
     updateLayer(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedLayers]);
 
   useEffect(() => {
