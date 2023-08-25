@@ -1,7 +1,7 @@
 import https from "https";
 import fs from "fs";
 import path from "path";
-import { logger } from "../logger";
+const logger = require("../logger");
 
 export const getTLSAgent = () => {
   const pfxName = process.env.PFX_KEY_FILENAME || "";
