@@ -19,14 +19,10 @@ export const authOptions = {
     }),
   ],
 
-  /**
-   * @Description Secret used to encrypt JWT
-   */
+  session: {
+    maxAge: 24 * 60 * 60,
+  },
   secret: process.env.NEXTAUTH_SECRET,
-
-  /**
-   * @Description Extend the Session object
-   */
   callbacks: {
     async session({ session, token }) {
       session.user.commonName = process.env.INTERCHANGE_PREFIX + token.email;
@@ -58,9 +54,6 @@ export const authOptions = {
       logger.debug({ code });
     },
   },
-  /**
-   * @Description Add custom pages for Auth routes
-   */
   pages: {
     signIn: "/login",
   },
