@@ -1,8 +1,12 @@
 # NAPCORE
 
+---
+
 ![architecture drawio (1)](https://github.com/NordicWayInterchange/napcore-frontend/assets/127298906/88333580-19a0-4404-bb15-28c50d0304f5)
 
 ## Technologies
+
+---
 
 - Next.js
 - React
@@ -13,6 +17,8 @@
 - NextAuth.js
 
 ## Installation and setup
+
+---
 
 ### Development
 
@@ -70,9 +76,13 @@ docker run \
 
 ## Certificate signing request
 
+---
+
 We use the JavaScript library PKI.js to create a CSR. The CSR is created client-side, Base64 encoded, and then sent as a request to the server. The server responds with the signed client certificate and CA certificates as Base64 encoded PEM files.
 
 ## Authentication
+
+---
 
 NextAuth.js is an open-source authentication solution for Next.js projects. It has built-in OAuth providers, and for this project, we are using auth0. Users are managed through the auth0 dashboard.
 
@@ -117,6 +127,8 @@ If so, continue with the request or respond with an HTTP 403.
 
 ## Styles
 
+---
+
 ### CSS
 
 To avoid unintended styling we do not use global CSS, and all styling is done at individual components with inline or styled components.
@@ -135,6 +147,8 @@ import { trafficdata, transportportal } from "@/theme";
 Adjustments to the theme should be performed at `colors.ts` , `fonts.ts` and `trafficdata.ts` / `transportportal.ts`.
 
 ## Troubleshoot
+
+---
 
 ### TypeError: Cannot read properties of undefined (reading 'status')
 Most likely related to issues with the PFX:
