@@ -1,11 +1,12 @@
 # NAPCORE
 
-![Architecture Diagram](/doc/architecture.png)
+![architecture drawio (1)](https://github.com/NordicWayInterchange/napcore-frontend/assets/127298906/88333580-19a0-4404-bb15-28c50d0304f5)
 
 ## Technologies
 
 - Next.js
 - React
+- TypeScript
 - Leaflet
 - Tanstack
 - PKI.js
@@ -71,8 +72,6 @@ docker run \
 
 We use the JavaScript library PKI.js to create a CSR. The CSR is created client-side, Base64 encoded, and then sent as a request to the server. The server responds with the signed client certificate and CA certificates as Base64 encoded PEM files.
 
-![CSR Diagram](/doc/csr.png)
-
 ## Authentication
 
 NextAuth.js is an open-source authentication solution for Next.js projects. It has built-in OAuth providers, and for this project, we are using auth0. Users are managed through the auth0 dashboard.
@@ -91,7 +90,7 @@ providers: [
 
 ### Callbacks
 
-Whenever a session is checked we add a commonName value to the session object, which prefixes the email with the interchange prefix. 
+Whenever a session is checked we add a commonName value to the session object, which prefixes the email with the interchange prefix.
 This allows us to send the prefix as an environment variable, instead of bundling it in the build.
 
 ```jsx
@@ -133,4 +132,12 @@ import { trafficdata, transportportal } from "@/theme";
 <ThemeProvider theme={trafficdata}>
 ```
 
-Adjustments to the theme should be performed at `colors.ts` , `fonts.ts` and `trafficdata.ts` / `transportportal.ts` .
+Adjustments to the theme should be performed at `colors.ts` , `fonts.ts` and `trafficdata.ts` / `transportportal.ts`.
+
+## Troubleshoot
+
+### TypeError: Cannot read properties of undefined (reading 'status')
+Most likely related to issues with the PFX:
+- Is it valid?
+- Is it mounted correctly?
+- Is the passphrase correct?
