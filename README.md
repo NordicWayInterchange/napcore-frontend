@@ -44,6 +44,7 @@ NEXT_PUBLIC_INTERCHANGE_PREFIX=
 # NextAuth
 NEXTAUTH_SECRET=
 NEXTAUTH_URL=
+SESSION_MAXAGE_SECONDS= # Optional value, will fallback to one day
 
 # Auth0
 AUTH0_CLIENT_ID=
@@ -71,6 +72,7 @@ docker run \
               -e AUTH0_CLIENT_SECRET=<CLIENT_SECRET> \
               -e AUTH0_ISSUER=<ISSUER> \
               -e NEXTAUTH_URL=<URL> \
+              -e SESSION_MAXAGE_SECONDS=<SECONDS> \ # Optional value, will fallback to one day
               eu.gcr.io/nw-shared-w3ml/napcore-frontend
 ```
 
