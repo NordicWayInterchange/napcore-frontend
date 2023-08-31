@@ -20,7 +20,7 @@ export const authOptions = {
   ],
 
   session: {
-    maxAge: 24 * 60 * 60,
+    maxAge: parseInt(process.env.SESSION_MAXAGE_SECONDS) || 24 * 60 * 60,
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
