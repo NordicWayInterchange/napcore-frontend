@@ -13,7 +13,9 @@ export default function Navbar() {
     >
       <Toolbar>
         <Typography variant="h6" noWrap component="div">
-          Transportportal
+          {process.env.NEXT_PUBLIC_THEME_PROVIDER == "trafficdata"
+            ? "Trafficdata"
+            : "Transportportal"}
         </Typography>
       </Toolbar>
     </AppBar>

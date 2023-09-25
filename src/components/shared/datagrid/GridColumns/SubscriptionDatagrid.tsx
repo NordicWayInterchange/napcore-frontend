@@ -28,7 +28,7 @@ export const SubscriptionDatagrid: GridColDef[] = [
   {
     ...dataGridTemplate,
     field: "capabilityMatches",
-    headerName: "Capability Matches",
+    headerName: "Capability matches",
   },
   {
     ...dataGridTemplate,

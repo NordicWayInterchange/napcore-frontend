@@ -18,7 +18,7 @@ export const NewSubscriptionDatagrid: GridColDef[] = [
   {
     ...dataGridTemplate,
     field: "messageType",
-    headerName: "Message Type",
+    headerName: "Message type",
     renderCell: (cell) => {
       return (
         <Chip
@@ -33,11 +33,11 @@ export const NewSubscriptionDatagrid: GridColDef[] = [
   {
     ...dataGridTemplate,
     field: "protocolVersion",
-    headerName: "Protocol Version",
+    headerName: "Protocol version",
   },
   {
     ...dataGridTemplate,
     field: "originatingCountry",
-    headerName: "Originating Country",
+    headerName: "Originating country",
   },
 ];
