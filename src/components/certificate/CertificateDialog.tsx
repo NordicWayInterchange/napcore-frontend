@@ -39,7 +39,7 @@ export default function CertificateDialog(props: Props) {
       text: "Download chain certificate",
       onClick: () =>
         handleFile(
-          handleDecoding(chain.chain),
+          handleDecoding(chain.certificates),
           `chain.${session?.user.commonName as string}.crt.pem`
         ),
     },
@@ -47,7 +47,7 @@ export default function CertificateDialog(props: Props) {
       text: "Download root certificate",
       onClick: () =>
         handleFile(
-          handleDecoding(chain.chain.at(-1) as string),
+          handleDecoding(chain.certificates.at(-1) as string),
           `root.${session?.user.commonName as string}.crt.pem`
         ),
     },
