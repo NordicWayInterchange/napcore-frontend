@@ -73,7 +73,7 @@ docker run \
               -e AUTH0_ISSUER=<ISSUER> \
               -e NEXTAUTH_URL=<URL> \
               -e SESSION_MAXAGE_SECONDS=<SECONDS> \ # Optional value, will fallback to one day
-              eu.gcr.io/nw-shared-w3ml/napcore-frontend
+              europe-west4-docker.pkg.dev/nw-shared-w3ml/nordic-way-interchange/napcore-frontend:1.0
 ```
 
 ## Certificate signing request
