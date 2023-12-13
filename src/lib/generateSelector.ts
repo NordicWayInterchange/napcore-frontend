@@ -55,6 +55,9 @@ const reducer = (
       case "quadTree":
         acc += `(${key} like '%,${value}%')`;
         break;
+      case "causeCode":
+        acc += `(${key} = ${value})`;
+        break;
       default:
         acc += `(${key} = '${value}')`;
     }
