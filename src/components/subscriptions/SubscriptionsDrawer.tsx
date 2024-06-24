@@ -118,7 +118,7 @@ const SubscriptionsDrawer = ({
                       margin="normal"
                       InputProps={{
                         endAdornment: (
-                          <ContentCopy value={"ampqs://myserver"} />
+                          <ContentCopy value={subscription.endpoints[0].host} />
                         ),
                       }}
                     />
@@ -129,7 +129,7 @@ const SubscriptionsDrawer = ({
                       margin="normal"
                       InputProps={{
                         endAdornment: (
-                          <ContentCopy value={"Serviceprovider 1-1"} />
+                          <ContentCopy value={subscription.endpoints[0].source} />
                         ),
                       }}
                     />
