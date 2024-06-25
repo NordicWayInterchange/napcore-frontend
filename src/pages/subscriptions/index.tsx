@@ -101,6 +101,10 @@ export default function Subscriptions() {
     },
   ];
 
+  const handleOnRowClick = (params: any) => {
+    handleMore(params.row);
+  };
+
   return (
     <Box flex={1}>
       <Mainheading>Subscriptions</Mainheading>
@@ -112,6 +116,7 @@ export default function Subscriptions() {
       <DataGrid
         columns={tableHeaders}
         rows={data || []}
+        onRowClick={handleOnRowClick}
         loading={isLoading}
         slots={{
           footer: CustomFooter,
