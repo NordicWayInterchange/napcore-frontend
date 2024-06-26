@@ -10,10 +10,12 @@ import { CustomEmptyOverlayMatching } from "@/components/shared/datagrid/CustomE
 import Subheading from "@/components/shared/display/typography/Subheading";
 import Mainheading from "@/components/shared/display/typography/Mainheading";
 import SelectorBuilder from "@/components/shared/forms/SelectorBuilder";
+import { GridEventListener } from "@mui/x-data-grid";
 
 const NewSubscription = () => {
   const { data: session } = useSession();
   const [selector, setSelector] = useState<string>(" ");
+  const [publicationId, setPublicationId] = useState<string>(" ");
 
   const { data, isLoading, remove } = useMatchingCapabilities(
     session?.user.commonName as string,
@@ -23,6 +25,12 @@ const NewSubscription = () => {
   const handleChange = (selector: string) => {
     setSelector(selector);
     remove();
+  };
+
+  const handleOnRowClick: GridEventListener<'rowClick'> = (
+    params, // GridRowParams
+  ) => {
+    setPublicationId(params.row.publicationId)
   };
 
   return (
@@ -39,12 +47,14 @@ const NewSubscription = () => {
             matchingElements={data || []}
             selectorCallback={handleChange}
             label="Subscription"
+            publicationId={publicationId}
           />
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
           <DataGrid
             columns={NewSubscriptionDatagrid}
             rows={data || []}
+            onRowClick={handleOnRowClick}
             loading={isLoading}
             getRowId={(row) => row.publicationId}
             sort={{ field: "publicationId", sort: "desc" }}

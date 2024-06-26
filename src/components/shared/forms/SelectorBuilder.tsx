@@ -36,6 +36,7 @@ type Props = {
   matchingElements: ExtendedCapability[] | ExtendedDelivery[] | [];
   selectorCallback: (selector: string) => void;
   label: string;
+  publicationId: string;
 };
 
 const MATCHING_CAP_LIMIT = 1;
@@ -187,6 +188,7 @@ const SelectorBuilder = (props: Props) => {
                 render={({ field }) => (
                   <TextField
                     {...field}
+                    value={props.publicationId}
                     disabled={advancedMode}
                     fullWidth
                     label="Publication ID"

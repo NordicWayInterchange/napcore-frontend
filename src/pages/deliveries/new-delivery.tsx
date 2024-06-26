@@ -10,10 +10,12 @@ import Subheading from "@/components/shared/display/typography/Subheading";
 import Mainheading from "@/components/shared/display/typography/Mainheading";
 import { useMatchingDeliveries } from "@/hooks/useMatchingDeliveries";
 import SelectorBuilder from "@/components/shared/forms/SelectorBuilder";
+import { GridEventListener } from "@mui/x-data-grid";
 
 const NewDelivery = () => {
   const { data: session } = useSession();
   const [selector, setSelector] = useState<string>(" ");
+  const [publicationId, setPublicationId] = useState<string>(" ");
 
   const { data, isLoading, remove } = useMatchingDeliveries(
     session?.user.commonName as string,
@@ -23,6 +25,12 @@ const NewDelivery = () => {
   const handleChange = (selector: string) => {
     setSelector(selector);
     remove();
+  };
+
+  const handleOnRowClick: GridEventListener<'rowClick'> = (
+    params, // GridRowParams
+  ) => {
+    setPublicationId(params.row.publicationId)
   };
 
   return (
@@ -38,6 +46,7 @@ const NewDelivery = () => {
           <SelectorBuilder
             matchingElements={data || []}
             selectorCallback={handleChange}
+            publicationId={publicationId}
             label="Delivery"
           />
         </Grid>
@@ -45,6 +54,7 @@ const NewDelivery = () => {
           <DataGrid
             columns={NewSubscriptionDatagrid}
             rows={data || []}
+            onRowClick={handleOnRowClick}
             loading={isLoading}
             getRowId={(row) => row.publicationId}
             sort={{ field: "publicationId", sort: "desc" }}
