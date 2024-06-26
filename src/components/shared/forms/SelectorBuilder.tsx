@@ -37,6 +37,7 @@ type Props = {
   matchingElements: ExtendedCapability[] | ExtendedDelivery[] | [];
   selectorCallback: (selector: string) => void;
   label: string;
+  publicationId: string;
 };
 
 const MATCHING_CAP_LIMIT = 1;
@@ -47,11 +48,12 @@ async function createArtifacts(artifactType: string, name: string, selector: str
 }
 
 const SelectorBuilder = (props: Props) => {
-  const { selectorCallback, matchingElements, label } = props;
+  const { selectorCallback, matchingElements, label, publicationId } = props;
   const [selector, setSelector] = useState<string>("");
   const [advancedMode, setAdvancedMode] = useState<boolean>(false);
   const [persistSelector, setPersistSelector] = useState<string>("");
   const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>([]);
+  const [selectedPublicationId, setSelectedPublicationId] = useState('');
   const [open, setOpen] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<IFeedback>({
     feedback: false,
@@ -70,6 +72,7 @@ const SelectorBuilder = (props: Props) => {
     setError,
     getFieldState,
     clearErrors,
+    register,
     resetField,
     reset,
     formState: { errors },
@@ -85,6 +88,7 @@ const SelectorBuilder = (props: Props) => {
   });
 
   const watchMessageType = watch("messageType");
+  const watchPublicationId = watch('publicationId');
   const DENM = MessageTypes.DENM;
 
   /*
@@ -108,6 +112,10 @@ const SelectorBuilder = (props: Props) => {
     if (!watchMessageType.includes(DENM)) setValue("causeCode", []);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchMessageType]);
+
+  useEffect(() => {
+    setSelectedPublicationId(publicationId);
+  }, [publicationId]);
 
   const onSubmit: SubmitHandler<IFormInputs> = async () => {
     if (matchingElements.length < MATCHING_CAP_LIMIT) {
@@ -191,6 +199,15 @@ const SelectorBuilder = (props: Props) => {
                 render={({ field }) => (
                   <TextField
                     {...field}
+                    value={selectedPublicationId}
+                    {...register("publicationId")}
+                    onChange={(e) => {
+                      const userInput = e.target.value;
+                      setSelectedPublicationId(userInput);
+                      if (publicationId) {
+                        setSelectedPublicationId(userInput);
+                      }}
+                    }
                     disabled={advancedMode}
                     fullWidth
                     label="Publication ID"
