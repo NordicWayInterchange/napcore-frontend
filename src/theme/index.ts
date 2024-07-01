@@ -27,6 +27,7 @@ declare module "@mui/material/styles/createPalette" {
     orangeLight: string;
     purpleDark: string;
     purpleLight: string;
+    redLight: string;
   }
 
   interface PaletteOptions {
@@ -53,6 +54,7 @@ declare module "@mui/material/styles/createPalette" {
     orangeLight: PaletteColor;
     purpleDark: PaletteColor;
     purpleLight: PaletteColor;
+    redLight: PaletteColor;
   }
 }
 
@@ -76,6 +78,7 @@ declare module "@mui/material/Button" {
     orangeLight: true;
     purpleDark: true;
     purpleLight: true;
+    redLight: true;
   }
 }
 
