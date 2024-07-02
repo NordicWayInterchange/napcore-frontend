@@ -4,6 +4,8 @@ import Sidebar from "./Sidebar";
 import { useSession } from "next-auth/react";
 import { CircularProgress, CssBaseline, Toolbar } from "@mui/material";
 import Navbar from "@/components/layout/Navbar";
+import TabMenu from "@/components/layout/TabMenu";
+import Container from '@mui/material/Container';
 
 type LayoutProps = {
   children: ReactNode;
@@ -14,22 +16,20 @@ export default function Layout({ children }: LayoutProps) {
 
   if (authStatus == "authenticated") {
     return (
-      <Box sx={{ display: "flex" }}>
-        <Sidebar />
-        <Box
-          component="main"
-          sx={{
-            flexGrow: 1,
-            bgcolor: "mainBackgroundColor",
-            p: 5,
-            height: "100vh",
-            width: "100vw",
-            overflow: "auto",
-          }}
-        >
+      <Box >
+      <Navbar></Navbar>
+        <CssBaseline />
+        <TabMenu></TabMenu>
+        <Container  maxWidth="xl" sx={{
+          flexGrow: 1,
+          bgcolor: "mainBackgroundColor",
+          p: 5,
+          height: "100vh",
+        }}>
+
           <Toolbar />
           {children}
-        </Box>
+        </Container>
       </Box>
     );
   }

@@ -18,32 +18,10 @@ export default function Home() {
     session?.user.commonName as string
   );
 
-  const shortcuts = [
-    {
-      header: "Subscriptions",
-      description: "View subscriptions",
-      url: "/subscriptions",
-      avatar: "S",
-    },
-    {
-      header: "Network capabilities",
-      description: "View network capabilities",
-      url: "network-capabilities",
-      avatar: "C",
-    },
-    {
-      header: "Certificate",
-      description: "Generate certificate",
-      url: "/certificate",
-      avatar: "P",
-    },
-  ];
-
   return (
     <Box flex={1}>
       <Mainheading>Welcome, {session?.user?.name}!</Mainheading>
       <Divider sx={{ marginY: 3 }} />
-      <Subheading>Shortcuts</Subheading>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
         <Box
           sx={{
@@ -51,24 +29,6 @@ export default function Home() {
             flexWrap: "wrap",
           }}
         >
-          {shortcuts.map((shortcut, key) => (
-            <Link
-              key={key}
-              href={shortcut.url}
-              style={{
-                textDecoration: "none",
-                marginRight: 10,
-                marginTop: 10,
-                width: "400px",
-              }}
-            >
-              <ShortcutCard
-                avatar={shortcut.avatar}
-                header={shortcut.header}
-                description={shortcut.description}
-              />
-            </Link>
-          ))}
         </Box>
         <Subheading>Your latest subscriptions</Subheading>
         <DataGrid
