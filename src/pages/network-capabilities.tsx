@@ -85,6 +85,10 @@ export default function NetworkCapabilities() {
     },
   ];
 
+  const handleOnRowClick = (params: any) => {
+    handleMore(params.row);
+  };
+
   return (
     <Box flex={1}>
       <Mainheading>Network Capabilities</Mainheading>
@@ -96,6 +100,7 @@ export default function NetworkCapabilities() {
       <DataGrid
         columns={tableHeaders}
         rows={data || []}
+        onRowClick={handleOnRowClick}
         loading={isLoading}
         getRowId={(row) => row.publicationId}
         sort={{ field: "publicationId", sort: "desc" }}
