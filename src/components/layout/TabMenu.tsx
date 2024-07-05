@@ -9,10 +9,13 @@ import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
 import CellTowerIcon from "@mui/icons-material/CellTower";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 const MAIN_PAGES: Array<IPages> = [
   { text: "Home", url: "/", icon: <HouseIcon /> },
   { text: "Subscriptions", url: "/subscriptions", icon: <SubscriptionsIcon /> },
+  { text: "Add subscriptions", url: "/subscriptions/new-subscription", icon: <AddCircleIcon /> },
+
   {
     text: "Network capabilities",
     url: "/network-capabilities",
