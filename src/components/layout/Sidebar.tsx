@@ -35,6 +35,11 @@ const MAIN_PAGES: Array<IPages> = [
     url: "/network-capabilities",
     icon: <CellTowerIcon />,
   },
+  {
+    text: "Deliveries",
+    url: "/deliveries",
+    icon: <CellTowerIcon />,
+  },
 ];
 
 const SECONDARY_PAGES: Array<IPages> = [

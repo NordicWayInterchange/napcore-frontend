@@ -1,40 +1,39 @@
 import React, { useState } from "react";
 import { Box, Divider, IconButton } from "@mui/material";
-import { useSubscriptions } from "@/hooks/useSubscriptions";
+import { useDeliveries } from "@/hooks/useDeliveries";
 import { GridColDef } from "@mui/x-data-grid";
-import { useSession } from "next-auth/react";
-import { dataGridTemplate } from "@/components/shared/datagrid/DataGridTemplate";
 import DataGrid from "@/components/shared/datagrid/DataGrid";
-import { statusChips } from "@/lib/statusChips";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { dataGridTemplate } from "@/components/shared/datagrid/DataGridTemplate";
+import { useSession } from "next-auth/react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import DeleteSubDialog from "@/components/subscriptions/DeleteSubDialog";
-import { ExtendedSubscription } from "@/types/subscription";
-import SubscriptionsDrawer from "@/components/subscriptions/SubscriptionsDrawer";
-import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
+import DeliveriesDrawer from "@/components/deliveries/DeliveriesDrawer";
+import { messageTypeChips, statusChips } from "@/lib/statusChips";
 import { Chip } from "@/components/shared/display/Chip";
-import { timeConverter } from "@/lib/timeConverter";
-import { CustomEmptyOverlaySubscription } from "@/components/shared/datagrid/CustomEmptyOverlay";
+import { CustomEmptyOverlayDeliveries } from "@/components/shared/datagrid/CustomEmptyOverlay";
 import Mainheading from "@/components/shared/display/typography/Mainheading";
 import Subheading from "@/components/shared/display/typography/Subheading";
+import { timeConverter } from "@/lib/timeConverter";
+import { ExtendedDelivery } from "@/types/delivery";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteSubDialog from "@/components/subscriptions/DeleteSubDialog";
+import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
 
-export default function Subscriptions() {
+export default function Deliveries() {
   const { data: session } = useSession();
-  const { data, isLoading, remove } = useSubscriptions(
-    session?.user?.commonName as string
+  const { data, isLoading, remove } = useDeliveries(
+    session?.user.commonName as string
   );
   const [open, setOpen] = useState<boolean>(false);
+  const [deliveryRow, setDeliveryRow] = useState<ExtendedDelivery>();
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
-  const [subscriptionRow, setSubscriptionRow] =
-    useState<ExtendedSubscription>();
 
-  const handleDelete = (subscription: ExtendedSubscription) => {
-    setSubscriptionRow(subscription);
+  const handleDelete = (subscription: ExtendedDelivery) => {
+    setDeliveryRow(subscription);
     setOpen(true);
   };
 
-  const handleMore = (subscription: ExtendedSubscription) => {
-    setSubscriptionRow(subscription);
+  const handleMore = (delivery: ExtendedDelivery) => {
+    setDeliveryRow(delivery);
     setDrawerOpen(true);
   };
 
@@ -50,7 +49,6 @@ export default function Subscriptions() {
   const tableHeaders: GridColDef[] = [
     {
       ...dataGridTemplate,
-      /*flex: 0,*/
       field: "id",
       headerName: "ID",
     },
@@ -74,7 +72,7 @@ export default function Subscriptions() {
     },
     {
       ...dataGridTemplate,
-      field: "lastUpdatedTimestamp",
+      field: "lastUpdatedTimeStamp",
       headerName: "Last updated",
       valueGetter: ({ value }) => value && timeConverter(value),
     },
@@ -105,12 +103,13 @@ export default function Subscriptions() {
     handleMore(params.row);
   };
 
+
   return (
     <Box flex={1}>
-      <Mainheading>Subscriptions</Mainheading>
+      <Mainheading>Deliveries</Mainheading>
       <Subheading>
-        These are all of your subscriptions. You can click a subscription to
-        view more information or unsubscribe.
+        These are all of the deliveries in the network. You can click a
+        delivery to view more information and subscribe.
       </Subheading>
       <Divider sx={{ marginY: 3 }} />
       <DataGrid
@@ -118,25 +117,26 @@ export default function Subscriptions() {
         rows={data || []}
         onRowClick={handleOnRowClick}
         loading={isLoading}
+        getRowId={(row) => row.id}
+        sort={{ field: "id", sort: "desc" }}
         slots={{
           footer: CustomFooter,
-          noRowsOverlay: CustomEmptyOverlaySubscription,
+          noRowsOverlay: CustomEmptyOverlayDeliveries,
         }}
-        sort={{ field: "id", sort: "desc" }}
       />
-      {subscriptionRow && (
-        <SubscriptionsDrawer
+      {deliveryRow && (
+        <DeliveriesDrawer
           handleMoreClose={handleMoreClose}
           open={drawerOpen}
-          subscription={subscriptionRow as ExtendedSubscription}
+          delivery={deliveryRow as ExtendedDelivery}
         />
       )}
       <DeleteSubDialog
-        elementId={subscriptionRow?.id as string}
+        elementId={deliveryRow?.id as string}
         handleDialog={handleClickClose}
         open={open}
         actorCommonName={session?.user.commonName as string}
-        text="subscription"
+        text="delivery"
       />
     </Box>
   );

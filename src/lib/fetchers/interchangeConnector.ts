@@ -125,6 +125,14 @@ export const fetchNapcoreDeliveries: basicGetFunction = async (params: {
   return await fetchIXN(actorCommonName, "/deliveries", selector);
 };
 
+export const fetchNapcoreDeliveriesCapabilities: basicGetFunction = async (params: {
+  actorCommonName: string;
+  selector?: string;
+}) => {
+  const { actorCommonName, selector = "" } = params;
+  return await fetchIXN(actorCommonName, "/deliveries/capabilities", selector);
+};
+
 export const fetchNapcoreCapabilities: basicGetFunction = async (params) => {
   const { actorCommonName, selector = "" } = params;
   return await fetchIXN(actorCommonName, "/capabilities", selector);

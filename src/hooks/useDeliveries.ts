@@ -1,27 +1,45 @@
-/*
-import { getDeliveries } from "@/lib/napcoreFetchers";
-import { Deliveries } from "@/types/napcore/delivery";
 import { useQuery } from "@tanstack/react-query";
+import { ExtendedDelivery } from "@/types/delivery";
+import { DeliveriesDelivery } from "@/types/napcore/delivery";
 
 const fetchDeliveries: (
-  userName: string,
-  selector?: string
-) => Promise<Deliveries> = async (userName, selector = "") => {
-  const res = await getDeliveries(userName, selector);
+  commonName: string
+) =>
+  Promise<ExtendedDelivery[]> = async (commonName: string, selector ="") => {
+  const res = await fetch(
+    `/api/${commonName}/deliveries`
+  );
+
   if (res.ok) {
-    return res.json();
+    const deliveries: DeliveriesDelivery[] = await res.json();
+    console.log("deliveries", deliveries);
+    const seasonedSubscription = deliveries.map(async (sub) => {
+      const fetchNumberOfCapabilities = await fetch(
+        `/api/${commonName}/deliveries/capabilities/?selector=${sub.selector}`
+      );
+      if (fetchNumberOfCapabilities.ok) {
+        const data = await fetchNumberOfCapabilities.json();
+        return { ...sub, capabilityMatches: data };
+      } else {
+        console.error(
+          `error when fetching ${sub.selector} - ${fetchNumberOfCapabilities.status} - ${fetchNumberOfCapabilities.statusText}`
+        );
+        return { ...sub, capabilityMatches: 0 };
+      }
+    });
+    return Promise.all(seasonedSubscription);
   } else {
     const errorObj = await res.json();
-    throw new Error(`${errorObj.errorCode}: ${errorObj.message}`);
+    throw new Error(`${errorObj.status}: ${errorObj.error}`);
   }
 };
 
-const useDeliveries = (userName: string) => {
+const useDeliveries = (commonName: string) => {
   return useQuery({
     queryKey: ["deliveries"],
-    queryFn: () => fetchDeliveries(userName),
+    queryFn: () => fetchDeliveries(commonName),
   });
 };
 
 export { useDeliveries };
-*/
+

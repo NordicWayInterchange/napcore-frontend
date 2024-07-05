@@ -11,7 +11,8 @@ import {
   basicPostParams,
   deleteNapcoreSubscriptions,
   extendedGetFunction,
-  extendedGetParams,
+  extendedGetParams, fetchNapcoreDeliveries,
+  fetchNapcoreDeliveriesCapabilities,
   fetchNapcoreNetworkCapabilities,
   fetchNapcoreSubscriptions,
 } from "@/lib/fetchers/interchangeConnector";
@@ -22,6 +23,8 @@ import { causeCodes as causeCodesList } from "@/lib/data/causeCodes";
 import { CertificateSignResponse } from "@/types/napcore/certificate";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { DeliveriesDelivery, Delivery } from "@/types/napcore/delivery";
+import { ExtendedDelivery } from "@/types/delivery";
 const logger = require("../../../lib/logger");
 
 const fetchCapabilityCounter = async (params: basicGetParams) => {
@@ -44,6 +47,18 @@ export const addSubscriptions: basicPostFunction = async (
   return [res.status, subscriptions];
 };
 
+const fetchDeliveries = async (params: basicGetParams) => {
+  const res = await fetchNapcoreDeliveries(params);
+  const deliveries: Array<DeliveriesDelivery> = res.data;
+  return [res.status, deliveries];
+};
+
+const fetchDeliveriesCapabilityCounter = async (params: basicGetParams) => {
+  const [status, body] = await fetchDeliveriesCapabilities(params);
+  const deliveries = body as Array<ExtendedDelivery>;
+  return [status, deliveries.length];
+}
+
 export const addCerticates: basicPostFunction = async (
   params: basicPostParams
 ) => {
@@ -58,6 +73,26 @@ export const removeSubscription: basicDeleteFunction = async (
   const res = await deleteNapcoreSubscriptions(params);
   return [res.status];
 };
+
+function getCauseCodeMap(capabilities: Array<Capability>) {
+  return capabilities.map((capability) => {
+    let causeCodes;
+
+    if (
+      "causeCodes" in capability.application &&
+      capability.application.causeCodes
+    ) {
+      causeCodes = capability.application.causeCodes.map((causeCode) => {
+        return causeCodesList.find((c) => c.value === causeCode);
+      });
+    }
+
+    return {
+      ...capability.application,
+      causeCodesDictionary: causeCodes && causeCodes.filter(Boolean)
+    };
+  });
+}
 
 const fetchNetworkCapabilities = async (params: basicGetParams) => {
   const res = await fetchNapcoreNetworkCapabilities(params);
@@ -84,6 +119,15 @@ const fetchNetworkCapabilities = async (params: basicGetParams) => {
   ];
 };
 
+const fetchDeliveriesCapabilities = async (params: basicGetParams) => {
+  const res = await fetchNapcoreDeliveriesCapabilities(params);
+  const capabilities: Array<Capability> = res.data;
+  return [
+    res.status,
+    getCauseCodeMap(capabilities),
+  ];
+};
+
 // all internal fetchers
 const getPaths: {
   [key: string]: basicGetFunction | extendedGetFunction;
@@ -91,6 +135,8 @@ const getPaths: {
   "capability-count": fetchCapabilityCounter,
   subscriptions: fetchSubscriptions,
   "network/capabilities": fetchNetworkCapabilities,
+  "deliveries": fetchDeliveries,
+  "deliveries/capabilities": fetchDeliveriesCapabilityCounter
 };
 
 // all post methods on path

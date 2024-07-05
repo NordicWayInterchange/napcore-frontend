@@ -5,36 +5,39 @@ import {
   Drawer,
   FormControl,
   IconButton,
+  InputLabel,
   List,
-  ListItem,
-  ListItemText,
+  ListItem, ListItemText,
+  MenuItem,
+  Select,
   TextField,
   Toolbar,
-  Typography,
+  Typography
 } from "@mui/material";
 import React, { useState } from "react";
-import { ExtendedSubscription } from "@/types/subscription";
-import { statusChips } from "@/lib/statusChips";
 import CloseIcon from "@mui/icons-material/Close";
-import DeleteSubDialog from "@/components/subscriptions/DeleteSubDialog";
-import { ContentCopy } from "@/components/shared/actions/ContentCopy";
-import { Chip } from "@/components/shared/display/Chip";
 import { styled } from "@mui/material/styles";
+import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { useSession } from "next-auth/react";
+import { ExtendedDelivery } from "@/types/delivery";
+import { Chip } from "@/components/shared/display/Chip";
+import { statusChips } from "@/lib/statusChips";
 import { timeConverter } from "@/lib/timeConverter";
+import DeleteSubDialog from "@/components/subscriptions/DeleteSubDialog";
+
 
 const width = 600;
 
 type Props = {
-  subscription: ExtendedSubscription;
+  delivery: ExtendedDelivery;
   open: boolean;
   handleMoreClose: () => void;
 };
 
-const SubscriptionsDrawer = ({
-  subscription,
+const DeliveriesDrawer = ({
+  delivery,
   open,
-  handleMoreClose,
+  handleMoreClose
 }: Props) => {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const { data: session } = useSession();
@@ -74,14 +77,14 @@ const SubscriptionsDrawer = ({
             </ListItem>
             <ListItem>
               <StyledHeaderBox>
-                <Typography>Subscription details</Typography>
+                <Typography>Delivery details</Typography>
                 <Chip
                   color={
                     statusChips[
-                      subscription.status.toString() as keyof typeof statusChips
-                    ] as any
+                      delivery.status.toString() as keyof typeof statusChips
+                      ] as any
                   }
-                  label={subscription.status}
+                  label={delivery.status}
                 />
               </StyledHeaderBox>
             </ListItem>
@@ -89,54 +92,43 @@ const SubscriptionsDrawer = ({
               <StyledCard variant={"outlined"}>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                   <Box>
-                    <ListItemText primary={"ID"} secondary={subscription.id} />
+                    <ListItemText primary={"ID"} secondary={delivery.id} />
                     <ListItemText
                       primary={"Capability matches"}
-                      secondary={subscription.capabilityMatches}
+                      secondary={delivery.capabilityMatches}
                     />
                   </Box>
                   <Box>
                     <ListItemText
                       primary={"Last updated"}
                       secondary={timeConverter(
-                        subscription.lastUpdatedTimestamp
+                        delivery.lastUpdatedTimeStamp
                       )}
                     />
                   </Box>
                 </Box>
               </StyledCard>
             </ListItem>
-            {subscription.endpoints.length > 0 && (
+            {delivery.endpoints.length > 0 && (
               <ListItem>
                 <StyledCard variant={"outlined"}>
                   <Typography>Endpoints</Typography>
                   <FormControl fullWidth>
                     <TextField
                       contentEditable={false}
-                      value={subscription.endpoints[0].host}
+                      value={delivery.endpoints[0].host}
                       label={"Host"}
                       margin="normal"
                       InputProps={{
                         endAdornment: (
-                          <ContentCopy value={subscription.endpoints[0].host} />
-                        ),
-                      }}
-                    />
-                    <TextField
-                      contentEditable={false}
-                      value={subscription.endpoints[0].source}
-                      label={"Source"}
-                      margin="normal"
-                      InputProps={{
-                        endAdornment: (
-                          <ContentCopy value={subscription.endpoints[0].source} />
+                          <ContentCopy value={delivery.endpoints[0].host} />
                         ),
                       }}
                     />
                     <TextField
                       contentEditable={false}
                       value={"5671"}
-                      label={subscription.endpoints[0].port}
+                      label={delivery.endpoints[0].port}
                       margin="normal"
                       InputProps={{
                         endAdornment: <ContentCopy value={"5671"} />,
@@ -153,11 +145,11 @@ const SubscriptionsDrawer = ({
                   <TextField
                     margin="normal"
                     multiline
-                    value={subscription.selector}
+                    value={delivery.selector}
                     rows={4}
                     InputProps={{
                       endAdornment: (
-                        <ContentCopy value={subscription.selector} />
+                        <ContentCopy value={delivery.selector} />
                       ),
                     }}
                   />
@@ -175,7 +167,7 @@ const SubscriptionsDrawer = ({
                 onClick={() => setDialogOpen(true)}
                 disableElevation
               >
-                Remove subscription
+                Remove Delivery
               </Button>
             </ListItem>
           </List>
@@ -184,9 +176,9 @@ const SubscriptionsDrawer = ({
       <DeleteSubDialog
         open={dialogOpen}
         actorCommonName={session?.user.commonName as string}
-        elementId={subscription.id}
+        elementId={delivery.id}
         handleDialog={handleClickClose}
-        text="subscription"
+        text="delivery"
       />
     </>
   );
@@ -204,4 +196,4 @@ const StyledHeaderBox = styled(Box)(({}) => ({
   width: "100%",
 }));
 
-export default SubscriptionsDrawer;
+export default DeliveriesDrawer;

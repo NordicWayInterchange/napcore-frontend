@@ -26,6 +26,14 @@ export const CustomEmptyOverlayCapabilites = () => {
   );
 };
 
+export const CustomEmptyOverlayDeliveries = () => {
+  return (
+    <StyledGridOverlay>
+      <StyledBox>No deliveries in the network</StyledBox>
+    </StyledGridOverlay>
+  );
+};
+
 const StyledGridOverlay = styled("div")(({}) => ({
   display: "flex",
   flexDirection: "column",
