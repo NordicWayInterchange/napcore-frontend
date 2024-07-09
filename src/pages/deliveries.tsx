@@ -7,7 +7,7 @@ import { dataGridTemplate } from "@/components/shared/datagrid/DataGridTemplate"
 import { useSession } from "next-auth/react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeliveriesDrawer from "@/components/deliveries/DeliveriesDrawer";
-import { messageTypeChips, statusChips } from "@/lib/statusChips";
+import {statusChips } from "@/lib/statusChips";
 import { Chip } from "@/components/shared/display/Chip";
 import { CustomEmptyOverlayDeliveries } from "@/components/shared/datagrid/CustomEmptyOverlay";
 import Mainheading from "@/components/shared/display/typography/Mainheading";
@@ -15,8 +15,8 @@ import Subheading from "@/components/shared/display/typography/Subheading";
 import { timeConverter } from "@/lib/timeConverter";
 import { ExtendedDelivery } from "@/types/delivery";
 import DeleteIcon from "@mui/icons-material/Delete";
-import DeleteSubDialog from "@/components/subscriptions/DeleteSubDialog";
-import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
+import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
+import { CreateDeliveryFooter } from "@/components/shared/datagrid/CreateDeliveryFooter";
 
 export default function Deliveries() {
   const { data: session } = useSession();
@@ -27,8 +27,8 @@ export default function Deliveries() {
   const [deliveryRow, setDeliveryRow] = useState<ExtendedDelivery>();
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
-  const handleDelete = (subscription: ExtendedDelivery) => {
-    setDeliveryRow(subscription);
+  const handleDelete = (delivery: ExtendedDelivery) => {
+    setDeliveryRow(delivery);
     setOpen(true);
   };
 
@@ -109,7 +109,7 @@ export default function Deliveries() {
       <Mainheading>Deliveries</Mainheading>
       <Subheading>
         These are all of the deliveries in the network. You can click a
-        delivery to view more information and subscribe.
+        delivery to view more information and create a delivery.
       </Subheading>
       <Divider sx={{ marginY: 3 }} />
       <DataGrid
@@ -120,7 +120,7 @@ export default function Deliveries() {
         getRowId={(row) => row.id}
         sort={{ field: "id", sort: "desc" }}
         slots={{
-          footer: CustomFooter,
+          footer: CreateDeliveryFooter,
           noRowsOverlay: CustomEmptyOverlayDeliveries,
         }}
       />

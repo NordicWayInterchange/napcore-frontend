@@ -5,17 +5,16 @@ import { DeliveriesDelivery } from "@/types/napcore/delivery";
 const fetchDeliveries: (
   commonName: string
 ) =>
-  Promise<ExtendedDelivery[]> = async (commonName: string, selector ="") => {
+  Promise<ExtendedDelivery[]> = async (commonName: string) => {
   const res = await fetch(
     `/api/${commonName}/deliveries`
   );
 
   if (res.ok) {
     const deliveries: DeliveriesDelivery[] = await res.json();
-    console.log("deliveries", deliveries);
-    const seasonedSubscription = deliveries.map(async (sub) => {
+    const seasonedDeliveries = deliveries.map(async (sub) => {
       const fetchNumberOfCapabilities = await fetch(
-        `/api/${commonName}/deliveries/capabilities/?selector=${sub.selector}`
+        `/api/${commonName}/delivery-count/?selector=${sub.selector}`
       );
       if (fetchNumberOfCapabilities.ok) {
         const data = await fetchNumberOfCapabilities.json();
@@ -27,7 +26,7 @@ const fetchDeliveries: (
         return { ...sub, capabilityMatches: 0 };
       }
     });
-    return Promise.all(seasonedSubscription);
+    return Promise.all(seasonedDeliveries);
   } else {
     const errorObj = await res.json();
     throw new Error(`${errorObj.status}: ${errorObj.error}`);

@@ -44,7 +44,6 @@ export const createDelivery = (
   const deliveriesRequest = {
     selector: selector,
   };
-
   return fetch(`/api/${actorCommonName}/deliveries`, {
     method: "post",
     headers: {
@@ -53,6 +52,7 @@ export const createDelivery = (
     body: JSON.stringify(deliveriesRequest),
   });
 };
+
 export const deleteDeliveries = (
   actorCommonName: string,
   deliveryId: string

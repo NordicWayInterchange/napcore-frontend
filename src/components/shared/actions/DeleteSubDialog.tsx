@@ -8,7 +8,7 @@ import {
   DialogTitle,
   Divider,
 } from "@mui/material";
-import { deleteDeliveries, deleteSubscriptions } from "@/lib/fetchers/internalFetchers";
+import {deleteDeliveries, deleteSubscriptions } from "@/lib/fetchers/internalFetchers";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import { useState } from "react";
 import { IFeedback } from "@/interface/IFeedback";
@@ -21,6 +21,10 @@ type Props = {
   text: string;
 };
 
+async function deleteArtifacts(artifactType: string, name: string, elementId: string) {
+  return await (artifactType === "delivery" ? deleteDeliveries(name, elementId) : deleteSubscriptions(name, elementId));
+}
+
 export default function DeleteSubDialog(props: Props) {
   const { actorCommonName, open, handleDialog, elementId, text } = props;
 
@@ -31,20 +35,19 @@ export default function DeleteSubDialog(props: Props) {
   });
 
   const handleDeletion = async (name: string, elementId: string, text: string) => {
-    const response = text === "subscription" ?  await deleteSubscriptions(name, elementId)
-      : await deleteDeliveries(name, elementId)
+    const response = await deleteArtifacts(text, name, elementId);
     handleDialog(false);
 
     if (response.ok) {
       setFeedback({
         feedback: true,
-        message: {text} + " successfully deleted",
+        message: `${text} successfully deleted`,
         severity: "success",
       });
     } else {
       setFeedback({
         feedback: true,
-        message: {text} + " could not be deleted, try again!",
+        message: `${text} could not be deleted, try again!`,
         severity: "warning",
       });
     }

@@ -11,6 +11,7 @@ export type Endpoint = {
   host: string;
   port: number;
   source: string;
+  target: string;
   maxBandwidth: number;
   maxMessageRate: number;
 };
@@ -21,6 +22,7 @@ export type SubscriptionsSubscription = {
   lastUpdatedTimestamp: number;
   status: SubscriptionStatus;
   endpoints: Array<Endpoint>;
+  lastUpdatedTimeStamp: number;
 };
 
 export type Subscriptions = {

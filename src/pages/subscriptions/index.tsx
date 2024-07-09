@@ -8,7 +8,7 @@ import DataGrid from "@/components/shared/datagrid/DataGrid";
 import { statusChips } from "@/lib/statusChips";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import DeleteSubDialog from "@/components/subscriptions/DeleteSubDialog";
+import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import { ExtendedSubscription } from "@/types/subscription";
 import SubscriptionsDrawer from "@/components/subscriptions/SubscriptionsDrawer";
 import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";

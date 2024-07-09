@@ -1,4 +1,3 @@
-import { ExtendedCapability } from "@/types/capability";
 import { MessageTypes } from "@/types/messageType";
 import {
   Button,
@@ -15,7 +14,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { generateSelector } from "@/lib/generateSelector";
-import { createSubscription } from "@/lib/fetchers/internalFetchers";
+import { createDelivery } from "@/lib/fetchers/internalFetchers";
 import MapDialog from "../map/MapDialog";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { styled } from "@mui/material/styles";
@@ -27,17 +26,18 @@ import Snackbar from "@/components/shared/feedback/Snackbar";
 import { IFeedback } from "@/interface/IFeedback";
 import { IFormInputs } from "@/interface/IFormInputs";
 import { useSession } from "next-auth/react";
+import { ExtendedDelivery } from "@/types/delivery";
 
 type Props = {
-  matchingCapabilities: ExtendedCapability[] | [];
+  matchingDeliveries: ExtendedDelivery[] | [];
   selectorCallback: (selector: string) => void;
 };
 
 const MATCHING_CAP_LIMIT = 1;
 const QUADTREE_REGEX = /^[0-3]+(,[0-3]+)*$/i;
 
-const SelectorBuilder = (props: Props) => {
-  const { selectorCallback, matchingCapabilities } = props;
+const DeliverySelectorBuilder = (props: Props) => {
+  const { selectorCallback, matchingDeliveries } = props;
   const [selector, setSelector] = useState<string>("");
   const [advancedMode, setAdvancedMode] = useState<boolean>(false);
   const [persistSelector, setPersistSelector] = useState<string>("");
@@ -98,7 +98,7 @@ const SelectorBuilder = (props: Props) => {
   }, [watchMessageType]);
 
   const onSubmit: SubmitHandler<IFormInputs> = async () => {
-    if (matchingCapabilities.length < MATCHING_CAP_LIMIT) {
+    if (matchingDeliveries.length < MATCHING_CAP_LIMIT) {
       setFeedback({
         feedback: true,
         message: "You have no matching capabilities",
@@ -108,7 +108,7 @@ const SelectorBuilder = (props: Props) => {
       return;
     }
 
-    const response = await createSubscription(
+    const response = await createDelivery(
       session?.user.commonName as string,
       selector
     );
@@ -116,13 +116,13 @@ const SelectorBuilder = (props: Props) => {
     if (response.ok) {
       setFeedback({
         feedback: true,
-        message: "Subscription successfully created",
+        message: "Delivery successfully created",
         severity: "success",
       });
     } else {
       setFeedback({
         feedback: true,
-        message: "Subscription could not be created, try again!",
+        message: "Delivery could not be created, try again!",
         severity: "warning",
       });
     }
@@ -337,7 +337,7 @@ const SelectorBuilder = (props: Props) => {
                 type="submit"
                 disabled={!!getFieldState("quadTree").error}
               >
-                Save subscription
+                Save delivery
               </StyledButton>
             </Box>
           </StyledFormControl>
@@ -378,4 +378,4 @@ const StyledCard = styled(Card)(({}) => ({
   width: "100%",
 }));
 
-export default SelectorBuilder;
+export default DeliverySelectorBuilder;

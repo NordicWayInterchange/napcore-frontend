@@ -1,20 +1,20 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { SubscriptionsSubscription } from "@/types/napcore/subscription";
 import {
-  addNapcoreCertificates,
+  addNapcoreCertificates, addNapcoreDeliveries,
   addNapcoreSubscriptions,
   basicDeleteFunction,
   basicDeleteParams,
   basicGetFunction,
   basicGetParams,
   basicPostFunction,
-  basicPostParams,
+  basicPostParams, deleteNapcoreDeliveries,
   deleteNapcoreSubscriptions,
   extendedGetFunction,
   extendedGetParams, fetchNapcoreDeliveries,
   fetchNapcoreDeliveriesCapabilities,
   fetchNapcoreNetworkCapabilities,
-  fetchNapcoreSubscriptions,
+  fetchNapcoreSubscriptions
 } from "@/lib/fetchers/interchangeConnector";
 import { ExtendedCapability } from "@/types/capability";
 import { Capability } from "@/types/napcore/capability";
@@ -23,7 +23,7 @@ import { causeCodes as causeCodesList } from "@/lib/data/causeCodes";
 import { CertificateSignResponse } from "@/types/napcore/certificate";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import { DeliveriesDelivery, Delivery } from "@/types/napcore/delivery";
+import { DeliveriesDelivery } from "@/types/napcore/delivery";
 import { ExtendedDelivery } from "@/types/delivery";
 const logger = require("../../../lib/logger");
 
@@ -59,6 +59,14 @@ const fetchDeliveriesCapabilityCounter = async (params: basicGetParams) => {
   return [status, deliveries.length];
 }
 
+export const addDeliveries: basicPostFunction = async (
+  params: basicPostParams
+) => {
+  const res = await addNapcoreDeliveries(params);
+  const subscriptions: SubscriptionsSubscription = await res.data;
+  return [res.status, subscriptions];
+};
+
 export const addCerticates: basicPostFunction = async (
   params: basicPostParams
 ) => {
@@ -74,25 +82,12 @@ export const removeSubscription: basicDeleteFunction = async (
   return [res.status];
 };
 
-function getCauseCodeMap(capabilities: Array<Capability>) {
-  return capabilities.map((capability) => {
-    let causeCodes;
-
-    if (
-      "causeCodes" in capability.application &&
-      capability.application.causeCodes
-    ) {
-      causeCodes = capability.application.causeCodes.map((causeCode) => {
-        return causeCodesList.find((c) => c.value === causeCode);
-      });
-    }
-
-    return {
-      ...capability.application,
-      causeCodesDictionary: causeCodes && causeCodes.filter(Boolean)
-    };
-  });
-}
+export const removeDelivery: basicDeleteFunction = async (
+  params: basicDeleteParams
+) => {
+  const res = await deleteNapcoreDeliveries(params);
+  return [res.status];
+};
 
 const fetchNetworkCapabilities = async (params: basicGetParams) => {
   const res = await fetchNapcoreNetworkCapabilities(params);
@@ -121,10 +116,14 @@ const fetchNetworkCapabilities = async (params: basicGetParams) => {
 
 const fetchDeliveriesCapabilities = async (params: basicGetParams) => {
   const res = await fetchNapcoreDeliveriesCapabilities(params);
-  const capabilities: Array<Capability> = res.data;
+  const deliveries: Array<Capability> = res.data;
   return [
     res.status,
-    getCauseCodeMap(capabilities),
+    deliveries.map((delivery) => {
+      return {
+        ...delivery.application,
+      };
+    }),
   ];
 };
 
@@ -135,8 +134,9 @@ const getPaths: {
   "capability-count": fetchCapabilityCounter,
   subscriptions: fetchSubscriptions,
   "network/capabilities": fetchNetworkCapabilities,
-  "deliveries": fetchDeliveries,
-  "deliveries/capabilities": fetchDeliveriesCapabilityCounter
+  deliveries: fetchDeliveries,
+  "delivery-count": fetchDeliveriesCapabilityCounter,
+  "deliveries/capabilities": fetchDeliveriesCapabilities
 };
 
 // all post methods on path
@@ -144,6 +144,7 @@ const postPaths: {
   [key: string]: basicPostFunction;
 } = {
   subscriptions: addSubscriptions,
+  deliveries: addDeliveries,
   "x509/csr": addCerticates,
 };
 
@@ -152,6 +153,7 @@ const deletePaths: {
   [key: string]: basicDeleteFunction;
 } = {
   subscriptions: removeSubscription,
+  deliveries: removeDelivery,
 };
 
 const findHandler: (params: any) =>

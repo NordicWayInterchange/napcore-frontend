@@ -2,6 +2,7 @@ import { getTLSAgent } from "@/lib/fetchers/sslAgent";
 import { SubscriptionRequest } from "@/types/napcore/subscription";
 import axios from "axios";
 import { CertificateSignRequest } from "@/types/napcore/certificate";
+import { DeliveryRequest } from "@/types/napcore/delivery";
 
 const headers = {
   Accept: "application/json",
@@ -31,7 +32,7 @@ const fetchIXN: (
 const postIXN: (
   actorCommonName: string,
   path: string,
-  body: SubscriptionRequest | CertificateSignRequest | {}
+  body: SubscriptionRequest | CertificateSignRequest | DeliveryRequest | {}
 ) => Promise<any> = async (actorCommonName, path, body) => {
   const uri = process.env.INTERCHANGE_URI || "";
   const uriPath = `${actorCommonName}${path}`;
@@ -65,7 +66,7 @@ export type extendedGetParams = {
 };
 export type basicPostParams = {
   actorCommonName: string;
-  body?: SubscriptionRequest | CertificateSignRequest;
+  body?: SubscriptionRequest | CertificateSignRequest | DeliveryRequest;
 };
 export type basicDeleteParams = {
   actorCommonName: string;
@@ -125,12 +126,27 @@ export const fetchNapcoreDeliveries: basicGetFunction = async (params: {
   return await fetchIXN(actorCommonName, "/deliveries", selector);
 };
 
-export const fetchNapcoreDeliveriesCapabilities: basicGetFunction = async (params: {
-  actorCommonName: string;
-  selector?: string;
-}) => {
+export const fetchNapcoreDeliveriesCapabilities: basicGetFunction = async (
+  params
+) => {
   const { actorCommonName, selector = "" } = params;
-  return await fetchIXN(actorCommonName, "/deliveries/capabilities", selector);
+  return await fetchIXN(
+    actorCommonName,
+    "/deliveries/capabilities",
+    selector
+  );
+};
+
+export const deleteNapcoreDeliveries: basicDeleteFunction = async (
+  params
+) => {
+  const { actorCommonName, pathParam } = params;
+  return await deleteIXN(actorCommonName, `/deliveries/${pathParam}`);
+};
+
+export const addNapcoreDeliveries: basicPostFunction = async (params) => {
+  const { actorCommonName, body = {} } = params;
+  return await postIXN(actorCommonName, "/deliveries", body);
 };
 
 export const fetchNapcoreCapabilities: basicGetFunction = async (params) => {
