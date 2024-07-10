@@ -233,12 +233,16 @@ export default async function handler(
 
         return res.status(status).json(data);
       } catch (error: any) {
-        logger.error({
-          errorStatus: error.response.status,
-          errorData: error.response.data,
-        });
-
-        return res.status(error.response.status).json(error.response.data);
+        if(error.response) {
+	        logger.error({
+            errorStatus: error.response.status,
+            errorData: error.response.data,
+          });
+          return res.status(error.response.status).json(error.response.data);
+	      } else {
+	        logger.error(error.message);
+          return res.status(500).json("Error fetching from server");
+        }
       }
     }
   }
