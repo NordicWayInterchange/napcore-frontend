@@ -136,6 +136,32 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                       ),
                     }}
                   />
+                  {capability.publicationType && (
+                    <TextField
+                      contentEditable={false}
+                      value={capability.publicationType}
+                      label={"Publication type"}
+                      margin="normal"
+                      InputProps={{
+                        endAdornment: (
+                          <ContentCopy value={capability.publicationType} />
+                        )
+                      }}
+                    />
+                  )}
+                  {capability.publisherName && (
+                    <TextField
+                      contentEditable={false}
+                      value={capability.publisherName}
+                      label={"publisher name"}
+                      margin="normal"
+                      InputProps={{
+                        endAdornment: (
+                          <ContentCopy value={capability.publisherName} />
+                        )
+                      }}
+                    />
+                  )}
                   <TextField
                     contentEditable={false}
                     value={capability.originatingCountry}

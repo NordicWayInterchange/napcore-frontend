@@ -7,6 +7,8 @@ export enum RedirectStatus {
 export type Application = {
   messageType: string;
   publisherId: string;
+  publisherName: string;
+  publicationType: string;
   protocolVersion: string;
   publicationId: string;
   originatingCountry: string;
