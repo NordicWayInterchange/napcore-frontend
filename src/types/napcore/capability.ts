@@ -13,7 +13,7 @@ export type Application = {
   publicationId: string;
   originatingCountry: string;
   quadTree: Array<string>;
-  causeCodes?: Array<number>;
+  causeCode?: Array<number>;
 };
 
 export type Metadata = {
