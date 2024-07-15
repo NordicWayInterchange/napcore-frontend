@@ -4,5 +4,6 @@ export interface IFormInputs {
   protocolVersion: string;
   originatingCountry: string[];
   publicationId: string;
+  publisherId: string;
   quadTree: string[];
 }

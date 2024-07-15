@@ -32,6 +32,12 @@ export default function Home() {
       avatar: "C",
     },
     {
+      header: "My capabilities",
+      description: "View my capabilities",
+      url: "user-capabilities",
+      avatar: "M",
+    },
+    {
       header: "Deliveries",
       description: "View deliveries",
       url: "/deliveries",

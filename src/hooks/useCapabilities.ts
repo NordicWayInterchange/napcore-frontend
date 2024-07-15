@@ -1,11 +1,10 @@
-/*
 import { ExtendedCapability } from "@/types/capability";
 import { useQuery } from "@tanstack/react-query";
 
-const fetchCapabilities: (
-  userName: string
-) => Promise<ExtendedCapability[]> = async (userName: string) => {
-  const res = await fetch(`/api/${userName}/capabilities`);
+const fetchUserCapabilities: (
+  commonName: string
+) => Promise<ExtendedCapability[]> = async (commonName: string) => {
+  const res = await fetch(`/api/${commonName}/user/capabilities`);
   if (res.ok) {
     return res.json();
   } else {
@@ -14,12 +13,12 @@ const fetchCapabilities: (
   }
 };
 
-const useCapabilities = (userName: string) => {
+const useUserCapabilities = (commonName: string) => {
   return useQuery({
     queryKey: ["capabilities"],
-    queryFn: () => fetchCapabilities(userName),
+    queryFn: () => fetchUserCapabilities(commonName),
   });
 };
 
-export { useCapabilities };
-*/
+export { useUserCapabilities };
+

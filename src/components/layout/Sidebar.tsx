@@ -27,20 +27,32 @@ import { styled } from "@mui/material/styles";
 import AddIcon from "@mui/icons-material/Add";
 import { IPages } from "@/interface/IPages";
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
+import PersonIcon from '@mui/icons-material/Person';
 
 const MAIN_PAGES: Array<IPages> = [
-  { text: "Home", url: "/", icon: <HouseIcon /> },
-  { text: "Subscriptions", url: "/subscriptions", icon: <SubscriptionsIcon /> },
+  {
+    text: "Home",
+    url: "/",
+    icon: <HouseIcon /> },
+  {
+    text: "Subscriptions",
+    url: "/subscriptions",
+    icon: <SubscriptionsIcon /> },
   {
     text: "Network capabilities",
     url: "/network-capabilities",
     icon: <CellTowerIcon />,
   },
   {
+    text: "My capabilities",
+    url: "/user-capabilities",
+    icon: <PersonIcon />,
+  },
+  {
     text: "Deliveries",
     url: "/deliveries",
     icon: <LocalPostOfficeIcon />,
-  },
+  }
 ];
 
 const SECONDARY_PAGES: Array<IPages> = [

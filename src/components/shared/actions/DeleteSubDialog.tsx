@@ -8,7 +8,7 @@ import {
   DialogTitle,
   Divider,
 } from "@mui/material";
-import {deleteDeliveries, deleteSubscriptions } from "@/lib/fetchers/internalFetchers";
+import { deleteDeliveries, deleteSubscriptions, deleteUserCapability } from "@/lib/fetchers/internalFetchers";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import { useState } from "react";
 import { IFeedback } from "@/interface/IFeedback";
@@ -22,7 +22,9 @@ type Props = {
 };
 
 async function deleteArtifacts(artifactType: string, name: string, itemId: string) {
-  return await (artifactType === "Delivery" ? deleteDeliveries(name, itemId) : deleteSubscriptions(name, itemId));
+  return await (artifactType === "Delivery" ? deleteDeliveries(name, itemId) :
+    artifactType === "Subscription" ? deleteSubscriptions(name, itemId) :
+      deleteUserCapability(name, itemId));
 }
 
 export default function DeleteSubDialog(props: Props) {

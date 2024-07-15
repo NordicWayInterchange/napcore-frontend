@@ -2,22 +2,25 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { SubscriptionsSubscription } from "@/types/napcore/subscription";
 import {
   addNapcoreCertificates, addNapcoreDeliveries,
+  addNapcoreCapabilities,
   addNapcoreSubscriptions,
   basicDeleteFunction,
   basicDeleteParams,
   basicGetFunction,
   basicGetParams,
   basicPostFunction,
-  basicPostParams, deleteNapcoreDeliveries,
+  deleteNapcoreDeliveries,
+  basicPostParams, deleteNapcoreCapabilities,
   deleteNapcoreSubscriptions,
   extendedGetFunction,
+  fetchNapcoreCapabilities,
   extendedGetParams, fetchNapcoreDeliveries,
   fetchNapcoreDeliveriesCapabilities,
   fetchNapcoreNetworkCapabilities,
-  fetchNapcoreSubscriptions
+  fetchNapcoreSubscriptions, fetchNapcorePublicationIds
 } from "@/lib/fetchers/interchangeConnector";
 import { ExtendedCapability } from "@/types/capability";
-import { Capability } from "@/types/napcore/capability";
+import { Capability, Publicationids } from "@/types/napcore/capability";
 import { getToken } from "next-auth/jwt";
 import { causeCodes as causeCodesList } from "@/lib/data/causeCodes";
 import { CertificateSignResponse } from "@/types/napcore/certificate";
@@ -63,8 +66,60 @@ export const addDeliveries: basicPostFunction = async (
   params: basicPostParams
 ) => {
   const res = await addNapcoreDeliveries(params);
-  const subscriptions: SubscriptionsSubscription = await res.data;
-  return [res.status, subscriptions];
+  const deliveries: DeliveriesDelivery = await res.data;
+  return [res.status, deliveries];
+};
+
+function extractCauseCodes(capability: Capability) {
+  let causeCodes;
+  if (
+    "causeCode" in capability.application &&
+    capability.application.causeCode
+  ) {
+    causeCodes = capability.application.causeCode.map((causeCode) => {
+      return causeCodesList.find((c) => c.value === causeCode) || { "value": causeCode};
+    });
+  }
+  return causeCodes;
+}
+
+const fetchUserCapabilities = async (params: extendedGetParams) => {
+  const res = await fetchNapcoreCapabilities(params);
+  const userCapabilities: Array<Capability> = await res.data;
+  return [
+    res.status,
+    userCapabilities.map((userCapability) => {
+      let causeCodes= extractCauseCodes(userCapability);
+
+      return {
+        ...userCapability.application,
+        causeCodesDictionary: causeCodes && causeCodes.filter(Boolean),
+        id: userCapability.id,
+      };
+    }),
+  ];
+};
+
+const fetchPublicationIds = async (params: extendedGetParams) => {
+  const res = await fetchNapcorePublicationIds(params);
+  debugger
+  const ids: Publicationids = await res.data;
+  return [res.status, ids];
+};
+
+export const addUserCapabilities: basicPostFunction = async (
+  params: basicPostParams
+) => {
+  const res = await addNapcoreCapabilities(params);
+  const userCapabilities: Capability = await res.data;
+  return [res.status, userCapabilities];
+};
+
+export const removeUserCapability: basicDeleteFunction = async (
+  params: basicDeleteParams
+) => {
+  const res = await deleteNapcoreCapabilities(params);
+  return [res.status];
 };
 
 export const addCerticates: basicPostFunction = async (
@@ -95,16 +150,7 @@ const fetchNetworkCapabilities = async (params: basicGetParams) => {
   return [
     res.status,
     capabilities.map((capability) => {
-      let causeCodes;
-
-      if (
-        "causeCode" in capability.application &&
-        capability.application.causeCode
-      ) {
-        causeCodes = capability.application.causeCode.map((causeCode) => {
-          return causeCodesList.find((c) => c.value === causeCode) || { "value": causeCode};
-        });
-      }
+      let causeCodes  = extractCauseCodes(capability);
 
       return {
         ...capability.application,
@@ -136,7 +182,9 @@ const getPaths: {
   "network/capabilities": fetchNetworkCapabilities,
   deliveries: fetchDeliveries,
   "delivery-count": fetchDeliveriesCapabilityCounter,
-  "deliveries/capabilities": fetchDeliveriesCapabilities
+  "deliveries/capabilities": fetchDeliveriesCapabilities,
+  "user/capabilities": fetchUserCapabilities,
+  "capabilities/publicationids": fetchPublicationIds
 };
 
 // all post methods on path
@@ -146,6 +194,7 @@ const postPaths: {
   subscriptions: addSubscriptions,
   deliveries: addDeliveries,
   "x509/csr": addCerticates,
+  capabilities: addUserCapabilities
 };
 
 // all delete methods on path
@@ -154,6 +203,7 @@ const deletePaths: {
 } = {
   subscriptions: removeSubscription,
   deliveries: removeDelivery,
+  capabilities: removeUserCapability,
 };
 
 const findHandler: (params: any) =>
