@@ -11,16 +11,15 @@ export type Endpoint = {
   port: number;
   target: string;
   source: string;
-  maxBandwidth: number;
-  maxMessageRate: number;
 };
 
 export type DeliveriesDelivery = {
   id: string;
-  path: string;
   selector: string;
-  lastUpdatedTime: number;
+  lastUpdatedTimeStamp: number;
   status: DeliveryStatus;
+  endpoints: Array<Endpoint>;
+  lastUpdatedTimestamp: number;
 };
 
 export type Delivery = DeliveriesDelivery | { endpoints: Endpoint };
@@ -28,4 +27,8 @@ export type Delivery = DeliveriesDelivery | { endpoints: Endpoint };
 export type Deliveries = {
   name: string;
   deliveries: Array<DeliveriesDelivery>;
+};
+
+export type DeliveryRequest = {
+  selector: string;
 };

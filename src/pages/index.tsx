@@ -32,6 +32,12 @@ export default function Home() {
       avatar: "C",
     },
     {
+      header: "Deliveries",
+      description: "View deliveries",
+      url: "/deliveries",
+      avatar: "D",
+    },
+    {
       header: "Certificate",
       description: "Generate certificate",
       url: "/certificate",

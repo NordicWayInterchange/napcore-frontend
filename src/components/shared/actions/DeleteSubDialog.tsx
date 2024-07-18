@@ -8,7 +8,7 @@ import {
   DialogTitle,
   Divider,
 } from "@mui/material";
-import { deleteSubscriptions } from "@/lib/fetchers/internalFetchers";
+import {deleteDeliveries, deleteSubscriptions } from "@/lib/fetchers/internalFetchers";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import { useState } from "react";
 import { IFeedback } from "@/interface/IFeedback";
@@ -17,11 +17,16 @@ type Props = {
   actorCommonName: string;
   open: boolean;
   handleDialog: (close: boolean) => void;
-  subscriptionId: string;
+  elementId: string;
+  text: string;
 };
 
+async function deleteArtifacts(artifactType: string, name: string, elementId: string) {
+  return await (artifactType === "delivery" ? deleteDeliveries(name, elementId) : deleteSubscriptions(name, elementId));
+}
+
 export default function DeleteSubDialog(props: Props) {
-  const { actorCommonName, open, handleDialog, subscriptionId } = props;
+  const { actorCommonName, open, handleDialog, elementId, text } = props;
 
   const [feedback, setFeedback] = useState<IFeedback>({
     feedback: false,
@@ -29,20 +34,20 @@ export default function DeleteSubDialog(props: Props) {
     severity: "success",
   });
 
-  const handleDeletion = async (name: string, subscriptionId: string) => {
-    const response = await deleteSubscriptions(name, subscriptionId);
+  const handleDeletion = async (name: string, elementId: string, text: string) => {
+    const response = await deleteArtifacts(text, name, elementId);
     handleDialog(false);
 
     if (response.ok) {
       setFeedback({
         feedback: true,
-        message: "Subscription successfully deleted",
+        message: `${text} successfully deleted`,
         severity: "success",
       });
     } else {
       setFeedback({
         feedback: true,
-        message: "Subscription could not be deleted, try again!",
+        message: `${text} could not be deleted, try again!`,
         severity: "warning",
       });
     }
@@ -62,10 +67,10 @@ export default function DeleteSubDialog(props: Props) {
   return (
     <>
       <Dialog open={open} onClose={() => handleDialog(false)}>
-        <DialogTitle>Remove subscription</DialogTitle>
+        <DialogTitle>Remove {text}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to remove this subscription?
+            Are you sure you want to remove this {text}?
           </DialogContentText>
           <DialogContentText>This action can not be undone.</DialogContentText>
         </DialogContent>
@@ -83,7 +88,7 @@ export default function DeleteSubDialog(props: Props) {
             variant="contained"
             color="depricatedLight"
             sx={{ borderRadius: 100, textTransform: "none" }}
-            onClick={() => handleDeletion(actorCommonName, subscriptionId)}
+            onClick={() => handleDeletion(actorCommonName, elementId, text)}
             disableElevation
           >
             Yes, remove

@@ -26,6 +26,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import { styled } from "@mui/material/styles";
 import AddIcon from "@mui/icons-material/Add";
 import { IPages } from "@/interface/IPages";
+import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 
 const MAIN_PAGES: Array<IPages> = [
   { text: "Home", url: "/", icon: <HouseIcon /> },
@@ -34,6 +35,11 @@ const MAIN_PAGES: Array<IPages> = [
     text: "Network capabilities",
     url: "/network-capabilities",
     icon: <CellTowerIcon />,
+  },
+  {
+    text: "Deliveries",
+    url: "/deliveries",
+    icon: <LocalPostOfficeIcon />,
   },
 ];
 

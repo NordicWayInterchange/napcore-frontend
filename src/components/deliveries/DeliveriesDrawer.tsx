@@ -7,23 +7,24 @@ import {
   Toolbar,
 } from "@mui/material";
 import React, { useState } from "react";
-import { ExtendedSubscription } from "@/types/subscription";
-import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import { useSession } from "next-auth/react";
+import { ExtendedDelivery } from "@/types/delivery";
+import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import CommonDrawerForm from "@/components/layout/CommonDrawerForm";
+
 
 const width = 600;
 
 type Props = {
-  subscription: ExtendedSubscription;
+  delivery: ExtendedDelivery;
   open: boolean;
   handleMoreClose: () => void;
 };
 
-const SubscriptionsDrawer = ({
-  subscription,
+const DeliveriesDrawer = ({
+  delivery,
   open,
-  handleMoreClose,
+  handleMoreClose
 }: Props) => {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const { data: session } = useSession();
@@ -56,7 +57,7 @@ const SubscriptionsDrawer = ({
         <Toolbar />
         <Box sx={{ padding: 1 }}>
           <List>
-            <CommonDrawerForm artifact={subscription} handleMoreClose={handleMoreClose} formLabel="Subscription"/>
+            <CommonDrawerForm artifact={delivery} handleMoreClose={handleMoreClose} formLabel="Delivery"/>
             <ListItem>
               <Button
                 sx={{
@@ -68,7 +69,7 @@ const SubscriptionsDrawer = ({
                 onClick={() => setDialogOpen(true)}
                 disableElevation
               >
-                Remove subscription
+                Remove delivery
               </Button>
             </ListItem>
           </List>
@@ -77,12 +78,12 @@ const SubscriptionsDrawer = ({
       <DeleteSubDialog
         open={dialogOpen}
         actorCommonName={session?.user.commonName as string}
-        elementId={subscription.id}
+        elementId={delivery.id}
         handleDialog={handleClickClose}
-        text="subscription"
+        text="delivery"
       />
     </>
   );
 };
 
-export default SubscriptionsDrawer;
+export default DeliveriesDrawer;

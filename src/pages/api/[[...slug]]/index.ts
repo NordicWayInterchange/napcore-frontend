@@ -1,19 +1,20 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { SubscriptionsSubscription } from "@/types/napcore/subscription";
 import {
-  addNapcoreCertificates,
+  addNapcoreCertificates, addNapcoreDeliveries,
   addNapcoreSubscriptions,
   basicDeleteFunction,
   basicDeleteParams,
   basicGetFunction,
   basicGetParams,
   basicPostFunction,
-  basicPostParams,
+  basicPostParams, deleteNapcoreDeliveries,
   deleteNapcoreSubscriptions,
   extendedGetFunction,
-  extendedGetParams,
+  extendedGetParams, fetchNapcoreDeliveries,
+  fetchNapcoreDeliveriesCapabilities,
   fetchNapcoreNetworkCapabilities,
-  fetchNapcoreSubscriptions,
+  fetchNapcoreSubscriptions
 } from "@/lib/fetchers/interchangeConnector";
 import { ExtendedCapability } from "@/types/capability";
 import { Capability } from "@/types/napcore/capability";
@@ -22,6 +23,8 @@ import { causeCodes as causeCodesList } from "@/lib/data/causeCodes";
 import { CertificateSignResponse } from "@/types/napcore/certificate";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { DeliveriesDelivery } from "@/types/napcore/delivery";
+import { ExtendedDelivery } from "@/types/delivery";
 const logger = require("../../../lib/logger");
 
 const fetchCapabilityCounter = async (params: basicGetParams) => {
@@ -44,6 +47,26 @@ export const addSubscriptions: basicPostFunction = async (
   return [res.status, subscriptions];
 };
 
+const fetchDeliveries = async (params: basicGetParams) => {
+  const res = await fetchNapcoreDeliveries(params);
+  const deliveries: Array<DeliveriesDelivery> = res.data;
+  return [res.status, deliveries];
+};
+
+const fetchDeliveriesCapabilityCounter = async (params: basicGetParams) => {
+  const [status, body] = await fetchDeliveriesCapabilities(params);
+  const deliveries = body as Array<ExtendedDelivery>;
+  return [status, deliveries.length];
+}
+
+export const addDeliveries: basicPostFunction = async (
+  params: basicPostParams
+) => {
+  const res = await addNapcoreDeliveries(params);
+  const subscriptions: SubscriptionsSubscription = await res.data;
+  return [res.status, subscriptions];
+};
+
 export const addCerticates: basicPostFunction = async (
   params: basicPostParams
 ) => {
@@ -56,6 +79,13 @@ export const removeSubscription: basicDeleteFunction = async (
   params: basicDeleteParams
 ) => {
   const res = await deleteNapcoreSubscriptions(params);
+  return [res.status];
+};
+
+export const removeDelivery: basicDeleteFunction = async (
+  params: basicDeleteParams
+) => {
+  const res = await deleteNapcoreDeliveries(params);
   return [res.status];
 };
 
@@ -84,6 +114,19 @@ const fetchNetworkCapabilities = async (params: basicGetParams) => {
   ];
 };
 
+const fetchDeliveriesCapabilities = async (params: basicGetParams) => {
+  const res = await fetchNapcoreDeliveriesCapabilities(params);
+  const deliveries: Array<Capability> = res.data;
+  return [
+    res.status,
+    deliveries.map((delivery) => {
+      return {
+        ...delivery.application,
+      };
+    }),
+  ];
+};
+
 // all internal fetchers
 const getPaths: {
   [key: string]: basicGetFunction | extendedGetFunction;
@@ -91,6 +134,9 @@ const getPaths: {
   "capability-count": fetchCapabilityCounter,
   subscriptions: fetchSubscriptions,
   "network/capabilities": fetchNetworkCapabilities,
+  deliveries: fetchDeliveries,
+  "delivery-count": fetchDeliveriesCapabilityCounter,
+  "deliveries/capabilities": fetchDeliveriesCapabilities
 };
 
 // all post methods on path
@@ -98,6 +144,7 @@ const postPaths: {
   [key: string]: basicPostFunction;
 } = {
   subscriptions: addSubscriptions,
+  deliveries: addDeliveries,
   "x509/csr": addCerticates,
 };
 
@@ -106,6 +153,7 @@ const deletePaths: {
   [key: string]: basicDeleteFunction;
 } = {
   subscriptions: removeSubscription,
+  deliveries: removeDelivery,
 };
 
 const findHandler: (params: any) =>
