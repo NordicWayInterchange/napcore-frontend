@@ -98,11 +98,11 @@ const fetchNetworkCapabilities = async (params: basicGetParams) => {
       let causeCodes;
 
       if (
-        "causeCodes" in capability.application &&
-        capability.application.causeCodes
+        "causeCode" in capability.application &&
+        capability.application.causeCode
       ) {
-        causeCodes = capability.application.causeCodes.map((causeCode) => {
-          return causeCodesList.find((c) => c.value === causeCode);
+        causeCodes = capability.application.causeCode.map((causeCode) => {
+          return causeCodesList.find((c) => c.value === causeCode) || { "value": causeCode};
         });
       }
 

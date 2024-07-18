@@ -7,11 +7,13 @@ export enum RedirectStatus {
 export type Application = {
   messageType: string;
   publisherId: string;
+  publisherName: string;
+  publicationType: string;
   protocolVersion: string;
   publicationId: string;
   originatingCountry: string;
   quadTree: Array<string>;
-  causeCodes?: Array<number>;
+  causeCode?: Array<number>;
 };
 
 export type Metadata = {
