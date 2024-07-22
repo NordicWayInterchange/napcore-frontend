@@ -22,7 +22,6 @@ export type SubscriptionsSubscription = {
   lastUpdatedTimestamp: number;
   status: SubscriptionStatus;
   endpoints: Array<Endpoint>;
-  lastUpdatedTimeStamp: number;
 };
 
 export type Subscriptions = {

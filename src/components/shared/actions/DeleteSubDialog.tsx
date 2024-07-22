@@ -17,16 +17,16 @@ type Props = {
   actorCommonName: string;
   open: boolean;
   handleDialog: (close: boolean) => void;
-  elementId: string;
+  itemId: string;
   text: string;
 };
 
-async function deleteArtifacts(artifactType: string, name: string, elementId: string) {
-  return await (artifactType === "delivery" ? deleteDeliveries(name, elementId) : deleteSubscriptions(name, elementId));
+async function deleteArtifacts(artifactType: string, name: string, itemId: string) {
+  return await (artifactType === "delivery" ? deleteDeliveries(name, itemId) : deleteSubscriptions(name, itemId));
 }
 
 export default function DeleteSubDialog(props: Props) {
-  const { actorCommonName, open, handleDialog, elementId, text } = props;
+  const { actorCommonName, open, handleDialog, itemId, text } = props;
 
   const [feedback, setFeedback] = useState<IFeedback>({
     feedback: false,
@@ -34,8 +34,8 @@ export default function DeleteSubDialog(props: Props) {
     severity: "success",
   });
 
-  const handleDeletion = async (name: string, elementId: string, text: string) => {
-    const response = await deleteArtifacts(text, name, elementId);
+  const handleDeletion = async (name: string, itemId: string, text: string) => {
+    const response = await deleteArtifacts(text, name, itemId);
     handleDialog(false);
 
     if (response.ok) {
@@ -88,7 +88,7 @@ export default function DeleteSubDialog(props: Props) {
             variant="contained"
             color="depricatedLight"
             sx={{ borderRadius: 100, textTransform: "none" }}
-            onClick={() => handleDeletion(actorCommonName, elementId, text)}
+            onClick={() => handleDeletion(actorCommonName, itemId, text)}
             disableElevation
           >
             Yes, remove

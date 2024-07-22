@@ -6,7 +6,6 @@ import DataGrid from "@/components/shared/datagrid/DataGrid";
 import { dataGridTemplate } from "@/components/shared/datagrid/DataGridTemplate";
 import { useSession } from "next-auth/react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import DeliveriesDrawer from "@/components/deliveries/DeliveriesDrawer";
 import {statusChips } from "@/lib/statusChips";
 import { Chip } from "@/components/shared/display/Chip";
 import { CustomEmptyOverlayDeliveries } from "@/components/shared/datagrid/CustomEmptyOverlay";
@@ -17,6 +16,7 @@ import { ExtendedDelivery } from "@/types/delivery";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import { CreateDeliveryFooter } from "@/components/shared/datagrid/CreateDeliveryFooter";
+import CommonDrawer from "@/components/layout/CommonDrawer";
 
 export default function Deliveries() {
   const { data: session } = useSession();
@@ -72,7 +72,7 @@ export default function Deliveries() {
     },
     {
       ...dataGridTemplate,
-      field: "lastUpdatedTimeStamp",
+      field: "lastUpdatedTimestamp",
       headerName: "Last updated",
       valueGetter: ({ value }) => value && timeConverter(value),
     },
@@ -125,14 +125,15 @@ export default function Deliveries() {
         }}
       />
       {deliveryRow && (
-        <DeliveriesDrawer
+        <CommonDrawer
           handleMoreClose={handleMoreClose}
           open={drawerOpen}
-          delivery={deliveryRow as ExtendedDelivery}
+          item={deliveryRow as ExtendedDelivery}
+          label="Delivery"
         />
       )}
       <DeleteSubDialog
-        elementId={deliveryRow?.id as string}
+        itemId={deliveryRow?.id as string}
         handleDialog={handleClickClose}
         open={open}
         actorCommonName={session?.user.commonName as string}
