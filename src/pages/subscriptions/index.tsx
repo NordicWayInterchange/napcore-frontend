@@ -10,13 +10,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import { ExtendedSubscription } from "@/types/subscription";
-import SubscriptionsDrawer from "@/components/subscriptions/SubscriptionsDrawer";
 import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
 import { Chip } from "@/components/shared/display/Chip";
 import { timeConverter } from "@/lib/timeConverter";
 import { CustomEmptyOverlaySubscription } from "@/components/shared/datagrid/CustomEmptyOverlay";
 import Mainheading from "@/components/shared/display/typography/Mainheading";
 import Subheading from "@/components/shared/display/typography/Subheading";
+import CommonDrawer from "@/components/layout/CommonDrawer";
+
 
 export default function Subscriptions() {
   const { data: session } = useSession();
@@ -125,14 +126,15 @@ export default function Subscriptions() {
         sort={{ field: "id", sort: "desc" }}
       />
       {subscriptionRow && (
-        <SubscriptionsDrawer
+        <CommonDrawer
           handleMoreClose={handleMoreClose}
           open={drawerOpen}
-          subscription={subscriptionRow as ExtendedSubscription}
+          item={subscriptionRow as ExtendedSubscription}
+          label="Subscription"
         />
       )}
       <DeleteSubDialog
-        elementId={subscriptionRow?.id as string}
+        itemId={subscriptionRow?.id as string}
         handleDialog={handleClickClose}
         open={open}
         actorCommonName={session?.user.commonName as string}

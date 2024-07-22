@@ -16,7 +16,6 @@ export type Endpoint = {
 export type DeliveriesDelivery = {
   id: string;
   selector: string;
-  lastUpdatedTimeStamp: number;
   status: DeliveryStatus;
   endpoints: Array<Endpoint>;
   lastUpdatedTimestamp: number;
