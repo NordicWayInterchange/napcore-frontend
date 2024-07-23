@@ -9,7 +9,7 @@ import { CustomEmptyOverlayMatching } from "@/components/shared/datagrid/CustomE
 import Subheading from "@/components/shared/display/typography/Subheading";
 import Mainheading from "@/components/shared/display/typography/Mainheading";
 import { useMatchingDeliveries } from "@/hooks/useMatchingDeliveries";
-import DeliverySelectorBuilder from "@/components/deliveries/DeliverySelectorBuilder";
+import SelectorBuilder from "@/components/shared/forms/SelectorBuilder";
 
 const NewDelivery = () => {
   const { data: session } = useSession();
@@ -35,9 +35,10 @@ const NewDelivery = () => {
       <Divider sx={{ marginY: 3 }} />
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-          <DeliverySelectorBuilder
-            matchingDeliveries={data || []}
+          <SelectorBuilder
+            matchingElements={data || []}
             selectorCallback={handleChange}
+            label="Delivery"
           />
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>

@@ -180,7 +180,7 @@ const CommonDrawer = ({item, open, handleMoreClose, label }: Props) => {
         actorCommonName={session?.user.commonName as string}
         itemId={item.id}
         handleDialog={handleClickClose}
-        text="subscription"
+        text={label}
       />
     </>
   );

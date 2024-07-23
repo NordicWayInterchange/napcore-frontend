@@ -138,7 +138,7 @@ export default function Subscriptions() {
         handleDialog={handleClickClose}
         open={open}
         actorCommonName={session?.user.commonName as string}
-        text="subscription"
+        text="Subscription"
       />
     </Box>
   );
