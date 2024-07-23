@@ -9,7 +9,7 @@ import { Box } from "@mui/system";
 import { CustomEmptyOverlayMatching } from "@/components/shared/datagrid/CustomEmptyOverlay";
 import Subheading from "@/components/shared/display/typography/Subheading";
 import Mainheading from "@/components/shared/display/typography/Mainheading";
-import SelectorBuilder from "@/components/subscriptions/SelectorBuilder";
+import SelectorBuilder from "@/components/shared/forms/SelectorBuilder";
 
 const NewSubscription = () => {
   const { data: session } = useSession();
@@ -36,8 +36,9 @@ const NewSubscription = () => {
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
           <SelectorBuilder
-            matchingCapabilities={data || []}
+            matchingElements={data || []}
             selectorCallback={handleChange}
+            label="Subscription"
           />
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>

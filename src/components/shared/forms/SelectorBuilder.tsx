@@ -1,3 +1,4 @@
+import { ExtendedCapability } from "@/types/capability";
 import { MessageTypes } from "@/types/messageType";
 import {
   Button,
@@ -14,8 +15,11 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { generateSelector } from "@/lib/generateSelector";
-import { createDelivery } from "@/lib/fetchers/internalFetchers";
-import MapDialog from "../map/MapDialog";
+import {
+  createDelivery,
+  createSubscription
+} from "@/lib/fetchers/internalFetchers";
+import MapDialog from "../../map/MapDialog";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
@@ -29,15 +33,20 @@ import { useSession } from "next-auth/react";
 import { ExtendedDelivery } from "@/types/delivery";
 
 type Props = {
-  matchingDeliveries: ExtendedDelivery[] | [];
+  matchingElements: ExtendedCapability[] | ExtendedDelivery[] | [];
   selectorCallback: (selector: string) => void;
+  label: string;
 };
 
 const MATCHING_CAP_LIMIT = 1;
 const QUADTREE_REGEX = /^[0-3]+(,[0-3]+)*$/i;
 
-const DeliverySelectorBuilder = (props: Props) => {
-  const { selectorCallback, matchingDeliveries } = props;
+async function createArtifacts(artifactType: string, name: string, selector: string) {
+  return await (artifactType === "delivery" ? createDelivery(name, selector) : createSubscription(name, selector));
+}
+
+const SelectorBuilder = (props: Props) => {
+  const { selectorCallback, matchingElements, label } = props;
   const [selector, setSelector] = useState<string>("");
   const [advancedMode, setAdvancedMode] = useState<boolean>(false);
   const [persistSelector, setPersistSelector] = useState<string>("");
@@ -98,7 +107,7 @@ const DeliverySelectorBuilder = (props: Props) => {
   }, [watchMessageType]);
 
   const onSubmit: SubmitHandler<IFormInputs> = async () => {
-    if (matchingDeliveries.length < MATCHING_CAP_LIMIT) {
+    if (matchingElements.length < MATCHING_CAP_LIMIT) {
       setFeedback({
         feedback: true,
         message: "You have no matching capabilities",
@@ -108,21 +117,18 @@ const DeliverySelectorBuilder = (props: Props) => {
       return;
     }
 
-    const response = await createDelivery(
-      session?.user.commonName as string,
-      selector
-    );
+    const response = await createArtifacts(label, session?.user.commonName as string, selector);
 
     if (response.ok) {
       setFeedback({
         feedback: true,
-        message: "Delivery successfully created",
+        message: `${label} successfully created`,
         severity: "success",
       });
     } else {
       setFeedback({
         feedback: true,
-        message: "Delivery could not be created, try again!",
+        message: `${label} could not be created, try again!`,
         severity: "warning",
       });
     }
@@ -337,7 +343,7 @@ const DeliverySelectorBuilder = (props: Props) => {
                 type="submit"
                 disabled={!!getFieldState("quadTree").error}
               >
-                Save delivery
+                Save {label}
               </StyledButton>
             </Box>
           </StyledFormControl>
@@ -378,4 +384,4 @@ const StyledCard = styled(Card)(({}) => ({
   width: "100%",
 }));
 
-export default DeliverySelectorBuilder;
+export default SelectorBuilder;
