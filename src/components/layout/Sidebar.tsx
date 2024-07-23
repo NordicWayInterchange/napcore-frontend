@@ -101,24 +101,6 @@ export default function Sidebar() {
         <Toolbar />
 
         <Box sx={{ padding: 2 }}>
-          <Link
-            href={"/subscriptions/new-subscription"}
-            style={{ textDecoration: "none" }}
-          >
-            <StyledButton
-              sx={{ my: 1 }}
-              startIcon={<AddIcon />}
-              variant="contained"
-              color="buttonThemeColor"
-              disableElevation
-              fullWidth
-            >
-              Add subscription
-            </StyledButton>
-          </Link>
-
-          <Divider sx={{ marginY: 1 }} />
-
           <List>{mapPages(MAIN_PAGES)}</List>
         </Box>
 
