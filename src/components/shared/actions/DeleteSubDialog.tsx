@@ -22,7 +22,7 @@ type Props = {
 };
 
 async function deleteArtifacts(artifactType: string, name: string, itemId: string) {
-  return await (artifactType === "delivery" ? deleteDeliveries(name, itemId) : deleteSubscriptions(name, itemId));
+  return await (artifactType === "Delivery" ? deleteDeliveries(name, itemId) : deleteSubscriptions(name, itemId));
 }
 
 export default function DeleteSubDialog(props: Props) {

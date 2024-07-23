@@ -137,7 +137,7 @@ export default function Deliveries() {
         handleDialog={handleClickClose}
         open={open}
         actorCommonName={session?.user.commonName as string}
-        text="delivery"
+        text="Delivery"
       />
     </Box>
   );
