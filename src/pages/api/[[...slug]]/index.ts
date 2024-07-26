@@ -102,7 +102,6 @@ const fetchUserCapabilities = async (params: extendedGetParams) => {
 
 const fetchPublicationIds = async (params: extendedGetParams) => {
   const res = await fetchNapcorePublicationIds(params);
-  debugger
   const ids: Publicationids = await res.data;
   return [res.status, ids];
 };

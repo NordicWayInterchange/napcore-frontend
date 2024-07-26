@@ -11,28 +11,32 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { createUserCapability } from "@/lib/fetchers/internalFetchers";
-import MapDialog from "../map/MapDialog";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
 import { messageTypes } from "@/lib/data/messageTypes";
 import { originatingCountries } from "@/lib/data/originatingCountries";
-import { causeCodes as causeCodesList, causeCodes } from "@/lib/data/causeCodes";
+import { causeCodes } from "@/lib/data/causeCodes";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import { IFeedback } from "@/interface/IFeedback";
 import { IFormInputs } from "@/interface/IFormInputs";
 import { useSession } from "next-auth/react";
-import { Publicationids } from "@/types/napcore/capability";
+import MapDialog from "@/components/map/MapDialog";
 
 type Props = {
-  publicationids: Publicationids[]
+  publicationids: any
 };
 
 const QUADTREE_REGEX = /^[0-3]+(,[0-3]+)*$/i;
 
+async function createArtifacts(name: string, data: any) {
+  return await createUserCapability(name, data);
+}
+
 const UserCapabilitiesSelectorBuilder = (props: Props) => {
   const { publicationids } = props;
-  const [application, setApplication] = useState({});
+  const [application, setApplication] = useState();
+  const [duplicatePublicationIdError, setDuplicatePublicationIdError] = useState('');
   const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<IFeedback>({
@@ -49,6 +53,7 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
     watch,
     setValue,
     setError,
+    register,
     getFieldState,
     clearErrors,
     resetField,
@@ -69,18 +74,6 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
   const DENM = MessageTypes.DENM;
 
   /*
-  Generate a new selector when the form state changes.
-  Send the selector backwards via selectorCallback(selector) to find matching capabilities.
-  */
-  useEffect(() => {
-    const watchAllFields = watch((value) => {
-      setApplication(value);
-    });
-    return () => watchAllFields.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [watch]);
-
-  /*
   Remove cause codes from form, if the message type DENM is removed.
   */
   useEffect(() => {
@@ -93,28 +86,31 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
     const second = {application};
     console.log('application', Object.assign(second, metadata));
     console.log("publicationIds", publicationids);
-    const response = await createUserCapability(
-      session?.user.commonName as string,
-      Object.assign(second, metadata)
-    );
+    /*const response = await createArtifacts(session?.user.commonName as string,
+      Object.assign(second, metadata));*/
 
-    if (response.ok) {
-      setFeedback({
-        feedback: true,
-        message: "Capability successfully created",
-        severity: "success",
-      });
-    } else {
-      setFeedback({
-        feedback: true,
-        message: "Capability could not be created, try again!",
-        severity: "warning",
-      });
-    }
+      const response = await createUserCapability(
+        session?.user.commonName as string,
+        Object.assign(second, metadata)
+      );
+
+      if (response.ok) {
+        setFeedback({
+          feedback: true,
+          message: "Capability successfully created",
+          severity: "success",
+        });
+      } else {
+        setFeedback({
+          feedback: true,
+          message: "Capability could not be created, try again!",
+          severity: "warning",
+        });
+      }
   };
 
-  const findUniquePublicationIds = () => {
-     //return publicationids.find((id) => id === "text");
+  const findPublicationIds = (value: any) => {
+    return publicationids.some((id: any) => id === value);
   };
 
   const handleClose = () => {
@@ -149,7 +145,20 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                 render={({ field }) => (
                   <TextField
                     {...field}
+                    {...register('publicationId', {
+                      required: 'Publisher ID is required.',
+                      validate: (value) => {
+                        if (value && findPublicationIds(value)) {
+                          setDuplicatePublicationIdError('Publication ID must be unique, please try another one.');
+                          return true;
+                        } else {
+                          setDuplicatePublicationIdError('');
+                        }
+                      },
+                    })}
                     fullWidth
+                    error={!!duplicatePublicationIdError || !!errors.publicationId}
+                    helperText={ errors.publicationId ? errors.publicationId.message : duplicatePublicationIdError}
                     label="Publication ID"
                   />
                 )}
@@ -157,8 +166,11 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
               <Controller
                 name="originatingCountry"
                 control={control}
+                rules={{ required: true }}
                 render={({ field }) => (
-                  <FormControl fullWidth>
+                  <FormControl
+                    fullWidth
+                    error={Boolean(errors.originatingCountry)}>
                     <InputLabel>Originating country</InputLabel>
                     <Select multiple label="Originating country" {...field}>
                       {originatingCountries.map((country, index) => (
@@ -167,16 +179,22 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                         </MenuItem>
                       ))}
                     </Select>
+                    {Boolean(errors.originatingCountry) && (
+                      <FormHelperText>Originating country is required</FormHelperText>
+                    )}
                   </FormControl>
                 )}
               />
               <Controller
                 name="publisherId"
                 control={control}
+                rules={{ required: 'Publisher ID is required.' }}
                 render={({ field }) => (
                   <TextField
                     {...field}
                     fullWidth
+                    error={!!errors.publisherId}
+                    helperText={errors.publisherId ? errors.publisherId.message : ''}
                     label="Publisher Id"
                   />
                 )}
@@ -186,6 +204,7 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
               <Controller
                 name="messageType"
                 control={control}
+                rules={{ required: true }}
                 render={({ field }) => (
                   <FormControl
                     fullWidth
@@ -235,10 +254,13 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
               <Controller
                 name="protocolVersion"
                 control={control}
+                rules={{ required: true }}
                 render={({ field }) => (
                   <TextField
                     {...field}
                     fullWidth
+                    error={!!errors.protocolVersion}
+                    helperText={errors.protocolVersion ? "Protocol version is required." : ''}
                     label="Protocol version"
                   />
                 )}
@@ -274,7 +296,7 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                     error={Boolean(errors.quadTree)}
                     sx={{ marginRight: 1 }}
                     helperText={
-                      "Only comma (,) separated numbers between 0-3 is allowed"
+                      "Only comma (,) separated numbers between 0-3 is allowed."
                     }
                   />
                 )}
@@ -295,7 +317,7 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                 type="submit"
                 disabled={!!getFieldState("quadTree").error}
               >
-                Add my capability
+                Create my capability
               </StyledButton>
             </Box>
           </StyledFormControl>

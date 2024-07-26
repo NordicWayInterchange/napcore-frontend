@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Divider, Grid } from "@mui/material";
 import React from "react";
 import { useSession } from "next-auth/react";
@@ -18,17 +17,16 @@ const NewUserCapability = () => {
     <Box flex={1}>
       <Mainheading>Add my capability</Mainheading>
       <Subheading>
-        Add a user capability with the form, or specify your own selector in
-        advanced mode.
+        Add a user capability with the form.
       </Subheading>
       <Divider sx={{ marginY: 3 }} />
-      <Grid container spacing={3}>
+
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
           <UserCapabilitiesSelectorBuilder
             publicationids={data || []}
           />
         </Grid>
-      </Grid>
+
     </Box>
   );
 };

@@ -68,7 +68,6 @@ export const createUserCapability = (
   const capabilitiesRequest = {
     data
   };
-  debugger
  const json = '{\n' +
    '  "application": {\n' +
    '    "messageType": "IVIM",\n' +
