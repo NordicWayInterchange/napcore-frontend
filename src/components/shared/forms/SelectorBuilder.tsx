@@ -72,10 +72,10 @@ const SelectorBuilder = (props: Props) => {
     formState: { errors },
   } = useForm<IFormInputs>({
     defaultValues: {
-      messageType: [],
-      causeCode: [],
+      messageType: "",
+      causeCode: "",
       protocolVersion: "",
-      originatingCountry: [],
+      originatingCountry: "",
       publicationId: "",
       quadTree: [],
     },
@@ -102,7 +102,7 @@ const SelectorBuilder = (props: Props) => {
   Remove cause codes from form, if the message type DENM is removed.
   */
   useEffect(() => {
-    if (!watchMessageType.includes(DENM)) setValue("causeCode", []);
+    if (!watchMessageType.includes(DENM)) setValue("causeCode", "");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchMessageType]);
 
@@ -199,7 +199,7 @@ const SelectorBuilder = (props: Props) => {
                 render={({ field }) => (
                   <FormControl fullWidth disabled={advancedMode}>
                     <InputLabel>Originating country</InputLabel>
-                    <Select multiple label="Originating country" {...field}>
+                    <Select  label="Originating country" {...field}>
                       {originatingCountries.map((country, index) => (
                         <MenuItem key={index} value={country.value}>
                           {country.value}
@@ -222,7 +222,7 @@ const SelectorBuilder = (props: Props) => {
                     error={Boolean(errors.messageType)}
                   >
                     <InputLabel>Message type *</InputLabel>
-                    <Select {...field} multiple label="Message type *">
+                    <Select {...field}  label="Message type *">
                       {messageTypes.map((messageType, index) => (
                         <MenuItem key={index} value={messageType.value}>
                           {messageType.value}
@@ -246,7 +246,6 @@ const SelectorBuilder = (props: Props) => {
                     <InputLabel>Cause codes</InputLabel>
                     <Select
                       MenuProps={{ PaperProps: { sx: { maxHeight: 200 } } }}
-                      multiple
                       label="Cause codes"
                       {...field}
                     >
@@ -317,7 +316,6 @@ const SelectorBuilder = (props: Props) => {
                 <Divider />{" "}
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <TextField
-                    multiline
                     rows={4}
                     value={selector}
                     fullWidth

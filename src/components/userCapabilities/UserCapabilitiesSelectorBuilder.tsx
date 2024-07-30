@@ -1,14 +1,5 @@
 import { MessageTypes } from "@/types/messageType";
-import {
-  Button,
-  Card,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import { Button, Card, FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { createUserCapability } from "@/lib/fetchers/internalFetchers";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -29,13 +20,8 @@ type Props = {
 
 const QUADTREE_REGEX = /^[0-3]+(,[0-3]+)*$/i;
 
-async function createArtifacts(name: string, data: any) {
-  return await createUserCapability(name, data);
-}
-
 const UserCapabilitiesSelectorBuilder = (props: Props) => {
   const { publicationids } = props;
-  const [application, setApplication] = useState();
   const [duplicatePublicationIdError, setDuplicatePublicationIdError] = useState('');
   const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
@@ -60,10 +46,12 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
     formState: { errors },
   } = useForm<IFormInputs>({
     defaultValues: {
-      messageType: [],
-      causeCode: [],
+      messageType: "",
+      causeCode: "",
       protocolVersion: "",
-      originatingCountry: [],
+      publisherName: "",
+      publicationType: "",
+      originatingCountry: "",
       publicationId: "",
       publisherId: "",
       quadTree: [],
@@ -72,41 +60,47 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
 
   const watchMessageType = watch("messageType");
   const DENM = MessageTypes.DENM;
+  const DATEX_2 = MessageTypes.DATEX_2;
 
   /*
   Remove cause codes from form, if the message type DENM is removed.
   */
   useEffect(() => {
-    if (!watchMessageType.includes(DENM)) setValue("causeCode", []);
+    if (!watchMessageType.includes(DENM)) {
+      setValue("causeCode", "");
+    } else if (!watchMessageType.includes(DATEX_2)) {
+      setValue("publicationType", "");
+      setValue("publisherName", "");
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchMessageType]);
 
-  const onSubmit: SubmitHandler<IFormInputs> = async () => {
-    const metadata = {"metadta" : {}};
-    const second = {application};
-    console.log('application', Object.assign(second, metadata));
-    console.log("publicationIds", publicationids);
-    /*const response = await createArtifacts(session?.user.commonName as string,
-      Object.assign(second, metadata));*/
+  const onSubmit: SubmitHandler<IFormInputs> = async (data) => {
 
-      const response = await createUserCapability(
-        session?.user.commonName as string,
-        Object.assign(second, metadata)
-      );
+  data.publicationId = data.publisherId + '-' + data.publicationId;
+  const metadata = { "metadata": {} };
+  const application = { "application": data };
+  console.log("application", Object.assign({}, application, metadata));
 
-      if (response.ok) {
-        setFeedback({
-          feedback: true,
-          message: "Capability successfully created",
-          severity: "success",
-        });
-      } else {
-        setFeedback({
-          feedback: true,
-          message: "Capability could not be created, try again!",
-          severity: "warning",
-        });
-      }
+
+  const response = await createUserCapability(
+    session?.user.commonName as string,
+    Object.assign({}, application, metadata)
+  );
+
+  if (response.ok) {
+    setFeedback({
+      feedback: true,
+      message: "Capability successfully created",
+      severity: "success"
+    });
+  } else {
+    setFeedback({
+      feedback: true,
+      message: "Capability could not be created, try again!",
+      severity: "warning"
+    });
+  }
   };
 
   const findPublicationIds = (value: any) => {
@@ -146,7 +140,7 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                   <TextField
                     {...field}
                     {...register('publicationId', {
-                      required: 'Publisher ID is required.',
+                      required: 'Publication ID is required.',
                       validate: (value) => {
                         if (value && findPublicationIds(value)) {
                           setDuplicatePublicationIdError('Publication ID must be unique, please try another one.');
@@ -172,7 +166,7 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                     fullWidth
                     error={Boolean(errors.originatingCountry)}>
                     <InputLabel>Originating country</InputLabel>
-                    <Select multiple label="Originating country" {...field}>
+                    <Select  label="Originating country" {...field}>
                       {originatingCountries.map((country, index) => (
                         <MenuItem key={index} value={country.value}>
                           {country.value}
@@ -199,6 +193,20 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                   />
                 )}
               />
+              <Controller
+                name="protocolVersion"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    error={!!errors.protocolVersion}
+                    helperText={errors.protocolVersion ? "Protocol version is required." : ''}
+                    label="Protocol version"
+                  />
+                )}
+              />
             </Box>
             <Box sx={{ display: "flex", gap: 1 }}>
               <Controller
@@ -211,7 +219,7 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                     error={Boolean(errors.messageType)}
                   >
                     <InputLabel>Message type *</InputLabel>
-                    <Select {...field} multiple label="Message type *">
+                    <Select {...field}  label="Message type *">
                       {messageTypes.map((messageType, index) => (
                         <MenuItem key={index} value={messageType.value}>
                           {messageType.value}
@@ -235,7 +243,6 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                     <InputLabel>Cause codes</InputLabel>
                     <Select
                       MenuProps={{ PaperProps: { sx: { maxHeight: 200 } } }}
-                      multiple
                       label="Cause codes"
                       {...field}
                     >
@@ -251,20 +258,38 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                   </FormControl>
                 )}
               />
+              {watchMessageType.includes(DATEX_2) &&
               <Controller
-                name="protocolVersion"
+                name="publisherName"
                 control={control}
                 rules={{ required: true }}
                 render={({ field }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    error={!!errors.protocolVersion}
-                    helperText={errors.protocolVersion ? "Protocol version is required." : ''}
-                    label="Protocol version"
-                  />
+                    <TextField
+                      {...field}
+                      fullWidth
+                      error={!!errors.publisherName}
+                      helperText={errors.publisherName ? "Publisher name is required." : ""}
+                      label="publisher name"
+                    />
                 )}
               />
+              }
+              {watchMessageType.includes(DATEX_2) &&
+              <Controller
+                name="publicationType"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      error={!!errors.publicationType}
+                      helperText={errors.publicationType ? "publication type is required." : ""}
+                      label="publication type"
+                    />
+                )}
+              />
+              }
             </Box>
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Controller

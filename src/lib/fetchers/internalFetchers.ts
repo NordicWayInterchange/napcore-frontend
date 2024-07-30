@@ -61,35 +61,16 @@ export const deleteDeliveries = (
   });
 };
 
-export const createUserCapability = (
-  actorCommonName: string,
-  data: any
-) => {
-  const capabilitiesRequest = {
-    data
+export const createUserCapability = (actorCommonName: string, body: any) => {
+  const CapabilitiesRequest = {
+    body: body
   };
- const json = '{\n' +
-   '  "application": {\n' +
-   '    "messageType": "IVIM",\n' +
-   '    "protocolVersion": "string",\n' +
-   '    "publisherId": "string",\n' +
-   '    "publicationId": "100bbsa9",\n' +
-   '    "originatingCountry": "string",\n' +
-   '    "quadTree": [\n' +
-   '      "111"\n' +
-   '    ]\n' +
-   '  },\n' +
-   '  "metadata": {\n' +
-   '    \n' +
-   '  }\n' +
-   '}';
-  const obj = JSON.parse(json);
   return fetch(`/api/${actorCommonName}/capabilities`, {
     method: "post",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(capabilitiesRequest),
+    body: JSON.stringify(CapabilitiesRequest),
   });
 };
 

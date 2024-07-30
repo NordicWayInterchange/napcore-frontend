@@ -12,14 +12,11 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { ExtendedCapability } from "@/types/capability";
-import {deleteUserCapability } from "@/lib/fetchers/internalFetchers";
 import { styled } from "@mui/material/styles";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
-import { IFeedback } from "@/interface/IFeedback";
 import { useSession } from "next-auth/react";
 import DrawerForm from "@/components/layout/DrawerForm";
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
-import Snackbar from "@/components/shared/feedback/Snackbar";
 import MapDialog from "@/components/map/MapDialog";
 
 const width = 600;
@@ -34,23 +31,6 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) =>
   const { data: session } = useSession();
   const [openMap, setOpenMap] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-  const [feedback, setFeedback] = useState<IFeedback>({
-    feedback: false,
-    message: "",
-    severity: "success",
-  });
-
-  const selector = `(publicationId = '${capability.publicationId}')`;
-  const handleSnackClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setFeedback({ feedback: false, message: "", severity: "success" });
-  };
 
   const handleClose = () => {
     setOpenMap(false);
@@ -58,25 +38,6 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) =>
 
   const handleClickClose = (close: boolean) => {
     setDialogOpen(close);
-  };
-
-
-  const RemoveCapability = async (name: string, selector: string) => {
-    const response = await deleteUserCapability(name, selector);
-
-    if (response.ok) {
-      setFeedback({
-        feedback: true,
-        message: "Capability successfully deleted",
-        severity: "success",
-      });
-    } else {
-      setFeedback({
-        feedback: true,
-        message: "Capability could not be deleted, try again!",
-        severity: "warning",
-      });
-    }
   };
 
   return (
