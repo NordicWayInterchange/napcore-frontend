@@ -4,7 +4,6 @@ import {
   Card,
   Drawer,
   FormControl,
-  IconButton,
   List,
   ListItem,
   TextField,
@@ -12,7 +11,6 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import CloseIcon from "@mui/icons-material/Close";
 import { ExtendedCapability } from "@/types/capability";
 import { createSubscription } from "@/lib/fetchers/internalFetchers";
 import Snackbar from "@/components/shared/feedback/Snackbar";
@@ -99,11 +97,6 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
         <Toolbar />
         <Box sx={{ padding: 1, width: 1 }}>
           <List>
-            <ListItem sx={{ justifyContent: "flex-end" }}>
-              <IconButton onClick={handleMoreClose}>
-                <CloseIcon />
-              </IconButton>
-            </ListItem>
             <CapabilityDrawerForm capability={capability} handleMoreClose={handleMoreClose}/>
             <ListItem>
               <StyledCard variant={"outlined"}>

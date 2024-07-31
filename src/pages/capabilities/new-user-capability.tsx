@@ -20,13 +20,13 @@ const NewUserCapability = () => {
         Add a user capability with the form.
       </Subheading>
       <Divider sx={{ marginY: 3 }} />
-
+      <Grid container spacing={3}>
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
           <UserCapabilitiesSelectorBuilder
             publicationids={data || []}
           />
         </Grid>
-
+        </Grid>
     </Box>
   );
 };

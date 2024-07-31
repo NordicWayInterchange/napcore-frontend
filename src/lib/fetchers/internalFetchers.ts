@@ -61,16 +61,13 @@ export const deleteDeliveries = (
   });
 };
 
-export const createUserCapability = (actorCommonName: string, body: any) => {
-  const CapabilitiesRequest = {
-    body: body
-  };
+export const createUserCapability = (actorCommonName: string, body: Object) => {
   return fetch(`/api/${actorCommonName}/capabilities`, {
     method: "post",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(CapabilitiesRequest),
+    body: JSON.stringify(body),
   });
 };
 

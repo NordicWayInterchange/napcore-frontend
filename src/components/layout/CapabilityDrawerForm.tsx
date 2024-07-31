@@ -23,7 +23,6 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose }: Props) => {
 
   return (
   <>
-
     <ListItem sx={{ justifyContent: "flex-end" }}>
       <IconButton onClick={handleMoreClose}>
         <CloseIcon />

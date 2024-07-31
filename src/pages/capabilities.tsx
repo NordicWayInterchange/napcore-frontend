@@ -17,7 +17,7 @@ import { UserCapabilityFooter } from "@/components/shared/datagrid/UserCapabilit
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-export default function UserCapabilities() {
+export default function Capabilities() {
   const { data: session } = useSession();
   const { data, isLoading, remove } = useUserCapabilities(
     session?.user.commonName as string
@@ -112,7 +112,7 @@ export default function UserCapabilities() {
       <Mainheading>My Capabilities</Mainheading>
       <Subheading>
         These are all of user capabilites in the network. You can click a
-        capability to view more information and subscribe.
+        capability to view more information and remove.
       </Subheading>
       <Divider sx={{ marginY: 3 }} />
       <DataGrid

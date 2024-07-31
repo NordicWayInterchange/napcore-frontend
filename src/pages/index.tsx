@@ -34,7 +34,7 @@ export default function Home() {
     {
       header: "My capabilities",
       description: "View my capabilities",
-      url: "user-capabilities",
+      url: "capabilities",
       avatar: "M",
     },
     {

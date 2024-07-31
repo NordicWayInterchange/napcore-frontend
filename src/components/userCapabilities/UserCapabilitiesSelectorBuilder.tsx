@@ -10,9 +10,9 @@ import { originatingCountries } from "@/lib/data/originatingCountries";
 import { causeCodes } from "@/lib/data/causeCodes";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import { IFeedback } from "@/interface/IFeedback";
-import { IFormInputs } from "@/interface/IFormInputs";
 import { useSession } from "next-auth/react";
 import MapDialog from "@/components/map/MapDialog";
+import { IFormCapabilityInputs } from "@/interface/IFormCapabilityInputs";
 
 type Props = {
   publicationids: any
@@ -44,10 +44,10 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
     clearErrors,
     resetField,
     formState: { errors },
-  } = useForm<IFormInputs>({
+  } = useForm<IFormCapabilityInputs>({
     defaultValues: {
       messageType: "",
-      causeCode: "",
+      causeCode: [],
       protocolVersion: "",
       publisherName: "",
       publicationType: "",
@@ -67,21 +67,16 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
   */
   useEffect(() => {
     if (!watchMessageType.includes(DENM)) {
-      setValue("causeCode", "");
-    } else if (!watchMessageType.includes(DATEX_2)) {
-      setValue("publicationType", "");
-      setValue("publisherName", "");
+      setValue("causeCode", []);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchMessageType]);
 
-  const onSubmit: SubmitHandler<IFormInputs> = async (data) => {
+  const onSubmit: SubmitHandler<IFormCapabilityInputs> = async (data) => {
 
-  data.publicationId = data.publisherId + '-' + data.publicationId;
+  data.publicationId = data.publisherId + ':' + data.publicationId;
   const metadata = { "metadata": {} };
   const application = { "application": data };
-  console.log("application", Object.assign({}, application, metadata));
-
 
   const response = await createUserCapability(
     session?.user.commonName as string,
@@ -134,6 +129,20 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
           <StyledFormControl>
             <Box sx={{ display: "flex", gap: 1 }}>
               <Controller
+                name="publisherId"
+                control={control}
+                rules={{ required: 'Publisher ID is required.' }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    error={!!errors.publisherId}
+                    helperText={errors.publisherId ? errors.publisherId.message : ''}
+                    label="Publisher Id"
+                  />
+                )}
+              />
+              <Controller
                 name="publicationId"
                 control={control}
                 render={({ field }) => (
@@ -157,42 +166,8 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                   />
                 )}
               />
-              <Controller
-                name="originatingCountry"
-                control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <FormControl
-                    fullWidth
-                    error={Boolean(errors.originatingCountry)}>
-                    <InputLabel>Originating country</InputLabel>
-                    <Select  label="Originating country" {...field}>
-                      {originatingCountries.map((country, index) => (
-                        <MenuItem key={index} value={country.value}>
-                          {country.value}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    {Boolean(errors.originatingCountry) && (
-                      <FormHelperText>Originating country is required</FormHelperText>
-                    )}
-                  </FormControl>
-                )}
-              />
-              <Controller
-                name="publisherId"
-                control={control}
-                rules={{ required: 'Publisher ID is required.' }}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    error={!!errors.publisherId}
-                    helperText={errors.publisherId ? errors.publisherId.message : ''}
-                    label="Publisher Id"
-                  />
-                )}
-              />
+            </Box>
+            <Box sx={{ display: "flex", gap: 1 }}>
               <Controller
                 name="protocolVersion"
                 control={control}
@@ -207,6 +182,28 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                   />
                 )}
               />
+              <Controller
+                name="originatingCountry"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <FormControl
+                    fullWidth
+                    error={Boolean(errors.originatingCountry)}>
+                    <InputLabel>Originating country</InputLabel>
+                    <Select label="Originating country" {...field}>
+                      {originatingCountries.map((country, index) => (
+                        <MenuItem key={index} value={country.value}>
+                          {country.value}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {Boolean(errors.originatingCountry) && (
+                      <FormHelperText>Originating country is required</FormHelperText>
+                    )}
+                  </FormControl>
+                )}
+              />
             </Box>
             <Box sx={{ display: "flex", gap: 1 }}>
               <Controller
@@ -219,7 +216,7 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                     error={Boolean(errors.messageType)}
                   >
                     <InputLabel>Message type *</InputLabel>
-                    <Select {...field}  label="Message type *">
+                    <Select {...field} label="Message type *">
                       {messageTypes.map((messageType, index) => (
                         <MenuItem key={index} value={messageType.value}>
                           {messageType.value}
@@ -232,17 +229,21 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                   </FormControl>
                 )}
               />
+              {watchMessageType.includes(DENM) && (
               <Controller
                 name="causeCode"
                 control={control}
+                rules={{ required: true}}
                 render={({ field }) => (
                   <FormControl
                     fullWidth
+                    error={!!errors.causeCode}
                     disabled={!watchMessageType.includes(DENM)}
                   >
                     <InputLabel>Cause codes</InputLabel>
                     <Select
                       MenuProps={{ PaperProps: { sx: { maxHeight: 200 } } }}
+                      multiple
                       label="Cause codes"
                       {...field}
                     >
@@ -252,13 +253,12 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                         </MenuItem>
                       ))}
                     </Select>
-                    {!watchMessageType.includes(DENM) && (
-                      <FormHelperText>Enable with DENM</FormHelperText>
-                    )}
+                    {errors.causeCode && <FormHelperText>Cause code is required.</FormHelperText>}
                   </FormControl>
                 )}
               />
-              {watchMessageType.includes(DATEX_2) &&
+              )}
+              {watchMessageType.includes(DATEX_2) && (
               <Controller
                 name="publisherName"
                 control={control}
@@ -273,8 +273,8 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                     />
                 )}
               />
-              }
-              {watchMessageType.includes(DATEX_2) &&
+              )}
+              {watchMessageType.includes(DATEX_2) && (
               <Controller
                 name="publicationType"
                 control={control}
@@ -289,13 +289,13 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                     />
                 )}
               />
-              }
+            )}
             </Box>
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Controller
                 name="quadTree"
                 control={control}
-                rules={{ required: false, pattern: QUADTREE_REGEX }}
+                rules={{ required: true, pattern: QUADTREE_REGEX }}
                 render={({ field }) => (
                   <TextField
                     {...field}

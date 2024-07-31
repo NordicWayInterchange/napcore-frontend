@@ -15,9 +15,9 @@ import { ExtendedCapability } from "@/types/capability";
 import { styled } from "@mui/material/styles";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { useSession } from "next-auth/react";
-import CapabilityDrawerForm from "@/components/layout/CapabilityDrawerForm";
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import MapDialog from "@/components/map/MapDialog";
+import CapabilityDrawerForm from "@/components/layout/CapabilityDrawerForm";
 
 const width = 600;
 

@@ -11,7 +11,6 @@ import {
   Typography,
   ListItemIcon,
   IconButton,
-  Button,
 } from "@mui/material";
 import Link from "next/link";
 import React from "react";
@@ -24,7 +23,6 @@ import { signOut, useSession } from "next-auth/react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { styled } from "@mui/material/styles";
-import AddIcon from "@mui/icons-material/Add";
 import { IPages } from "@/interface/IPages";
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 import PersonIcon from '@mui/icons-material/Person';
@@ -45,7 +43,7 @@ const MAIN_PAGES: Array<IPages> = [
   },
   {
     text: "My capabilities",
-    url: "/user-capabilities",
+    url: "/capabilities",
     icon: <PersonIcon />,
   },
   {
@@ -130,12 +128,6 @@ export default function Sidebar() {
     </Box>
   );
 }
-
-const StyledButton = styled(Button)(({}) => ({
-  borderRadius: 100,
-  textTransform: "none",
-  height: 56,
-}));
 
 const StyledListItemButton = styled(ListItemButton)(({}) => ({
   "&:hover": {
