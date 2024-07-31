@@ -5,11 +5,8 @@ import {
   Drawer,
   FormControl,
   IconButton,
-  InputLabel,
   List,
   ListItem,
-  MenuItem,
-  Select,
   TextField,
   Toolbar,
   Typography,
@@ -24,6 +21,7 @@ import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { IFeedback } from "@/interface/IFeedback";
 import { useSession } from "next-auth/react";
 import MapDialog from "@/components/map/MapDialog";
+import CapabilityDrawerForm from "@/components/layout/CapabilityDrawerForm";
 
 const width = 600;
 
@@ -106,134 +104,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                 <CloseIcon />
               </IconButton>
             </ListItem>
-            <ListItem>
-              <Typography>Capability details</Typography>
-            </ListItem>
-
-            <ListItem>
-              <StyledCard variant={"outlined"}>
-                <Typography>Publisher</Typography>
-                <FormControl fullWidth>
-                  <TextField
-                    contentEditable={false}
-                    value={capability.publisherId}
-                    label={"Publisher ID"}
-                    margin="normal"
-                    InputProps={{
-                      endAdornment: (
-                        <ContentCopy value={capability.publisherId} />
-                      ),
-                    }}
-                  />
-                  <TextField
-                    contentEditable={false}
-                    value={capability.publicationId}
-                    label={"Publication ID"}
-                    margin="normal"
-                    InputProps={{
-                      endAdornment: (
-                        <ContentCopy value={capability.publicationId} />
-                      ),
-                    }}
-                  />
-                  {capability.publicationType && (
-                    <TextField
-                      contentEditable={false}
-                      value={capability.publicationType}
-                      label={"Publication type"}
-                      margin="normal"
-                      InputProps={{
-                        endAdornment: (
-                          <ContentCopy value={capability.publicationType} />
-                        )
-                      }}
-                    />
-                  )}
-                  {capability.publisherName && (
-                    <TextField
-                      contentEditable={false}
-                      value={capability.publisherName}
-                      label={"publisher name"}
-                      margin="normal"
-                      InputProps={{
-                        endAdornment: (
-                          <ContentCopy value={capability.publisherName} />
-                        )
-                      }}
-                    />
-                  )}
-                  <TextField
-                    contentEditable={false}
-                    value={capability.originatingCountry}
-                    label={"Originating Country"}
-                    margin="normal"
-                    InputProps={{
-                      endAdornment: (
-                        <ContentCopy value={capability.originatingCountry} />
-                      ),
-                    }}
-                  />
-                </FormControl>
-              </StyledCard>
-            </ListItem>
-
-            <ListItem>
-              <StyledCard variant={"outlined"}>
-                <Typography>Message</Typography>
-                <FormControl fullWidth>
-                  <TextField
-                    contentEditable={false}
-                    value={capability.messageType}
-                    label={"Message Type"}
-                    margin="normal"
-                    InputProps={{
-                      endAdornment: (
-                        <ContentCopy value={capability.messageType} />
-                      ),
-                    }}
-                  />
-                  <TextField
-                    contentEditable={false}
-                    value={capability.protocolVersion}
-                    label={"Protocol Version"}
-                    margin="normal"
-                    InputProps={{
-                      endAdornment: (
-                        <ContentCopy value={capability.protocolVersion} />
-                      ),
-                    }}
-                  />
-                  {capability.causeCodesDictionary && (
-                    <FormControl margin="normal">
-                      <InputLabel>Cause codes</InputLabel>
-                      <Select
-                        MenuProps={{ PaperProps: { sx: { maxHeight: 200 } } }}
-                        label={"Cause codes"}
-                        multiple
-                        defaultValue={capability.causeCodesDictionary.map(
-                          (cause) => {
-                            return cause["value"];
-                          }
-                        )}
-                      >
-                        {capability.causeCodesDictionary.map((cause, index) => {
-                          return (
-                            <StyledMenuItem
-                              disabled
-                              key={index}
-                              value={cause.value}
-                            >
-                              {cause.value} {cause.label ? ': ' + cause.label : '' }
-                            </StyledMenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
-                  )}
-                </FormControl>
-              </StyledCard>
-            </ListItem>
-
+            <CapabilityDrawerForm capability={capability} handleMoreClose={handleMoreClose}/>
             <ListItem>
               <StyledCard variant={"outlined"}>
                 <Typography>Quadtree</Typography>
@@ -314,23 +185,6 @@ const StyledButton = styled(Button)(({}) => ({
   width: "150px",
   textTransform: "none",
   borderRadius: 100,
-}));
-
-const StyledMenuItem = styled(MenuItem)(({}) => ({
-  "&.MuiMenuItem-root": {
-    color: "black",
-    opacity: 1,
-  },
-  "&.Mui-disabled": {
-    color: "black",
-    opacity: 1,
-  },
-  "&.Mui-selected": {
-    backgroundColor: "white",
-    "&.Mui-focusVisible": {
-      background: "white",
-    },
-  },
 }));
 
 export default CapabilitiesDrawer;

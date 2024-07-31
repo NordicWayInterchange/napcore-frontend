@@ -1,5 +1,4 @@
 import {
-  Button,
   Card,
   FormControl,
   IconButton,
@@ -12,17 +11,15 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
-import React, { useState } from "react";
+import React from "react";
 import { ExtendedCapability } from "@/types/capability";
 import { styled } from "@mui/material/styles";
-
-const width = 600;
 
 type Props = {
   capability: ExtendedCapability;
   handleMoreClose: () => void;
 };
-const DrawerForm = ({ capability, handleMoreClose }: Props) => {
+const CapabilityDrawerForm = ({ capability, handleMoreClose }: Props) => {
 
   return (
   <>
@@ -62,6 +59,32 @@ const DrawerForm = ({ capability, handleMoreClose }: Props) => {
               ),
             }}
           />
+          {capability.publicationType && (
+            <TextField
+              contentEditable={false}
+              value={capability.publicationType}
+              label={"Publication type"}
+              margin="normal"
+              InputProps={{
+                endAdornment: (
+                  <ContentCopy value={capability.publicationType} />
+                )
+              }}
+            />
+          )}
+          {capability.publisherName && (
+            <TextField
+              contentEditable={false}
+              value={capability.publisherName}
+              label={"publisher name"}
+              margin="normal"
+              InputProps={{
+                endAdornment: (
+                  <ContentCopy value={capability.publisherName} />
+                )
+              }}
+            />
+          )}
           <TextField
             contentEditable={false}
             value={capability.originatingCountry}
@@ -142,12 +165,6 @@ const StyledCard = styled(Card)(({}) => ({
   width: "100%",
 }));
 
-const StyledButton = styled(Button)(({}) => ({
-  width: "150px",
-  textTransform: "none",
-  borderRadius: 100,
-}));
-
 const StyledMenuItem = styled(MenuItem)(({}) => ({
   "&.MuiMenuItem-root": {
     color: "black",
@@ -165,4 +182,4 @@ const StyledMenuItem = styled(MenuItem)(({}) => ({
   },
 }));
 
-export default DrawerForm;
+export default CapabilityDrawerForm;

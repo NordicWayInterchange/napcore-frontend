@@ -15,7 +15,7 @@ import { ExtendedCapability } from "@/types/capability";
 import { styled } from "@mui/material/styles";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { useSession } from "next-auth/react";
-import DrawerForm from "@/components/layout/DrawerForm";
+import CapabilityDrawerForm from "@/components/layout/CapabilityDrawerForm";
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import MapDialog from "@/components/map/MapDialog";
 
@@ -64,7 +64,7 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) =>
         <Toolbar />
         <Box sx={{ padding: 1, width: 1 }}>
           <List>
-            <DrawerForm capability={capability} handleMoreClose={handleMoreClose}/>
+            <CapabilityDrawerForm capability={capability} handleMoreClose={handleMoreClose}/>
             <ListItem>
               <StyledCard variant={"outlined"}>
                 <Typography>Quadtree</Typography>
