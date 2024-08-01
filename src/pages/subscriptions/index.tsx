@@ -17,6 +17,7 @@ import { CustomEmptyOverlaySubscription } from "@/components/shared/datagrid/Cus
 import Mainheading from "@/components/shared/display/typography/Mainheading";
 import Subheading from "@/components/shared/display/typography/Subheading";
 import CommonDrawer from "@/components/layout/CommonDrawer";
+import AddButton from "@/components/shared/actions/AddButton";
 
 
 export default function Subscriptions() {
@@ -113,7 +114,9 @@ export default function Subscriptions() {
         These are all of your subscriptions. You can click a subscription to
         view more information or unsubscribe.
       </Subheading>
-      <Divider sx={{ marginY: 3 }} />
+      <Divider sx={{ marginY: 2 }} />
+      <AddButton text="Add subscription"></AddButton>
+      <Divider style={{ margin: '5px 0', visibility: 'hidden' }}/>
       <DataGrid
         columns={tableHeaders}
         rows={data || []}
