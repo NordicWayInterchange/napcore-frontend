@@ -34,6 +34,14 @@ export const CustomEmptyOverlayDeliveries = () => {
   );
 };
 
+export const CustomEmptyOverlayUserCapabilites = () => {
+  return (
+    <StyledGridOverlay>
+      <StyledBox>No user capabilities in the network</StyledBox>
+    </StyledGridOverlay>
+  );
+};
+
 const StyledGridOverlay = styled("div")(({}) => ({
   display: "flex",
   flexDirection: "column",

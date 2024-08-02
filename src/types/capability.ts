@@ -1,7 +1,7 @@
 import { Application } from "./napcore/capability";
 
 export type ExtendedCapability = Application & {
-  id: number;
+  id: string;
   causeCodesDictionary: Array<causeCodesDictionary>;
 };
 

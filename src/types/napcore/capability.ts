@@ -26,6 +26,15 @@ export type Metadata = {
 };
 
 export type Capability = {
+  id: string;
   application: Application;
   metadata: Metadata;
 };
+
+export type CapabilityRequest = {
+  selector: string;
+};
+
+export type Publicationids = {
+  id: string;
+}

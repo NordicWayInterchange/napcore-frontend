@@ -12,12 +12,10 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { ExtendedCapability } from "@/types/capability";
-import { createSubscription } from "@/lib/fetchers/internalFetchers";
-import Snackbar from "@/components/shared/feedback/Snackbar";
 import { styled } from "@mui/material/styles";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
-import { IFeedback } from "@/interface/IFeedback";
 import { useSession } from "next-auth/react";
+import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import MapDialog from "@/components/map/MapDialog";
 import CapabilityDrawerForm from "@/components/layout/CapabilityDrawerForm";
 
@@ -29,48 +27,17 @@ type Props = {
   handleMoreClose: () => void;
 };
 
-const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
+const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
   const { data: session } = useSession();
   const [openMap, setOpenMap] = useState<boolean>(false);
-  const [feedback, setFeedback] = useState<IFeedback>({
-    feedback: false,
-    message: "",
-    severity: "success",
-  });
-
-  const selector = `(publicationId = '${capability.publicationId}')`;
-
-  const handleSnackClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setFeedback({ feedback: false, message: "", severity: "success" });
-  };
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
   const handleClose = () => {
     setOpenMap(false);
   };
 
-  const saveSubscription = async (name: string, selector: string) => {
-    const response = await createSubscription(name, selector);
-
-    if (response.ok) {
-      setFeedback({
-        feedback: true,
-        message: "Subscription successfully created",
-        severity: "success",
-      });
-    } else {
-      setFeedback({
-        feedback: true,
-        message: "Subscription could not be created, try again!",
-        severity: "warning",
-      });
-    }
+  const handleClickClose = (close: boolean) => {
+    setDialogOpen(close);
   };
 
   return (
@@ -134,31 +101,30 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                 </FormControl>
               </StyledCard>
             </ListItem>
-
             <ListItem>
               <Button
-                sx={{ borderRadius: 100, textTransform: "none" }}
+                sx={{
+                  borderRadius: 100,
+                  textTransform: "none",
+                }}
                 variant={"contained"}
-                color={"buttonThemeColor"}
+                color={"redLight"}
+                onClick={() => setDialogOpen(true)}
                 disableElevation
-                onClick={() =>
-                  saveSubscription(session?.user.commonName as string, selector)
-                }
               >
-                Subscribe
+                Remove capability
               </Button>
             </ListItem>
           </List>
         </Box>
       </Drawer>
-      {feedback.feedback && (
-        <Snackbar
-          message={feedback.message}
-          severity={feedback.severity}
-          open={feedback.feedback}
-          handleClose={handleSnackClose}
-        />
-      )}
+      <DeleteSubDialog
+        open={dialogOpen}
+        actorCommonName={session?.user.commonName as string}
+        itemId={capability.id as string}
+        handleDialog={handleClickClose}
+        text="Capability"
+      />
       <MapDialog
         open={openMap}
         onClose={handleClose}
@@ -180,4 +146,5 @@ const StyledButton = styled(Button)(({}) => ({
   borderRadius: 100,
 }));
 
-export default CapabilitiesDrawer;
+
+export default UserCapabilitiesDrawer;

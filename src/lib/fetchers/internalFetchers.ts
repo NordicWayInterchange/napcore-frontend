@@ -5,7 +5,6 @@ export const createSubscription = (
   const subscriptionsRequest = {
     selector: selector,
   };
-
   return fetch(`/api/${actorCommonName}/subscriptions`, {
     method: "post",
     headers: {
@@ -58,6 +57,25 @@ export const deleteDeliveries = (
   deliveryId: string
 ) => {
   return fetch(`/api/${actorCommonName}/deliveries/${deliveryId}`, {
+    method: "delete",
+  });
+};
+
+export const createUserCapability = (actorCommonName: string, body: Object) => {
+  return fetch(`/api/${actorCommonName}/capabilities`, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+};
+
+export const deleteUserCapability = (
+  actorCommonName: string,
+  capabilityId: string
+) => {
+  return fetch(`/api/${actorCommonName}/capabilities/${capabilityId}`, {
     method: "delete",
   });
 };

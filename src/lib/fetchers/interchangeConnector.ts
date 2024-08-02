@@ -3,6 +3,7 @@ import { SubscriptionRequest } from "@/types/napcore/subscription";
 import axios from "axios";
 import { CertificateSignRequest } from "@/types/napcore/certificate";
 import { DeliveryRequest } from "@/types/napcore/delivery";
+import { CapabilityRequest } from "@/types/napcore/capability";
 
 const headers = {
   Accept: "application/json",
@@ -32,7 +33,7 @@ const fetchIXN: (
 const postIXN: (
   actorCommonName: string,
   path: string,
-  body: SubscriptionRequest | CertificateSignRequest | DeliveryRequest | {}
+  body: SubscriptionRequest | CertificateSignRequest | DeliveryRequest | CapabilityRequest |  {}
 ) => Promise<any> = async (actorCommonName, path, body) => {
   const uri = process.env.INTERCHANGE_URI || "";
   const uriPath = `${actorCommonName}${path}`;
@@ -66,7 +67,7 @@ export type extendedGetParams = {
 };
 export type basicPostParams = {
   actorCommonName: string;
-  body?: SubscriptionRequest | CertificateSignRequest | DeliveryRequest;
+  body?: SubscriptionRequest | CertificateSignRequest | DeliveryRequest | CapabilityRequest;
 };
 export type basicDeleteParams = {
   actorCommonName: string;
@@ -152,4 +153,23 @@ export const addNapcoreDeliveries: basicPostFunction = async (params) => {
 export const fetchNapcoreCapabilities: basicGetFunction = async (params) => {
   const { actorCommonName, selector = "" } = params;
   return await fetchIXN(actorCommonName, "/capabilities", selector);
+};
+
+export const fetchNapcorePublicationIds: basicGetFunction = async (params) => {
+  const { actorCommonName, selector = "" } = params;
+  return await fetchIXN(actorCommonName,
+    "/capabilities/publicationids",
+    selector);
+};
+
+export const addNapcoreCapabilities: basicPostFunction = async (params) => {
+  const { actorCommonName, body = {} } = params;
+  return await postIXN(actorCommonName, "/capabilities", body);
+};
+
+export const deleteNapcoreCapabilities: basicDeleteFunction = async (
+  params
+) => {
+  const { actorCommonName, pathParam } = params;
+  return await deleteIXN(actorCommonName, `/capabilities/${pathParam}`);
 };
