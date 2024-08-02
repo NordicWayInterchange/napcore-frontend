@@ -16,7 +16,10 @@ import { NewFormDataGrid } from "@/components/shared/datagrid/GridColumns/NewFor
 const NewDelivery = () => {
   const { data: session } = useSession();
   const [selector, setSelector] = useState<string>(" ");
-  const [publicationId, setPublicationId] = useState<string>(" ");
+  const [publicationIdRow, setPublicationIdRow] = useState<string>("");
+  const [messageTypeRow, setMessageTypeRow] = useState<string[]>([]);
+  const [originatingCountryRow, setOriginatingCountryRow] = useState<string[]>([]);
+  const [quadTreeRow, setQuadTreeRow] = useState<string[]>([]);
 
   const { data, isLoading, remove } = useMatchingDeliveries(
     session?.user.commonName as string,
@@ -28,10 +31,11 @@ const NewDelivery = () => {
     remove();
   };
 
-  const handleOnRowClick: GridEventListener<'rowClick'> = (
-    params, // GridRowParams
-  ) => {
-    setPublicationId(params.row.publicationId)
+  const handleOnRowClick: GridEventListener<'rowClick'> = (params) => {
+    setPublicationIdRow(params.row.publicationId);
+    setMessageTypeRow([params.row.messageType]);
+    setOriginatingCountryRow([params.row.originatingCountry]);
+    setQuadTreeRow(params.row.quadTree);
   };
 
   return (
@@ -48,7 +52,10 @@ const NewDelivery = () => {
           <SelectorBuilder
             matchingElements={data || []}
             selectorCallback={handleChange}
-            publicationId={publicationId}
+            publicationIdRow={publicationIdRow}
+            messageTypeRow={messageTypeRow}
+            originatingCountryRow={originatingCountryRow}
+            quadTreeRow={quadTreeRow}
             label="Delivery"
           />
         </Grid>

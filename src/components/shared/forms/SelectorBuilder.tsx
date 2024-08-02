@@ -37,7 +37,10 @@ type Props = {
   matchingElements: ExtendedCapability[] | ExtendedDelivery[] | [];
   selectorCallback: (selector: string) => void;
   label: string;
-  publicationId: string;
+  publicationIdRow: string;
+  messageTypeRow: string[];
+  originatingCountryRow: string[];
+  quadTreeRow: string[];
 };
 
 const MATCHING_CAP_LIMIT = 1;
@@ -48,12 +51,12 @@ async function createArtifacts(artifactType: string, name: string, selector: str
 }
 
 const SelectorBuilder = (props: Props) => {
-  const { selectorCallback, matchingElements, label, publicationId } = props;
+  const { selectorCallback, matchingElements, label, publicationIdRow, messageTypeRow, originatingCountryRow, quadTreeRow } = props;
   const [selector, setSelector] = useState<string>("");
   const [advancedMode, setAdvancedMode] = useState<boolean>(false);
   const [persistSelector, setPersistSelector] = useState<string>("");
   const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>([]);
-  const [selectedPublicationId, setSelectedPublicationId] = useState('');
+  const [selectedPublicationId, setSelectedPublicationId] = useState("");
   const [open, setOpen] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<IFeedback>({
     feedback: false,
@@ -88,7 +91,6 @@ const SelectorBuilder = (props: Props) => {
   });
 
   const watchMessageType = watch("messageType");
-  const watchPublicationId = watch('publicationId');
   const DENM = MessageTypes.DENM;
 
   /*
@@ -114,8 +116,14 @@ const SelectorBuilder = (props: Props) => {
   }, [watchMessageType]);
 
   useEffect(() => {
-    setSelectedPublicationId(publicationId);
-  }, [publicationId]);
+    reset();
+    setSelectedPublicationId(publicationIdRow);
+    setValue("publicationId", publicationIdRow, { shouldValidate: true });
+    setValue("messageType", messageTypeRow, { shouldValidate: true });
+    setValue("originatingCountry", originatingCountryRow, { shouldValidate: true });
+    setValue("quadTree", quadTreeRow, { shouldValidate: true });
+  }, [publicationIdRow, setValue, messageTypeRow, originatingCountryRow, quadTreeRow, reset ]);
+
 
   const onSubmit: SubmitHandler<IFormInputs> = async () => {
     if (matchingElements.length < MATCHING_CAP_LIMIT) {
@@ -205,9 +213,7 @@ const SelectorBuilder = (props: Props) => {
                       const userInput = e.target.value;
                       field.onChange(userInput);
                       setSelectedPublicationId(userInput);
-                      if (publicationId) {
-                        setSelectedPublicationId(userInput);
-                      }}
+                     }
                     }
                     disabled={advancedMode}
                     fullWidth
@@ -369,7 +375,7 @@ const SelectorBuilder = (props: Props) => {
               <StyledButton
                 color="buttonThemeColor"
                 variant="outlined"
-                onClick={() => reset()}
+                onClick={() => {setSelectedPublicationId(''); reset()}}
               >
                 Clear form
               </StyledButton>
