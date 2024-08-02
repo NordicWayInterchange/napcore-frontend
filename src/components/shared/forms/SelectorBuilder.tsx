@@ -203,6 +203,7 @@ const SelectorBuilder = (props: Props) => {
                     {...register("publicationId")}
                     onChange={(e) => {
                       const userInput = e.target.value;
+                      field.onChange(userInput);
                       setSelectedPublicationId(userInput);
                       if (publicationId) {
                         setSelectedPublicationId(userInput);
