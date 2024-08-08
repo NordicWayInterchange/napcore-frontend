@@ -113,7 +113,7 @@ export default function Deliveries() {
         delivery to view more information and create a delivery.
       </Subheading>
       <Divider sx={{ marginY: 2 }} />
-      <AddButton text="Create delivery"></AddButton>
+      <AddButton text="Create delivery" labelUrl="delivery"></AddButton>
       <Divider style={{ margin: '5px 0', visibility: 'hidden' }}/>
       <DataGrid
         columns={tableHeaders}
