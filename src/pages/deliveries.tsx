@@ -15,8 +15,9 @@ import { timeConverter } from "@/lib/timeConverter";
 import { ExtendedDelivery } from "@/types/delivery";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
-import { CreateDeliveryFooter } from "@/components/shared/datagrid/CreateDeliveryFooter";
 import CommonDrawer from "@/components/layout/CommonDrawer";
+import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
+import AddButton from "@/components/shared/actions/AddButton";
 
 export default function Deliveries() {
   const { data: session } = useSession();
@@ -111,7 +112,9 @@ export default function Deliveries() {
         These are all of the deliveries in the network. You can click a
         delivery to view more information and create a delivery.
       </Subheading>
-      <Divider sx={{ marginY: 3 }} />
+      <Divider sx={{ marginY: 2 }} />
+      <AddButton text="Create delivery"></AddButton>
+      <Divider style={{ margin: '5px 0', visibility: 'hidden' }}/>
       <DataGrid
         columns={tableHeaders}
         rows={data || []}
@@ -120,7 +123,7 @@ export default function Deliveries() {
         getRowId={(row) => row.id}
         sort={{ field: "id", sort: "desc" }}
         slots={{
-          footer: CreateDeliveryFooter,
+          footer: CustomFooter,
           noRowsOverlay: CustomEmptyOverlayDeliveries,
         }}
       />

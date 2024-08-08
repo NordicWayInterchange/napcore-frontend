@@ -13,9 +13,10 @@ import Mainheading from "@/components/shared/display/typography/Mainheading";
 import Subheading from "@/components/shared/display/typography/Subheading";
 import {useUserCapabilities } from "@/hooks/useCapabilities";
 import UserCapabilitiesDrawer from "@/components/userCapabilities/UserCapabilitiesDrawer";
-import { UserCapabilityFooter } from "@/components/shared/datagrid/UserCapabilityFooter";
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
+import AddButton from "@/components/shared/actions/AddButton";
 
 export default function Capabilities() {
   const { data: session } = useSession();
@@ -114,7 +115,9 @@ export default function Capabilities() {
         These are all of user capabilites in the network. You can click a
         capability to view more information and remove.
       </Subheading>
-      <Divider sx={{ marginY: 3 }} />
+      <Divider sx={{ marginY: 2 }} />
+      <AddButton text="Add capability"></AddButton>
+      <Divider style={{ margin: '5px 0', visibility: 'hidden' }}/>
       <DataGrid
         columns={tableHeaders}
         rows={data || []}
@@ -123,7 +126,7 @@ export default function Capabilities() {
         getRowId={(row) => row.publicationId}
         sort={{ field: "publicationId", sort: "desc" }}
         slots={{
-          footer: UserCapabilityFooter,
+          footer: CustomFooter,
           noRowsOverlay: CustomEmptyOverlayUserCapabilites,
         }}
       />
