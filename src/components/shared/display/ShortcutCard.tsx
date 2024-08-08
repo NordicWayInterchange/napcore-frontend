@@ -16,25 +16,35 @@ const ShortcutCard = (props: Props) => {
       variant="outlined"
       sx={{
         display: "flex",
-        flexDirection: "row",
+        flexDirection: "column",
         alignItems: "center",
         padding: 2,
-        width: { xs: "100%", sm: "100%", md: 400 },
-        ":hover": {
-          bgcolor: "cardBackgroundColor",
+        width: { xs: "100%", sm: "100%", md: 260 },
+        "&:hover": {
+          boxShadow: "6px 6px 16px rgba(0, 0, 0, 0.4)",
+          textDecoration: "underline"
         },
+        borderBottom: "2px solid orange",
+        boxShadow: 2
       }}
     >
-      <Avatar sx={{ bgcolor: "avatarBackgroundColor", marginRight: 3 }}>
+      <Avatar sx={{
+        bgcolor: "avatarBackgroundColor",
+        marginRight: 1,
+        marginBottom: 2
+      }}>
         {avatar}
       </Avatar>
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "column"
         }}
       >
-        <Typography>{header}</Typography>
+        <Typography sx={{
+          marginLeft: 1,
+        }}>
+          {header}</Typography>
         <Typography>{description}</Typography>
       </Box>
     </Card>

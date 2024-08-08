@@ -33,6 +33,7 @@ export const TRAFFICDATA_COLORS = {
   sidebarBorderColor: "#2E3539",
   avatarBackgroundColor: "#d12e2c",
   cardBackgroundColor: "#E5E5E5",
+  globalFontColor: "#363F44",
   buttonThemeColor: createColor("#d12e2c"),
   ...SHARED_COLORS,
 };
@@ -42,8 +43,9 @@ export const TRANSPORTPORTAL_COLORS = {
   mainBackgroundColor: "#f0f1f1",
   sidebarActiveColor: "#EBF5E6",
   sidebarBorderColor: "#3E7B1F",
-  avatarBackgroundColor: "#3E7B1F",
+  avatarBackgroundColor: "#444F55",
   cardBackgroundColor: "#EBF5E6",
+  globalFontColor: "#363F44",
   buttonThemeColor: createColor("#3E7B1F"),
   ...SHARED_COLORS,
 };
