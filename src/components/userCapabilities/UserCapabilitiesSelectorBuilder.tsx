@@ -75,8 +75,10 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
   const onSubmit: SubmitHandler<IFormCapabilityInputs> = async (data) => {
 
   data.publicationId = data.publisherId + ':' + data.publicationId;
-  const metadata = { "metadata": {} };
+  if (validateUniquePublicationId(data.publicationId)) return;
+
   const application = { "application": data };
+  const metadata = { "metadata": {} }; //Mandatory field
 
   const response = await createUserCapability(
     session?.user.commonName as string,
@@ -89,6 +91,7 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
       message: "Capability successfully created",
       severity: "success"
     });
+    window.location.href = "/capabilities";
   } else {
     setFeedback({
       feedback: true,
@@ -100,6 +103,16 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
 
   const findPublicationIds = (value: any) => {
     return publicationids.some((id: any) => id === value);
+  };
+
+  const validateUniquePublicationId = (value: string) => {
+    if (value && findPublicationIds(value)) {
+      setDuplicatePublicationIdError("Publication ID must be unique, please try another one.");
+      return true;
+    } else {
+      setDuplicatePublicationIdError("");
+      return false;
+    }
   };
 
   const handleClose = () => {
