@@ -116,7 +116,7 @@ export default function Capabilities() {
         capability to view more information and remove.
       </Subheading>
       <Divider sx={{ marginY: 2 }} />
-      <AddButton text="Add capability"></AddButton>
+      <AddButton text="Add capability" labelUrl="capability"></AddButton>
       <Divider style={{ margin: '5px 0', visibility: 'hidden' }}/>
       <DataGrid
         columns={tableHeaders}

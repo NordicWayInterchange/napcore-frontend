@@ -115,7 +115,7 @@ export default function Subscriptions() {
         view more information or unsubscribe.
       </Subheading>
       <Divider sx={{ marginY: 2 }} />
-      <AddButton text="Add subscription"></AddButton>
+      <AddButton text="Add subscription" labelUrl="subscription"></AddButton>
       <Divider style={{ margin: '5px 0', visibility: 'hidden' }}/>
       <DataGrid
         columns={tableHeaders}
