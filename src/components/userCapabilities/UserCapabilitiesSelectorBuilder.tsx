@@ -13,15 +13,11 @@ import { IFeedback } from "@/interface/IFeedback";
 import { useSession } from "next-auth/react";
 import MapDialog from "@/components/map/MapDialog";
 import { IFormCapabilityInputs } from "@/interface/IFormCapabilityInputs";
-
-type Props = {
-  publicationids: any
-};
+import { usePublicationIds } from "@/hooks/usePublicationIds";
 
 const QUADTREE_REGEX = /^[0-3]+(,[0-3]+)*$/i;
 
-const UserCapabilitiesSelectorBuilder = (props: Props) => {
-  const { publicationids } = props;
+const UserCapabilitiesSelectorBuilder = () => {
   const [duplicatePublicationIdError, setDuplicatePublicationIdError] = useState('');
   const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
@@ -31,6 +27,9 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
     severity: "success",
   });
   const { data: session } = useSession();
+  const { data } = usePublicationIds(
+    session?.user.commonName as string,
+  );
 
   const {
     handleSubmit,
@@ -73,45 +72,43 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
   }, [watchMessageType]);
 
   const onSubmit: SubmitHandler<IFormCapabilityInputs> = async (data) => {
+    data.publicationId = data.publisherId + ":" + data.publicationId;
+    if (validateUniquePublicationId(data.publicationId)) return;
 
-  data.publicationId = data.publisherId + ':' + data.publicationId;
-  if (validateUniquePublicationId(data.publicationId)) return;
+    const application = { "application": data };
+    const metadata = { "metadata": {} }; //Mandatory field
 
-  const application = { "application": data };
-  const metadata = { "metadata": {} }; //Mandatory field
+    const response = await createUserCapability(
+      session?.user.commonName as string,
+      Object.assign({}, application, metadata)
+    );
 
-  const response = await createUserCapability(
-    session?.user.commonName as string,
-    Object.assign({}, application, metadata)
-  );
-
-  if (response.ok) {
-    setFeedback({
-      feedback: true,
-      message: "Capability successfully created",
-      severity: "success"
-    });
-    window.location.href = "/capabilities";
-  } else {
-    setFeedback({
-      feedback: true,
-      message: "Capability could not be created, try again!",
-      severity: "warning"
-    });
-  }
+    if (response.ok) {
+      setFeedback({
+        feedback: true,
+        message: "Capability successfully created",
+        severity: "success"
+      });
+      window.location.href = "/capabilities";
+    } else {
+      setFeedback({
+        feedback: true,
+        message: "Capability could not be created, try again!",
+        severity: "warning"
+      });
+    }
   };
 
   const findPublicationIds = (value: any) => {
-    return publicationids.some((id: any) => id === value);
+    return data?.some((id: any) => id === value);
   };
 
   const validateUniquePublicationId = (value: string) => {
     if (value && findPublicationIds(value)) {
-      setDuplicatePublicationIdError("Publication ID must be unique, please try another one.");
+      setDuplicatePublicationIdError("Publication ID and publisher ID combination must be unique, please try another one.");
       return true;
     } else {
       setDuplicatePublicationIdError("");
-      return false;
     }
   };
 
@@ -151,7 +148,7 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                     fullWidth
                     error={!!errors.publisherId}
                     helperText={errors.publisherId ? errors.publisherId.message : ''}
-                    label="Publisher Id"
+                    label="Publisher Id *"
                   />
                 )}
               />
@@ -162,20 +159,12 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                   <TextField
                     {...field}
                     {...register('publicationId', {
-                      required: 'Publication ID is required.',
-                      validate: (value) => {
-                        if (value && findPublicationIds(value)) {
-                          setDuplicatePublicationIdError('Publication ID must be unique, please try another one.');
-                          return true;
-                        } else {
-                          setDuplicatePublicationIdError('');
-                        }
-                      },
+                      required: 'Publication ID is required.'
                     })}
                     fullWidth
                     error={!!duplicatePublicationIdError || !!errors.publicationId}
                     helperText={ errors.publicationId ? errors.publicationId.message : duplicatePublicationIdError}
-                    label="Publication ID"
+                    label="Publication ID *"
                   />
                 )}
               />
@@ -191,7 +180,7 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                     fullWidth
                     error={!!errors.protocolVersion}
                     helperText={errors.protocolVersion ? "Protocol version is required." : ''}
-                    label="Protocol version"
+                    label="Protocol version *"
                   />
                 )}
               />
@@ -203,8 +192,8 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                   <FormControl
                     fullWidth
                     error={Boolean(errors.originatingCountry)}>
-                    <InputLabel>Originating country</InputLabel>
-                    <Select label="Originating country" {...field}>
+                    <InputLabel>Originating country *</InputLabel>
+                    <Select label="Originating country *" {...field}>
                       {originatingCountries.map((country, index) => (
                         <MenuItem key={index} value={country.value}>
                           {country.value}
@@ -253,11 +242,11 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                     error={!!errors.causeCode}
                     disabled={!watchMessageType.includes(DENM)}
                   >
-                    <InputLabel>Cause codes</InputLabel>
+                    <InputLabel>Cause codes *</InputLabel>
                     <Select
                       MenuProps={{ PaperProps: { sx: { maxHeight: 200 } } }}
                       multiple
-                      label="Cause codes"
+                      label="Cause codes *"
                       {...field}
                     >
                       {causeCodes.map((country, index) => (
@@ -282,7 +271,7 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                       fullWidth
                       error={!!errors.publisherName}
                       helperText={errors.publisherName ? "Publisher name is required." : ""}
-                      label="publisher name"
+                      label="publisher name *"
                     />
                 )}
               />
@@ -298,7 +287,7 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                       fullWidth
                       error={!!errors.publicationType}
                       helperText={errors.publicationType ? "publication type is required." : ""}
-                      label="publication type"
+                      label="publication type *"
                     />
                 )}
               />
@@ -312,7 +301,7 @@ const UserCapabilitiesSelectorBuilder = (props: Props) => {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="Quadtree"
+                    label="Quadtree *"
                     fullWidth
                     onChange={(event) => {
                       const value = event.target.value;
