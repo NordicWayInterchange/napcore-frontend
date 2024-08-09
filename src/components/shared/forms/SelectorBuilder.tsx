@@ -69,6 +69,7 @@ const SelectorBuilder = (props: Props) => {
     getFieldState,
     clearErrors,
     resetField,
+    reset,
     formState: { errors },
   } = useForm<IFormInputs>({
     defaultValues: {
@@ -343,6 +344,13 @@ const SelectorBuilder = (props: Props) => {
                 disabled={!!getFieldState("quadTree").error}
               >
                 Save {label}
+              </StyledButton>
+              <StyledButton
+                color="buttonThemeColor"
+                variant="outlined"
+                onClick={() => reset()}
+              >
+                Clear form
               </StyledButton>
             </Box>
           </StyledFormControl>
