@@ -125,6 +125,7 @@ const SelectorBuilder = (props: Props) => {
         message: `${label} successfully created`,
         severity: "success",
       });
+      window.location.href = label === "Delivery" ? "/deliveries" : "/subscriptions";
     } else {
       setFeedback({
         feedback: true,
