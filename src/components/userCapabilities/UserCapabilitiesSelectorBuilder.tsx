@@ -42,6 +42,7 @@ const UserCapabilitiesSelectorBuilder = () => {
     getFieldState,
     clearErrors,
     resetField,
+    reset,
     formState: { errors },
   } = useForm<IFormCapabilityInputs>({
     defaultValues: {
@@ -345,6 +346,13 @@ const UserCapabilitiesSelectorBuilder = () => {
                 disabled={!!getFieldState("quadTree").error}
               >
                 Create my capability
+              </StyledButton>
+              <StyledButton
+                color="buttonThemeColor"
+                variant="outlined"
+                onClick={() => reset()}
+              >
+                Clear form
               </StyledButton>
             </Box>
           </StyledFormControl>
