@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Divider, IconButton } from "@mui/material";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
 import { GridColDef } from "@mui/x-data-grid";
@@ -18,17 +18,35 @@ import Mainheading from "@/components/shared/display/typography/Mainheading";
 import Subheading from "@/components/shared/display/typography/Subheading";
 import CommonDrawer from "@/components/layout/CommonDrawer";
 import AddButton from "@/components/shared/actions/AddButton";
-
+const logger = require("../../lib/logger");
 
 export default function Subscriptions() {
   const { data: session } = useSession();
-  const { data, isLoading, remove } = useSubscriptions(
+  const { data, isLoading, remove, refetch} = useSubscriptions(
     session?.user?.commonName as string
   );
   const [open, setOpen] = useState<boolean>(false);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [subscriptionRow, setSubscriptionRow] =
     useState<ExtendedSubscription>();
+  const [isDeleted, setIsDeleted] = useState<boolean>(false);
+
+  useEffect(() => {
+    const performRefetch = async () => {
+      try {
+        await refetch();
+      } catch (error) {
+        logger.error(
+          "Failed to refetch data:", error
+        );
+      }
+    };
+    performRefetch();
+    setIsDeleted(false);
+    return () => {
+      // Cleanup logic if necessary
+    };
+  }, [isDeleted, refetch]);
 
   const handleDelete = (subscription: ExtendedSubscription) => {
     setSubscriptionRow(subscription);
@@ -47,6 +65,14 @@ export default function Subscriptions() {
   const handleClickClose = (close: boolean) => {
     setOpen(close);
     remove();
+  };
+
+  const handleOnRowClick = (params: any) => {
+    handleMore(params.row);
+  };
+
+  const handleDeletedItem = (deleted: boolean) => {
+    setIsDeleted(deleted);
   };
 
   const tableHeaders: GridColDef[] = [
@@ -103,10 +129,6 @@ export default function Subscriptions() {
     },
   ];
 
-  const handleOnRowClick = (params: any) => {
-    handleMore(params.row);
-  };
-
   return (
     <Box flex={1}>
       <Mainheading>Subscriptions</Mainheading>
@@ -133,6 +155,7 @@ export default function Subscriptions() {
           handleMoreClose={handleMoreClose}
           open={drawerOpen}
           item={subscriptionRow as ExtendedSubscription}
+          handleDeletedItem={handleDeletedItem}
           label="Subscription"
         />
       )}
@@ -141,6 +164,7 @@ export default function Subscriptions() {
         handleDialog={handleClickClose}
         open={open}
         actorCommonName={session?.user.commonName as string}
+        handleDeletedItem={handleDeletedItem}
         text="Subscription"
       />
     </Box>

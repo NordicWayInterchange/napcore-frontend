@@ -18,6 +18,7 @@ type Props = {
   open: boolean;
   handleDialog: (close: boolean) => void;
   itemId: string;
+  handleDeletedItem: (deleted: boolean) => void;
   text: string;
 };
 
@@ -28,7 +29,7 @@ async function deleteArtifacts(artifactType: string, name: string, itemId: strin
 }
 
 export default function DeleteSubDialog(props: Props) {
-  const { actorCommonName, open, handleDialog, itemId, text } = props;
+  const { actorCommonName, open, handleDialog, itemId, handleDeletedItem, text } = props;
 
   const [feedback, setFeedback] = useState<IFeedback>({
     feedback: false,
@@ -39,6 +40,7 @@ export default function DeleteSubDialog(props: Props) {
   const handleDeletion = async (name: string, itemId: string, text: string) => {
     const response = await deleteArtifacts(text, name, itemId);
     handleDialog(false);
+    handleDeletedItem(true);
 
     if (response.ok) {
       setFeedback({

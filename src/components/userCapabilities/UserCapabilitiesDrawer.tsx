@@ -25,9 +25,10 @@ type Props = {
   capability: ExtendedCapability;
   open: boolean;
   handleMoreClose: () => void;
+  handleDeletedItem: (deleted: boolean) => void;
 };
 
-const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
+const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDeletedItem }: Props) => {
   const { data: session } = useSession();
   const [openMap, setOpenMap] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
@@ -123,6 +124,7 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) =>
         actorCommonName={session?.user.commonName as string}
         itemId={capability.id as string}
         handleDialog={handleClickClose}
+        handleDeletedItem={handleDeletedItem}
         text="Capability"
       />
       <MapDialog
