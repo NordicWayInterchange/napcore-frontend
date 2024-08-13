@@ -42,9 +42,6 @@ export default function Capabilities() {
     };
     performRefetch();
     setIsDeleted(false);
-    return () => {
-      // Cleanup logic if necessary
-    };
   }, [isDeleted, refetch]);
 
   const handleDelete = (capability: ExtendedCapability) => {

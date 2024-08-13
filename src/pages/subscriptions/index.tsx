@@ -18,6 +18,7 @@ import Mainheading from "@/components/shared/display/typography/Mainheading";
 import Subheading from "@/components/shared/display/typography/Subheading";
 import CommonDrawer from "@/components/layout/CommonDrawer";
 import AddButton from "@/components/shared/actions/AddButton";
+
 const logger = require("../../lib/logger");
 
 export default function Subscriptions() {
@@ -30,23 +31,27 @@ export default function Subscriptions() {
   const [subscriptionRow, setSubscriptionRow] =
     useState<ExtendedSubscription>();
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const [shouldRefreshAfterDelete, setShouldRefreshAfterDelete] = useState<boolean>(false);
 
   useEffect(() => {
-    const performRefetch = async () => {
-      try {
-        await refetch();
-      } catch (error) {
-        logger.error(
-          "Failed to refetch data:", error
-        );
-      }
-    };
     performRefetch();
     setIsDeleted(false);
-    return () => {
-      // Cleanup logic if necessary
-    };
+    setShouldRefreshAfterDelete(true);
   }, [isDeleted, refetch]);
+
+  useEffect(() => {
+  }, [shouldRefreshAfterDelete, refetch]);
+
+  const performRefetch = async () => {
+    try {
+      await refetch();
+    } catch (error) {
+      logger.error(
+        "Failed to refetch data:", error
+      );
+    }
+  };
+
 
   const handleDelete = (subscription: ExtendedSubscription) => {
     setSubscriptionRow(subscription);

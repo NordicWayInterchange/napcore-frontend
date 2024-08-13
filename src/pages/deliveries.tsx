@@ -29,23 +29,27 @@ export default function Deliveries() {
   const [deliveryRow, setDeliveryRow] = useState<ExtendedDelivery>();
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const [shouldRefreshAfterDelete, setShouldRefreshAfterDelete] = useState<boolean>(false);
 
   useEffect(() => {
-    const performRefetch = async () => {
-      try {
-        await refetch();
-      } catch (error) {
-        logger.error(
-          "Failed to refetch data:", error
-        );
-      }
-    };
     performRefetch();
     setIsDeleted(false);
-    return () => {
-      // Cleanup logic if necessary
-    };
+    setShouldRefreshAfterDelete(true);
   }, [isDeleted, refetch]);
+
+  useEffect(() => {
+  }, [shouldRefreshAfterDelete, refetch]);
+
+  const performRefetch = async () => {
+    try {
+      await refetch();
+    } catch (error) {
+      logger.error(
+        "Failed to refetch data:", error
+      );
+    }
+  };
+
 
   const handleDelete = (delivery: ExtendedDelivery) => {
     setDeliveryRow(delivery);
