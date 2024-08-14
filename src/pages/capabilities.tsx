@@ -124,7 +124,7 @@ export default function Capabilities() {
         onRowClick={handleOnRowClick}
         loading={isLoading}
         getRowId={(row) => row.publicationId}
-        sort={{ field: "publicationId", sort: "desc" }}
+        sort={{ field: "userCapabilityRow?.id", sort: "asc" }}
         slots={{
           footer: CustomFooter,
           noRowsOverlay: CustomEmptyOverlayUserCapabilites,

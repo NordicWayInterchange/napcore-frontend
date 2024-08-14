@@ -126,7 +126,7 @@ export default function Subscriptions() {
           footer: CustomFooter,
           noRowsOverlay: CustomEmptyOverlaySubscription,
         }}
-        sort={{ field: "id", sort: "desc" }}
+        sort={{ field: "lastUpdatedTimestamp", sort: "asc" }}
       />
       {subscriptionRow && (
         <CommonDrawer

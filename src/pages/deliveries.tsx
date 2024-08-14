@@ -121,7 +121,7 @@ export default function Deliveries() {
         onRowClick={handleOnRowClick}
         loading={isLoading}
         getRowId={(row) => row.id}
-        sort={{ field: "id", sort: "desc" }}
+        sort={{ field: "lastUpdatedTimestamp", sort: "asc" }}
         slots={{
           footer: CustomFooter,
           noRowsOverlay: CustomEmptyOverlayDeliveries,
