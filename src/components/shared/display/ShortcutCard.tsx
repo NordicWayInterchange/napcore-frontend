@@ -1,9 +1,9 @@
 import { Avatar, Card, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { ReactElement } from "react";
 
 interface Props {
-  avatar: string;
+  avatar: ReactElement;
   header: string;
   description: string;
 }
@@ -18,19 +18,20 @@ const ShortcutCard = (props: Props) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: 2,
-        width: { xs: "100%", sm: "100%", md: 260 },
+        padding: 4,
+        width: { xs: "100%", sm: "100%", md: 250 },
         "&:hover": {
           boxShadow: "6px 6px 16px rgba(0, 0, 0, 0.4)",
           textDecoration: "underline"
         },
-        borderBottom: "2px solid orange",
-        boxShadow: 2
+        height: "15vh",
+        borderBottom: "2px solid #FF9600",
+        boxShadow: 1
       }}
     >
       <Avatar sx={{
         bgcolor: "avatarBackgroundColor",
-        marginRight: 1,
+        marginRight: 0,
         marginBottom: 2
       }}>
         {avatar}

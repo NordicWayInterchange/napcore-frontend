@@ -32,7 +32,7 @@ export default function Home() {
     },
     {
       header: "Network capabilities",
-      description: "View network capabilities",
+      description: "View all capabilities",
       url: "network-capabilities",
       icon: <CellTowerIcon />,
     },

@@ -19,7 +19,7 @@ export default function DataGrid(props: Props) {
         sx={{ backgroundColor: "white",
           boxShadow: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
           borderRadius: 2,
-          '& .MuiDataGrid-columnHeaders': { backgroundColor: "#DADADA", color: "black" }}}
+          '& .MuiDataGrid-columnHeaders': { backgroundColor: "#DADADA"}}}
         initialState={{
           pagination: {
             paginationModel: {

@@ -118,7 +118,6 @@ export default function Sidebar() {
 
         <Box sx={{ marginTop: "auto", padding: 2 }}>
           <List>{mapPages(SECONDARY_PAGES)}</List>
-          <Divider sx={{ marginY: 1 }} />
         </Box>
       </StyledDrawer>
     </Box>

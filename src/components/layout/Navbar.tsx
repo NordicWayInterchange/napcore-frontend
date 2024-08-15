@@ -1,7 +1,7 @@
 import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
 import React from "react";
 import { styled } from "@mui/material/styles";
-import LogoutIcon from "@mui/icons-material/Logout";
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { signOut, useSession } from "next-auth/react";
 import { Box } from "@mui/system";
 
@@ -23,10 +23,10 @@ export default function Navbar() {
             : "Transportportal"}
         </Typography>
         <StyledSignOutBox sx={{marginLeft: 'auto'}}>
-          <Typography>{session?.user?.name}</Typography>
           <IconButton onClick={() => signOut()}>
-            <LogoutIcon sx={{color: "white"}} />
+            <PersonOutlineIcon sx={{color: "white"}} />
           </IconButton>
+          <Typography>{session?.user?.name}</Typography>
         </StyledSignOutBox>
       </Toolbar>
     </AppBar>
