@@ -10,7 +10,7 @@ import {
   Toolbar,
   Typography,
   ListItemIcon,
-  IconButton,
+  IconButton
 } from "@mui/material";
 import Link from "next/link";
 import React from "react";
@@ -26,6 +26,7 @@ import { styled } from "@mui/material/styles";
 import { IPages } from "@/interface/IPages";
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 import PersonIcon from '@mui/icons-material/Person';
+import ArticleIcon from '@mui/icons-material/Article';
 
 const MAIN_PAGES: Array<IPages> = [
   {
@@ -58,6 +59,11 @@ const SECONDARY_PAGES: Array<IPages> = [
     text: "Certificate",
     url: "/certificate",
     icon: <SettingsIcon />,
+  },
+  {
+    text: "Glossary",
+    url: "https://github.com/NordicWayInterchange/interchange/blob/federation-master/GLOSSARY.md",
+    icon: <ArticleIcon />,
   },
 ];
 
