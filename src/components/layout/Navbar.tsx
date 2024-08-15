@@ -22,11 +22,11 @@ export default function Navbar() {
             ? "Trafficdata"
             : "Transportportal"}
         </Typography>
-        <StyledSignOutBox sx={{marginLeft: 'auto'}}>
-          <IconButton onClick={() => signOut()}>
+        <StyledSignOutBox sx={{marginLeft: 'auto'}} onClick={() => signOut()}>
+          <IconButton sx={{marginRight: '-5px'}}>
             <PersonOutlineIcon sx={{color: "white"}} />
           </IconButton>
-          <Typography>{session?.user?.name}</Typography>
+          <Typography sx={{cursor: 'pointer'}}>{session?.user?.name}</Typography>
         </StyledSignOutBox>
       </Toolbar>
     </AppBar>
