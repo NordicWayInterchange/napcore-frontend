@@ -32,7 +32,8 @@ const NewDelivery = () => {
         Create a delivery with the form, or specify your own selector in
         advanced mode.
       </Subheading>
-      <Divider sx={{ marginY: 3 }} />
+      <Divider sx={{ marginY: 1 }} />
+
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
           <SelectorBuilder

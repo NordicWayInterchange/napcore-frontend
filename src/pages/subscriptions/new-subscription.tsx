@@ -32,7 +32,8 @@ const NewSubscription = () => {
         Create a subscription with the form, or specify your own selector in
         advanced mode.
       </Subheading>
-      <Divider sx={{ marginY: 3 }} />
+      <Divider sx={{ marginY: 1 }} />
+
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
           <SelectorBuilder
@@ -49,7 +50,7 @@ const NewSubscription = () => {
             getRowId={(row) => row.publicationId}
             sort={{ field: "publicationId", sort: "desc" }}
             slots={{
-              noRowsOverlay: CustomEmptyOverlayMatching,
+              noRowsOverlay: CustomEmptyOverlayMatching
             }}
           />
         </Grid>
