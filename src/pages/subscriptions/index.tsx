@@ -34,34 +34,38 @@ export default function Subscriptions() {
   const [shouldRefreshAfterDelete, setShouldRefreshAfterDelete] = useState<boolean>(false);
 
   useEffect(() => {
+    const performRefetch = async () => {
+      try {
+        await refetch();
+      } catch (error) {
+        logger.error(
+          "Failed to refetch data:", error
+        );
+      }
+    };
     performRefetch();
     setIsDeleted(false);
     setShouldRefreshAfterDelete(true);
   }, [isDeleted, refetch]);
 
   useEffect(() => {
-    refetchDataWithDelay();
-  }, [shouldRefreshAfterDelete, refetch]);
-
-  const performRefetch = async () => {
-    try {
-      await refetch();
-    } catch (error) {
-      logger.error(
-        "Failed to refetch data:", error
-      );
-    }
-  };
-
-  const refetchDataWithDelay = () => {
     const timeout = setTimeout(() => {
+      const performRefetch = async () => {
+        try {
+          await refetch();
+        } catch (error) {
+          logger.error(
+            "Failed to refetch data:", error
+          );
+        }
+      };
       performRefetch();
     }, 20000);
+    setShouldRefreshAfterDelete(false);
     return () => {
-      setShouldRefreshAfterDelete(false);
       clearTimeout(timeout);
-    }
-  };
+    };
+  }, [shouldRefreshAfterDelete, refetch]);
 
   const handleDelete = (subscription: ExtendedSubscription) => {
     setSubscriptionRow(subscription);

@@ -40,9 +40,9 @@ export default function DeleteSubDialog(props: Props) {
   const handleDeletion = async (name: string, itemId: string, text: string) => {
     const response = await deleteArtifacts(text, name, itemId);
     handleDialog(false);
-    handleDeletedItem(true);
 
     if (response.ok) {
+      handleDeletedItem(true);
       setFeedback({
         feedback: true,
         message: `${text} successfully deleted`,
