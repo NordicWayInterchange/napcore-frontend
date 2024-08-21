@@ -23,7 +23,7 @@ export const SHARED_COLORS = {
   orangeLight: createColor("#ffbf7d"),
   purpleDark: createColor("#7255c0"),
   purpleLight: createColor("#c1aaff"),
-  redLight: createColor("#B22222")
+  redLight: createColor("#B63434")
 };
 
 export const TRAFFICDATA_COLORS = {
