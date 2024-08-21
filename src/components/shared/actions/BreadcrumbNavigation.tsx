@@ -27,7 +27,7 @@ export const BreadcrumbNavigation = (props: Props) => {
         >
           <NavigateBeforeIcon />
         </Link>
-        <Breadcrumbs sx={{ ml: -1.5 }}>
+        <Breadcrumbs sx={{ ml: -1.25 }}>
           <Link
             underline="hover"
             color="inherit"

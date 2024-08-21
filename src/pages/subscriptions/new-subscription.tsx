@@ -10,6 +10,7 @@ import { CustomEmptyOverlayMatching } from "@/components/shared/datagrid/CustomE
 import Subheading from "@/components/shared/display/typography/Subheading";
 import Mainheading from "@/components/shared/display/typography/Mainheading";
 import SelectorBuilder from "@/components/shared/forms/SelectorBuilder";
+import { BreadcrumbNavigation } from "@/components/shared/actions/BreadcrumbNavigation";
 
 const NewSubscription = () => {
   const { data: session } = useSession();
@@ -33,7 +34,7 @@ const NewSubscription = () => {
         advanced mode.
       </Subheading>
       <Divider sx={{ marginY: 1 }} />
-
+      <BreadcrumbNavigation text="Subscriptions" />
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
           <SelectorBuilder
