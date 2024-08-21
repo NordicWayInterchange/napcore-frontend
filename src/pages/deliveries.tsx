@@ -38,6 +38,7 @@ export default function Deliveries() {
   }, [isDeleted, refetch]);
 
   useEffect(() => {
+    refetchDataWithDelay();
   }, [shouldRefreshAfterDelete, refetch]);
 
   const performRefetch = async () => {
@@ -50,6 +51,15 @@ export default function Deliveries() {
     }
   };
 
+  const refetchDataWithDelay = () => {
+    const timeout = setTimeout(() => {
+      performRefetch();
+    }, 30000);
+    return () => {
+      setShouldRefreshAfterDelete(false);
+      clearTimeout(timeout);
+    }
+  };
 
   const handleDelete = (delivery: ExtendedDelivery) => {
     setDeliveryRow(delivery);

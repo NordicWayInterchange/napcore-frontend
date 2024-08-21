@@ -40,6 +40,7 @@ export default function Subscriptions() {
   }, [isDeleted, refetch]);
 
   useEffect(() => {
+    refetchDataWithDelay();
   }, [shouldRefreshAfterDelete, refetch]);
 
   const performRefetch = async () => {
@@ -52,6 +53,15 @@ export default function Subscriptions() {
     }
   };
 
+  const refetchDataWithDelay = () => {
+    const timeout = setTimeout(() => {
+      performRefetch();
+    }, 20000);
+    return () => {
+      setShouldRefreshAfterDelete(false);
+      clearTimeout(timeout);
+    }
+  };
 
   const handleDelete = (subscription: ExtendedSubscription) => {
     setSubscriptionRow(subscription);
