@@ -49,7 +49,7 @@ const NewSubscription = () => {
             rows={data || []}
             loading={isLoading}
             getRowId={(row) => row.publicationId}
-            sort={{ field: "publicationId", sort: "desc" }}
+            sort={{ field: "lastUpdatedTimestamp", sort: "asc" }}
             slots={{
               noRowsOverlay: CustomEmptyOverlayMatching
             }}
