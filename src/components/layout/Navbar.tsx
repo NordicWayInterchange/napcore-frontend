@@ -23,7 +23,7 @@ export default function Navbar() {
             : "Transportportal"}
         </Typography>
         <StyledSignOutBox sx={{marginLeft: 'auto'}} onClick={() => signOut()}>
-          <IconButton sx={{marginRight: '-5px'}}>
+          <IconButton sx={{marginRight: '-5px', mb: .5}}>
             <PersonOutlineIcon sx={{color: "white"}} />
           </IconButton>
           <Typography sx={{cursor: 'pointer'}}>{session?.user?.name}</Typography>
@@ -36,4 +36,8 @@ const StyledSignOutBox = styled(Box)(({}) => ({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
+  textDecoration: 'none',
+  '&:hover': {
+    textDecoration: 'underline'
+  }
 }));
