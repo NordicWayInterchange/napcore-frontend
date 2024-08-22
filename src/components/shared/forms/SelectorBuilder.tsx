@@ -181,7 +181,7 @@ const SelectorBuilder = (props: Props) => {
 
   return (
     <>
-      <StyledCard variant={"outlined"} sx={{boxShadow: 'rgb(38, 57, 77) 0px 20px 30px -10px'}}>
+      <StyledCard variant={"outlined"} sx={{boxShadow: 2}}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <StyledFormControl>
             <Box sx={{ display: "flex", gap: 1 }}>

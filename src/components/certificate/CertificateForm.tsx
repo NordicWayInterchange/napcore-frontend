@@ -75,7 +75,7 @@ export const CertificateForm = () => {
   };
 
   return (
-    <StyledCard variant={"outlined"} sx={{boxShadow: 'rgb(38, 57, 77) 0px 20px 30px -10px'}}>
+    <StyledCard variant={"outlined"} sx={{boxShadow:2}}>
       <Subheading>Create a new certificate</Subheading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <StyledBox>
