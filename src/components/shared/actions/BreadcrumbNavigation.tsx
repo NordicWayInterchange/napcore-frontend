@@ -1,7 +1,8 @@
-import { Breadcrumbs, ButtonProps, Link } from "@mui/material";
+import { Breadcrumbs, ButtonProps, Typography } from "@mui/material";
 import React from "react";
 import { Box } from "@mui/system";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import NextLink from 'next/link';
 
 interface Props extends ButtonProps {
   text: string;
@@ -15,35 +16,39 @@ export const BreadcrumbNavigation = (props: Props) => {
   };
 
   return (
-    <Box sx={{ width: '100%', py: 2, ml: -.5}}>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Link
-          href={getUrl()}
-          sx={{ display: 'flex',
-            alignItems: 'center',
-            textDecoration: 'none',
-            color: 'grey', cursor: 'pointer',
-            mr: 1 }}
-        >
-          <NavigateBeforeIcon />
-        </Link>
-        <Breadcrumbs sx={{ ml: -1.25 }}>
-          <Link
-            underline="hover"
-            color="inherit"
-            href={getUrl()}
+    <Box sx={{ width: "100%", py: 2, ml: -.5 }}>
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <NextLink href={getUrl()} passHref>
+          <Typography
             sx={{
-              cursor: 'pointer',
-              textDecoration: 'underline',
-              textDecorationThickness: '1px',
-              '&:hover': {
-                textDecorationThickness: '2px',
-              },
+              display: "flex",
+              alignItems: "center",
+              textDecoration: "none",
+              color: "grey", cursor: "pointer",
+              mr: 1
             }}
           >
-            {text}
-          </Link>
-        </Breadcrumbs>
+            <NavigateBeforeIcon />
+          </Typography>
+        </NextLink>
+
+        <NextLink href={getUrl()} passHref>
+          <Breadcrumbs sx={{ ml: -1.25 }}>
+            <Typography
+              sx={{
+                cursor: "pointer",
+                textDecoration: "underline",
+                textDecorationThickness: "1px",
+                "&:hover": {
+                  textDecorationThickness: "2px"
+                },
+                color: "grey"
+              }}
+            >
+              {text}
+            </Typography>
+          </Breadcrumbs>
+        </NextLink>
       </Box>
     </Box>
   );
