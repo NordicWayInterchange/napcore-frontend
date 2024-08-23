@@ -103,7 +103,7 @@ export default function NetworkCapabilities() {
         onRowClick={handleOnRowClick}
         loading={isLoading}
         getRowId={(row) => row.publicationId}
-        sort={{ field: "lastUpdatedTimestamp", sort: "asc" }}
+        sort={{ field: "lastUpdatedTimestamp", sort: "desc" }}
         slots={{
           noRowsOverlay: CustomEmptyOverlayCapabilites,
         }}

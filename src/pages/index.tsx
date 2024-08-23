@@ -88,7 +88,7 @@ export default function Home() {
           rows={data?.slice(0, 4) || []}
           loading={isLoading}
           hideFooterPagination={true}
-          sort={{ field: "lastUpdatedTimestamp", sort: "asc" }}
+          sort={{ field: "lastUpdatedTimestamp", sort: "desc" }}
           slots={{
             noRowsOverlay: CustomEmptyOverlaySubscription,
           }}

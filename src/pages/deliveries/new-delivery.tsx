@@ -49,7 +49,7 @@ const NewDelivery = () => {
             rows={data || []}
             loading={isLoading}
             getRowId={(row) => row.publicationId}
-            sort={{ field: "lastUpdatedTimestamp", sort: "asc" }}
+            sort={{ field: "lastUpdatedTimestamp", sort: "desc" }}
             slots={{
               noRowsOverlay: CustomEmptyOverlayMatching,
             }}
