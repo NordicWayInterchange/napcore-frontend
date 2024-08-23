@@ -8,6 +8,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 export default function Navbar() {
   const { data: session } = useSession();
+  const showLogoutIcon = !!session?.user?.name;
+
   return (
     <AppBar
       elevation={0}
@@ -17,26 +19,31 @@ export default function Navbar() {
       }}
       position="fixed"
     >
-      <Toolbar sx={{display: "flex", flexrap:"wrap", gap: "20px"}}>
-        <Typography variant="h6" noWrap component="div" sx={{marginRight: 'auto'}}>
+      <Toolbar>
+        <Typography variant="h6" noWrap component="div" sx={{ marginRight: "auto" }}>
           {process.env.NEXT_PUBLIC_THEME_PROVIDER == "trafficdata"
             ? "Trafficdata"
             : "Transportportal"}
         </Typography>
-        <StyledSignOutBox sx={{marginLeft: 'auto'}}>
-          <IconButton sx={{marginRight: '-5px', mb: .5}}>
-            <PersonOutlineIcon sx={{color: "white"}} />
-          </IconButton>
-          <Typography>{session?.user?.name}</Typography>
+        {showLogoutIcon && (
+          <StyledSignOutBox>
+            <IconButton sx={{ marginRight: "-5px", mb: .5 }}>
+              <PersonOutlineIcon sx={{ color: "white", fontSize: "large" }} />
+            </IconButton>
+            <Typography>{session?.user?.name}</Typography>
 
-          <IconButton sx={{marginRight: '-5px', mb: .5}}  onClick={() => signOut()}>
-          <LogoutIcon sx={{color: "white"}} />
-          </IconButton>
-          <Typography sx={{cursor: 'pointer', textDecoration: 'none',
-            '&:hover': {
-              textDecoration: 'underline'
-            }}} onClick={() => signOut()}>Log out</Typography>
-        </StyledSignOutBox>
+            <Box mx={1.5} />
+            <IconButton sx={{ marginRight: "-5px", mb: .25 }} onClick={() => signOut()}>
+              <LogoutIcon sx={{ color: "white", fontSize: "large" }} />
+            </IconButton>
+            <Typography sx={{
+              cursor: "pointer", textDecoration: "none",
+              "&:hover": {
+                textDecoration: "underline"
+              }
+            }} onClick={() => signOut()}>Logout</Typography>
+          </StyledSignOutBox>
+        )}
       </Toolbar>
     </AppBar>
   );
