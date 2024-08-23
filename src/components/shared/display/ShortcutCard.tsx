@@ -24,7 +24,7 @@ const ShortcutCard = (props: Props) => {
           boxShadow: 6,
           textDecoration: "underline"
         },
-        height: "20vh",
+        height: "190px",
         borderBottom: "2px solid #FF9600",
         boxShadow: 1
       }}
