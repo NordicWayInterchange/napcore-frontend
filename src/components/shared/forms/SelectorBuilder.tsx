@@ -31,6 +31,7 @@ import { IFeedback } from "@/interface/IFeedback";
 import { IFormInputs } from "@/interface/IFormInputs";
 import { useSession } from "next-auth/react";
 import { ExtendedDelivery } from "@/types/delivery";
+import { useRouter } from "next/router";
 
 type Props = {
   matchingElements: ExtendedCapability[] | ExtendedDelivery[] | [];
@@ -58,6 +59,7 @@ const SelectorBuilder = (props: Props) => {
     severity: "success",
   });
   const { data: session } = useSession();
+  const router = useRouter();
 
   const {
     handleSubmit,
@@ -125,7 +127,7 @@ const SelectorBuilder = (props: Props) => {
         message: `${label} successfully created`,
         severity: "success",
       });
-      window.location.href = label === "Delivery" ? "/deliveries" : "/subscriptions";
+      label === "Delivery" ? await router.push('/deliveries') : await router.push('/subscriptions');
     } else {
       setFeedback({
         feedback: true,

@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react";
 import MapDialog from "@/components/map/MapDialog";
 import { IFormCapabilityInputs } from "@/interface/IFormCapabilityInputs";
 import { usePublicationIds } from "@/hooks/usePublicationIds";
+import { useRouter } from "next/router";
 
 const QUADTREE_REGEX = /^[0-3]+(,[0-3]+)*$/i;
 
@@ -27,6 +28,8 @@ const UserCapabilitiesSelectorBuilder = () => {
     severity: "success",
   });
   const { data: session } = useSession();
+  const router = useRouter();
+
   const { data } = usePublicationIds(
     session?.user.commonName as string,
   );
@@ -90,7 +93,7 @@ const UserCapabilitiesSelectorBuilder = () => {
         message: "Capability successfully created",
         severity: "success"
       });
-      window.location.href = "/capabilities";
+      await router.push('/capabilities');
     } else {
       setFeedback({
         feedback: true,
