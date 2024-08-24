@@ -76,7 +76,7 @@ export default function Home() {
                 textDecoration: "none",
                 marginRight: 10,
                 marginTop: 10,
-                width: "260px",
+                width: "254px",
               }}
             >
               <ShortcutCard

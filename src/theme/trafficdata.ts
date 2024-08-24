@@ -8,9 +8,5 @@ export const trafficdata = createTheme({
   },
   palette: {
     ...TRAFFICDATA_COLORS,
-    text: {
-      primary: '#444f55',
-      secondary: '#444f55'
-    }
   },
 });
