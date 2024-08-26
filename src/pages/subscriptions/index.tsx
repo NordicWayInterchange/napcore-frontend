@@ -18,8 +18,7 @@ import Mainheading from "@/components/shared/display/typography/Mainheading";
 import Subheading from "@/components/shared/display/typography/Subheading";
 import CommonDrawer from "@/components/layout/CommonDrawer";
 import AddButton from "@/components/shared/actions/AddButton";
-
-const logger = require("../../lib/logger");
+import { performRefetch } from "@/lib/performRefetch";
 
 export default function Subscriptions() {
   const { data: session } = useSession();
@@ -34,32 +33,14 @@ export default function Subscriptions() {
   const [shouldRefreshAfterDelete, setShouldRefreshAfterDelete] = useState<boolean>(false);
 
   useEffect(() => {
-    const performRefetch = async () => {
-      try {
-        await refetch();
-      } catch (error) {
-        logger.error(
-          "Failed to refetch data:", error
-        );
-      }
-    };
-    performRefetch();
+    performRefetch(refetch);
     setIsDeleted(false);
     setShouldRefreshAfterDelete(true);
   }, [isDeleted, refetch]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      const performRefetch = async () => {
-        try {
-          await refetch();
-        } catch (error) {
-          logger.error(
-            "Failed to refetch data:", error
-          );
-        }
-      };
-      performRefetch();
+      performRefetch(refetch);
     }, 20000);
     setShouldRefreshAfterDelete(false);
     return () => {
