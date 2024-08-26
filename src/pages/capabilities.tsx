@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Divider, IconButton } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import DataGrid from "@/components/shared/datagrid/DataGrid";
@@ -17,16 +17,32 @@ import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
 import AddButton from "@/components/shared/actions/AddButton";
+const logger = require("../lib/logger");
 
 export default function Capabilities() {
   const { data: session } = useSession();
-  const { data, isLoading, remove } = useUserCapabilities(
+  const { data, isLoading, remove, refetch } = useUserCapabilities(
     session?.user.commonName as string
   );
 
   const [userCapabilityRow, setUserCapabilityRow] = useState<ExtendedCapability>();
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
+  const [isDeleted, setIsDeleted] = useState<boolean>(false);
+
+  useEffect(() => {
+    const performRefetch = async () => {
+      try {
+        await refetch();
+      } catch (error) {
+        logger.error(
+          "Failed to refetch data:", error
+        );
+      }
+    };
+    performRefetch();
+    setIsDeleted(false);
+  }, [isDeleted, refetch]);
 
   const handleDelete = (capability: ExtendedCapability) => {
     setUserCapabilityRow(capability);
@@ -45,6 +61,14 @@ export default function Capabilities() {
   const handleClickClose = (close: boolean) => {
     setOpen(close);
     remove();
+  };
+
+  const handleOnRowClick = (params: any) => {
+    handleMore(params.row);
+  };
+
+  const handleDeletedItem = (deleted: boolean) => {
+    setIsDeleted(deleted);
   };
 
   const tableHeaders: GridColDef[] = [
@@ -104,10 +128,6 @@ export default function Capabilities() {
     },
   ];
 
-  const handleOnRowClick = (params: any) => {
-    handleMore(params.row);
-  };
-
   return (
     <Box flex={1}>
       <Mainheading>My Capabilities</Mainheading>
@@ -135,6 +155,7 @@ export default function Capabilities() {
           handleMoreClose={handleMoreClose}
           open={drawerOpen}
           capability={userCapabilityRow as ExtendedCapability}
+          handleDeletedItem={handleDeletedItem}
         />
       )}
       <DeleteSubDialog
@@ -142,6 +163,7 @@ export default function Capabilities() {
         handleDialog={handleClickClose}
         open={open}
         actorCommonName={session?.user.commonName as string}
+        handleDeletedItem={handleDeletedItem}
         text="Capability"
       />
     </Box>

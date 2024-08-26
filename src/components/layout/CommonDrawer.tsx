@@ -24,10 +24,11 @@ type Props = {
   item: ExtendedSubscription | ExtendedDelivery;
   open: boolean;
   handleMoreClose: () => void;
+  handleDeletedItem: (deleted: boolean) => void;
   label: string;
 };
 
-const CommonDrawer = ({item, open, handleMoreClose, label }: Props) => {
+const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: Props) => {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const { data: session } = useSession();
 
@@ -180,6 +181,7 @@ const CommonDrawer = ({item, open, handleMoreClose, label }: Props) => {
         actorCommonName={session?.user.commonName as string}
         itemId={item.id}
         handleDialog={handleClickClose}
+        handleDeletedItem={handleDeletedItem}
         text={label}
       />
     </>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState } from "react";
 import { Box, Divider, IconButton } from "@mui/material";
 import { useDeliveries } from "@/hooks/useDeliveries";
 import { GridColDef } from "@mui/x-data-grid";
@@ -18,15 +18,53 @@ import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import CommonDrawer from "@/components/layout/CommonDrawer";
 import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
 import AddButton from "@/components/shared/actions/AddButton";
+const logger = require("../lib/logger");
 
 export default function Deliveries() {
   const { data: session } = useSession();
-  const { data, isLoading, remove } = useDeliveries(
+  const { data, isLoading, remove, refetch } = useDeliveries(
     session?.user.commonName as string
   );
   const [open, setOpen] = useState<boolean>(false);
   const [deliveryRow, setDeliveryRow] = useState<ExtendedDelivery>();
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+  const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const [shouldRefreshAfterDelete, setShouldRefreshAfterDelete] = useState<boolean>(false);
+
+  useEffect(() => {
+    const performRefetch = async () => {
+      try {
+        await refetch();
+      } catch (error) {
+        logger.error(
+          "Failed to refetch data:", error
+        );
+      }
+    };
+    performRefetch();
+    setIsDeleted(false);
+    setShouldRefreshAfterDelete(true);
+  }, [isDeleted, refetch]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const performRefetch = async () => {
+        try {
+          await refetch();
+        } catch (error) {
+          logger.error(
+            "Failed to refetch data:", error
+          );
+        }
+      };
+      performRefetch();
+    }, 30000);
+    setShouldRefreshAfterDelete(false);
+    return () => {
+      clearTimeout(timeout);
+    }
+  }, [shouldRefreshAfterDelete, refetch]);
+
 
   const handleDelete = (delivery: ExtendedDelivery) => {
     setDeliveryRow(delivery);
@@ -45,6 +83,14 @@ export default function Deliveries() {
   const handleClickClose = (close: boolean) => {
     setOpen(close);
     remove();
+  };
+
+  const handleOnRowClick = (params: any) => {
+    handleMore(params.row);
+  };
+
+  const handleDeletedItem = (deleted: boolean) => {
+    setIsDeleted(deleted);
   };
 
   const tableHeaders: GridColDef[] = [
@@ -100,11 +146,6 @@ export default function Deliveries() {
     },
   ];
 
-  const handleOnRowClick = (params: any) => {
-    handleMore(params.row);
-  };
-
-
   return (
     <Box flex={1}>
       <Mainheading>Deliveries</Mainheading>
@@ -132,6 +173,7 @@ export default function Deliveries() {
           handleMoreClose={handleMoreClose}
           open={drawerOpen}
           item={deliveryRow as ExtendedDelivery}
+          handleDeletedItem={handleDeletedItem}
           label="Delivery"
         />
       )}
@@ -140,6 +182,7 @@ export default function Deliveries() {
         handleDialog={handleClickClose}
         open={open}
         actorCommonName={session?.user.commonName as string}
+        handleDeletedItem={handleDeletedItem}
         text="Delivery"
       />
     </Box>
