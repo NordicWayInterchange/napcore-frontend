@@ -4,7 +4,7 @@ import { messageTypeChips } from "@/lib/statusChips";
 import React from "react";
 import { Chip } from "@/components/shared/display/Chip";
 
-export const NewSubscriptionDatagrid: GridColDef[] = [
+export const NewFormDataGrid: GridColDef[] = [
   {
     ...dataGridTemplate,
     field: "publisherId",
