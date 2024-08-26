@@ -24,7 +24,7 @@ export const BreadcrumbNavigation = (props: Props) => {
               display: "flex",
               alignItems: "center",
               textDecoration: "none",
-              color: "grey", cursor: "pointer",
+              color: "#444f55", cursor: "pointer",
               mr: 1
             }}
           >

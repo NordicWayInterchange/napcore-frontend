@@ -27,8 +27,8 @@ export default function Navbar() {
         </Typography>
         {showLogoutIcon && (
           <StyledSignOutBox>
-            <IconButton sx={{ marginRight: "-5px", mb: .5 }}>
-              <PersonOutlineIcon sx={{ color: "white", fontSize: "large" }} />
+            <IconButton sx={{ marginRight: "-5px", mb: .5, cursor: 'default'}}>
+              <PersonOutlineIcon sx={{ color: "white", fontSize: "large"}} />
             </IconButton>
             <Typography>{session?.user?.name}</Typography>
 

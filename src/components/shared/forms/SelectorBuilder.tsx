@@ -37,6 +37,7 @@ type Props = {
   matchingElements: ExtendedCapability[] | ExtendedDelivery[] | [];
   selectorCallback: (selector: string) => void;
   label: string;
+  publicationIdRow: string;
 };
 
 const MATCHING_CAP_LIMIT = 1;
@@ -47,11 +48,12 @@ async function createArtifacts(artifactType: string, name: string, selector: str
 }
 
 const SelectorBuilder = (props: Props) => {
-  const { selectorCallback, matchingElements, label } = props;
+  const { selectorCallback, matchingElements, label, publicationIdRow } = props;
   const [selector, setSelector] = useState<string>("");
   const [advancedMode, setAdvancedMode] = useState<boolean>(false);
   const [persistSelector, setPersistSelector] = useState<string>("");
   const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>([]);
+  const [selectedPublicationId, setSelectedPublicationId] = useState("");
   const [open, setOpen] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<IFeedback>({
     feedback: false,
@@ -70,6 +72,7 @@ const SelectorBuilder = (props: Props) => {
     setError,
     getFieldState,
     clearErrors,
+    register,
     resetField,
     reset,
     formState: { errors },
@@ -108,6 +111,13 @@ const SelectorBuilder = (props: Props) => {
     if (!watchMessageType.includes(DENM)) setValue("causeCode", []);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchMessageType]);
+
+  useEffect(() => {
+    reset();
+    setSelectedPublicationId(publicationIdRow);
+    setValue("publicationId", publicationIdRow, { shouldValidate: true });
+  }, [publicationIdRow, setValue, reset ]);
+
 
   const onSubmit: SubmitHandler<IFormInputs> = async () => {
     if (matchingElements.length < MATCHING_CAP_LIMIT) {
@@ -191,6 +201,14 @@ const SelectorBuilder = (props: Props) => {
                 render={({ field }) => (
                   <TextField
                     {...field}
+                    value={selectedPublicationId}
+                    {...register("publicationId")}
+                    onChange={(e) => {
+                      const userInput = e.target.value;
+                      field.onChange(userInput);
+                      setSelectedPublicationId(userInput);
+                     }
+                    }
                     disabled={advancedMode}
                     fullWidth
                     label="Publication ID"
@@ -351,7 +369,7 @@ const SelectorBuilder = (props: Props) => {
               <StyledButton
                 color="buttonThemeColor"
                 variant="outlined"
-                onClick={() => reset()}
+                onClick={() => {setSelectedPublicationId(''); reset()}}
               >
                 Clear form
               </StyledButton>

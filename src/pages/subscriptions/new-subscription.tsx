@@ -9,12 +9,14 @@ import { CustomEmptyOverlayMatching } from "@/components/shared/datagrid/CustomE
 import Subheading from "@/components/shared/display/typography/Subheading";
 import Mainheading from "@/components/shared/display/typography/Mainheading";
 import SelectorBuilder from "@/components/shared/forms/SelectorBuilder";
+import { GridEventListener } from "@mui/x-data-grid";
 import { BreadcrumbNavigation } from "@/components/shared/actions/BreadcrumbNavigation";
 import { NewFormDataGrid } from "@/components/shared/datagrid/GridColumns/NewFormDatagrid";
 
 const NewSubscription = () => {
   const { data: session } = useSession();
   const [selector, setSelector] = useState<string>(" ");
+  const [publicationIdRow, setPublicationIdRow] = useState<string>("");
 
   const { data, isLoading, remove } = useMatchingCapabilities(
     session?.user.commonName as string,
@@ -24,6 +26,10 @@ const NewSubscription = () => {
   const handleChange = (selector: string) => {
     setSelector(selector);
     remove();
+  };
+
+  const handleOnRowClick: GridEventListener<'rowClick'> = (params) => {
+    setPublicationIdRow(params.row.publicationId);
   };
 
   return (
@@ -40,6 +46,7 @@ const NewSubscription = () => {
           <SelectorBuilder
             matchingElements={data || []}
             selectorCallback={handleChange}
+            publicationIdRow={publicationIdRow}
             label="Subscription"
           />
         </Grid>
@@ -47,6 +54,7 @@ const NewSubscription = () => {
           <DataGrid
             columns={NewFormDataGrid}
             rows={data || []}
+            onRowClick={handleOnRowClick}
             loading={isLoading}
             getRowId={(row) => row.publicationId}
             sort={{ field: "lastUpdatedTimestamp", sort: "desc" }}
