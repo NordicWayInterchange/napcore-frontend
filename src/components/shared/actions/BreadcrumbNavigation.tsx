@@ -41,8 +41,7 @@ export const BreadcrumbNavigation = (props: Props) => {
                 textDecorationThickness: "1px",
                 "&:hover": {
                   textDecorationThickness: "2px"
-                },
-                color: "grey"
+                }
               }}
             >
               {text}

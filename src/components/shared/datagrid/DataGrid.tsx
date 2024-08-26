@@ -16,7 +16,10 @@ export default function DataGrid(props: Props) {
         {...props}
         autoHeight
         disableRowSelectionOnClick={true}
-        sx={{ backgroundColor: "white" }}
+        sx={{ backgroundColor: "white",
+          boxShadow: 2,
+          borderRadius: 2
+      }}
         initialState={{
           pagination: {
             paginationModel: {
@@ -39,6 +42,9 @@ const StyledDataGrid = styled(MuiDataGrid)(({}) => ({
   },
   "& .MuiDataGrid-columnHeader:focus-within": {
     outline: "none",
+  },
+  "& .MuiDataGrid-columnHeader": {
+    borderBottom: '2px solid #dd7100',
   },
   "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
 }));

@@ -8,7 +8,6 @@ import {
   ListItemButton,
   ListItemText,
   Toolbar,
-  Typography,
   ListItemIcon,
   IconButton
 } from "@mui/material";
@@ -19,8 +18,6 @@ import Navbar from "./Navbar";
 import HouseIcon from "@mui/icons-material/House";
 import CellTowerIcon from "@mui/icons-material/CellTower";
 import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
-import { signOut, useSession } from "next-auth/react";
-import LogoutIcon from "@mui/icons-material/Logout";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { styled } from "@mui/material/styles";
 import { IPages } from "@/interface/IPages";
@@ -69,7 +66,6 @@ const SECONDARY_PAGES: Array<IPages> = [
 
 export default function Sidebar() {
   const router = useRouter();
-  const { data: session } = useSession();
 
   const mapPages = (pages: Array<IPages>) => {
     return pages.map((page: IPages, key: number) => (
@@ -122,13 +118,6 @@ export default function Sidebar() {
 
         <Box sx={{ marginTop: "auto", padding: 2 }}>
           <List>{mapPages(SECONDARY_PAGES)}</List>
-          <Divider sx={{ marginY: 1 }} />
-          <StyledSignOutBox>
-            <Typography>{session?.user?.name}</Typography>
-            <IconButton onClick={() => signOut()}>
-              <LogoutIcon />
-            </IconButton>
-          </StyledSignOutBox>
         </Box>
       </StyledDrawer>
     </Box>
@@ -149,10 +138,4 @@ const StyledDrawer = styled(Drawer)(({}) => ({
     width: 360,
     boxSizing: "border-box",
   },
-}));
-
-const StyledSignOutBox = styled(Box)(({}) => ({
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
 }));

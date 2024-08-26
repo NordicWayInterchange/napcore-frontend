@@ -8,5 +8,9 @@ export const transportportal = createTheme({
   },
   palette: {
     ...TRANSPORTPORTAL_COLORS,
+    text: {
+      primary: '#444f55',
+      secondary: '#444f55'
+    }
   },
 });

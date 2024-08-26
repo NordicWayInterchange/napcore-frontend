@@ -11,6 +11,11 @@ import { CustomEmptyOverlaySubscription } from "@/components/shared/datagrid/Cus
 import Mainheading from "@/components/shared/display/typography/Mainheading";
 import Subheading from "@/components/shared/display/typography/Subheading";
 import ShortcutCard from "@/components/shared/display/ShortcutCard";
+import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
+import CellTowerIcon from "@mui/icons-material/CellTower";
+import LocalPostOfficeIcon from "@mui/icons-material/LocalPostOffice";
+import SettingsIcon from "@mui/icons-material/Settings";
+import PersonIcon from "@mui/icons-material/Person";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -23,31 +28,31 @@ export default function Home() {
       header: "Subscriptions",
       description: "View subscriptions",
       url: "/subscriptions",
-      avatar: "S",
+      icon: <SubscriptionsIcon />
     },
     {
       header: "Network capabilities",
-      description: "View network capabilities",
+      description: "View all capabilities",
       url: "network-capabilities",
-      avatar: "C",
+      icon: <CellTowerIcon />,
     },
     {
       header: "My capabilities",
       description: "View my capabilities",
       url: "capabilities",
-      avatar: "M",
+      icon: <PersonIcon />,
     },
     {
       header: "Deliveries",
       description: "View deliveries",
       url: "/deliveries",
-      avatar: "D",
+      icon: <LocalPostOfficeIcon />
     },
     {
       header: "Certificate",
       description: "Generate certificate",
       url: "/certificate",
-      avatar: "P",
+      icon: <SettingsIcon />
     },
   ];
 
@@ -71,14 +76,14 @@ export default function Home() {
                 textDecoration: "none",
                 marginRight: 10,
                 marginTop: 10,
-                width: "400px",
+                width: "254px",
               }}
             >
               <ShortcutCard
-                avatar={shortcut.avatar}
+                avatar={shortcut.icon}
                 header={shortcut.header}
                 description={shortcut.description}
-              />
+               />
             </Link>
           ))}
         </Box>
