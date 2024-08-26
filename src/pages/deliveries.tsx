@@ -18,7 +18,7 @@ import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import CommonDrawer from "@/components/layout/CommonDrawer";
 import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
 import AddButton from "@/components/shared/actions/AddButton";
-const logger = require("../lib/logger");
+import { performRefetch } from "@/lib/performRefetch";
 
 export default function Deliveries() {
   const { data: session } = useSession();
@@ -32,32 +32,14 @@ export default function Deliveries() {
   const [shouldRefreshAfterDelete, setShouldRefreshAfterDelete] = useState<boolean>(false);
 
   useEffect(() => {
-    const performRefetch = async () => {
-      try {
-        await refetch();
-      } catch (error) {
-        logger.error(
-          "Failed to refetch data:", error
-        );
-      }
-    };
-    performRefetch();
+    performRefetch(refetch);
     setIsDeleted(false);
     setShouldRefreshAfterDelete(true);
   }, [isDeleted, refetch]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      const performRefetch = async () => {
-        try {
-          await refetch();
-        } catch (error) {
-          logger.error(
-            "Failed to refetch data:", error
-          );
-        }
-      };
-      performRefetch();
+      performRefetch(refetch);
     }, 30000);
     setShouldRefreshAfterDelete(false);
     return () => {

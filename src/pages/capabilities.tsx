@@ -17,7 +17,7 @@ import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
 import AddButton from "@/components/shared/actions/AddButton";
-const logger = require("../lib/logger");
+import { performRefetch } from "@/lib/performRefetch";
 
 export default function Capabilities() {
   const { data: session } = useSession();
@@ -31,16 +31,7 @@ export default function Capabilities() {
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
 
   useEffect(() => {
-    const performRefetch = async () => {
-      try {
-        await refetch();
-      } catch (error) {
-        logger.error(
-          "Failed to refetch data:", error
-        );
-      }
-    };
-    performRefetch();
+    performRefetch(refetch);
     setIsDeleted(false);
   }, [isDeleted, refetch]);
 

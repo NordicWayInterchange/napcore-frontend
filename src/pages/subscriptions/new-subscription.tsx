@@ -4,13 +4,13 @@ import React from "react";
 import { useMatchingCapabilities } from "@/hooks/useMatchingCapabilities";
 import DataGrid from "@/components/shared/datagrid/DataGrid";
 import { useSession } from "next-auth/react";
-import { NewSubscriptionDatagrid } from "@/components/shared/datagrid/GridColumns/NewSubscriptionDatagrid";
 import { Box } from "@mui/system";
 import { CustomEmptyOverlayMatching } from "@/components/shared/datagrid/CustomEmptyOverlay";
 import Subheading from "@/components/shared/display/typography/Subheading";
 import Mainheading from "@/components/shared/display/typography/Mainheading";
 import SelectorBuilder from "@/components/shared/forms/SelectorBuilder";
 import { BreadcrumbNavigation } from "@/components/shared/actions/BreadcrumbNavigation";
+import { NewFormDataGrid } from "@/components/shared/datagrid/GridColumns/NewFormDatagrid";
 
 const NewSubscription = () => {
   const { data: session } = useSession();
@@ -45,7 +45,7 @@ const NewSubscription = () => {
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
           <DataGrid
-            columns={NewSubscriptionDatagrid}
+            columns={NewFormDataGrid}
             rows={data || []}
             loading={isLoading}
             getRowId={(row) => row.publicationId}
