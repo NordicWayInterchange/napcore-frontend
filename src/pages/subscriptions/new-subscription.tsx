@@ -17,9 +17,6 @@ const NewSubscription = () => {
   const { data: session } = useSession();
   const [selector, setSelector] = useState<string>(" ");
   const [publicationIdRow, setPublicationIdRow] = useState<string>("");
-  const [messageTypeRow, setMessageTypeRow] = useState<string[]>([]);
-  const [originatingCountryRow, setOriginatingCountryRow] = useState<string[]>([]);
-  const [quadTreeRow, setQuadTreeRow] = useState<string[]>([]);
 
   const { data, isLoading, remove } = useMatchingCapabilities(
     session?.user.commonName as string,
@@ -33,9 +30,6 @@ const NewSubscription = () => {
 
   const handleOnRowClick: GridEventListener<'rowClick'> = (params) => {
     setPublicationIdRow(params.row.publicationId);
-    setMessageTypeRow([params.row.messageType]);
-    setOriginatingCountryRow([params.row.originatingCountry]);
-    setQuadTreeRow(params.row.quadTree);
   };
 
   return (
@@ -53,9 +47,6 @@ const NewSubscription = () => {
             matchingElements={data || []}
             selectorCallback={handleChange}
             publicationIdRow={publicationIdRow}
-            messageTypeRow={messageTypeRow}
-            originatingCountryRow={originatingCountryRow}
-            quadTreeRow={quadTreeRow}
             label="Subscription"
           />
         </Grid>
