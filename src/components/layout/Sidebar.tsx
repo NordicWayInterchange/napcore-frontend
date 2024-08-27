@@ -2,14 +2,12 @@ import {
   Box,
   CssBaseline,
   Drawer,
-  Divider,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
   Toolbar,
   ListItemIcon,
-  IconButton
 } from "@mui/material";
 import Link from "next/link";
 import React from "react";
@@ -93,7 +91,7 @@ export default function Sidebar() {
           disablePadding
         >
           <StyledListItemButton disableRipple>
-            <ListItemIcon>{page.icon}</ListItemIcon>
+            <ListItemIcon sx={{color: "inherit"}}>{page.icon}</ListItemIcon>
             <ListItemText primary={page.text} />
           </StyledListItemButton>
         </ListItem>

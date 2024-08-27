@@ -1,5 +1,4 @@
 import React from "react";
-import Subscriptions from "./subscriptions";
 import { Divider } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { Box } from "@mui/system";
@@ -65,7 +64,7 @@ export default function Home() {
         <Box
           sx={{
             display: "flex",
-            flexWrap: "wrap",
+            flexWrap: "wrap"
           }}
         >
           {shortcuts.map((shortcut, key) => (
