@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import L from "leaflet";
-import { useMap, Rectangle, LayerGroup, useMapEvents } from "react-leaflet";
+import { useMap, Rectangle, useMapEvents } from "react-leaflet";
 import {
   rectangleStyle,
   rectangleStyleHover,
@@ -21,6 +21,13 @@ export default function QuadtreeGenerator({
   const [selectedLayers, setSelectedLayers] = useState([]);
   const [prevHash, setPrevHash] = useState();
   const [mousePosition, setMousePosition] = useState();
+  const [mapBounds, setMapBounds] = useState(undefined);
+
+  if (mapBounds) {
+    if (selectedLayers.length === 1) {
+      map.fitBounds(mapBounds);
+    }
+  }
 
   useEffect(() => {
     if (!interactive) return;
@@ -79,6 +86,8 @@ export default function QuadtreeGenerator({
         L.latLng(bbox.maxlat, bbox.minlng),
         L.latLng(bbox.minlat, bbox.maxlng)
       );
+
+      setMapBounds(bounds);
 
       rectangles.push(
         <Rectangle
