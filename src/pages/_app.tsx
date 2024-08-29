@@ -11,6 +11,7 @@ import { ThemeProvider } from "@mui/material";
 import { SessionProvider } from "next-auth/react";
 
 import { trafficdata, transportportal } from "@/theme";
+import { useRouter } from "next/router";
 
 export default function App({
   Component,
@@ -18,24 +19,36 @@ export default function App({
 }: AppProps) {
   const [queryClient] = React.useState(() => new QueryClient());
 
+  const router = useRouter();
+  const { pathname } = router;
+
+  const healthCheckRoute = ["/health-check"];
+  const displayProviders = !healthCheckRoute.includes(pathname);
+
   return (
-    <SessionProvider session={session}>
-      <QueryClientProvider client={queryClient}>
-        <Hydrate state={pageProps.dehydratedState}>
-          <ThemeProvider
-            theme={
-              process.env.NEXT_PUBLIC_THEME_PROVIDER === "trafficdata"
-                ? trafficdata
-                : transportportal
-            }
-          >
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </ThemeProvider>
-        </Hydrate>
-        <ReactQueryDevtools />
-      </QueryClientProvider>
-    </SessionProvider>
+    <>
+      {displayProviders ? (
+        <SessionProvider session={session}>
+          <QueryClientProvider client={queryClient}>
+            <Hydrate state={pageProps.dehydratedState}>
+              <ThemeProvider
+                theme={
+                  process.env.NEXT_PUBLIC_THEME_PROVIDER === "trafficdata"
+                    ? trafficdata
+                    : transportportal
+                }
+              >
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </ThemeProvider>
+            </Hydrate>
+            <ReactQueryDevtools />
+          </QueryClientProvider>
+        </SessionProvider>
+      ) : (
+        <Component {...pageProps} />
+      )}
+    </>
   );
 }
