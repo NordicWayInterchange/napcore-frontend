@@ -264,34 +264,34 @@ const UserCapabilitiesSelectorBuilder = () => {
                 )}
               />
               )}
-              {watchMessageType.includes(DATEX_2) && (
-              <Controller
-                name="publisherName"
-                control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
-                    <TextField
-                      {...field}
-                      fullWidth
-                      error={!!errors.publisherName}
-                      helperText={errors.publisherName ? "Publisher name is required." : ""}
-                      label="publisher name *"
-                    />
-                )}
-              />
-              )}
-              {watchMessageType.includes(DATEX_2) && (
-              <Controller
-                name="publicationType"
-                control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
-                    <TextField
-                      {...field}
-                      fullWidth
-                      error={!!errors.publicationType}
-                      helperText={errors.publicationType ? "publication type is required." : ""}
-                      label="publication type *"
+            {watchMessageType.includes(DATEX_2) && (
+                        <Controller
+                          name="publisherName"
+                          control={control}
+                          rules={{ required: true }}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              fullWidth
+                              error={!!errors.publisherName}
+                              helperText={errors.publisherName ? "Publisher name is required." : ""}
+                              label="publisher name *"
+                            />
+                          )}
+                        />
+                      )}
+                      {watchMessageType.includes(DATEX_2) && (
+                        <Controller
+                          name="publicationType"
+                          control={control}
+                          rules={{ required: true }}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              fullWidth
+                              error={!!errors.publicationType}
+                              helperText={errors.publicationType ? "publication type is required." : ""}
+                              label="publication type *"
                     />
                 )}
               />

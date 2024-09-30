@@ -81,6 +81,8 @@ const SelectorBuilder = (props: Props) => {
       messageType: [],
       causeCode: [],
       protocolVersion: "",
+      publisherName: "",
+      publicationType: "",
       originatingCountry: [],
       publicationId: "",
       quadTree: [],
@@ -89,6 +91,7 @@ const SelectorBuilder = (props: Props) => {
 
   const watchMessageType = watch("messageType");
   const DENM = MessageTypes.DENM;
+  const DATEX_2 = MessageTypes.DATEX_2;
 
   /*
   Generate a new selector when the form state changes.
@@ -284,6 +287,38 @@ const SelectorBuilder = (props: Props) => {
                   </FormControl>
                 )}
               />
+              {watchMessageType.includes(DATEX_2) && (
+                <Controller
+                  name="publisherName"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      error={!!errors.publisherName}
+                      helperText={errors.publisherName ? "Publisher name is required." : ""}
+                      label="publisher name *"
+                    />
+                  )}
+                />
+              )}
+              {watchMessageType.includes(DATEX_2) && (
+                <Controller
+                  name="publicationType"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      error={!!errors.publicationType}
+                      helperText={errors.publicationType ? "publication type is required." : ""}
+                      label="publication type *"
+                    />
+                  )}
+                />
+              )}
             </Box>
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Controller
