@@ -17,6 +17,7 @@ const NewDelivery = () => {
   const { data: session } = useSession();
   const [selector, setSelector] = useState<string>(" ");
   const [publicationIdRow, setPublicationIdRow] = useState<string>("");
+  const [messageTypeRow, setMessageTypeRow] = useState<string[]>([]);
 
   const { data, isLoading, remove } = useMatchingDeliveries(
     session?.user.commonName as string,
@@ -29,7 +30,9 @@ const NewDelivery = () => {
   };
 
   const handleOnRowClick: GridEventListener<'rowClick'> = (params) => {
+    console.log('params.row', params);
     setPublicationIdRow(params.row.publicationId);
+    setMessageTypeRow(params.row.messageType);
   };
 
   return (
@@ -47,6 +50,7 @@ const NewDelivery = () => {
             matchingElements={data || []}
             selectorCallback={handleChange}
             publicationIdRow={publicationIdRow}
+            messageTypeRow={messageTypeRow}
             label="Delivery"
           />
         </Grid>

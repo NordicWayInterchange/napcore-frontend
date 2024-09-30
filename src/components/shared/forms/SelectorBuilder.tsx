@@ -38,6 +38,7 @@ type Props = {
   selectorCallback: (selector: string) => void;
   label: string;
   publicationIdRow: string;
+  messageTypeRow: string[];
 };
 
 const MATCHING_CAP_LIMIT = 1;
@@ -48,12 +49,13 @@ async function createArtifacts(artifactType: string, name: string, selector: str
 }
 
 const SelectorBuilder = (props: Props) => {
-  const { selectorCallback, matchingElements, label, publicationIdRow } = props;
+  const { selectorCallback, matchingElements, label, publicationIdRow, messageTypeRow } = props;
   const [selector, setSelector] = useState<string>("");
   const [advancedMode, setAdvancedMode] = useState<boolean>(false);
   const [persistSelector, setPersistSelector] = useState<string>("");
   const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>([]);
   const [selectedPublicationId, setSelectedPublicationId] = useState("");
+ // const [selectedMessageType, setSelectedMessageType] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<IFeedback>({
     feedback: false,
@@ -118,8 +120,10 @@ const SelectorBuilder = (props: Props) => {
   useEffect(() => {
     reset();
     setSelectedPublicationId(publicationIdRow);
+    //setSelectedMessageType(messageTypeRow);
     setValue("publicationId", publicationIdRow, { shouldValidate: true });
-  }, [publicationIdRow, setValue, reset ]);
+    setValue("messageType", messageTypeRow, { shouldValidate: true });
+  }, [publicationIdRow, messageTypeRow, setValue, reset ]);
 
 
   const onSubmit: SubmitHandler<IFormInputs> = async () => {
