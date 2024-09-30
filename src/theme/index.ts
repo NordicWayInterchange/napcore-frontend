@@ -28,6 +28,8 @@ declare module "@mui/material/styles/createPalette" {
     purpleDark: string;
     purpleLight: string;
     redLight: string;
+    menuItemBackgroundColor: string;
+    menuItemHoverColor: string;
   }
 
   interface PaletteOptions {
@@ -36,6 +38,8 @@ declare module "@mui/material/styles/createPalette" {
     sidebarActiveColor: string;
     avatarBackgroundColor: string;
     cardBackgroundColor: string;
+    menuItemBackgroundColor: string;
+    menuItemHoverColor: string;
     buttonThemeColor: PaletteColor;
     depricatedRed: PaletteColor;
     grayDark: PaletteColor;
