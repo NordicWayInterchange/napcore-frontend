@@ -105,9 +105,9 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
         <Box sx={{ padding: 1, width: 1 }}>
           <List>
             <CapabilityDrawerForm capability={capability} handleMoreClose={handleMoreClose} setOpenMap={setOpenMap}/>
-            <ListItem>
+            <ListItem sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <Button
-                sx={{ borderRadius: 100, textTransform: "none" }}
+                sx={{ borderRadius: 100, textTransform: "none", width: 150}}
                 variant={"contained"}
                 color={"buttonThemeColor"}
                 disableElevation
@@ -127,7 +127,7 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
                 onClick={() => setDialogOpen(true)}
                 disableElevation
               >
-                Remove capability
+                Remove Capability
               </Button>
             </ListItem>
           </List>
