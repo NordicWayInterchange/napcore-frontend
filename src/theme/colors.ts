@@ -34,6 +34,8 @@ export const TRAFFICDATA_COLORS = {
   avatarBackgroundColor: "#d12e2c",
   cardBackgroundColor: "#E5E5E5",
   buttonThemeColor: createColor("#d12e2c"),
+  menuItemBackgroundColor:"#ECF4F9",
+  menuItemHoverColor:"#A0BDD4",
   ...SHARED_COLORS,
 };
 
@@ -45,5 +47,7 @@ export const TRANSPORTPORTAL_COLORS = {
   avatarBackgroundColor: "#444f55",
   cardBackgroundColor: "#EBF5E6",
   buttonThemeColor: createColor("#158925"), //vegvesen grøn
+  menuItemBackgroundColor:"#ECF4F9",
+  menuItemHoverColor:"#A0BDD4",
   ...SHARED_COLORS,
 };

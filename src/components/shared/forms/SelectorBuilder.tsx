@@ -223,7 +223,7 @@ const SelectorBuilder = (props: Props) => {
                     <InputLabel>Originating country</InputLabel>
                     <Select multiple label="Originating country" {...field}>
                       {originatingCountries.map((country, index) => (
-                        <MenuItem key={index} value={country.value}>
+                        <MenuItem key={index} value={country.value} sx={menuItemStyles}>
                           {country.value}
                         </MenuItem>
                       ))}
@@ -246,7 +246,7 @@ const SelectorBuilder = (props: Props) => {
                     <InputLabel>Message type *</InputLabel>
                     <Select {...field} multiple label="Message type *">
                       {messageTypes.map((messageType, index) => (
-                        <MenuItem key={index} value={messageType.value}>
+                        <MenuItem key={index} value={messageType.value} sx={menuItemStyles}>
                           {messageType.value}
                         </MenuItem>
                       ))}
@@ -273,7 +273,7 @@ const SelectorBuilder = (props: Props) => {
                       {...field}
                     >
                       {causeCodes.map((country, index) => (
-                        <MenuItem key={index} value={country.value}>
+                        <MenuItem key={index} value={country.value} sx={menuItemStyles}>
                           {country.value}: {country.label}
                         </MenuItem>
                       ))}
@@ -411,5 +411,17 @@ const StyledCard = styled(Card)(({}) => ({
   padding: "16px",
   width: "100%",
 }));
+
+const menuItemStyles = {
+  '&:hover': {
+    backgroundColor: 'menuItemHoverColor',
+  },
+  '&.Mui-selected': {
+    backgroundColor: 'menuItemBackgroundColor',
+    '&:hover': {
+      backgroundColor: 'menuItemHoverColor',
+    },
+  }
+};
 
 export default SelectorBuilder;
