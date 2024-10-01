@@ -18,6 +18,9 @@ import { useSession } from "next-auth/react";
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import MapDialog from "@/components/map/MapDialog";
 import CapabilityDrawerForm from "@/components/layout/CapabilityDrawerForm";
+import { createDelivery, createSubscription } from "@/lib/fetchers/internalFetchers";
+import { IFeedback } from "@/interface/IFeedback";
+import Snackbar from "@/components/shared/feedback/Snackbar";
 
 const width = 600;
 
@@ -32,6 +35,24 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
   const { data: session } = useSession();
   const [openMap, setOpenMap] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [feedback, setFeedback] = useState<IFeedback>({
+    feedback: false,
+    message: "",
+    severity: "success",
+  });
+
+  const selector = `(publicationId = '${capability.publicationId}')`;
+
+  const handleSnackClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setFeedback({ feedback: false, message: "", severity: "success" });
+  };
 
   const handleClose = () => {
     setOpenMap(false);
@@ -39,6 +60,24 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
 
   const handleClickClose = (close: boolean) => {
     setDialogOpen(close);
+  };
+
+  const saveDelivery = async (name: string, selector: string) => {
+    const response = await createDelivery(name, selector);
+
+    if (response.ok) {
+      setFeedback({
+        feedback: true,
+        message: `Delivery successfully created`,
+        severity: "success",
+      });
+    } else {
+      setFeedback({
+        feedback: true,
+        message: `Delivery could not be created, try again!`,
+        severity: "warning",
+      });
+    }
   };
 
   return (
@@ -104,6 +143,17 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
             </ListItem>
             <ListItem>
               <Button
+                sx={{ borderRadius: 100, textTransform: "none" }}
+                variant={"contained"}
+                color={"buttonThemeColor"}
+                disableElevation
+                onClick={() =>
+                  saveDelivery(session?.user.commonName as string, selector)
+                }
+              >
+                Deliver
+              </Button>
+              <Button
                 sx={{
                   borderRadius: 100,
                   textTransform: "none",
@@ -119,6 +169,14 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
           </List>
         </Box>
       </Drawer>
+      {feedback.feedback && (
+        <Snackbar
+          message={feedback.message}
+          severity={feedback.severity}
+          open={feedback.feedback}
+          handleClose={handleSnackClose}
+        />
+      )}
       <DeleteSubDialog
         open={dialogOpen}
         actorCommonName={session?.user.commonName as string}
