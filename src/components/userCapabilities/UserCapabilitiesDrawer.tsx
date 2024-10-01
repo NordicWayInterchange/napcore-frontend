@@ -104,43 +104,7 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
         <Toolbar />
         <Box sx={{ padding: 1, width: 1 }}>
           <List>
-            <CapabilityDrawerForm capability={capability} handleMoreClose={handleMoreClose}/>
-            <ListItem>
-              <StyledCard variant={"outlined"}>
-                <Typography>Quadtree</Typography>
-                <FormControl
-                  fullWidth
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <TextField
-                    contentEditable={false}
-                    value={capability.quadTree}
-                    label={"Hash"}
-                    margin="normal"
-                    sx={{
-                      flexGrow: 1,
-                      marginRight: 1,
-                    }}
-                    InputProps={{
-                      endAdornment: (
-                        <ContentCopy value={capability.quadTree.toString()} />
-                      ),
-                    }}
-                  />
-                  <StyledButton
-                    color="buttonThemeColor"
-                    variant="outlined"
-                    onClick={() => setOpenMap(true)}
-                  >
-                    Show map
-                  </StyledButton>
-                </FormControl>
-              </StyledCard>
-            </ListItem>
+            <CapabilityDrawerForm capability={capability} handleMoreClose={handleMoreClose} setOpenMap={setOpenMap}/>
             <ListItem>
               <Button
                 sx={{ borderRadius: 100, textTransform: "none" }}
@@ -194,17 +158,5 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
     </>
   );
 };
-
-const StyledCard = styled(Card)(({}) => ({
-  padding: "16px",
-  width: "100%",
-}));
-
-const StyledButton = styled(Button)(({}) => ({
-  width: "150px",
-  textTransform: "none",
-  borderRadius: 100,
-}));
-
 
 export default UserCapabilitiesDrawer;
