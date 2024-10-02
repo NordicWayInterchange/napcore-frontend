@@ -91,7 +91,7 @@ export const CertificateForm = () => {
                 error={Boolean(errors.countryCode)}
                 helperText={
                   Boolean(errors.countryCode) &&
-                  "Country code is required and a valid country code"
+                  "Invalid country code"
                 }
               />
             )}
