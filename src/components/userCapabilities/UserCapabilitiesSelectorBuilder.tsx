@@ -1,5 +1,14 @@
 import { MessageTypes } from "@/types/messageType";
-import { FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import {
+
+  FormControl,
+  FormHelperText,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { createUserCapability } from "@/lib/fetchers/internalFetchers";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -23,6 +32,8 @@ const UserCapabilitiesSelectorBuilder = () => {
   const [duplicatePublicationIdError, setDuplicatePublicationIdError] = useState('');
   const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
+  const [publisherIdInput, setPublisherIdInput] = useState("");
+
   const [feedback, setFeedback] = useState<IFeedback>({
     feedback: false,
     message: "",
@@ -137,6 +148,7 @@ const UserCapabilitiesSelectorBuilder = () => {
     setPredefinedQuadtree(value);
   };
 
+
   return (
     <>
       <StyledCard variant={"outlined"}>
@@ -154,6 +166,7 @@ const UserCapabilitiesSelectorBuilder = () => {
                     error={!!errors.publisherId}
                     helperText={errors.publisherId ? errors.publisherId.message : ''}
                     label="Publisher Id *"
+                    onChange={handleTextChange}
                   />
                 )}
               />
@@ -170,6 +183,13 @@ const UserCapabilitiesSelectorBuilder = () => {
                     error={!!duplicatePublicationIdError || !!errors.publicationId}
                     helperText={ errors.publicationId ? errors.publicationId.message : duplicatePublicationIdError}
                     label="Publication ID *"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          {publisherIdInput ? publisherIdInput + ":" : ""}
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                 )}
               />
