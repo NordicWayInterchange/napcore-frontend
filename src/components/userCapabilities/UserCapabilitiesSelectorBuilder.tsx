@@ -177,7 +177,7 @@ const UserCapabilitiesSelectorBuilder = () => {
                     error={!!errors.publisherId}
                     helperText={errors.publisherId ? errors.publisherId.message : ''}
                     label="Publisher Id *"
-                    onBlur={handleTextChange}
+                    onChange={handleTextChange}
                   />
                 )}
               />
