@@ -148,6 +148,10 @@ const UserCapabilitiesSelectorBuilder = () => {
     setPredefinedQuadtree(value);
   };
 
+  const handleTextChange = (event:any) => {
+    setValue("publisherId", event.target.value);
+    setPublisherIdInput(event.target.value);
+  };
 
   return (
     <>
