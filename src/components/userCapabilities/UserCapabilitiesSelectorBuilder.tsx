@@ -34,7 +34,7 @@ const UserCapabilitiesSelectorBuilder = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [publisherIdInput, setPublisherIdInput] = useState("");
   const [publicationIdInput, setPublicationIdInput] = useState("");
-  const [showAdornment, setShowAdornment] = useState(true);
+  const [showAdornment, setShowAdornment] = useState(false);
 
   const [feedback, setFeedback] = useState<IFeedback>({
     feedback: false,
@@ -176,7 +176,7 @@ const UserCapabilitiesSelectorBuilder = () => {
                     fullWidth
                     error={!!errors.publisherId}
                     helperText={errors.publisherId ? errors.publisherId.message : ''}
-                    label="Publisher Id *"
+                    label="Publisher ID *"
                     onChange={handleTextChange}
                   />
                 )}
@@ -313,7 +313,7 @@ const UserCapabilitiesSelectorBuilder = () => {
                               fullWidth
                               error={!!errors.publisherName}
                               helperText={errors.publisherName ? "Publisher name is required." : ""}
-                              label="publisher name *"
+                              label="Publisher name *"
                             />
                           )}
                         />
@@ -329,7 +329,7 @@ const UserCapabilitiesSelectorBuilder = () => {
                               fullWidth
                               error={!!errors.publicationType}
                               helperText={errors.publicationType ? "publication type is required." : ""}
-                              label="publication type *"
+                              label="Publication type *"
                     />
                 )}
               />
