@@ -33,6 +33,8 @@ const UserCapabilitiesSelectorBuilder = () => {
   const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [publisherIdInput, setPublisherIdInput] = useState("");
+  const [publicationIdInput, setPublicationIdInput] = useState("");
+  const [showAdornment, setShowAdornment] = useState(true);
 
   const [feedback, setFeedback] = useState<IFeedback>({
     feedback: false,
@@ -149,8 +151,13 @@ const UserCapabilitiesSelectorBuilder = () => {
   };
 
   const handleTextChange = (event:any) => {
-    setValue("publisherId", event.target.value);
-    setPublisherIdInput(event.target.value);
+    const userInput = event.target.value;
+    setValue("publisherId", userInput);
+    setPublisherIdInput(userInput);
+    if (validateUniquePublicationId(userInput + ":" + publicationIdInput)) return;
+    if (userInput !== '') {
+      setShowAdornment(true);
+    }
   };
 
   return (
@@ -170,7 +177,7 @@ const UserCapabilitiesSelectorBuilder = () => {
                     error={!!errors.publisherId}
                     helperText={errors.publisherId ? errors.publisherId.message : ''}
                     label="Publisher Id *"
-                    onChange={handleTextChange}
+                    onBlur={handleTextChange}
                   />
                 )}
               />
@@ -187,8 +194,14 @@ const UserCapabilitiesSelectorBuilder = () => {
                     error={!!duplicatePublicationIdError || !!errors.publicationId}
                     helperText={ errors.publicationId ? errors.publicationId.message : duplicatePublicationIdError}
                     label="Publication ID *"
+                    onBlur={(event) => {
+                      const userInput = event.target.value;
+                      setPublicationIdInput(userInput);
+                      if (validateUniquePublicationId(publisherIdInput + ":" + userInput)) return;
+                    }
+                    }
                     InputProps={{
-                      startAdornment: (
+                      startAdornment: showAdornment && (
                         <InputAdornment position="start">
                           {publisherIdInput ? publisherIdInput + ":" : ""}
                         </InputAdornment>
@@ -362,7 +375,7 @@ const UserCapabilitiesSelectorBuilder = () => {
               <StyledButton
                 color="buttonThemeColor"
                 variant="outlined"
-                onClick={() => reset()}
+                onClick={() => {reset(); setShowAdornment(false); setDuplicatePublicationIdError('');}}
               >
                 Clear form
               </StyledButton>
