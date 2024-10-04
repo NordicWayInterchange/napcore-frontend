@@ -17,14 +17,14 @@ const ShortcutCard = (props: Props) => {
       sx={{
         display: "flex",
         flexDirection: "column",
+        justifyContent: "center",
         alignItems: "center",
-        padding: 4,
-        width: { xs: "100%", sm: "100%", md: 245 },
+        width: 240,
         "&:hover": {
           boxShadow: 6,
           textDecoration: "underline"
         },
-        height: "190px",
+        height: "200px",
         borderBottom: "2px solid #FF9600",
         boxShadow: 1
       }}
@@ -32,20 +32,20 @@ const ShortcutCard = (props: Props) => {
       <Avatar sx={{
         bgcolor: "avatarBackgroundColor",
         marginRight: 0,
-        marginBottom: 2
+        marginBottom: 2,
+        width: 50, height: 50
       }}>
         {avatar}
       </Avatar>
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column"
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center"
         }}
       >
-        <Typography sx={{
-          marginLeft: 1,
-        }}>
-          {header}</Typography>
+        <Typography sx={{ fontWeight: 500 }}>{header}</Typography>
         <Typography>{description}</Typography>
       </Box>
     </Card>
