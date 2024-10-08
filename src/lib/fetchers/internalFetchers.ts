@@ -1,5 +1,4 @@
 export const createSubscription = (actorCommonName: string, body: Object) => {
-  console.log('subscription', body);
   return fetch(`/api/${actorCommonName}/subscriptions`, {
     method: "post",
     headers: {
@@ -32,7 +31,6 @@ export const createCertificate = (actorCommonName: string, csr: string) => {
 };
 
 export const createDelivery = (actorCommonName: string, body: Object) => {
-  console.log('delivery body', body);
   return fetch(`/api/${actorCommonName}/deliveries`, {
     method: "post",
     headers: {

@@ -81,6 +81,7 @@ export default function Subscriptions() {
       /*flex: 0,*/
       field: "id",
       headerName: "ID",
+      valueGetter: ({value}) => value.substring(0, 8)
     },
     {
       ...dataGridTemplate,

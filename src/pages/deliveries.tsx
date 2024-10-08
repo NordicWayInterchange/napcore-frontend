@@ -80,6 +80,7 @@ export default function Deliveries() {
       ...dataGridTemplate,
       field: "id",
       headerName: "ID",
+      valueGetter: ({value}) => value.substring(0, 8)
     },
     {
       ...dataGridTemplate,
