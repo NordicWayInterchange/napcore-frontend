@@ -43,13 +43,14 @@ type Props = {
 const MATCHING_CAP_LIMIT = 1;
 const QUADTREE_REGEX = /^[0-3]+(,[0-3]+)*$/i;
 
-async function createArtifacts(artifactType: string, name: string, selector: string) {
-  return await (artifactType === "Delivery" ? createDelivery(name, selector) : createSubscription(name, selector));
+async function createArtifacts(artifactType: string, name: string, body: Object) {
+  return await (artifactType === "Delivery" ? createDelivery(name, body) : createSubscription(name, body));
 }
 
 const SelectorBuilder = (props: Props) => {
   const { selectorCallback, matchingElements, label, publicationIdRow } = props;
   const [selector, setSelector] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
   const [advancedMode, setAdvancedMode] = useState<boolean>(false);
   const [persistSelector, setPersistSelector] = useState<string>("");
   const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>([]);
@@ -129,8 +130,13 @@ const SelectorBuilder = (props: Props) => {
 
       return;
     }
+    
+    const response = await createArtifacts(
+      label,
+      session?.user.commonName as string,
+      Object.assign({}, selector, description)
+    );
 
-    const response = await createArtifacts(label, session?.user.commonName as string, selector);
     if (response.ok) {
       setFeedback({
         feedback: true,
@@ -154,6 +160,11 @@ const SelectorBuilder = (props: Props) => {
   const handleTextArea = (event: any) => {
     const value = event.target.value;
     setSelector(value);
+  };
+
+  const handleDescription = (event: any) => {
+    const value = event.target.value;
+    setDescription(value);
   };
 
   const handleClose = () => {
@@ -329,6 +340,17 @@ const SelectorBuilder = (props: Props) => {
               >
                 Show map
               </StyledButton>
+            </Box>
+            <Box>
+              <TextField
+                multiline
+                rows={4}
+                value={description}
+                fullWidth
+                label="Description"
+                sx={{ marginRight: 1 }}
+                onChange={handleDescription}
+              />
             </Box>
             <FormControlLabel
               control={<Switch onChange={handleChange} />}

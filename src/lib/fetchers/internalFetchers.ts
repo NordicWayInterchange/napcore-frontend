@@ -1,16 +1,11 @@
-export const createSubscription = (
-  actorCommonName: string,
-  selector: string
-) => {
-  const subscriptionsRequest = {
-    selector: selector,
-  };
+export const createSubscription = (actorCommonName: string, body: Object) => {
+  console.log('subscription', body);
   return fetch(`/api/${actorCommonName}/subscriptions`, {
     method: "post",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(subscriptionsRequest),
+    body: JSON.stringify(body),
   });
 };
 
@@ -36,19 +31,14 @@ export const createCertificate = (actorCommonName: string, csr: string) => {
   });
 };
 
-export const createDelivery = (
-  actorCommonName: string,
-  selector: string
-) => {
-  const deliveriesRequest = {
-    selector: selector,
-  };
+export const createDelivery = (actorCommonName: string, body: Object) => {
+  console.log('delivery body', body);
   return fetch(`/api/${actorCommonName}/deliveries`, {
     method: "post",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(deliveriesRequest),
+    body: JSON.stringify(body),
   });
 };
 
