@@ -159,17 +159,16 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
                 </FormControl>
               </StyledCard>
             </ListItem>
-
             <ListItem>
             <StyledCard variant={"outlined"}>
               <Typography>Description</Typography>
               <FormControl fullWidth>
                 <TextField
+                  contentEditable={false}
                   margin="normal"
                   multiline
-                  rows={4}
                   value={item.description}
-                  fullWidth
+                  rows={4}
                   InputProps={{
                     endAdornment: (
                       <ContentCopy value={item.description} />

@@ -108,6 +108,11 @@ export default function Subscriptions() {
     },
     {
       ...dataGridTemplate,
+      field: "description",
+      headerName: "Description"
+    },
+    {
+      ...dataGridTemplate,
       field: "actions",
       headerName: "",
       sortable: false,

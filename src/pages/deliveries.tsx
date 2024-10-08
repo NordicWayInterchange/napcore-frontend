@@ -107,6 +107,11 @@ export default function Deliveries() {
     },
     {
       ...dataGridTemplate,
+      field: "description",
+      headerName: "Description"
+    },
+    {
+      ...dataGridTemplate,
       field: "actions",
       headerName: "",
       sortable: false,
