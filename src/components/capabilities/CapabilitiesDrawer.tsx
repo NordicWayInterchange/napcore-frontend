@@ -97,44 +97,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
         <Toolbar />
         <Box sx={{ padding: 1, width: 1 }}>
           <List>
-            <CapabilityDrawerForm capability={capability} handleMoreClose={handleMoreClose}/>
-            <ListItem>
-              <StyledCard variant={"outlined"}>
-                <Typography>Quadtree</Typography>
-                <FormControl
-                  fullWidth
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <TextField
-                    contentEditable={false}
-                    value={capability.quadTree}
-                    label={"Hash"}
-                    margin="normal"
-                    sx={{
-                      flexGrow: 1,
-                      marginRight: 1,
-                    }}
-                    InputProps={{
-                      endAdornment: (
-                        <ContentCopy value={capability.quadTree.toString()} />
-                      ),
-                    }}
-                  />
-                  <StyledButton
-                    color="buttonThemeColor"
-                    variant="outlined"
-                    onClick={() => setOpenMap(true)}
-                  >
-                    Show map
-                  </StyledButton>
-                </FormControl>
-              </StyledCard>
-            </ListItem>
-
+            <CapabilityDrawerForm capability={capability} handleMoreClose={handleMoreClose} setOpenMap={setOpenMap}/>
             <ListItem>
               <Button
                 sx={{ borderRadius: 100, textTransform: "none" }}

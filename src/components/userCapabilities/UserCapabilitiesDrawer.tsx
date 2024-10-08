@@ -18,6 +18,9 @@ import { useSession } from "next-auth/react";
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import MapDialog from "@/components/map/MapDialog";
 import CapabilityDrawerForm from "@/components/layout/CapabilityDrawerForm";
+import { createDelivery, createSubscription } from "@/lib/fetchers/internalFetchers";
+import { IFeedback } from "@/interface/IFeedback";
+import Snackbar from "@/components/shared/feedback/Snackbar";
 
 const width = 600;
 
@@ -32,6 +35,24 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
   const { data: session } = useSession();
   const [openMap, setOpenMap] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [feedback, setFeedback] = useState<IFeedback>({
+    feedback: false,
+    message: "",
+    severity: "success",
+  });
+
+  const selector = `(publicationId = '${capability.publicationId}')`;
+
+  const handleSnackClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setFeedback({ feedback: false, message: "", severity: "success" });
+  };
 
   const handleClose = () => {
     setOpenMap(false);
@@ -39,6 +60,24 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
 
   const handleClickClose = (close: boolean) => {
     setDialogOpen(close);
+  };
+
+  const saveDelivery = async (name: string, selector: string) => {
+    const response = await createDelivery(name, selector);
+
+    if (response.ok) {
+      setFeedback({
+        feedback: true,
+        message: `Delivery successfully created`,
+        severity: "success",
+      });
+    } else {
+      setFeedback({
+        feedback: true,
+        message: `Delivery could not be created, try again!`,
+        severity: "warning",
+      });
+    }
   };
 
   return (
@@ -65,44 +104,19 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
         <Toolbar />
         <Box sx={{ padding: 1, width: 1 }}>
           <List>
-            <CapabilityDrawerForm capability={capability} handleMoreClose={handleMoreClose}/>
-            <ListItem>
-              <StyledCard variant={"outlined"}>
-                <Typography>Quadtree</Typography>
-                <FormControl
-                  fullWidth
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <TextField
-                    contentEditable={false}
-                    value={capability.quadTree}
-                    label={"Hash"}
-                    margin="normal"
-                    sx={{
-                      flexGrow: 1,
-                      marginRight: 1,
-                    }}
-                    InputProps={{
-                      endAdornment: (
-                        <ContentCopy value={capability.quadTree.toString()} />
-                      ),
-                    }}
-                  />
-                  <StyledButton
-                    color="buttonThemeColor"
-                    variant="outlined"
-                    onClick={() => setOpenMap(true)}
-                  >
-                    Show map
-                  </StyledButton>
-                </FormControl>
-              </StyledCard>
-            </ListItem>
-            <ListItem>
+            <CapabilityDrawerForm capability={capability} handleMoreClose={handleMoreClose} setOpenMap={setOpenMap}/>
+            <ListItem sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <Button
+                sx={{ borderRadius: 100, textTransform: "none", width: 150}}
+                variant={"contained"}
+                color={"buttonThemeColor"}
+                disableElevation
+                onClick={() =>
+                  saveDelivery(session?.user.commonName as string, selector)
+                }
+              >
+                Deliver
+              </Button>
               <Button
                 sx={{
                   borderRadius: 100,
@@ -113,12 +127,20 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
                 onClick={() => setDialogOpen(true)}
                 disableElevation
               >
-                Remove capability
+                Remove Capability
               </Button>
             </ListItem>
           </List>
         </Box>
       </Drawer>
+      {feedback.feedback && (
+        <Snackbar
+          message={feedback.message}
+          severity={feedback.severity}
+          open={feedback.feedback}
+          handleClose={handleSnackClose}
+        />
+      )}
       <DeleteSubDialog
         open={dialogOpen}
         actorCommonName={session?.user.commonName as string}
@@ -136,17 +158,5 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
     </>
   );
 };
-
-const StyledCard = styled(Card)(({}) => ({
-  padding: "16px",
-  width: "100%",
-}));
-
-const StyledButton = styled(Button)(({}) => ({
-  width: "150px",
-  textTransform: "none",
-  borderRadius: 100,
-}));
-
 
 export default UserCapabilitiesDrawer;
