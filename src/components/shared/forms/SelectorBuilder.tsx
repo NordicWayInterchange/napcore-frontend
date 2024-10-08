@@ -43,8 +43,8 @@ type Props = {
 const MATCHING_CAP_LIMIT = 1;
 const QUADTREE_REGEX = /^[0-3]+(,[0-3]+)*$/i;
 
-async function createArtifacts(artifactType: string, name: string, body: Object) {
-  return await (artifactType === "Delivery" ? createDelivery(name, body) : createSubscription(name, body));
+async function createArtifacts(artifactType: string, name: string, bodyData: Object) {
+  return await (artifactType === "Delivery" ? createDelivery(name, bodyData) : createSubscription(name, bodyData));
 }
 
 const SelectorBuilder = (props: Props) => {
@@ -130,11 +130,15 @@ const SelectorBuilder = (props: Props) => {
 
       return;
     }
-    
+    const bodyData = {
+      selector: selector,
+      description: description
+    };
+
     const response = await createArtifacts(
       label,
       session?.user.commonName as string,
-      Object.assign({}, selector, description)
+      bodyData
     );
 
     if (response.ok) {
