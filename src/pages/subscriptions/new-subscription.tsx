@@ -19,7 +19,7 @@ const NewSubscription = () => {
   const [publicationIdRow, setPublicationIdRow] = useState<string>("");
   const [messageTypeRow, setMessageTypeRow] = useState<string[]>([]);
 
-  const rowData: RowData = {
+  const selectedRowData: ISelectedRowData = {
     publicationId: publicationIdRow,
     messageType: messageTypeRow,
   };
@@ -53,7 +53,7 @@ const NewSubscription = () => {
           <SelectorBuilder
             matchingElements={data || []}
             selectorCallback={handleChange}
-            rowData={rowData}
+            selectedRowData={selectedRowData}
             label="Subscription"
           />
         </Grid>

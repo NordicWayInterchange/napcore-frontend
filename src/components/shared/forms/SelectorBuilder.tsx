@@ -37,7 +37,7 @@ type Props = {
   matchingElements: ExtendedCapability[] | ExtendedDelivery[] | [];
   selectorCallback: (selector: string) => void;
   label: string;
-  rowData: RowData;
+  selectedRowData: ISelectedRowData;
 };
 
 const MATCHING_CAP_LIMIT = 1;
@@ -48,7 +48,7 @@ async function createArtifacts(artifactType: string, name: string, selector: str
 }
 
 const SelectorBuilder = (props: Props) => {
-  const { selectorCallback, matchingElements, label, rowData } = props;
+  const { selectorCallback, matchingElements, label, selectedRowData } = props;
   const [selector, setSelector] = useState<string>("");
   const [advancedMode, setAdvancedMode] = useState<boolean>(false);
   const [persistSelector, setPersistSelector] = useState<string>("");
@@ -93,6 +93,9 @@ const SelectorBuilder = (props: Props) => {
   const DENM = MessageTypes.DENM;
   const DATEX_2 = MessageTypes.DATEX_2;
 
+  const currentPublicationId = selectedRowData.publicationId;
+  const currentMessageType = selectedRowData.messageType;
+
   /*
   Generate a new selector when the form state changes.
   Send the selector backwards via selectorCallback(selector) to find matching capabilities.
@@ -117,13 +120,12 @@ const SelectorBuilder = (props: Props) => {
 
   useEffect(() => {
     reset();
-    setSelectedPublicationId(rowData.publicationId);
-    setValue("publicationId", rowData.publicationId, { shouldValidate: true });
-    setValue("messageType", Array.isArray(rowData.messageType) ? rowData.messageType : [rowData.messageType],
+    setSelectedPublicationId(currentPublicationId);
+    setValue("publicationId", currentPublicationId, { shouldValidate: true });
+    setValue("messageType", Array.isArray(currentMessageType) ? currentMessageType : [currentMessageType],
       { shouldValidate: true }
     );
-  }, [rowData, setValue, reset ]);
-
+  }, [currentPublicationId, currentMessageType, setValue, reset ]);
 
   const onSubmit: SubmitHandler<IFormInputs> = async () => {
     if (matchingElements.length < MATCHING_CAP_LIMIT) {

@@ -1,4 +1,4 @@
-interface RowData {
+interface ISelectedRowData {
   publicationId: string;
   messageType: string[];
 }
