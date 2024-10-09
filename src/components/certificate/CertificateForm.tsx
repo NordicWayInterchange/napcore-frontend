@@ -82,7 +82,13 @@ export const CertificateForm = () => {
           <Controller
             name="countryCode"
             control={control}
-            rules={{ required: true, pattern: /^[a-z]{2}$/i }}
+            rules={{
+              required: "Country code is required",
+              pattern: {
+                value: /^[a-z]{2}$/i,
+                message: "Invalid country code"
+              }
+            }}
             render={({ field }) => (
               <TextField
                 fullWidth
@@ -90,8 +96,9 @@ export const CertificateForm = () => {
                 label="Country code *"
                 error={Boolean(errors.countryCode)}
                 helperText={
-                  Boolean(errors.countryCode) &&
-                  "Invalid country code"
+                  errors.countryCode
+                    ? errors.countryCode.message
+                    : ""
                 }
               />
             )}
