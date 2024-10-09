@@ -19,6 +19,11 @@ const NewSubscription = () => {
   const [publicationIdRow, setPublicationIdRow] = useState<string>("");
   const [messageTypeRow, setMessageTypeRow] = useState<string[]>([]);
 
+  const rowData: RowData = {
+    publicationId: publicationIdRow,
+    messageType: messageTypeRow,
+  };
+
   const { data, isLoading, remove } = useMatchingCapabilities(
     session?.user.commonName as string,
     selector
@@ -30,7 +35,6 @@ const NewSubscription = () => {
   };
 
   const handleOnRowClick: GridEventListener<'rowClick'> = (params) => {
-    console.log('params.row', params.row.messageType);
     setPublicationIdRow(params.row.publicationId);
     setMessageTypeRow(params.row.messageType);
   };
@@ -49,8 +53,7 @@ const NewSubscription = () => {
           <SelectorBuilder
             matchingElements={data || []}
             selectorCallback={handleChange}
-            publicationIdRow={publicationIdRow}
-            messageTypeRow={messageTypeRow || []}
+            rowData={rowData}
             label="Subscription"
           />
         </Grid>

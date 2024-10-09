@@ -37,8 +37,7 @@ type Props = {
   matchingElements: ExtendedCapability[] | ExtendedDelivery[] | [];
   selectorCallback: (selector: string) => void;
   label: string;
-  publicationIdRow: string;
-  messageTypeRow: string[];
+  rowData: RowData;
 };
 
 const MATCHING_CAP_LIMIT = 1;
@@ -49,7 +48,7 @@ async function createArtifacts(artifactType: string, name: string, selector: str
 }
 
 const SelectorBuilder = (props: Props) => {
-  const { selectorCallback, matchingElements, label, publicationIdRow, messageTypeRow } = props;
+  const { selectorCallback, matchingElements, label, rowData } = props;
   const [selector, setSelector] = useState<string>("");
   const [advancedMode, setAdvancedMode] = useState<boolean>(false);
   const [persistSelector, setPersistSelector] = useState<string>("");
@@ -118,14 +117,12 @@ const SelectorBuilder = (props: Props) => {
 
   useEffect(() => {
     reset();
-    setSelectedPublicationId(publicationIdRow);
-    setValue("publicationId", publicationIdRow, { shouldValidate: true });
-    setValue(
-      "messageType",
-      Array.isArray(messageTypeRow) ? messageTypeRow : [messageTypeRow],
+    setSelectedPublicationId(rowData.publicationId);
+    setValue("publicationId", rowData.publicationId, { shouldValidate: true });
+    setValue("messageType", Array.isArray(rowData.messageType) ? rowData.messageType : [rowData.messageType],
       { shouldValidate: true }
     );
-  }, [publicationIdRow, messageTypeRow, setValue, reset ]);
+  }, [rowData, setValue, reset ]);
 
 
   const onSubmit: SubmitHandler<IFormInputs> = async () => {
