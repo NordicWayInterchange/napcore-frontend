@@ -32,9 +32,11 @@ export default function Deliveries() {
   const [shouldRefreshAfterDelete, setShouldRefreshAfterDelete] = useState<boolean>(false);
 
   useEffect(() => {
-    performRefetch(refetch);
-    setIsDeleted(false);
-    setShouldRefreshAfterDelete(true);
+    if (isDeleted) {
+      performRefetch(refetch);
+      setIsDeleted(false);
+      setShouldRefreshAfterDelete(true);
+    }
   }, [isDeleted, refetch]);
 
   useEffect(() => {

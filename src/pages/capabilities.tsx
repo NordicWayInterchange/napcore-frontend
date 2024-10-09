@@ -31,8 +31,10 @@ export default function Capabilities() {
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
 
   useEffect(() => {
-    performRefetch(refetch);
-    setIsDeleted(false);
+    if (isDeleted) {
+      performRefetch(refetch);
+      setIsDeleted(false);
+    }
   }, [isDeleted, refetch]);
 
   const handleDelete = (capability: ExtendedCapability) => {
