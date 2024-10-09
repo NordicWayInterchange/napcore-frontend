@@ -55,7 +55,6 @@ const SelectorBuilder = (props: Props) => {
   const [persistSelector, setPersistSelector] = useState<string>("");
   const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>([]);
   const [selectedPublicationId, setSelectedPublicationId] = useState("");
- // const [selectedMessageType, setSelectedMessageType] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<IFeedback>({
     feedback: false,
@@ -120,9 +119,12 @@ const SelectorBuilder = (props: Props) => {
   useEffect(() => {
     reset();
     setSelectedPublicationId(publicationIdRow);
-    //setSelectedMessageType(messageTypeRow);
     setValue("publicationId", publicationIdRow, { shouldValidate: true });
-    setValue("messageType", messageTypeRow, { shouldValidate: true });
+    setValue(
+      "messageType",
+      Array.isArray(messageTypeRow) ? messageTypeRow : [messageTypeRow],
+      { shouldValidate: true }
+    );
   }, [publicationIdRow, messageTypeRow, setValue, reset ]);
 
 

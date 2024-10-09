@@ -50,7 +50,7 @@ const NewSubscription = () => {
             matchingElements={data || []}
             selectorCallback={handleChange}
             publicationIdRow={publicationIdRow}
-            messageTypeRow={messageTypeRow}
+            messageTypeRow={messageTypeRow || []}
             label="Subscription"
           />
         </Grid>
