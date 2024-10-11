@@ -20,6 +20,7 @@ export type SubscriptionsSubscription = {
   id: string;
   selector: string;
   lastUpdatedTimestamp: number;
+  description: string;
   status: SubscriptionStatus;
   endpoints: Array<Endpoint>;
 };

@@ -83,6 +83,7 @@ export default function Subscriptions() {
       /*flex: 0,*/
       field: "id",
       headerName: "ID",
+      valueGetter: ({value}) => value.substring(0, 8)
     },
     {
       ...dataGridTemplate,
@@ -107,6 +108,11 @@ export default function Subscriptions() {
       field: "lastUpdatedTimestamp",
       headerName: "Last updated",
       valueGetter: ({ value }) => value && timeConverter(value),
+    },
+    {
+      ...dataGridTemplate,
+      field: "description",
+      headerName: "Description"
     },
     {
       ...dataGridTemplate,

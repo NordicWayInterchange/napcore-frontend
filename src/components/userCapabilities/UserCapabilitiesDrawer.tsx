@@ -21,6 +21,7 @@ import CapabilityDrawerForm from "@/components/layout/CapabilityDrawerForm";
 import { createDelivery, createSubscription } from "@/lib/fetchers/internalFetchers";
 import { IFeedback } from "@/interface/IFeedback";
 import Snackbar from "@/components/shared/feedback/Snackbar";
+import { router } from "next/client";
 
 const width = 600;
 
@@ -62,7 +63,7 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
     setDialogOpen(close);
   };
 
-  const saveDelivery = async (name: string, selector: string) => {
+  const saveDelivery = async (name: string, selector: Object) => {
     const response = await createDelivery(name, selector);
 
     if (response.ok) {
@@ -112,7 +113,7 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
                 color={"buttonThemeColor"}
                 disableElevation
                 onClick={() =>
-                  saveDelivery(session?.user.commonName as string, selector)
+                  saveDelivery(session?.user.commonName as string, {selector})
                 }
               >
                 Deliver

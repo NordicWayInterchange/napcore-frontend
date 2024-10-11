@@ -19,6 +19,7 @@ export type DeliveriesDelivery = {
   status: DeliveryStatus;
   endpoints: Array<Endpoint>;
   lastUpdatedTimestamp: number;
+  description: string;
 };
 
 export type Delivery = DeliveriesDelivery | { endpoints: Endpoint };
