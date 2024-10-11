@@ -162,6 +162,13 @@ const SelectorBuilder = (props: Props) => {
     }
   };
 
+  const handleReset = () => {
+    reset();
+    setSelectedPublicationId('');
+    setDescription('');
+    setDescriptionError(false);
+  };
+
   const handleVerify = () => {
     selectorCallback(selector);
   };
@@ -435,7 +442,7 @@ const SelectorBuilder = (props: Props) => {
               <StyledButton
                 color="buttonThemeColor"
                 variant="outlined"
-                onClick={() => {reset(); setSelectedPublicationId(''); setDescription('');}}
+                onClick={handleReset}
               >
                 Clear form
               </StyledButton>
