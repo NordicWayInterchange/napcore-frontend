@@ -7,4 +7,5 @@ export interface IFormInputs {
   originatingCountry: string[];
   publicationId: string;
   quadTree: string[];
+  description: string;
 }

@@ -50,6 +50,7 @@ async function createArtifacts(artifactType: string, name: string, bodyData: Obj
 const SelectorBuilder = (props: Props) => {
   const { selectorCallback, matchingElements, label, publicationIdRow } = props;
   const [selector, setSelector] = useState<string>("");
+  const [descriptionError, setDescriptionError] = useState(false);
   const [description, setDescription] = useState<string>("");
   const [advancedMode, setAdvancedMode] = useState<boolean>(false);
   const [persistSelector, setPersistSelector] = useState<string>("");
@@ -87,6 +88,7 @@ const SelectorBuilder = (props: Props) => {
       originatingCountry: [],
       publicationId: "",
       quadTree: [],
+      description: "",
     },
   });
 
@@ -171,7 +173,12 @@ const SelectorBuilder = (props: Props) => {
 
   const handleDescription = (event: any) => {
     const value = event.target.value;
-    setDescription(value);
+    if (value.length > 255) {
+      setDescriptionError(true);
+    } else {
+      setDescriptionError(false);
+      setDescription(value);
+    }
   };
 
   const handleClose = () => {
@@ -311,9 +318,7 @@ const SelectorBuilder = (props: Props) => {
                     <TextField
                       {...field}
                       fullWidth
-                      error={!!errors.publisherName}
-                      helperText={errors.publisherName ? "Publisher name is required." : ""}
-                      label="publisher name *"
+                      label="publisher name"
                     />
                   )}
                 />
@@ -327,9 +332,7 @@ const SelectorBuilder = (props: Props) => {
                     <TextField
                       {...field}
                       fullWidth
-                      error={!!errors.publicationType}
-                      helperText={errors.publicationType ? "publication type is required." : ""}
-                      label="publication type *"
+                      label="publication type"
                     />
                   )}
                 />
@@ -382,13 +385,15 @@ const SelectorBuilder = (props: Props) => {
             </Box>
             <Box>
               <TextField
+                name="description"
                 multiline
                 rows={4}
                 value={description}
-                fullWidth
                 label="Description"
-                sx={{ marginRight: 1 }}
                 onChange={handleDescription}
+                error={descriptionError}
+                helperText={descriptionError ? "Description exceeds maximum length of 254 characters" : ""}
+                fullWidth
               />
             </Box>
             <FormControlLabel
@@ -430,7 +435,7 @@ const SelectorBuilder = (props: Props) => {
               <StyledButton
                 color="buttonThemeColor"
                 variant="outlined"
-                onClick={() => {setSelectedPublicationId(''); reset()}}
+                onClick={() => {reset(); setSelectedPublicationId(''); setDescription('');}}
               >
                 Clear form
               </StyledButton>
