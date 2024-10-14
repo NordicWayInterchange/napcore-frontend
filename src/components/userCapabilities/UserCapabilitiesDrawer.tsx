@@ -1,27 +1,20 @@
 import {
   Box,
   Button,
-  Card,
   Drawer,
-  FormControl,
   List,
   ListItem,
-  TextField,
   Toolbar,
-  Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 import { ExtendedCapability } from "@/types/capability";
-import { styled } from "@mui/material/styles";
-import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { useSession } from "next-auth/react";
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import MapDialog from "@/components/map/MapDialog";
 import CapabilityDrawerForm from "@/components/layout/CapabilityDrawerForm";
-import { createDelivery, createSubscription } from "@/lib/fetchers/internalFetchers";
+import { createDelivery } from "@/lib/fetchers/internalFetchers";
 import { IFeedback } from "@/interface/IFeedback";
 import Snackbar from "@/components/shared/feedback/Snackbar";
-import { router } from "next/client";
 
 const width = 600;
 

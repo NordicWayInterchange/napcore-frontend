@@ -15,6 +15,7 @@ import MapDialog from "@/components/map/MapDialog";
 import { IFormCapabilityInputs } from "@/interface/IFormCapabilityInputs";
 import { usePublicationIds } from "@/hooks/usePublicationIds";
 import { useRouter } from "next/router";
+import { handleQuadtree } from "@/lib/handleQuadtree";
 
 const QUADTREE_REGEX = /^[0-3]+(,[0-3]+)*$/i;
 
@@ -307,23 +308,7 @@ const UserCapabilitiesSelectorBuilder = () => {
                     {...field}
                     label="Quadtree *"
                     fullWidth
-                    onChange={(event) => {
-                      const value = event.target.value;
-
-                      if (!QUADTREE_REGEX.test(value)) {
-                        setError("quadTree", { type: "pattern" });
-                        setValue("quadTree", value.split(","));
-                      } else {
-                        setValue("quadTree", value.split(","));
-                        clearErrors("quadTree");
-                      }
-
-                      setPredefinedQuadtree(value.split(","));
-
-                      if (value.length < 1) {
-                        resetField("quadTree");
-                      }
-                    }}
+                    onChange={handleQuadtree(setError, setValue, clearErrors, setPredefinedQuadtree, resetField)}
                     error={Boolean(errors.quadTree)}
                     sx={{ marginRight: 1 }}
                     helperText={

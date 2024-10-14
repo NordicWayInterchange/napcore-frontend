@@ -32,6 +32,7 @@ import { IFormInputs } from "@/interface/IFormInputs";
 import { useSession } from "next-auth/react";
 import { ExtendedDelivery } from "@/types/delivery";
 import { useRouter } from "next/router";
+import { handleQuadtree } from "@/lib/handleQuadtree";
 
 type Props = {
   matchingElements: ExtendedCapability[] | ExtendedDelivery[] | [];
@@ -350,23 +351,7 @@ const SelectorBuilder = (props: Props) => {
                     {...field}
                     label="Quadtree"
                     fullWidth
-                    onChange={(event) => {
-                      const value = event.target.value;
-
-                      if (!QUADTREE_REGEX.test(value)) {
-                        setError("quadTree", { type: "pattern" });
-                        setValue("quadTree", value.split(","));
-                      } else {
-                        setValue("quadTree", value.split(","));
-                        clearErrors("quadTree");
-                      }
-
-                      setPredefinedQuadtree(value.split(","));
-
-                      if (value.length < 1) {
-                        resetField("quadTree");
-                      }
-                    }}
+                    onChange={handleQuadtree(setError, setValue, clearErrors, setPredefinedQuadtree, resetField)}
                     disabled={advancedMode}
                     error={Boolean(errors.quadTree)}
                     sx={{ marginRight: 1 }}
