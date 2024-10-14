@@ -1,8 +1,6 @@
 import { ExtendedCapability } from "@/types/capability";
 import { MessageTypes } from "@/types/messageType";
 import {
-  Button,
-  Card,
   Divider,
   FormControl,
   FormControlLabel,
@@ -21,7 +19,6 @@ import {
 } from "@/lib/fetchers/internalFetchers";
 import MapDialog from "../../map/MapDialog";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
 import { messageTypes } from "@/lib/data/messageTypes";
 import { originatingCountries } from "@/lib/data/originatingCountries";
@@ -32,6 +29,8 @@ import { IFormInputs } from "@/interface/IFormInputs";
 import { useSession } from "next-auth/react";
 import { ExtendedDelivery } from "@/types/delivery";
 import { useRouter } from "next/router";
+import { handleQuadtree } from "@/lib/handleQuadtree";
+import { StyledButton, StyledCard, StyledFormControl,menuItemStyles } from "@/components/shared/styles/StyledSelectorBuilder";
 
 type Props = {
   matchingElements: ExtendedCapability[] | ExtendedDelivery[] | [];
@@ -273,8 +272,8 @@ const SelectorBuilder = (props: Props) => {
                     fullWidth
                     disabled={advancedMode}
                   >
-                    <InputLabel>Message type *</InputLabel>
-                    <Select {...field} multiple label="Message type *">
+                    <InputLabel>Message type</InputLabel>
+                    <Select {...field} multiple label="Message type">
                       {messageTypes.map((messageType, index) => (
                         <MenuItem key={index} value={messageType.value} sx={menuItemStyles}>
                           {messageType.value}
@@ -350,23 +349,7 @@ const SelectorBuilder = (props: Props) => {
                     {...field}
                     label="Quadtree"
                     fullWidth
-                    onChange={(event) => {
-                      const value = event.target.value;
-
-                      if (!QUADTREE_REGEX.test(value)) {
-                        setError("quadTree", { type: "pattern" });
-                        setValue("quadTree", value.split(","));
-                      } else {
-                        setValue("quadTree", value.split(","));
-                        clearErrors("quadTree");
-                      }
-
-                      setPredefinedQuadtree(value.split(","));
-
-                      if (value.length < 1) {
-                        resetField("quadTree");
-                      }
-                    }}
+                    onChange={handleQuadtree(setError, setValue, clearErrors, setPredefinedQuadtree, resetField)}
                     disabled={advancedMode}
                     error={Boolean(errors.quadTree)}
                     sx={{ marginRight: 1 }}
@@ -462,35 +445,6 @@ const SelectorBuilder = (props: Props) => {
       )}
     </>
   );
-};
-
-const StyledFormControl = styled(FormControl)(({}) => ({
-  display: "flex",
-  flexDirection: "column",
-  gap: "24px",
-}));
-
-const StyledButton = styled(Button)(({}) => ({
-  width: "200px",
-  textTransform: "none",
-  borderRadius: 100,
-}));
-
-const StyledCard = styled(Card)(({}) => ({
-  padding: "16px",
-  width: "100%",
-}));
-
-const menuItemStyles = {
-  '&:hover': {
-    backgroundColor: 'menuItemHoverColor',
-  },
-  '&.Mui-selected': {
-    backgroundColor: 'menuItemBackgroundColor',
-    '&:hover': {
-      backgroundColor: 'menuItemHoverColor',
-    },
-  }
 };
 
 export default SelectorBuilder;

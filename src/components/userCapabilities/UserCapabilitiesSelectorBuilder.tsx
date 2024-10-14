@@ -1,9 +1,8 @@
 import { MessageTypes } from "@/types/messageType";
-import { Button, Card, FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { createUserCapability } from "@/lib/fetchers/internalFetchers";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
 import { messageTypes } from "@/lib/data/messageTypes";
 import { originatingCountries } from "@/lib/data/originatingCountries";
@@ -15,6 +14,8 @@ import MapDialog from "@/components/map/MapDialog";
 import { IFormCapabilityInputs } from "@/interface/IFormCapabilityInputs";
 import { usePublicationIds } from "@/hooks/usePublicationIds";
 import { useRouter } from "next/router";
+import { handleQuadtree } from "@/lib/handleQuadtree";
+import { menuItemStyles, StyledButton, StyledCard, StyledFormControl } from "@/components/shared/styles/StyledSelectorBuilder";
 
 const QUADTREE_REGEX = /^[0-3]+(,[0-3]+)*$/i;
 
@@ -307,23 +308,7 @@ const UserCapabilitiesSelectorBuilder = () => {
                     {...field}
                     label="Quadtree *"
                     fullWidth
-                    onChange={(event) => {
-                      const value = event.target.value;
-
-                      if (!QUADTREE_REGEX.test(value)) {
-                        setError("quadTree", { type: "pattern" });
-                        setValue("quadTree", value.split(","));
-                      } else {
-                        setValue("quadTree", value.split(","));
-                        clearErrors("quadTree");
-                      }
-
-                      setPredefinedQuadtree(value.split(","));
-
-                      if (value.length < 1) {
-                        resetField("quadTree");
-                      }
-                    }}
+                    onChange={handleQuadtree(setError, setValue, clearErrors, setPredefinedQuadtree, resetField)}
                     error={Boolean(errors.quadTree)}
                     sx={{ marginRight: 1 }}
                     helperText={
@@ -377,35 +362,6 @@ const UserCapabilitiesSelectorBuilder = () => {
       )}
     </>
   );
-};
-
-const StyledFormControl = styled(FormControl)(({}) => ({
-  display: "flex",
-  flexDirection: "column",
-  gap: "24px",
-}));
-
-const StyledButton = styled(Button)(({}) => ({
-  width: "200px",
-  textTransform: "none",
-  borderRadius: 100,
-}));
-
-const StyledCard = styled(Card)(({}) => ({
-  padding: "16px",
-  width: "100%",
-}));
-
-const menuItemStyles = {
-  '&:hover': {
-    backgroundColor: 'menuItemHoverColor',
-  },
-  '&.Mui-selected': {
-    backgroundColor: 'menuItemBackgroundColor',
-    '&:hover': {
-      backgroundColor: 'menuItemHoverColor',
-    },
-  }
 };
 
 export default UserCapabilitiesSelectorBuilder;
