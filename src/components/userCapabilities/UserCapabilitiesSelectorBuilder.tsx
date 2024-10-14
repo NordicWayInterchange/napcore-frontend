@@ -1,9 +1,8 @@
 import { MessageTypes } from "@/types/messageType";
-import { Button, Card, FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { createUserCapability } from "@/lib/fetchers/internalFetchers";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
 import { messageTypes } from "@/lib/data/messageTypes";
 import { originatingCountries } from "@/lib/data/originatingCountries";
@@ -16,6 +15,7 @@ import { IFormCapabilityInputs } from "@/interface/IFormCapabilityInputs";
 import { usePublicationIds } from "@/hooks/usePublicationIds";
 import { useRouter } from "next/router";
 import { handleQuadtree } from "@/lib/handleQuadtree";
+import { menuItemStyles, StyledButton, StyledCard, StyledFormControl } from "@/components/shared/styles/StyledSelectorBuilder";
 
 const QUADTREE_REGEX = /^[0-3]+(,[0-3]+)*$/i;
 
@@ -362,35 +362,6 @@ const UserCapabilitiesSelectorBuilder = () => {
       )}
     </>
   );
-};
-
-const StyledFormControl = styled(FormControl)(({}) => ({
-  display: "flex",
-  flexDirection: "column",
-  gap: "24px",
-}));
-
-const StyledButton = styled(Button)(({}) => ({
-  width: "200px",
-  textTransform: "none",
-  borderRadius: 100,
-}));
-
-const StyledCard = styled(Card)(({}) => ({
-  padding: "16px",
-  width: "100%",
-}));
-
-const menuItemStyles = {
-  '&:hover': {
-    backgroundColor: 'menuItemHoverColor',
-  },
-  '&.Mui-selected': {
-    backgroundColor: 'menuItemBackgroundColor',
-    '&:hover': {
-      backgroundColor: 'menuItemHoverColor',
-    },
-  }
 };
 
 export default UserCapabilitiesSelectorBuilder;
