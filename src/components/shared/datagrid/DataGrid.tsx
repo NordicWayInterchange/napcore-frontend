@@ -17,8 +17,8 @@ export default function DataGrid(props: Props) {
         autoHeight
         disableRowSelectionOnClick={true}
         sx={{ backgroundColor: "white",
-          boxShadow: 2,
-          borderRadius: 2
+          boxShadow: 1,
+          borderRadius: 1
       }}
         initialState={{
           pagination: {

@@ -19,9 +19,9 @@ const ShortcutCard = (props: Props) => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        width: 240,
+        width: 220,
         "&:hover": {
-          boxShadow: 6,
+          boxShadow: 7,
           textDecoration: "underline"
         },
         height: "200px",

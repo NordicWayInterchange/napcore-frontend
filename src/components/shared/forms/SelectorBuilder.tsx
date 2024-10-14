@@ -268,12 +268,10 @@ const SelectorBuilder = (props: Props) => {
               <Controller
                 name="messageType"
                 control={control}
-                rules={{ required: !advancedMode }}
                 render={({ field }) => (
                   <FormControl
                     fullWidth
                     disabled={advancedMode}
-                    error={Boolean(errors.messageType)}
                   >
                     <InputLabel>Message type *</InputLabel>
                     <Select {...field} multiple label="Message type *">
@@ -283,9 +281,6 @@ const SelectorBuilder = (props: Props) => {
                         </MenuItem>
                       ))}
                     </Select>
-                    {Boolean(errors.messageType) && (
-                      <FormHelperText>Message type is required</FormHelperText>
-                    )}
                   </FormControl>
                 )}
               />
@@ -320,11 +315,11 @@ const SelectorBuilder = (props: Props) => {
                 <Controller
                   name="publisherName"
                   control={control}
-                  rules={{ required: true }}
                   render={({ field }) => (
                     <TextField
                       {...field}
                       fullWidth
+                      disabled={advancedMode}
                       label="publisher name"
                     />
                   )}
@@ -334,11 +329,11 @@ const SelectorBuilder = (props: Props) => {
                 <Controller
                   name="publicationType"
                   control={control}
-                  rules={{ required: true }}
                   render={({ field }) => (
                     <TextField
                       {...field}
                       fullWidth
+                      disabled={advancedMode}
                       label="publication type"
                     />
                   )}
@@ -397,6 +392,7 @@ const SelectorBuilder = (props: Props) => {
                 rows={4}
                 value={description}
                 label="Description"
+                disabled={advancedMode}
                 onChange={handleDescription}
                 error={descriptionError}
                 helperText={descriptionError ? "Description exceeds maximum length of 254 characters" : ""}

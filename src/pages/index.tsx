@@ -73,9 +73,8 @@ export default function Home() {
               href={shortcut.url}
               style={{
                 textDecoration: "none",
-                marginRight: 10,
+                marginRight: 20,
                 marginTop: 10,
-                width: "254px",
               }}
             >
               <ShortcutCard
