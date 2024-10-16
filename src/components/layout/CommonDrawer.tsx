@@ -170,6 +170,7 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
                   value={item.description}
                   rows={4}
                   InputProps={{
+                    readOnly: true,
                     endAdornment: (
                       <ContentCopy value={item.description} />
                     ),
