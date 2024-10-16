@@ -22,6 +22,7 @@ import { IPages } from "@/interface/IPages";
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 import PersonIcon from '@mui/icons-material/Person';
 import ArticleIcon from '@mui/icons-material/Article';
+import LockIcon from '@mui/icons-material/Lock';
 
 const MAIN_PAGES: Array<IPages> = [
   {
@@ -46,6 +47,11 @@ const MAIN_PAGES: Array<IPages> = [
     text: "Deliveries",
     url: "/deliveries",
     icon: <LocalPostOfficeIcon />,
+  },
+  {
+    text: "Private channel",
+    url: "/private-channel",
+    icon: <LockIcon />,
   }
 ];
 
