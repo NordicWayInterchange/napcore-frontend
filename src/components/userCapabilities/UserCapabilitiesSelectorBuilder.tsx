@@ -1,5 +1,14 @@
 import { MessageTypes } from "@/types/messageType";
-import { FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import {
+
+  FormControl,
+  FormHelperText,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { createUserCapability } from "@/lib/fetchers/internalFetchers";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -23,6 +32,10 @@ const UserCapabilitiesSelectorBuilder = () => {
   const [duplicatePublicationIdError, setDuplicatePublicationIdError] = useState('');
   const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
+  const [publisherIdInput, setPublisherIdInput] = useState("");
+  const [publicationIdInput, setPublicationIdInput] = useState("");
+  const [showAdornment, setShowAdornment] = useState(false);
+
   const [feedback, setFeedback] = useState<IFeedback>({
     feedback: false,
     message: "",
@@ -137,6 +150,16 @@ const UserCapabilitiesSelectorBuilder = () => {
     setPredefinedQuadtree(value);
   };
 
+  const handleTextChange = (event:any) => {
+    const userInput = event.target.value;
+    setValue("publisherId", userInput);
+    setPublisherIdInput(userInput);
+    if (validateUniquePublicationId(userInput + ":" + publicationIdInput)) return;
+    if (userInput !== '') {
+      setShowAdornment(true);
+    }
+  };
+
   return (
     <>
       <StyledCard variant={"outlined"}>
@@ -153,7 +176,8 @@ const UserCapabilitiesSelectorBuilder = () => {
                     fullWidth
                     error={!!errors.publisherId}
                     helperText={errors.publisherId ? errors.publisherId.message : ''}
-                    label="Publisher Id *"
+                    label="Publisher ID *"
+                    onChange={handleTextChange}
                   />
                 )}
               />
@@ -170,6 +194,19 @@ const UserCapabilitiesSelectorBuilder = () => {
                     error={!!duplicatePublicationIdError || !!errors.publicationId}
                     helperText={ errors.publicationId ? errors.publicationId.message : duplicatePublicationIdError}
                     label="Publication ID *"
+                    onBlur={(event) => {
+                      const userInput = event.target.value;
+                      setPublicationIdInput(userInput);
+                      if (validateUniquePublicationId(publisherIdInput + ":" + userInput)) return;
+                    }
+                    }
+                    InputProps={{
+                      startAdornment: showAdornment && (
+                        <InputAdornment position="start">
+                          {publisherIdInput ? publisherIdInput + ":" : ""}
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                 )}
               />
@@ -276,7 +313,7 @@ const UserCapabilitiesSelectorBuilder = () => {
                               fullWidth
                               error={!!errors.publisherName}
                               helperText={errors.publisherName ? "Publisher name is required." : ""}
-                              label="publisher name *"
+                              label="Publisher name *"
                             />
                           )}
                         />
@@ -292,7 +329,7 @@ const UserCapabilitiesSelectorBuilder = () => {
                               fullWidth
                               error={!!errors.publicationType}
                               helperText={errors.publicationType ? "publication type is required." : ""}
-                              label="publication type *"
+                              label="Publication type *"
                     />
                 )}
               />
@@ -338,7 +375,7 @@ const UserCapabilitiesSelectorBuilder = () => {
               <StyledButton
                 color="buttonThemeColor"
                 variant="outlined"
-                onClick={() => reset()}
+                onClick={() => {reset(); setShowAdornment(false); setDuplicatePublicationIdError('');}}
               >
                 Clear form
               </StyledButton>
