@@ -123,7 +123,7 @@ const UserCapabilitiesSelectorBuilder = () => {
 
   const validateUniquePublicationId = (value: string) => {
     if (value && findPublicationIds(value)) {
-      setDuplicatePublicationIdError("Publication ID and publisher ID combination must be unique, please try another one.");
+      setDuplicatePublicationIdError("Publisher ID and publication ID combination must be unique, please try another one.");
       return true;
     } else {
       setDuplicatePublicationIdError("");
@@ -177,7 +177,10 @@ const UserCapabilitiesSelectorBuilder = () => {
                     error={!!errors.publisherId}
                     helperText={errors.publisherId ? errors.publisherId.message : ''}
                     label="Publisher ID *"
-                    onChange={handleTextChange}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      handleTextChange(e);
+                    }}
                   />
                 )}
               />
