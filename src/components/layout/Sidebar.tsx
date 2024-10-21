@@ -49,8 +49,8 @@ const MAIN_PAGES: Array<IPages> = [
     icon: <LocalPostOfficeIcon />,
   },
   {
-    text: "Private channel",
-    url: "/private-channel",
+    text: "Private channels",
+    url: "/private-channels",
     icon: <LockIcon />,
   }
 ];
