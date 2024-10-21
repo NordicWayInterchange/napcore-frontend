@@ -49,6 +49,24 @@ export const deleteDeliveries = (
   });
 };
 
+export const createPrivateChannel = (actorCommonName: string) => {
+  return fetch(`/api/${actorCommonName}/privateChannels`, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    }
+  });
+};
+
+export const deletePrivateChannel = (
+  actorCommonName: string,
+  privateChannelId: string
+) => {
+  return fetch(`/api/${actorCommonName}/privateChannel/${privateChannelId}`, {
+    method: "delete",
+  });
+};
+
 export const createUserCapability = (actorCommonName: string, body: Object) => {
   return fetch(`/api/${actorCommonName}/capabilities`, {
     method: "post",

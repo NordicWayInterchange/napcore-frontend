@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Divider, IconButton } from "@mui/material";
+import { Box, Divider } from "@mui/material";
 import Mainheading from "@/components/shared/display/typography/Mainheading";
 import Subheading from "@/components/shared/display/typography/Subheading";
 import { GridColDef } from "@mui/x-data-grid";
@@ -10,8 +10,11 @@ import { useSession } from "next-auth/react";
 import { PrivateChannel } from "@/types/napcore/privateChannel";
 import { usePrivateChannels } from "@/hooks/usePrivateChannels";
 import DataGrid from "@/components/shared/datagrid/DataGrid";
-import { CustomEmptyOverlayCapabilites } from "@/components/shared/datagrid/CustomEmptyOverlay";
+import {
+  CustomEmptyOverlayPrivateChannels
+} from "@/components/shared/datagrid/CustomEmptyOverlay";
 import AddButton from "@/components/shared/actions/AddButton";
+import PrivateChannelsDrawer from "@/components/privateChannels/PrivateChannelsDrawer";
 
 export default function PrivateChannels() {
 
@@ -21,6 +24,7 @@ export default function PrivateChannels() {
   );
   const [privateChannelRow, setPrivateChannelRow] = useState<PrivateChannel>();
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+  const [isDeleted, setIsDeleted] = useState<boolean>(false);
 
   const handleMore = (privateChannel: PrivateChannel) => {
     setPrivateChannelRow(privateChannel);
@@ -33,6 +37,11 @@ export default function PrivateChannels() {
   const handleOnRowClick = (params: any) => {
     handleMore(params.row);
   };
+
+  const handleDeletedItem = (deleted: boolean) => {
+    setIsDeleted(deleted);
+  };
+
 
   const tableHeaders: GridColDef[] = [
     {
@@ -91,9 +100,17 @@ export default function PrivateChannels() {
         getRowId={(row) => row.publicationId}
         sort={{ field: "lastUpdatedTimestamp", sort: "desc" }}
         slots={{
-          noRowsOverlay: CustomEmptyOverlayCapabilites,
+          noRowsOverlay: CustomEmptyOverlayPrivateChannels,
         }}
       />
+      {privateChannelRow && (
+        <PrivateChannelsDrawer
+          handleMoreClose={handleMoreClose}
+          open={drawerOpen}
+          privateChannel={privateChannelRow as PrivateChannel}
+          handleDeletedItem={handleDeletedItem}
+        />
+      )}
     </Box>
   );
 }
