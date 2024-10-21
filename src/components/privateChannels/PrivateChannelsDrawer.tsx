@@ -7,25 +7,23 @@ import {
   Toolbar,
 } from "@mui/material";
 import React, { useState } from "react";
-import { ExtendedCapability } from "@/types/capability";
 import { useSession } from "next-auth/react";
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
-import MapDialog from "@/components/map/MapDialog";
-import CapabilityDrawerForm from "@/components/layout/CapabilityDrawerForm";
-import { createDelivery } from "@/lib/fetchers/internalFetchers";
+import { createPrivateChannel } from "@/lib/fetchers/internalFetchers";
 import { IFeedback } from "@/interface/IFeedback";
 import Snackbar from "@/components/shared/feedback/Snackbar";
+import { PrivateChannel } from "@/types/napcore/privateChannel";
 
 const width = 600;
 
 type Props = {
-  capability: ExtendedCapability;
+  privateChannel: PrivateChannel;
   open: boolean;
   handleMoreClose: () => void;
   handleDeletedItem: (deleted: boolean) => void;
 };
 
-const PrivateChannelsDrawer = ({ capability, open, handleMoreClose, handleDeletedItem }: Props) => {
+const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDeletedItem }: Props) => {
   const { data: session } = useSession();
   const [openMap, setOpenMap] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
@@ -34,8 +32,6 @@ const PrivateChannelsDrawer = ({ capability, open, handleMoreClose, handleDelete
     message: "",
     severity: "success",
   });
-
-  const selector = `(publicationId = '${capability.publicationId}')`;
 
   const handleSnackClose = (
     event?: React.SyntheticEvent | Event,
@@ -56,8 +52,8 @@ const PrivateChannelsDrawer = ({ capability, open, handleMoreClose, handleDelete
     setDialogOpen(close);
   };
 
-  const saveDelivery = async (name: string, selector: Object) => {
-    const response = await createDelivery(name, selector);
+  const savePrivateChannel = async (name: string) => {
+    const response = await createPrivateChannel(name);
 
     if (response.ok) {
       setFeedback({
@@ -98,7 +94,6 @@ const PrivateChannelsDrawer = ({ capability, open, handleMoreClose, handleDelete
         <Toolbar />
         <Box sx={{ padding: 1, width: 1 }}>
           <List>
-            <CapabilityDrawerForm capability={capability} handleMoreClose={handleMoreClose} setOpenMap={setOpenMap}/>
             <ListItem sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <Button
                 sx={{ borderRadius: 100, textTransform: "none", width: 150}}
@@ -106,7 +101,7 @@ const PrivateChannelsDrawer = ({ capability, open, handleMoreClose, handleDelete
                 color={"buttonThemeColor"}
                 disableElevation
                 onClick={() =>
-                  saveDelivery(session?.user.commonName as string, {selector})
+                  savePrivateChannel(session?.user.commonName as string)
                 }
               >
                 Deliver
@@ -138,16 +133,10 @@ const PrivateChannelsDrawer = ({ capability, open, handleMoreClose, handleDelete
       <DeleteSubDialog
         open={dialogOpen}
         actorCommonName={session?.user.commonName as string}
-        itemId={capability.id as string}
+        itemId={privateChannel.id as string}
         handleDialog={handleClickClose}
         handleDeletedItem={handleDeletedItem}
-        text="Capability"
-      />
-      <MapDialog
-        open={openMap}
-        onClose={handleClose}
-        quadtree={capability.quadTree}
-        interactive={false}
+        text="PrivateChannel"
       />
     </>
   );
