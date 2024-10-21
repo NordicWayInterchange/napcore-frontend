@@ -49,9 +49,9 @@ export default function Home() {
       icon: <LocalPostOfficeIcon />
     },
     {
-      header: "Private channel",
-      description: "View private channel",
-      url: "/private-channel",
+      header: "Private channels",
+      description: "View private channels",
+      url: "/private-channels",
       icon: <LockIcon />
     },
     {
