@@ -12,9 +12,11 @@ type Props = {
 export default function AddButton(props: Props) {
   const {text, labelUrl} = props;
 
-   const getUrl = () => {
-     return labelUrl === 'subscription' ? "/subscriptions/new-subscription" : labelUrl ==='capability' ?
-       '/capabilities/new-user-capability' : '/deliveries/new-delivery';
+  const getUrl = () => {
+    return labelUrl === "subscription" ? "/subscriptions/new-subscription" :
+           labelUrl === "capability" ? "/capabilities/new-user-capability" :
+           labelUrl === "privateChannel" ? "private-channels/new-private-channel" :
+          "/deliveries/new-delivery";
   };
 
   return (
