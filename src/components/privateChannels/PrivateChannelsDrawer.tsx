@@ -1,15 +1,14 @@
 import {
   Box,
-  Button,
+  Button, Card,
   Drawer,
   List,
   ListItem,
-  Toolbar,
+  Toolbar
 } from "@mui/material";
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
-import { createPrivateChannel } from "@/lib/fetchers/internalFetchers";
 import { IFeedback } from "@/interface/IFeedback";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import { PrivateChannel } from "@/types/napcore/privateChannel";
@@ -52,24 +51,6 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
     setDialogOpen(close);
   };
 
-  const savePrivateChannel = async (name: string) => {
-    const response = await createPrivateChannel(name);
-
-    if (response.ok) {
-      setFeedback({
-        feedback: true,
-        message: `Delivery successfully created`,
-        severity: "success",
-      });
-    } else {
-      setFeedback({
-        feedback: true,
-        message: `Delivery could not be created, try again!`,
-        severity: "warning",
-      });
-    }
-  };
-
   return (
     <>
       <Drawer
@@ -94,18 +75,7 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
         <Toolbar />
         <Box sx={{ padding: 1, width: 1 }}>
           <List>
-            <ListItem sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <Button
-                sx={{ borderRadius: 100, textTransform: "none", width: 150}}
-                variant={"contained"}
-                color={"buttonThemeColor"}
-                disableElevation
-                onClick={() =>
-                  savePrivateChannel(session?.user.commonName as string)
-                }
-              >
-                Deliver
-              </Button>
+            <ListItem >
               <Button
                 sx={{
                   borderRadius: 100,
