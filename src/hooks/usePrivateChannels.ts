@@ -5,7 +5,7 @@ const fetchPrivateChannels: (
   commonName: string
 ) => Promise<PrivateChannel[]> = async (commonName) => {
   const res = await fetch(
-    `/api/${commonName}/privateChannels`
+    `/api/${commonName}/private-channels`
   );
 
   if (res.ok) {

@@ -3,7 +3,7 @@ import {
   Card,
   FormControl,
   IconButton,
-  ListItem,
+  ListItem, MenuItem,
   TextField,
   Typography
 } from "@mui/material";
@@ -34,22 +34,21 @@ const CapabilityDrawerForm = ({ privateChannel, handleMoreClose }: Props) => {
         <Chip
           color={
             statusChips[
-              privateChannel.privateChannelStatus.toString() as keyof typeof statusChips
+              privateChannel.status.toString() as keyof typeof statusChips
               ] as any
           }
-          label={privateChannel.privateChannelStatus}
+          label={privateChannel.status}
         />
         </StyledHeaderBox>
       </ListItem>
 
       <ListItem>
         <StyledCard variant={"outlined"}>
-          <Typography>Publisher</Typography>
           <FormControl fullWidth>
             <TextField
               contentEditable={false}
               value={privateChannel.id}
-              label={"Publisher ID"}
+              label={"ID"}
               margin="normal"
               InputProps={{
                 endAdornment: (
@@ -57,35 +56,29 @@ const CapabilityDrawerForm = ({ privateChannel, handleMoreClose }: Props) => {
                 )
               }}
             />
-            <TextField
-              contentEditable={false}
-              value={privateChannel.peers}
-              label={"Peers"}
-              margin="normal"
-            />
           </FormControl>
         </StyledCard>
       </ListItem>
-      {privateChannel.privateChannelEndpoint.length > 0 && (
+      {privateChannel.endpoint?.length > 0 && (
         <ListItem>
           <StyledCard variant={"outlined"}>
             <Typography>Endpoints</Typography>
             <FormControl fullWidth>
               <TextField
                 contentEditable={false}
-                value={privateChannel.privateChannelEndpoint[0].host}
+                value={privateChannel.endpoint[0].host}
                 label={"Host"}
                 margin="normal"
                 InputProps={{
                   endAdornment: (
-                    <ContentCopy value={privateChannel.privateChannelEndpoint[0].host} />
+                    <ContentCopy value={privateChannel.endpoint[0].host} />
                   ),
                 }}
               />
               <TextField
                 contentEditable={false}
                 value={"5671"}
-                label={privateChannel.privateChannelEndpoint[0].port}
+                label={privateChannel.endpoint[0].port}
                 margin="normal"
                 InputProps={{
                   endAdornment: <ContentCopy value={"5671"} />,
@@ -94,11 +87,11 @@ const CapabilityDrawerForm = ({ privateChannel, handleMoreClose }: Props) => {
               <TextField
                 contentEditable={false}
                 value={"Queue"}
-                label={privateChannel.privateChannelEndpoint[0].queueName}
+                label={privateChannel.endpoint[0].queueName}
                 margin="normal"
                 InputProps={{
                   endAdornment: (
-                    <ContentCopy value={privateChannel.privateChannelEndpoint[0].queueName} />
+                    <ContentCopy value={privateChannel.endpoint[0].queueName} />
                   ),
                 }}
               />
@@ -108,8 +101,6 @@ const CapabilityDrawerForm = ({ privateChannel, handleMoreClose }: Props) => {
       )}
       <ListItem>
         <StyledCard variant={"outlined"}>
-          <ListItem>
-            <StyledCard variant={"outlined"}>
               <Typography>Description</Typography>
               <FormControl fullWidth>
                 <TextField
@@ -126,8 +117,6 @@ const CapabilityDrawerForm = ({ privateChannel, handleMoreClose }: Props) => {
                   }}
                 />
               </FormControl>
-            </StyledCard>
-          </ListItem>
         </StyledCard>
       </ListItem>
     </>
@@ -146,6 +135,5 @@ const StyledHeaderBox = styled(Box)(({}) => ({
   justifyContent: "space-between",
   width: "100%",
 }));
-
 
 export default CapabilityDrawerForm;

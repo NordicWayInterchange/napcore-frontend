@@ -17,7 +17,7 @@ import {
   extendedGetParams, fetchNapcoreDeliveries,
   fetchNapcoreDeliveriesCapabilities,
   fetchNapcoreNetworkCapabilities,
-  fetchNapcoreSubscriptions, fetchNapcorePublicationIds
+  fetchNapcoreSubscriptions, fetchNapcorePublicationIds, fetchNapcorePrivateChannels
 } from "@/lib/fetchers/interchangeConnector";
 import { ExtendedCapability } from "@/types/capability";
 import { Capability, Publicationids } from "@/types/napcore/capability";
@@ -28,6 +28,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { DeliveriesDelivery } from "@/types/napcore/delivery";
 import { ExtendedDelivery } from "@/types/delivery";
+import { PrivateChannel } from "@/types/napcore/privateChannel";
 const logger = require("../../../lib/logger");
 
 const fetchCapabilityCounter = async (params: basicGetParams) => {
@@ -104,6 +105,12 @@ const fetchPublicationIds = async (params: extendedGetParams) => {
   const res = await fetchNapcorePublicationIds(params);
   const ids: Publicationids = await res.data;
   return [res.status, ids];
+};
+
+const fetchPrivateChannels = async (params: extendedGetParams) => {
+  const res = await fetchNapcorePrivateChannels(params);
+  const privateChannels: PrivateChannel = await res.data;
+  return [res.status, privateChannels];
 };
 
 export const addUserCapabilities: basicPostFunction = async (
@@ -183,7 +190,8 @@ const getPaths: {
   "delivery-count": fetchDeliveriesCapabilityCounter,
   "deliveries/capabilities": fetchDeliveriesCapabilities,
   "user/capabilities": fetchUserCapabilities,
-  "capabilities/publicationids": fetchPublicationIds
+  "capabilities/publicationids": fetchPublicationIds,
+  "private-channels": fetchPrivateChannels,
 };
 
 // all post methods on path

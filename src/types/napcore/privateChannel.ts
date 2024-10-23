@@ -7,22 +7,16 @@ export enum PrivateChannelStatus {
   RESUBSCRIBE = "resubscribe",
 }
 
-export type PrivateChannelEndpoint = {
+export type EndPoint = {
   host: string;
   port: number;
   queueName: string;
 };
 
-export type Peers = {
-  id: string;
-  name: string;
-};
-
 export type PrivateChannel = {
   id: string;
-  privateChannelStatus: PrivateChannelStatus;
+  peers: Array<string>;
+  status: PrivateChannelStatus;
   description: string;
-  peers: Array<Peers>;
-  serviceProviderName: string;
-  privateChannelEndpoint: Array<PrivateChannelEndpoint>;
+  endpoint: Array<EndPoint>;
 };

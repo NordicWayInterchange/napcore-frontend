@@ -1,6 +1,6 @@
 import {
   Box,
-  Button, Card,
+  Button,
   Drawer,
   List,
   ListItem,
@@ -12,6 +12,7 @@ import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import { IFeedback } from "@/interface/IFeedback";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import { PrivateChannel } from "@/types/napcore/privateChannel";
+import PrivateChannelDrawerForm from "@/components/layout/PrivateChannelDrawerForm";
 
 const width = 600;
 
@@ -75,6 +76,7 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
         <Toolbar />
         <Box sx={{ padding: 1, width: 1 }}>
           <List>
+            <PrivateChannelDrawerForm privateChannel={privateChannel} handleMoreClose={handleMoreClose}/>
             <ListItem >
               <Button
                 sx={{

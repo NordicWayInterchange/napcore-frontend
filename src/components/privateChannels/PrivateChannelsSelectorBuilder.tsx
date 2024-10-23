@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { StyledButton, StyledCard, StyledFormControl } from "@/components/shared/styles/StyledSelectorBuilder";
 import { IFormPrivateChannelInput } from "@/interface/IFormPrivateChanelInput";
-import { createPrivateChannel, createUserCapability } from "@/lib/fetchers/internalFetchers";
+import { createPrivateChannel } from "@/lib/fetchers/internalFetchers";
 
 const PrivateChannelsSelectorBuilder = () => {
   const [duplicatePublicationIdError, setDuplicatePublicationIdError] = useState('');
@@ -18,13 +18,19 @@ const PrivateChannelsSelectorBuilder = () => {
     message: "",
     severity: "success",
   });
+  const [predefinedPeers, setPredefinedPeers] = useState<string[]>([]);
+
   const { data: session } = useSession();
   const router = useRouter();
 
   const {
     handleSubmit,
     control,
+    setValue,
+    setError,
     register,
+    clearErrors,
+    resetField,
     reset,
     formState: { errors },
   } = useForm<IFormPrivateChannelInput>({
@@ -34,8 +40,10 @@ const PrivateChannelsSelectorBuilder = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<IFormPrivateChannelInput> = async (data) => {
+  const PEERS_REGEX = /^[^0-9]*$/;
 
+  const onSubmit: SubmitHandler<IFormPrivateChannelInput> = async (data) => {
+    console.log('data', data);
     const response = await createPrivateChannel(
       session?.user.commonName as string,
       Object.assign({}, data)
@@ -74,6 +82,43 @@ const PrivateChannelsSelectorBuilder = () => {
       <StyledCard variant={"outlined"}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <StyledFormControl>
+            <Controller
+              name="peers"
+              control={control}
+              rules={{
+                required: "Peers is required",
+                pattern: {
+                  value: PEERS_REGEX,
+                  message: "Only comma (,) separated letters are allowed"
+                }
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Peers *"
+                  fullWidth
+                  onChange={(event) => {
+                    const value = event.target.value;
+
+                    if (!PEERS_REGEX.test(value)) {
+                      setError("peers", { type: "pattern", message: "Only comma (,) separated letters are allowed" });
+                    } else {
+                      clearErrors("peers");
+                    }
+
+                    setValue("peers", value.split(","));
+                    setPredefinedPeers(value.split(","));
+
+                    if (value.trim().length < 1) {
+                      resetField("peers");
+                    }
+                  }}
+                  error={Boolean(errors.peers)}
+                  sx={{ marginRight: 1 }}
+                  helperText={errors.peers ? errors.peers.message : "Only comma (,) separated letters are allowed"}
+                />
+              )}
+            />
             <Box sx={{ display: "flex", gap: 1 }}>
               <Controller
                 name="description"
@@ -82,33 +127,13 @@ const PrivateChannelsSelectorBuilder = () => {
                   <TextField
                     {...field}
                     {...register('description', {
-                      required: 'Description is required.'
+                      required: 'Description is required'
                     })}
                     fullWidth
                     error={!!duplicatePublicationIdError || !!errors.description}
                     helperText={ errors.description ? errors.description.message : duplicatePublicationIdError}
                     label="Description *"
                   />
-                )}
-              />
-            </Box>
-            <Box sx={{ display: "flex", gap: 1 }}>
-              <Controller
-                name="peers"
-                control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <FormControl
-                    fullWidth
-                    error={Boolean(errors.peers)}>
-                    <InputLabel>Peers *</InputLabel>
-                    <Select label="Originating country *" {...field}>
-
-                    </Select>
-                    {Boolean(errors.peers) && (
-                      <FormHelperText>Peers is required</FormHelperText>
-                    )}
-                  </FormControl>
                 )}
               />
             </Box>
