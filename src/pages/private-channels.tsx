@@ -51,7 +51,7 @@ export default function PrivateChannels() {
     },
     {
       ...dataGridTemplate,
-      field: "privateChannelStatus",
+      field: "status",
       headerName: "Status",
       renderCell: (cell) => {
         return (
@@ -61,11 +61,6 @@ export default function PrivateChannels() {
           />
         );
       },
-    },
-    {
-      ...dataGridTemplate,
-      field: "serviceProviderName",
-      headerName: "Service provider name",
     },
     {
       ...dataGridTemplate,
@@ -97,7 +92,7 @@ export default function PrivateChannels() {
         rows={data || []}
         onRowClick={handleOnRowClick}
         loading={isLoading}
-        getRowId={(row) => row.publicationId}
+        getRowId={(row) => row.id}
         sort={{ field: "lastUpdatedTimestamp", sort: "desc" }}
         slots={{
           noRowsOverlay: CustomEmptyOverlayPrivateChannels,
