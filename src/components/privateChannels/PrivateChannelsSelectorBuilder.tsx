@@ -5,10 +5,10 @@ import { Box } from "@mui/system";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import { IFeedback } from "@/interface/IFeedback";
 import { useSession } from "next-auth/react";
-import { usePublicationIds } from "@/hooks/usePublicationIds";
 import { useRouter } from "next/router";
 import { StyledButton, StyledCard, StyledFormControl } from "@/components/shared/styles/StyledSelectorBuilder";
 import { IFormPrivateChannelInput } from "@/interface/IFormPrivateChanelInput";
+import { createPrivateChannel, createUserCapability } from "@/lib/fetchers/internalFetchers";
 
 const PrivateChannelsSelectorBuilder = () => {
   const [duplicatePublicationIdError, setDuplicatePublicationIdError] = useState('');
@@ -35,7 +35,12 @@ const PrivateChannelsSelectorBuilder = () => {
   });
 
   const onSubmit: SubmitHandler<IFormPrivateChannelInput> = async (data) => {
-    /* Add POST private channel
+
+    const response = await createPrivateChannel(
+      session?.user.commonName as string,
+      Object.assign({}, data)
+    );
+
     if (response.ok) {
       setFeedback({
         feedback: true,
@@ -49,7 +54,7 @@ const PrivateChannelsSelectorBuilder = () => {
         message: "Private channel could not be created, try again!",
         severity: "warning"
       });
-    }*/
+    }
   };
 
 
