@@ -78,7 +78,18 @@ export default function Home() {
               }}
             >
               <ShortcutCard
-                avatar={shortcut.icon}
+                avatar={<Box
+                  sx={{
+                    backgroundColor: 'white',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '50px',
+                    height: '50px',
+                  }}
+                >
+                  {React.cloneElement(shortcut.icon, { style: { color: "#444F55", fontSize: "45px" } })}
+                </Box>}
                 header={shortcut.header}
                 description={shortcut.description}
                />
