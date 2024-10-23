@@ -173,3 +173,10 @@ export const deleteNapcoreCapabilities: basicDeleteFunction = async (
   const { actorCommonName, pathParam } = params;
   return await deleteIXN(actorCommonName, `/capabilities/${pathParam}`);
 };
+
+export const fetchNapcorePrivateChannels: extendedGetFunction = async (
+  params
+) => {
+  const { actorCommonName } = params;
+  return await fetchIXN(actorCommonName, `/privatechannels`);
+};

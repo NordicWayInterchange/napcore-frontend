@@ -50,7 +50,7 @@ export const deleteDeliveries = (
 };
 
 export const createPrivateChannel = (actorCommonName: string, body: Object) => {
-  return fetch(`/api/${actorCommonName}/privateChannels`, {
+  return fetch(`/api/${actorCommonName}/privatechannels`, {
     method: "post",
     headers: {
       "Content-Type": "application/json",
@@ -63,7 +63,7 @@ export const deletePrivateChannel = (
   actorCommonName: string,
   privateChannelId: string
 ) => {
-  return fetch(`/api/${actorCommonName}/privateChannels/${privateChannelId}`, {
+  return fetch(`/api/${actorCommonName}/privatechannels/${privateChannelId}`, {
     method: "delete",
   });
 };
