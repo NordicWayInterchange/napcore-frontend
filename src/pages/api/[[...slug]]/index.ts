@@ -17,7 +17,7 @@ import {
   extendedGetParams, fetchNapcoreDeliveries,
   fetchNapcoreDeliveriesCapabilities,
   fetchNapcoreNetworkCapabilities,
-  fetchNapcoreSubscriptions, fetchNapcorePublicationIds, fetchNapcorePrivateChannels
+  fetchNapcoreSubscriptions, fetchNapcorePublicationIds, fetchNapcorePrivateChannels, deleteNapcorePrivateChannels
 } from "@/lib/fetchers/interchangeConnector";
 import { ExtendedCapability } from "@/types/capability";
 import { Capability, Publicationids } from "@/types/napcore/capability";
@@ -128,6 +128,13 @@ export const removeUserCapability: basicDeleteFunction = async (
   return [res.status];
 };
 
+export const removePrivateChannel: basicDeleteFunction = async (
+  params: basicDeleteParams
+) => {
+  const res = await deleteNapcorePrivateChannels(params);
+  return [res.status];
+};
+
 export const addCerticates: basicPostFunction = async (
   params: basicPostParams
 ) => {
@@ -147,6 +154,13 @@ export const removeDelivery: basicDeleteFunction = async (
   params: basicDeleteParams
 ) => {
   const res = await deleteNapcoreDeliveries(params);
+  return [res.status];
+};
+
+export const removePrivateChannels: basicDeleteFunction = async (
+  params: basicDeleteParams
+) => {
+  const res = await deleteNapcorePrivateChannels(params);
   return [res.status];
 };
 
@@ -211,6 +225,7 @@ const deletePaths: {
   subscriptions: removeSubscription,
   deliveries: removeDelivery,
   capabilities: removeUserCapability,
+  privatechannels: removePrivateChannel,
 };
 
 const findHandler: (params: any) =>

@@ -30,7 +30,7 @@ type Props = {
 async function deleteArtifacts(artifactType: string, name: string, itemId: string) {
   return await (artifactType === "Delivery" ? deleteDeliveries(name, itemId) :
     artifactType === "Subscription" ? deleteSubscriptions(name, itemId) :
-      artifactType === "PrivateChannel" ? deletePrivateChannel(name, itemId) :
+      artifactType === "Private channel" ? deletePrivateChannel(name, itemId) :
         deleteUserCapability(name, itemId));
 }
 
