@@ -181,6 +181,11 @@ export const fetchNapcorePrivateChannels: extendedGetFunction = async (
   return await fetchIXN(actorCommonName, `/privatechannels`);
 };
 
+export const addNapcorePrivateChannels: basicPostFunction = async (params) => {
+  const { actorCommonName, body = {} } = params;
+  return await postIXN(actorCommonName, "/privatechannels", body);
+};
+
 export const deleteNapcorePrivateChannels: basicDeleteFunction = async (
   params
 ) => {
