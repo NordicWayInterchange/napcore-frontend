@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Box, Divider } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, Divider, IconButton } from "@mui/material";
 import Mainheading from "@/components/shared/display/typography/Mainheading";
 import Subheading from "@/components/shared/display/typography/Subheading";
 import { GridColDef } from "@mui/x-data-grid";
@@ -15,16 +15,27 @@ import {
 } from "@/components/shared/datagrid/CustomEmptyOverlay";
 import AddButton from "@/components/shared/actions/AddButton";
 import PrivateChannelsDrawer from "@/components/privateChannels/PrivateChannelsDrawer";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { performRefetch } from "@/lib/performRefetch";
 
 export default function PrivateChannels() {
 
   const { data: session } = useSession();
-  const { data, isLoading } = usePrivateChannels(
+  const { data, isLoading, remove, refetch  } = usePrivateChannels(
     session?.user.commonName as string
   );
   const [privateChannelRow, setPrivateChannelRow] = useState<PrivateChannel>();
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (isDeleted) {
+      performRefetch(refetch);
+      setIsDeleted(false);
+    }
+  }, [isDeleted, refetch]);
 
   const handleMore = (privateChannel: PrivateChannel) => {
     setPrivateChannelRow(privateChannel);
@@ -32,8 +43,13 @@ export default function PrivateChannels() {
   };
   const handleMoreClose = () => {
     setDrawerOpen(false);
+    remove();
   };
 
+  const handleDelete = (privateChannel: PrivateChannel) => {
+    setPrivateChannelRow(privateChannel);
+    setOpen(true);
+  };
   const handleOnRowClick = (params: any) => {
     handleMore(params.row);
   };
@@ -48,6 +64,7 @@ export default function PrivateChannels() {
       ...dataGridTemplate,
       field: "id",
       headerName: "ID",
+      valueGetter: ({value}) => value.substring(0, 8)
     },
     {
       ...dataGridTemplate,
@@ -66,6 +83,7 @@ export default function PrivateChannels() {
       ...dataGridTemplate,
       field: "description",
       headerName: "Description",
+      flex: 3,
     },
     {
       ...dataGridTemplate,
@@ -75,6 +93,18 @@ export default function PrivateChannels() {
       filterable: false,
       disableColumnMenu: true,
       align: "right",
+      renderCell: (params) => {
+        return (
+          <Box>
+            <IconButton onClick={() => handleDelete(params.row)}>
+              <DeleteIcon />
+            </IconButton>
+            <IconButton onClick={() => handleMore(params.row)}>
+              <MoreVertIcon />
+            </IconButton>
+          </Box>
+        );
+      },
     },
   ];
 
