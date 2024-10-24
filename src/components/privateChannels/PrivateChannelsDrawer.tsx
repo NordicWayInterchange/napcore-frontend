@@ -1,10 +1,10 @@
 import {
   Box,
-  Button,
-  Drawer,
+  Button, Card, Divider,
+  Drawer, FormControl, IconButton, InputLabel,
   List,
-  ListItem,
-  Toolbar
+  ListItem, MenuItem, Select, TextField,
+  Toolbar, Typography
 } from "@mui/material";
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
@@ -12,7 +12,11 @@ import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import { IFeedback } from "@/interface/IFeedback";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import { PrivateChannel } from "@/types/napcore/privateChannel";
-import PrivateChannelDrawerForm from "@/components/layout/PrivateChannelDrawerForm";
+import CloseIcon from "@mui/icons-material/Close";
+import { Chip } from "@/components/shared/display/Chip";
+import { statusChips } from "@/lib/statusChips";
+import { ContentCopy } from "@/components/shared/actions/ContentCopy";
+import { styled } from "@mui/material/styles";
 
 const width = 600;
 
@@ -32,6 +36,8 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
     message: "",
     severity: "success",
   });
+
+  console.log('private channel', privateChannel.endpoint);
 
   const handleSnackClose = (
     event?: React.SyntheticEvent | Event,
@@ -76,7 +82,136 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
         <Toolbar />
         <Box sx={{ padding: 1, width: 1 }}>
           <List>
-            <PrivateChannelDrawerForm privateChannel={privateChannel} handleMoreClose={handleMoreClose}/>
+
+            <ListItem sx={{ justifyContent: "flex-end" }}>
+              <IconButton onClick={handleMoreClose}>
+                <CloseIcon />
+              </IconButton>
+            </ListItem>
+            <ListItem>
+              <StyledHeaderBox>
+                <Typography>Private channel details</Typography>
+                <Chip
+                  color={
+                    statusChips[
+                      privateChannel.status.toString() as keyof typeof statusChips
+                      ] as any
+                  }
+                  label={privateChannel.status}
+                />
+              </StyledHeaderBox>
+            </ListItem>
+
+            <ListItem>
+              <StyledCard variant={"outlined"}>
+                <FormControl fullWidth>
+                  <TextField
+                    contentEditable={false}
+                    value={privateChannel.id}
+                    label={"ID"}
+                    margin="normal"
+                    InputProps={{
+                      endAdornment: (
+                        <ContentCopy value={privateChannel.id} />
+                      )
+                    }}
+                  />
+                </FormControl>
+              </StyledCard>
+            </ListItem>
+
+            {privateChannel.peers && (
+              <ListItem>
+                <StyledCard variant={"outlined"}>
+                  <Typography  sx={{ marginBottom: 2 }}>Peers</Typography>
+                  <FormControl fullWidth>
+                    <InputLabel>Peers</InputLabel>
+                    <Select
+                      MenuProps={{ PaperProps: { sx: { maxHeight: 200 } } }}
+                      label="Peers"
+                      multiple
+                      defaultValue={privateChannel.peers.map(
+                        (peer) => {
+                          return peer;
+                        }
+                      )}
+                    >
+                      {privateChannel.peers.map((peer, index) => {
+                        return (
+                          <StyledMenuItem
+                            disabled
+                            key={index}
+                            value={peer}
+                          >
+                            {peer}
+                          </StyledMenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+                </StyledCard>
+              </ListItem>
+            )}
+            {privateChannel.endpoint && (
+              <ListItem>
+                <StyledCard variant={"outlined"}>
+                  <Typography>Endpoint</Typography>
+                  <FormControl fullWidth>
+                    <TextField
+                      contentEditable={false}
+                      value={privateChannel.endpoint.host}
+                      label={"Host"}
+                      margin="normal"
+                      InputProps={{
+                        endAdornment: (
+                          <ContentCopy value={privateChannel.endpoint.host} />
+                        ),
+                      }}
+                    />
+                    <TextField
+                      contentEditable={false}
+                      value={privateChannel.endpoint.port}
+                      label="Port"
+                      margin="normal"
+                      InputProps={{
+                        endAdornment: <ContentCopy value={privateChannel.endpoint.port.toString()} />,
+                      }}
+                    />
+                    <TextField
+                      contentEditable={false}
+                      value={privateChannel.endpoint.queueName}
+                      label="Queue name"
+                      margin="normal"
+                      InputProps={{
+                        endAdornment: (
+                          <ContentCopy value={privateChannel.endpoint.queueName} />
+                        ),
+                      }}
+                    />
+                  </FormControl>
+                </StyledCard>
+              </ListItem>
+            )}
+            <ListItem>
+              <StyledCard variant={"outlined"}>
+                <Typography>Description</Typography>
+                <FormControl fullWidth>
+                  <TextField
+                    contentEditable={false}
+                    margin="normal"
+                    multiline
+                    value={privateChannel.description}
+                    rows={4}
+                    InputProps={{
+                      readOnly: true,
+                      endAdornment: (
+                        <ContentCopy value={privateChannel.description} />
+                      ),
+                    }}
+                  />
+                </FormControl>
+              </StyledCard>
+            </ListItem>
             <ListItem >
               <Button
                 sx={{
@@ -108,10 +243,41 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
         itemId={privateChannel.id as string}
         handleDialog={handleClickClose}
         handleDeletedItem={handleDeletedItem}
-        text="PrivateChannel"
+        text="Private channel"
       />
     </>
   );
 };
+
+const StyledCard = styled(Card)(({}) => ({
+  padding: "16px",
+  width: "100%"
+}));
+
+
+const StyledHeaderBox = styled(Box)(({}) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  width: "100%",
+}));
+
+const StyledMenuItem = styled(MenuItem)(({}) => ({
+  "&.MuiMenuItem-root": {
+    color: "black",
+    opacity: 1
+  },
+  "&.Mui-disabled": {
+    color: "black",
+    opacity: 1
+  },
+  "&.Mui-selected": {
+    backgroundColor: "white",
+    "&.Mui-focusVisible": {
+      background: "white"
+    }
+  }
+}));
+
 
 export default PrivateChannelsDrawer;

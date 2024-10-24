@@ -180,3 +180,10 @@ export const fetchNapcorePrivateChannels: extendedGetFunction = async (
   const { actorCommonName } = params;
   return await fetchIXN(actorCommonName, `/privatechannels`);
 };
+
+export const deleteNapcorePrivateChannels: basicDeleteFunction = async (
+  params
+) => {
+  const { actorCommonName, pathParam } = params;
+  return await deleteIXN(actorCommonName, `/privatechannels/${pathParam}`);
+};
