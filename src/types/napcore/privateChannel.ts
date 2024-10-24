@@ -18,5 +18,5 @@ export type PrivateChannel = {
   peers: Array<string>;
   status: PrivateChannelStatus;
   description: string;
-  endpoint: Array<EndPoint>;
+  endpoint: EndPoint;
 };
