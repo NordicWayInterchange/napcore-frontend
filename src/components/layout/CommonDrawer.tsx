@@ -109,7 +109,7 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
                     <TextField
                       contentEditable={false}
                       value={item.endpoints[0].host}
-                      label={"Host"}
+                      label="Host"
                       margin="normal"
                       InputProps={{
                         endAdornment: (
@@ -120,7 +120,7 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
                     <TextField
                       contentEditable={false}
                       value={getAttribute()}
-                      label={label == "Delivery" ? "target" : "source"}
+                      label={label == "Delivery" ? "Target" : "Source"}
                       margin="normal"
                       InputProps={{
                         endAdornment: (
@@ -130,11 +130,11 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
                     />
                     <TextField
                       contentEditable={false}
-                      value={"5671"}
-                      label={item.endpoints[0].port}
+                      value={item.endpoints[0].port}
+                      label="Port"
                       margin="normal"
                       InputProps={{
-                        endAdornment: <ContentCopy value={"5671"} />,
+                        endAdornment: <ContentCopy value={item.endpoints[0].port.toString()} />,
                       }}
                     />
                   </FormControl>

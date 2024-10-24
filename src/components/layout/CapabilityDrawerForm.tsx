@@ -41,7 +41,7 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
             <TextField
               contentEditable={false}
               value={capability.publisherId}
-              label={"Publisher ID"}
+              label="Publisher ID"
               margin="normal"
               InputProps={{
                 endAdornment: (
@@ -52,7 +52,7 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
             <TextField
               contentEditable={false}
               value={capability.publicationId}
-              label={"Publication ID"}
+              label="Publication ID"
               margin="normal"
               InputProps={{
                 endAdornment: (
@@ -64,7 +64,7 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
               <TextField
                 contentEditable={false}
                 value={capability.publicationType}
-                label={"Publication type"}
+                label="Publication type"
                 margin="normal"
                 InputProps={{
                   endAdornment: (
@@ -77,7 +77,7 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
               <TextField
                 contentEditable={false}
                 value={capability.publisherName}
-                label={"publisher name"}
+                label="Publisher name"
                 margin="normal"
                 InputProps={{
                   endAdornment: (
@@ -89,7 +89,7 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
             <TextField
               contentEditable={false}
               value={capability.originatingCountry}
-              label={"Originating Country"}
+              label="Originating Country"
               margin="normal"
               InputProps={{
                 endAdornment: (
@@ -108,7 +108,7 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
             <TextField
               contentEditable={false}
               value={capability.messageType}
-              label={"Message Type"}
+              label="Message Type"
               margin="normal"
               InputProps={{
                 endAdornment: (
@@ -119,7 +119,7 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
             <TextField
               contentEditable={false}
               value={capability.protocolVersion}
-              label={"Protocol Version"}
+              label="Protocol Version"
               margin="normal"
               InputProps={{
                 endAdornment: (
@@ -132,7 +132,7 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
                 <InputLabel>Cause codes</InputLabel>
                 <Select
                   MenuProps={{ PaperProps: { sx: { maxHeight: 200 } } }}
-                  label={"Cause codes"}
+                  label="Cause codes"
                   multiple
                   defaultValue={capability.causeCodesDictionary.map(
                     (cause) => {
@@ -171,7 +171,7 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
             <TextField
               contentEditable={false}
               value={capability.quadTree}
-              label={"Hash"}
+              label="Hash"
               margin="normal"
               sx={{
                 flexGrow: 1,
