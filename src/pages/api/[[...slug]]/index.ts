@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { SubscriptionsSubscription } from "@/types/napcore/subscription";
 import {
-  addNapcoreCertificates, addNapcoreDeliveries,
+  addNapcoreCertificates,
+  addNapcoreDeliveries,
   addNapcoreCapabilities,
   addNapcoreSubscriptions,
   basicDeleteFunction,
@@ -10,14 +11,20 @@ import {
   basicGetParams,
   basicPostFunction,
   deleteNapcoreDeliveries,
-  basicPostParams, deleteNapcoreCapabilities,
+  basicPostParams,
+  deleteNapcoreCapabilities,
   deleteNapcoreSubscriptions,
   extendedGetFunction,
   fetchNapcoreCapabilities,
-  extendedGetParams, fetchNapcoreDeliveries,
+  extendedGetParams,
+  fetchNapcoreDeliveries,
   fetchNapcoreDeliveriesCapabilities,
   fetchNapcoreNetworkCapabilities,
-  fetchNapcoreSubscriptions, fetchNapcorePublicationIds, fetchNapcorePrivateChannels, deleteNapcorePrivateChannels
+  fetchNapcoreSubscriptions,
+  fetchNapcorePublicationIds,
+  fetchNapcorePrivateChannels,
+  deleteNapcorePrivateChannels,
+  addNapcorePrivateChannels
 } from "@/lib/fetchers/interchangeConnector";
 import { ExtendedCapability } from "@/types/capability";
 import { Capability, Publicationids } from "@/types/napcore/capability";
@@ -113,6 +120,21 @@ const fetchPrivateChannels = async (params: extendedGetParams) => {
   return [res.status, privateChannels];
 };
 
+export const addPrivateChannels: basicPostFunction = async (
+  params: basicPostParams
+) => {
+  const res = await addNapcorePrivateChannels(params);
+  const privateChannels: PrivateChannel = await res.data;
+  return [res.status, privateChannels];
+};
+
+export const removePrivateChannel: basicDeleteFunction = async (
+  params: basicDeleteParams
+) => {
+  const res = await deleteNapcorePrivateChannels(params);
+  return [res.status];
+};
+
 export const addUserCapabilities: basicPostFunction = async (
   params: basicPostParams
 ) => {
@@ -125,13 +147,6 @@ export const removeUserCapability: basicDeleteFunction = async (
   params: basicDeleteParams
 ) => {
   const res = await deleteNapcoreCapabilities(params);
-  return [res.status];
-};
-
-export const removePrivateChannel: basicDeleteFunction = async (
-  params: basicDeleteParams
-) => {
-  const res = await deleteNapcorePrivateChannels(params);
   return [res.status];
 };
 
@@ -215,7 +230,8 @@ const postPaths: {
   subscriptions: addSubscriptions,
   deliveries: addDeliveries,
   "x509/csr": addCerticates,
-  capabilities: addUserCapabilities
+  capabilities: addUserCapabilities,
+  privatechannels: addPrivateChannels
 };
 
 // all delete methods on path

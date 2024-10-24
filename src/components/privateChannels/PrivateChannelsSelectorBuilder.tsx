@@ -130,9 +130,11 @@ const PrivateChannelsSelectorBuilder = () => {
                       required: 'Description is required'
                     })}
                     fullWidth
+                    multiline
+                    rows={5}
+                    label="Description *"
                     error={!!duplicatePublicationIdError || !!errors.description}
                     helperText={ errors.description ? errors.description.message : duplicatePublicationIdError}
-                    label="Description *"
                   />
                 )}
               />
