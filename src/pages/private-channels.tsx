@@ -200,7 +200,7 @@ export default function PrivateChannels() {
         These are all of private channels and peers in the network. You can click a private channel or a peer to
         view more information and remove.
       </Subheading>
-      <Divider sx={{ marginY: 3 }} />
+      <Divider sx={{ marginY: 2 }} />
       <AddButton text="Create private channel" labelUrl="privateChannel"></AddButton>
 
       <Divider style={{ margin: '5px 0', visibility: 'hidden' }} />
@@ -235,7 +235,7 @@ export default function PrivateChannels() {
         )}
       </TableContainer>
       <Divider style={{ margin: '20px 0', visibility: 'hidden' }} />
-      <Subheading>Peers that have subscribed to my private channel</Subheading>
+      <Subheading>Private channels that I have subscribed to </Subheading>
       <Divider style={{ margin: '5px 0', visibility: 'hidden' }} />
 
       <TableContainer
