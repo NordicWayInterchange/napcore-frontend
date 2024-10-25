@@ -20,6 +20,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { performRefetch } from "@/lib/performRefetch";
 import PeersDrawer from "@/components/privateChannels/PeersDrawer";
 import { usePeers } from "@/hooks/usePeers";
+import { timeConverter } from "@/lib/timeConverter";
 
 export default function PrivateChannels() {
 
@@ -113,6 +114,12 @@ export default function PrivateChannels() {
     },
     {
       ...dataGridTemplate,
+      field: "lastUpdated",
+      headerName: "Last updated",
+      valueGetter: ({ value }) => value && timeConverter(value),
+    },
+    {
+      ...dataGridTemplate,
       field: "actions",
       headerName: "",
       sortable: false,
@@ -162,6 +169,12 @@ export default function PrivateChannels() {
     },
     {
       ...dataGridTemplate,
+      field: "lastUpdated",
+      headerName: "Last updated",
+      valueGetter: ({ value }) => value && timeConverter(value),
+    },
+    {
+      ...dataGridTemplate,
       field: "actions",
       headerName: "",
       sortable: false,
@@ -207,7 +220,7 @@ export default function PrivateChannels() {
           onRowClick={handleOnRowClick}
           loading={isLoading}
           getRowId={(row) => row.id}
-          sort={{ field: "lastUpdatedTimestamp", sort: "desc" }}
+          sort={{ field: "lastUpdated", sort: "desc" }}
           slots={{
             noRowsOverlay: CustomEmptyOverlayPrivateChannels,
           }}
@@ -222,7 +235,7 @@ export default function PrivateChannels() {
         )}
       </TableContainer>
       <Divider style={{ margin: '20px 0', visibility: 'hidden' }} />
-      <Subheading>Peers</Subheading>
+      <Subheading>Peers that have subscribed to my private channel</Subheading>
       <Divider style={{ margin: '5px 0', visibility: 'hidden' }} />
 
       <TableContainer
@@ -238,7 +251,7 @@ export default function PrivateChannels() {
           onRowClick={handleOnPeersRowClick}
           loading={isPeersLoading}
           getRowId={(row) => row.id}
-          sort={{ field: "lastUpdatedTimestamp", sort: "desc" }}
+          sort={{ field: "lastUpdated", sort: "desc" }}
           slots={{
             noRowsOverlay: CustomEmptyOverlayPrivateChannels,
           }}

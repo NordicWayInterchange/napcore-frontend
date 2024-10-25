@@ -1,13 +1,11 @@
 import {
-  Box,
-  Button, Card, Divider,
-  Drawer, FormControl, IconButton, InputLabel,
+  Box, Card,
+  Drawer, FormControl, IconButton,
   List,
-  ListItem, MenuItem, Select, TextField,
+  ListItem, ListItemText, TextField,
   Toolbar, Typography
 } from "@mui/material";
 import React, { useState } from "react";
-import { useSession } from "next-auth/react";
 import { IFeedback } from "@/interface/IFeedback";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import { PrivateChannelPeers } from "@/types/napcore/privateChannel";
@@ -16,6 +14,7 @@ import { Chip } from "@/components/shared/display/Chip";
 import { statusChips } from "@/lib/statusChips";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { styled } from "@mui/material/styles";
+import { timeConverter } from "@/lib/timeConverter";
 
 const width = 600;
 
@@ -26,8 +25,6 @@ type Props = {
 };
 
 const PeersDrawer = ({ peers, open, handleMoreClose }: Props) => {
-  const { data: session } = useSession();
-  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<IFeedback>({
     feedback: false,
     message: "",
@@ -45,10 +42,6 @@ const PeersDrawer = ({ peers, open, handleMoreClose }: Props) => {
     setFeedback({ feedback: false, message: "", severity: "success" });
   };
 
-
-  const handleClickClose = (close: boolean) => {
-    setDialogOpen(close);
-  };
 
   return (
     <>
@@ -82,7 +75,7 @@ const PeersDrawer = ({ peers, open, handleMoreClose }: Props) => {
             </ListItem>
             <ListItem>
               <StyledHeaderBox>
-                <Typography>Peers details</Typography>
+                <Typography>Peer details</Typography>
                 <Chip
                   color={
                     statusChips[
@@ -96,19 +89,17 @@ const PeersDrawer = ({ peers, open, handleMoreClose }: Props) => {
 
             <ListItem>
               <StyledCard variant={"outlined"}>
-                <FormControl fullWidth>
-                  <TextField
-                    contentEditable={false}
-                    value={peers.id}
-                    label={"ID"}
-                    margin="normal"
-                    InputProps={{
-                      endAdornment: (
-                        <ContentCopy value={peers.id} />
-                      )
-                    }}
-                  />
-                </FormControl>
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Box>
+                    <ListItemText primary={"ID"} secondary={peers.id} />
+                  </Box>
+                  <Box>
+                    <ListItemText
+                      primary={"Last updated"}
+                      secondary={timeConverter(peers.lastUpdated)}
+                    />
+                  </Box>
+                </Box>
               </StyledCard>
             </ListItem>
 
