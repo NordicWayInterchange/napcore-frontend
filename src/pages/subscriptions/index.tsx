@@ -105,14 +105,14 @@ export default function Subscriptions() {
     },
     {
       ...dataGridTemplate,
-      field: "lastUpdatedTimestamp",
-      headerName: "Last updated",
-      valueGetter: ({ value }) => value && timeConverter(value),
+      field: "description",
+      headerName: "Description"
     },
     {
       ...dataGridTemplate,
-      field: "description",
-      headerName: "Description"
+      field: "lastUpdatedTimestamp",
+      headerName: "Last updated",
+      valueGetter: ({ value }) => value && timeConverter(value),
     },
     {
       ...dataGridTemplate,
