@@ -1,9 +1,9 @@
 import {
   Box,
-  Button, Card, Divider,
+  Button, Card,
   Drawer, FormControl, IconButton, InputLabel,
   List,
-  ListItem, MenuItem, Select, TextField,
+  ListItem, ListItemText, MenuItem, Select, TextField,
   Toolbar, Typography
 } from "@mui/material";
 import React, { useState } from "react";
@@ -17,6 +17,7 @@ import { Chip } from "@/components/shared/display/Chip";
 import { statusChips } from "@/lib/statusChips";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { styled } from "@mui/material/styles";
+import { timeConverter } from "@/lib/timeConverter";
 
 const width = 600;
 
@@ -29,7 +30,6 @@ type Props = {
 
 const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDeletedItem }: Props) => {
   const { data: session } = useSession();
-  const [openMap, setOpenMap] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<IFeedback>({
     feedback: false,
@@ -48,9 +48,6 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
     setFeedback({ feedback: false, message: "", severity: "success" });
   };
 
-  const handleClose = () => {
-    setOpenMap(false);
-  };
 
   const handleClickClose = (close: boolean) => {
     setDialogOpen(close);
@@ -102,19 +99,17 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
 
             <ListItem>
               <StyledCard variant={"outlined"}>
-                <FormControl fullWidth>
-                  <TextField
-                    contentEditable={false}
-                    value={privateChannel.id}
-                    label={"ID"}
-                    margin="normal"
-                    InputProps={{
-                      endAdornment: (
-                        <ContentCopy value={privateChannel.id} />
-                      )
-                    }}
-                  />
-                </FormControl>
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Box>
+                    <ListItemText primary={"ID"} secondary={privateChannel.id} />
+                  </Box>
+                  <Box>
+                    <ListItemText
+                      primary={"Last updated"}
+                      secondary={timeConverter(privateChannel.lastUpdated)}
+                    />
+                  </Box>
+                </Box>
               </StyledCard>
             </ListItem>
 

@@ -1,4 +1,4 @@
-import { FormControl, FormHelperText, InputLabel, Select, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import React, {useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Box } from "@mui/system";
@@ -12,7 +12,6 @@ import { createPrivateChannel } from "@/lib/fetchers/internalFetchers";
 
 const PrivateChannelsSelectorBuilder = () => {
   const [duplicatePublicationIdError, setDuplicatePublicationIdError] = useState('');
-  const [open, setOpen] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<IFeedback>({
     feedback: false,
     message: "",
@@ -39,8 +38,6 @@ const PrivateChannelsSelectorBuilder = () => {
       description: "",
     },
   });
-
-  const PEERS_REGEX = /^[^0-9]*$/;
 
   const onSubmit: SubmitHandler<IFormPrivateChannelInput> = async (data) => {
     console.log('data', data);
@@ -87,10 +84,6 @@ const PrivateChannelsSelectorBuilder = () => {
               control={control}
               rules={{
                 required: "Peers is required",
-                pattern: {
-                  value: PEERS_REGEX,
-                  message: "Only comma (,) separated letters are allowed"
-                }
               }}
               render={({ field }) => (
                 <TextField
@@ -100,11 +93,8 @@ const PrivateChannelsSelectorBuilder = () => {
                   onChange={(event) => {
                     const value = event.target.value;
 
-                    if (!PEERS_REGEX.test(value)) {
-                      setError("peers", { type: "pattern", message: "Only comma (,) separated letters are allowed" });
-                    } else {
-                      clearErrors("peers");
-                    }
+                    clearErrors("peers");
+
 
                     setValue("peers", value.split(","));
                     setPredefinedPeers(value.split(","));
@@ -115,7 +105,7 @@ const PrivateChannelsSelectorBuilder = () => {
                   }}
                   error={Boolean(errors.peers)}
                   sx={{ marginRight: 1 }}
-                  helperText={errors.peers ? errors.peers.message : "Only comma (,) separated letters are allowed"}
+                  helperText={errors.peers ? errors.peers.message : ""}
                 />
               )}
             />
@@ -145,7 +135,7 @@ const PrivateChannelsSelectorBuilder = () => {
                 variant="contained"
                 type="submit"
               >
-                Create my capability
+                Create private channel
               </StyledButton>
               <StyledButton
                 color="buttonThemeColor"

@@ -19,6 +19,7 @@ export type PrivateChannel = {
   status: PrivateChannelStatus;
   description: string;
   endpoint: EndPoint;
+  lastUpdated: number;
 };
 
 export type PrivateChannelPeers = {
@@ -26,4 +27,5 @@ export type PrivateChannelPeers = {
   owner: string;
   status: PrivateChannelStatus;
   endpoint: EndPoint;
+  lastUpdated: number;
 };
