@@ -20,3 +20,10 @@ export type PrivateChannel = {
   description: string;
   endpoint: EndPoint;
 };
+
+export type PrivateChannelPeers = {
+  id: string;
+  owner: string;
+  status: PrivateChannelStatus;
+  endpoint: EndPoint;
+};

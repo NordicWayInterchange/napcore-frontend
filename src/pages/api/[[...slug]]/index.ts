@@ -24,7 +24,7 @@ import {
   fetchNapcorePublicationIds,
   fetchNapcorePrivateChannels,
   deleteNapcorePrivateChannels,
-  addNapcorePrivateChannels
+  addNapcorePrivateChannels, fetchNapcorePrivateChannelsPeers
 } from "@/lib/fetchers/interchangeConnector";
 import { ExtendedCapability } from "@/types/capability";
 import { Capability, Publicationids } from "@/types/napcore/capability";
@@ -35,7 +35,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { DeliveriesDelivery } from "@/types/napcore/delivery";
 import { ExtendedDelivery } from "@/types/delivery";
-import { PrivateChannel } from "@/types/napcore/privateChannel";
+import { PrivateChannel, PrivateChannelPeers } from "@/types/napcore/privateChannel";
 const logger = require("../../../lib/logger");
 
 const fetchCapabilityCounter = async (params: basicGetParams) => {
@@ -118,6 +118,12 @@ const fetchPrivateChannels = async (params: extendedGetParams) => {
   const res = await fetchNapcorePrivateChannels(params);
   const privateChannels: PrivateChannel = await res.data;
   return [res.status, privateChannels];
+};
+
+const fetchPeers = async (params: extendedGetParams) => {
+  const res = await fetchNapcorePrivateChannelsPeers(params);
+  const privateChannelsPeers: PrivateChannelPeers = await res.data;
+  return [res.status, privateChannelsPeers];
 };
 
 export const addPrivateChannels: basicPostFunction = async (
@@ -221,6 +227,7 @@ const getPaths: {
   "user/capabilities": fetchUserCapabilities,
   "capabilities/publicationids": fetchPublicationIds,
   "private-channels": fetchPrivateChannels,
+  "private-channels/peer": fetchPeers,
 };
 
 // all post methods on path
