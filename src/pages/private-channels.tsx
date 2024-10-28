@@ -26,7 +26,7 @@ import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 export default function PrivateChannels() {
 
   const { data: session } = useSession();
-  const { data, isLoading, remove, refetch  } = usePrivateChannels(
+  const { data, isLoading, refetch  } = usePrivateChannels(
     session?.user.commonName as string
   );
 
