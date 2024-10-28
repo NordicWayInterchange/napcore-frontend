@@ -75,7 +75,7 @@ const PeersDrawer = ({ peers, open, handleMoreClose }: Props) => {
             </ListItem>
             <ListItem>
               <StyledHeaderBox>
-                <Typography>Peer details</Typography>
+                <Typography>Subscribed private channel details</Typography>
                 <Chip
                   color={
                     statusChips[
@@ -100,6 +100,19 @@ const PeersDrawer = ({ peers, open, handleMoreClose }: Props) => {
                     />
                   </Box>
                 </Box>
+                <FormControl fullWidth>
+                  <TextField
+                    contentEditable={false}
+                    value={peers.owner}
+                    label={"Owner"}
+                    margin="normal"
+                    InputProps={{
+                      endAdornment: (
+                        <ContentCopy value={peers.owner} />
+                      ),
+                    }}
+                  />
+                </FormControl>
               </StyledCard>
             </ListItem>
 
