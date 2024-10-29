@@ -4,7 +4,7 @@ import { Box } from "@mui/system";
 import Subheading from "@/components/shared/display/typography/Subheading";
 import Mainheading from "@/components/shared/display/typography/Mainheading";
 import { BreadcrumbNavigation } from "@/components/shared/actions/BreadcrumbNavigation";
-import PrivateChannelsSelectorBuilder from "@/components/privateChannels/PrivateChannelsSelectorBuilder";
+import PrivateChannelsCreator from "@/components/privateChannels/PrivateChannelsCreator";
 const NewUserCapability = () => {
 
   return (
@@ -17,7 +17,7 @@ const NewUserCapability = () => {
       <BreadcrumbNavigation text="Private channels" />
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-          <PrivateChannelsSelectorBuilder />
+          <PrivateChannelsCreator />
         </Grid>
       </Grid>
     </Box>
