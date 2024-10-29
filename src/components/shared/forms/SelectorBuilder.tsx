@@ -145,19 +145,16 @@ const SelectorBuilder = (props: Props) => {
       bodyData
     );
 
+    setFeedback({
+      feedback: true,
+      message: response.ok
+        ? `${label} successfully created`
+        : `${label} could not be created, try again!`,
+      severity: response.ok ? "success" : "warning",
+    });
+
     if (response.ok) {
-      setFeedback({
-        feedback: true,
-        message: `${label} successfully created`,
-        severity: "success",
-      });
-      label === "Delivery" ? await router.push('/deliveries') : await router.push('/subscriptions');
-    } else {
-      setFeedback({
-        feedback: true,
-        message: `${label} could not be created, try again!`,
-        severity: "warning",
-      });
+      await router.push(label === "Delivery" ? '/deliveries' : '/subscriptions');
     }
   };
 

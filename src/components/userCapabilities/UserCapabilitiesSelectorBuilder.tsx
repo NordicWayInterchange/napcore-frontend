@@ -90,30 +90,29 @@ const UserCapabilitiesSelectorBuilder = () => {
   }, [watchMessageType]);
 
   const onSubmit: SubmitHandler<IFormCapabilityInputs> = async (data) => {
-    data.publicationId = data.publisherId + ":" + data.publicationId;
+    data.publicationId = `${data.publisherId}:${data.publicationId}`;
+
     if (validateUniquePublicationId(data.publicationId)) return;
 
-    const application = { "application": data };
-    const metadata = { "metadata": {} }; //Mandatory field
+    const payload = {
+      application: data,
+      metadata: {}  // Mandatory field
+    };
 
     const response = await createUserCapability(
       session?.user.commonName as string,
-      Object.assign({}, application, metadata)
+      payload
     );
+    setFeedback({
+      feedback: true,
+      message: response.ok
+        ? "Capability successfully created"
+        : "Capability could not be created, try again!",
+      severity: response.ok ? "success" : "warning"
+    });
 
     if (response.ok) {
-      setFeedback({
-        feedback: true,
-        message: "Capability successfully created",
-        severity: "success"
-      });
       await router.push('/capabilities');
-    } else {
-      setFeedback({
-        feedback: true,
-        message: "Capability could not be created, try again!",
-        severity: "warning"
-      });
     }
   };
 

@@ -40,14 +40,5 @@ export const SubscriptionDatagrid: GridColDef[] = [
     field: "lastUpdatedTimestamp",
     headerName: "Last updated",
     valueGetter: ({ value }) => value && timeConverter(value),
-  },
-  {
-    ...dataGridTemplate,
-    field: "actions",
-    headerName: "",
-    sortable: false,
-    filterable: false,
-    disableColumnMenu: true,
-    align: "right",
-  },
+  }
 ];
