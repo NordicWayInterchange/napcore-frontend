@@ -10,14 +10,12 @@ import { StyledButton, StyledCard, StyledFormControl } from "@/components/shared
 import { IFormPrivateChannelInput } from "@/interface/IFormPrivateChanelInput";
 import { createPrivateChannel } from "@/lib/fetchers/internalFetchers";
 
-const PrivateChannelsSelectorBuilder = () => {
-  const [duplicatePublicationIdError, setDuplicatePublicationIdError] = useState('');
+const PrivateChannelsCreator = () => {
   const [feedback, setFeedback] = useState<IFeedback>({
     feedback: false,
     message: "",
     severity: "success",
   });
-  const [predefinedPeers, setPredefinedPeers] = useState<string[]>([]);
 
   const { data: session } = useSession();
   const router = useRouter();
@@ -26,7 +24,6 @@ const PrivateChannelsSelectorBuilder = () => {
     handleSubmit,
     control,
     setValue,
-    setError,
     register,
     clearErrors,
     resetField,
@@ -39,29 +36,26 @@ const PrivateChannelsSelectorBuilder = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<IFormPrivateChannelInput> = async (data) => {
-    console.log('data', data);
+  const onSubmit: SubmitHandler<IFormPrivateChannelInput> = async ({ peers, ...rest }) => {
+    const peersWithoutWhitespace = peers.map(item => item.trim()).filter(item => item !== '');
+
     const response = await createPrivateChannel(
       session?.user.commonName as string,
-      Object.assign({}, data)
+      { ...rest, peers: peersWithoutWhitespace }
     );
 
+    setFeedback({
+      feedback: true,
+      message: response.ok
+        ? "Private channel successfully created"
+        : "Private channel could not be created, try again!",
+      severity: response.ok ? "success" : "warning"
+    });
+
     if (response.ok) {
-      setFeedback({
-        feedback: true,
-        message: "Private channel successfully created",
-        severity: "success"
-      });
       await router.push('/private-channels');
-    } else {
-      setFeedback({
-        feedback: true,
-        message: "Private channel could not be created, try again!",
-        severity: "warning"
-      });
     }
   };
-
 
   const handleSnackClose = (
     event?: React.SyntheticEvent | Event,
@@ -91,13 +85,10 @@ const PrivateChannelsSelectorBuilder = () => {
                   label="Peers *"
                   fullWidth
                   onChange={(event) => {
-                    const value = event.target.value;
-
                     clearErrors("peers");
 
-
+                    const value = event.target.value;
                     setValue("peers", value.split(","));
-                    setPredefinedPeers(value.split(","));
 
                     if (value.trim().length < 1) {
                       resetField("peers");
@@ -123,8 +114,8 @@ const PrivateChannelsSelectorBuilder = () => {
                     multiline
                     rows={5}
                     label="Description *"
-                    error={!!duplicatePublicationIdError || !!errors.description}
-                    helperText={ errors.description ? errors.description.message : duplicatePublicationIdError}
+                    error={!!errors.description}
+                    helperText={ errors.description ? errors.description.message : ""}
                   />
                 )}
               />
@@ -160,4 +151,4 @@ const PrivateChannelsSelectorBuilder = () => {
   );
 };
 
-export default PrivateChannelsSelectorBuilder;
+export default PrivateChannelsCreator;
