@@ -30,3 +30,7 @@ export type PrivateChannelPeers = {
   endpoint: EndPoint;
   lastUpdated: number;
 };
+
+export type PrivateChannelRequest = {
+  peerToAdd: string;
+};

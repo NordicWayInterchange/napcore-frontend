@@ -4,6 +4,7 @@ import axios from "axios";
 import { CertificateSignRequest } from "@/types/napcore/certificate";
 import { DeliveryRequest } from "@/types/napcore/delivery";
 import { CapabilityRequest } from "@/types/napcore/capability";
+import { PrivateChannelRequest } from "@/types/napcore/privateChannel";
 
 const headers = {
   Accept: "application/json",
@@ -43,6 +44,19 @@ const postIXN: (
   });
 };
 
+const patchIXN: (
+  actorCommonName: string,
+  path: string,
+  body: PrivateChannelRequest | {}
+) => Promise<any> = async (actorCommonName, path, body) => {
+  const uri = process.env.INTERCHANGE_URI || "";
+  const uriPath = `${actorCommonName}${path}`;
+  return await axios.patch(uri + uriPath, body, {
+    headers,
+    httpsAgent: tlsAgent,
+  });
+};
+
 const deleteIXN: (
   actorCommonName: string,
   path: string
@@ -67,8 +81,14 @@ export type extendedGetParams = {
 };
 export type basicPostParams = {
   actorCommonName: string;
-  body?: SubscriptionRequest | CertificateSignRequest | DeliveryRequest | CapabilityRequest;
+  body?: SubscriptionRequest | CertificateSignRequest | DeliveryRequest | CapabilityRequest | PrivateChannelRequest;
 };
+
+export type basicPatchParams = {
+  actorCommonName: string;
+  body?: SubscriptionRequest | CertificateSignRequest | DeliveryRequest | CapabilityRequest | PrivateChannelRequest;
+};
+
 export type basicDeleteParams = {
   actorCommonName: string;
   pathParam?: string;
@@ -77,6 +97,7 @@ export type basicDeleteParams = {
 export type basicGetFunction = (params: basicGetParams) => Promise<any>;
 export type extendedGetFunction = (params: extendedGetParams) => Promise<any>;
 export type basicPostFunction = (params: basicPostParams) => Promise<any>;
+export type basicPatchFunction = (params: basicPatchParams) => Promise<any>;
 export type basicDeleteFunction = (params: basicDeleteParams) => Promise<any>;
 
 // exported functions
@@ -186,11 +207,30 @@ export const addNapcorePrivateChannels: basicPostFunction = async (params) => {
   return await postIXN(actorCommonName, "/privatechannels", body);
 };
 
+export const addNapcorePeerToExistingPrivateChannel: basicPatchFunction = async (params) => {
+  const { actorCommonName, body = {} } = params;
+  return await patchIXN(actorCommonName, "/privatechannels/peer", body);
+};
+
 export const deleteNapcorePrivateChannels: basicDeleteFunction = async (
   params
 ) => {
   const { actorCommonName, pathParam } = params;
   return await deleteIXN(actorCommonName, `/privatechannels/${pathParam}`);
+};
+
+export const deleteNapcoreMyselfFromSubscribedPrivateChannel: basicDeleteFunction = async (
+  params
+) => {
+  const { actorCommonName, pathParam } = params;
+  return await deleteIXN(actorCommonName, `/privatechannels/peer/${pathParam}`);
+};
+
+export const deleteNapcorePeerFromExistingPrivateChannel: basicDeleteFunction = async (
+  params
+) => {
+  const { actorCommonName, pathParam } = params;
+  return await deleteIXN(actorCommonName, `/privatechannels/peer/${pathParam}`);
 };
 
 export const fetchNapcorePrivateChannelsPeers: extendedGetFunction = async (

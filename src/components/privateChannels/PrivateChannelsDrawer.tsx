@@ -1,9 +1,9 @@
 import {
   Box,
   Button, Card,
-  Drawer, FormControl, IconButton, InputLabel,
+  Drawer, FormControl, IconButton,
   List,
-  ListItem, ListItemText, MenuItem, Select, TextField,
+  ListItem, ListItemText, TextField,
   Toolbar, Typography
 } from "@mui/material";
 import React, { useState } from "react";
@@ -18,6 +18,7 @@ import { statusChips } from "@/lib/statusChips";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { styled } from "@mui/material/styles";
 import { timeConverter } from "@/lib/timeConverter";
+import CollapsiblePeerName from "@/components/shared/display/CollapsiblePeerName";
 
 const width = 600;
 
@@ -29,7 +30,7 @@ type Props = {
 };
 
 const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDeletedItem }: Props) => {
-  const { data: session } = useSession();
+  const {data: session } = useSession();
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<IFeedback>({
     feedback: false,
@@ -118,29 +119,10 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
                 <StyledCard variant={"outlined"}>
                   <Typography  sx={{ marginBottom: 2 }}>Peers</Typography>
                   <FormControl fullWidth>
-                    <InputLabel>Peers</InputLabel>
-                    <Select
-                      MenuProps={{ PaperProps: { sx: { maxHeight: 200 } } }}
-                      label="Peers"
-                      multiple
-                      defaultValue={privateChannel.peers.map(
-                        (peer) => {
-                          return peer;
-                        }
-                      )}
-                    >
-                      {privateChannel.peers.map((peer, index) => {
-                        return (
-                          <StyledMenuItem
-                            disabled
-                            key={index}
-                            value={peer}
-                          >
-                            {peer}
-                          </StyledMenuItem>
-                        );
-                      })}
-                    </Select>
+                    <CollapsiblePeerName
+                      subItems={privateChannel.peers}
+                      privateChannelId={privateChannel.id as string}
+                      actorCommonName={session?.user.commonName as string} />
                   </FormControl>
                 </StyledCard>
               </ListItem>
@@ -253,23 +235,6 @@ const StyledHeaderBox = styled(Box)(({}) => ({
   alignItems: "center",
   justifyContent: "space-between",
   width: "100%",
-}));
-
-const StyledMenuItem = styled(MenuItem)(({}) => ({
-  "&.MuiMenuItem-root": {
-    color: "black",
-    opacity: 1
-  },
-  "&.Mui-disabled": {
-    color: "black",
-    opacity: 1
-  },
-  "&.Mui-selected": {
-    backgroundColor: "white",
-    "&.Mui-focusVisible": {
-      background: "white"
-    }
-  }
 }));
 
 

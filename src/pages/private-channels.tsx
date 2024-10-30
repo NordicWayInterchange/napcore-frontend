@@ -50,7 +50,7 @@ export default function PrivateChannels() {
   const hasPeersData =  peersData && peersData.length > 0;
 
   useEffect(() => {
-    const handleDeletion = (isDeletedFlag: boolean, refetchFunc: () => void, resetFlag: () => void, setRefreshFlag: (value: boolean) => void) => {
+    const handleDelete = (isDeletedFlag: boolean, refetchFunc: () => void, resetFlag: () => void, setRefreshFlag: (value: boolean) => void) => {
       if (isDeletedFlag) {
         performRefetch(refetchFunc);
         resetFlag();
@@ -58,8 +58,8 @@ export default function PrivateChannels() {
       }
     };
 
-    handleDeletion(isDeleted, refetch, () => setIsDeleted(false), setShouldRefreshAfterDelete);
-    handleDeletion(isPeerDeleted, peerRefetch, () => setIsPeerDeleted(false), setShouldRefreshPeersAfterDelete);
+    handleDelete(isDeleted, refetch, () => setIsDeleted(false), setShouldRefreshAfterDelete);
+    handleDelete(isPeerDeleted, peerRefetch, () => setIsPeerDeleted(false), setShouldRefreshPeersAfterDelete);
 
   }, [isDeleted, isPeerDeleted, refetch, peerRefetch]);
 
@@ -204,14 +204,15 @@ export default function PrivateChannels() {
     },
     {
       ...dataGridTemplate,
-      field: "description",
-      headerName: "Description",
+      field: "owner",
+      headerName: "Owner",
       flex: 2,
     },
     {
       ...dataGridTemplate,
-      field: "owner",
-      headerName: "Owner"
+      field: "description",
+      headerName: "Description",
+      flex: 2,
     },
     {
       ...dataGridTemplate,
@@ -327,7 +328,7 @@ export default function PrivateChannels() {
               open={peerOpen}
               actorCommonName={session?.user.commonName as string}
               handleDeletedItem={handleDeletedPeerItem}
-              text="Peer"
+              text="Subscribed private channel"
             />
           </Box>
         </Box>
