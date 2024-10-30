@@ -1,5 +1,5 @@
 import {
-  Box, Card,
+  Box, Button, Card,
   Drawer, FormControl, IconButton,
   List,
   ListItem, ListItemText, TextField,
@@ -184,6 +184,20 @@ const PeersDrawer = ({ peers, open, handleMoreClose, handleDeletedItem }: Props)
                 </FormControl>
               </StyledCard>
             </ListItem>
+            <ListItem >
+              <Button
+                sx={{
+                  borderRadius: 100,
+                  textTransform: "none",
+                }}
+                variant={"contained"}
+                color={"redLight"}
+                onClick={() => setDialogOpen(true)}
+                disableElevation
+              >
+                Remove subscribed private channel
+              </Button>
+            </ListItem>
           </List>
         </Box>
       </Drawer>
@@ -196,12 +210,12 @@ const PeersDrawer = ({ peers, open, handleMoreClose, handleDeletedItem }: Props)
         />
       )}
       <DeleteSubDialog
-        open={dialogOpen}
-        actorCommonName={session?.user.commonName as string}
         itemId={peers.id as string}
         handleDialog={handleClickClose}
+        open={dialogOpen}
+        actorCommonName={session?.user.commonName as string}
         handleDeletedItem={handleDeletedItem}
-        text="Peer"
+        text="Subscribed private channel"
       />
     </>
   );

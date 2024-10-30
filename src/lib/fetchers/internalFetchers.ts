@@ -78,12 +78,21 @@ export const deletePrivateChannel = (
   });
 };
 
-export const deletePrivateChannelPeers = (
+export const deletePeerFromExistingPrivateChannel = (
   actorCommonName: string,
   privateChannelId: string,
-  peerId: string,
+  peerName: string,
 ) => {
-  return fetch(`/api/${actorCommonName}/privatechannels/peer/${privateChannelId}/${peerId}`, {
+  return fetch(`/api/${actorCommonName}/privatechannels/peer/${privateChannelId}/${peerName}`, {
+    method: "delete",
+  });
+};
+
+export const deleteMyselfFromSubscribedPrivateChannel = (
+  actorCommonName: string,
+  privateChannelId: string,
+) => {
+  return fetch(`/api/${actorCommonName}/privatechannels/peer/${privateChannelId}`, {
     method: "delete",
   });
 };

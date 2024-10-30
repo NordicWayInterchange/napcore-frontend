@@ -32,7 +32,8 @@ export type Capability = {
 };
 
 export type CapabilityRequest = {
-  selector: string;
+  Application: Application;
+  Metadata: Metadata;
 };
 
 export type Publicationids = {

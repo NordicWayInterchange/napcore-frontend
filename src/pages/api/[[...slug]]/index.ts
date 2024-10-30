@@ -24,7 +24,13 @@ import {
   fetchNapcorePublicationIds,
   fetchNapcorePrivateChannels,
   deleteNapcorePrivateChannels,
-  addNapcorePrivateChannels, fetchNapcorePrivateChannelsPeers
+  addNapcorePrivateChannels,
+  fetchNapcorePrivateChannelsPeers,
+  deleteNapcoreMyselfFromSubscribedPrivateChannel,
+  deleteNapcorePeerFromExistingPrivateChannel,
+  basicPatchParams,
+  basicPatchFunction,
+  addNapcorePeerToExistingPrivateChannel
 } from "@/lib/fetchers/interchangeConnector";
 import { ExtendedCapability } from "@/types/capability";
 import { Capability, Publicationids } from "@/types/napcore/capability";
@@ -141,6 +147,27 @@ export const removePrivateChannel: basicDeleteFunction = async (
   return [res.status];
 };
 
+export const removeMyselfFromSubscribedPrivateChannel: basicDeleteFunction = async (
+  params: basicDeleteParams
+) => {
+  const res = await deleteNapcoreMyselfFromSubscribedPrivateChannel(params);
+  return [res.status];
+};
+
+export const RemovePeerFromExistingPrivateChannel: basicDeleteFunction = async (
+  params: basicDeleteParams
+) => {
+  const res = await deleteNapcorePeerFromExistingPrivateChannel(params);
+  return [res.status];
+};
+
+export const addPeerToExistingPrivateChannel: basicPatchFunction = async (
+  params: basicPatchParams
+) => {
+  const res = await addNapcorePeerToExistingPrivateChannel(params);
+  return [res.status];
+};
+
 export const addUserCapabilities: basicPostFunction = async (
   params: basicPostParams
 ) => {
@@ -175,13 +202,6 @@ export const removeDelivery: basicDeleteFunction = async (
   params: basicDeleteParams
 ) => {
   const res = await deleteNapcoreDeliveries(params);
-  return [res.status];
-};
-
-export const removePrivateChannels: basicDeleteFunction = async (
-  params: basicDeleteParams
-) => {
-  const res = await deleteNapcorePrivateChannels(params);
   return [res.status];
 };
 
@@ -238,7 +258,13 @@ const postPaths: {
   deliveries: addDeliveries,
   "x509/csr": addCerticates,
   capabilities: addUserCapabilities,
-  privatechannels: addPrivateChannels
+  privatechannels: addPrivateChannels,
+};
+
+const patchPaths: {
+  [key: string]: basicPatchFunction;
+} = {
+  "privatechannels/peer" : addPeerToExistingPrivateChannel
 };
 
 // all delete methods on path
@@ -249,6 +275,8 @@ const deletePaths: {
   deliveries: removeDelivery,
   capabilities: removeUserCapability,
   privatechannels: removePrivateChannel,
+  "privatechannels/peer": removeMyselfFromSubscribedPrivateChannel,
+  existingPrivateChannel: RemovePeerFromExistingPrivateChannel,
 };
 
 const findHandler: (params: any) =>
@@ -257,10 +285,12 @@ const findHandler: (params: any) =>
         | basicDeleteFunction
         | basicGetFunction
         | basicPostFunction
+        | basicPatchFunction
         | extendedGetFunction;
       params:
         | basicDeleteParams
         | basicPostParams
+        | basicPatchParams
         | basicGetParams
         | extendedGetParams;
     }
@@ -291,6 +321,10 @@ const findHandler: (params: any) =>
     case "POST":
       if (Object.keys(postPaths).includes(urlPath)) {
         return { fn: postPaths[urlPath], params: { actorCommonName, body } };
+      }
+    case "PATCH":
+      if (Object.keys(patchPaths).includes(urlPath)) {
+        return { fn: patchPaths[urlPath], params: { actorCommonName, body } };
       }
     case "DELETE":
       if (path.length > 1 && Object.keys(deletePaths).includes(path[0])) {
