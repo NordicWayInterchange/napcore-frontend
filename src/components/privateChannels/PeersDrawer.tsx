@@ -156,6 +156,26 @@ const PeersDrawer = ({ peers, open, handleMoreClose }: Props) => {
                 </StyledCard>
               </ListItem>
             )}
+            <ListItem>
+              <StyledCard variant={"outlined"}>
+                <Typography>Description</Typography>
+                <FormControl fullWidth>
+                  <TextField
+                    contentEditable={false}
+                    margin="normal"
+                    multiline
+                    value={peers.description}
+                    rows={4}
+                    InputProps={{
+                      readOnly: true,
+                      endAdornment: (
+                        <ContentCopy value={peers.description} />
+                      ),
+                    }}
+                  />
+                </FormControl>
+              </StyledCard>
+            </ListItem>
           </List>
         </Box>
       </Drawer>
