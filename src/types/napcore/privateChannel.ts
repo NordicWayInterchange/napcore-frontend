@@ -25,6 +25,7 @@ export type PrivateChannel = {
 export type PrivateChannelPeers = {
   id: string;
   owner: string;
+  description: string;
   status: PrivateChannelStatus;
   endpoint: EndPoint;
   lastUpdated: number;
