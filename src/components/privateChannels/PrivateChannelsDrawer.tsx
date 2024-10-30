@@ -18,6 +18,7 @@ import { statusChips } from "@/lib/statusChips";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { styled } from "@mui/material/styles";
 import { timeConverter } from "@/lib/timeConverter";
+import CollapsiblePeerName from "@/components/shared/display/CollapsiblePeerName";
 
 const width = 600;
 
@@ -118,29 +119,7 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
                 <StyledCard variant={"outlined"}>
                   <Typography  sx={{ marginBottom: 2 }}>Peers</Typography>
                   <FormControl fullWidth>
-                    <InputLabel>Peers</InputLabel>
-                    <Select
-                      MenuProps={{ PaperProps: { sx: { maxHeight: 200 } } }}
-                      label="Peers"
-                      multiple
-                      defaultValue={privateChannel.peers.map(
-                        (peer) => {
-                          return peer;
-                        }
-                      )}
-                    >
-                      {privateChannel.peers.map((peer, index) => {
-                        return (
-                          <StyledMenuItem
-                            disabled
-                            key={index}
-                            value={peer}
-                          >
-                            {peer}
-                          </StyledMenuItem>
-                        );
-                      })}
-                    </Select>
+                    <CollapsiblePeerName subItems={privateChannel.peers}></CollapsiblePeerName>
                   </FormControl>
                 </StyledCard>
               </ListItem>

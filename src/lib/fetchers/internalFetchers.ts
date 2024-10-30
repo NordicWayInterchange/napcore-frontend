@@ -88,6 +88,15 @@ export const deletePrivateChannelPeers = (
   });
 };
 
+export const deleteMyselfFromSubscribedPrivateChannel = (
+  actorCommonName: string,
+  privateChannelId: string,
+) => {
+  return fetch(`/api/${actorCommonName}/privatechannels/peer/${privateChannelId}`, {
+    method: "delete",
+  });
+};
+
 export const createUserCapability = (actorCommonName: string, body: Object) => {
   return fetch(`/api/${actorCommonName}/capabilities`, {
     method: "post",

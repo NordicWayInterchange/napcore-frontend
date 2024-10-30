@@ -11,6 +11,7 @@ import {
 import {
   deleteDeliveries,
   deletePrivateChannel,
+  deleteMyselfFromSubscribedPrivateChannel,
   deletePrivateChannelPeers,
   deleteSubscriptions,
   deleteUserCapability
@@ -32,6 +33,7 @@ async function deleteArtifacts(artifactType: string, name: string, itemId: strin
   return await (artifactType === "Delivery" ? deleteDeliveries(name, itemId) :
     artifactType === "Subscription" ? deleteSubscriptions(name, itemId) :
       artifactType === "Private channel" ? deletePrivateChannel(name, itemId) :
+      artifactType == "Subscribed private channel" ? deleteMyselfFromSubscribedPrivateChannel(name, itemId) :
       artifactType === "Peer" ? deletePrivateChannelPeers(name, itemId, peerId) :
         deleteUserCapability(name, itemId));
 }
