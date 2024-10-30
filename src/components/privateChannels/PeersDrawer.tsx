@@ -15,6 +15,8 @@ import { statusChips } from "@/lib/statusChips";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { styled } from "@mui/material/styles";
 import { timeConverter } from "@/lib/timeConverter";
+import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
+import { useSession } from "next-auth/react";
 
 const width = 600;
 
@@ -22,9 +24,12 @@ type Props = {
   peers: PrivateChannelPeers;
   open: boolean;
   handleMoreClose: () => void;
+  handleDeletedItem: (deleted: boolean) => void;
 };
 
-const PeersDrawer = ({ peers, open, handleMoreClose }: Props) => {
+const PeersDrawer = ({ peers, open, handleMoreClose, handleDeletedItem }: Props) => {
+  const { data: session } = useSession();
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<IFeedback>({
     feedback: false,
     message: "",
@@ -42,6 +47,9 @@ const PeersDrawer = ({ peers, open, handleMoreClose }: Props) => {
     setFeedback({ feedback: false, message: "", severity: "success" });
   };
 
+  const handleClickClose = (close: boolean) => {
+    setDialogOpen(close);
+  };
 
   return (
     <>
@@ -187,6 +195,14 @@ const PeersDrawer = ({ peers, open, handleMoreClose }: Props) => {
           handleClose={handleSnackClose}
         />
       )}
+      <DeleteSubDialog
+        open={dialogOpen}
+        actorCommonName={session?.user.commonName as string}
+        itemId={peers.id as string}
+        handleDialog={handleClickClose}
+        handleDeletedItem={handleDeletedItem}
+        text="Peer"
+      />
     </>
   );
 };
