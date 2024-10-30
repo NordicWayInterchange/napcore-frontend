@@ -33,6 +33,7 @@ export default function PrivateChannels() {
   const {
     data: peersData,
     isLoading: isPeersLoading,
+    refetch: peerRefetch
   } = usePeers(session?.user.commonName as string);
 
   const [privateChannelRow, setPrivateChannelRow] = useState<PrivateChannel>();
@@ -40,35 +41,46 @@ export default function PrivateChannels() {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [peersDrawerOpen, setPeersDrawerOpen] = useState<boolean>(false);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const [isPeerDeleted, setIsPeerDeleted] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
+  const [peerOpen, setPeerOpen] = useState<boolean>(false);
   const [shouldRefreshAfterDelete, setShouldRefreshAfterDelete] = useState<boolean>(false);
+  const [shouldRefreshPeersAfterDelete, setShouldRefreshPeersAfterDelete] = useState<boolean>(false);
 
   const hasPeersData =  peersData && peersData.length > 0;
 
   useEffect(() => {
-    if (isDeleted) {
-      performRefetch(refetch);
-      setIsDeleted(false);
-      setShouldRefreshAfterDelete(true);
-    }
-  }, [isDeleted, refetch]);
+    const handleDeletion = (isDeletedFlag: boolean, refetchFunc: () => void, resetFlag: () => void, setRefreshFlag: (value: boolean) => void) => {
+      if (isDeletedFlag) {
+        performRefetch(refetchFunc);
+        resetFlag();
+        setRefreshFlag(true);
+      }
+    };
+
+    handleDeletion(isDeleted, refetch, () => setIsDeleted(false), setShouldRefreshAfterDelete);
+    handleDeletion(isPeerDeleted, peerRefetch, () => setIsPeerDeleted(false), setShouldRefreshPeersAfterDelete);
+
+  }, [isDeleted, isPeerDeleted, refetch, peerRefetch]);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      performRefetch(refetch);
-    }, 30000);
-    setShouldRefreshAfterDelete(false);
+    const timeout = setTimeout(() => performRefetch(refetch), 30000);
+    const peerTimeout = setTimeout(() => performRefetch(peerRefetch), 30000);
+
+    setShouldRefreshPeersAfterDelete(false);
+
     return () => {
       clearTimeout(timeout);
-    }
-  }, [shouldRefreshAfterDelete, refetch]);
+      clearTimeout(peerTimeout);
+    };
+  }, [shouldRefreshAfterDelete, shouldRefreshPeersAfterDelete, refetch, peerRefetch]);
 
   const handleMore = (privateChannel: PrivateChannel) => {
     setPrivateChannelRow(privateChannel);
     setDrawerOpen(true);
   };
 
-  const peersHandleMore = (peers: PrivateChannelPeers) => {
+  const handlePeersMore = (peers: PrivateChannelPeers) => {
     setPeersRow(peers);
     setPeersDrawerOpen(true);
   };
@@ -79,6 +91,10 @@ export default function PrivateChannels() {
 
   const handleClickClose = (close: boolean) => {
     setOpen(close);
+  };
+
+  const handleClickPeerClose = (close: boolean) => {
+    setPeerOpen(close);
   };
 
   const handlePeersMoreClose = () => {
@@ -92,18 +108,22 @@ export default function PrivateChannels() {
 
   const peerHandleDelete = (peers: PrivateChannelPeers) => {
     setPeersRow(peers);
-    setOpen(true);
+    setPeerOpen(true);
   };
   const handleOnRowClick = (params: any) => {
     handleMore(params.row);
   };
 
   const handleOnPeersRowClick = (params: any) => {
-    peersHandleMore(params.row);
+    handlePeersMore(params.row);
   };
 
   const handleDeletedItem = (deleted: boolean) => {
     setIsDeleted(deleted);
+  };
+
+  const handleDeletedPeerItem = (deleted: boolean) => {
+    setIsPeerDeleted(deleted);
   };
 
 
@@ -213,7 +233,7 @@ export default function PrivateChannels() {
             <IconButton onClick={() => peerHandleDelete(params.row)}>
               <DeleteIcon />
             </IconButton>
-            <IconButton onClick={() => peersHandleMore(params.row)}>
+            <IconButton onClick={() => handlePeersMore(params.row)}>
               <MoreVertIcon />
             </IconButton>
           </Box>
@@ -298,8 +318,17 @@ export default function PrivateChannels() {
                 handleMoreClose={handlePeersMoreClose}
                 open={peersDrawerOpen}
                 peers={peersRow as PrivateChannelPeers}
+                handleDeletedItem={handleDeletedPeerItem}
               />
             )}
+            <DeleteSubDialog
+              itemId={peersRow?.id as string}
+              handleDialog={handleClickPeerClose}
+              open={peerOpen}
+              actorCommonName={session?.user.commonName as string}
+              handleDeletedItem={handleDeletedPeerItem}
+              text="Peer"
+            />
           </Box>
         </Box>
       )}
