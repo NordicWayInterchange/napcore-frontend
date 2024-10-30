@@ -28,7 +28,7 @@ import { menuItemStyles, StyledButton, StyledCard, StyledFormControl } from "@/c
 
 const QUADTREE_REGEX = /^[0-3]+(,[0-3]+)*$/i;
 
-const UserCapabilitiesSelectorBuilder = () => {
+const UserCapabilitiesCreator = () => {
   const [duplicatePublicationIdError, setDuplicatePublicationIdError] = useState('');
   const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
@@ -403,4 +403,4 @@ const UserCapabilitiesSelectorBuilder = () => {
   );
 };
 
-export default UserCapabilitiesSelectorBuilder;
+export default UserCapabilitiesCreator;

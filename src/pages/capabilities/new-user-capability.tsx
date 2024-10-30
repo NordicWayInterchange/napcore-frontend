@@ -3,7 +3,7 @@ import React from "react";
 import { Box } from "@mui/system";
 import Subheading from "@/components/shared/display/typography/Subheading";
 import Mainheading from "@/components/shared/display/typography/Mainheading";
-import UserCapabilitiesSelectorBuilder from "@/components/userCapabilities/UserCapabilitiesSelectorBuilder";
+import UserCapabilitiesCreator from "@/components/userCapabilities/UserCapabilitiesCreator";
 import { BreadcrumbNavigation } from "@/components/shared/actions/BreadcrumbNavigation";
 const NewUserCapability = () => {
 
@@ -17,7 +17,7 @@ const NewUserCapability = () => {
       <BreadcrumbNavigation text="My capabilities" />
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-          <UserCapabilitiesSelectorBuilder />
+          <UserCapabilitiesCreator />
         </Grid>
         </Grid>
     </Box>
