@@ -89,6 +89,11 @@ export default function PrivateChannels() {
     setPrivateChannelRow(privateChannel);
     setOpen(true);
   };
+
+  const peerHandleDelete = (peers: PrivateChannelPeers) => {
+    setPeersRow(peers);
+    setOpen(true);
+  };
   const handleOnRowClick = (params: any) => {
     handleMore(params.row);
   };
@@ -179,9 +184,14 @@ export default function PrivateChannels() {
     },
     {
       ...dataGridTemplate,
+      field: "description",
+      headerName: "Description",
+      flex: 2,
+    },
+    {
+      ...dataGridTemplate,
       field: "owner",
-      headerName: "Owner",
-      flex: 3,
+      headerName: "Owner"
     },
     {
       ...dataGridTemplate,
@@ -200,6 +210,9 @@ export default function PrivateChannels() {
       renderCell: (params) => {
         return (
           <Box>
+            <IconButton onClick={() => peerHandleDelete(params.row)}>
+              <DeleteIcon />
+            </IconButton>
             <IconButton onClick={() => peersHandleMore(params.row)}>
               <MoreVertIcon />
             </IconButton>
