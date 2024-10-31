@@ -23,14 +23,13 @@ import {
   fetchNapcoreSubscriptions,
   fetchNapcorePublicationIds,
   fetchNapcorePrivateChannels,
-  deleteNapcorePrivateChannels,
   addNapcorePrivateChannels,
   fetchNapcorePrivateChannelsPeers,
-  deleteNapcoreMyselfFromSubscribedPrivateChannel,
-  deleteNapcorePeerFromExistingPrivateChannel,
   basicPatchParams,
   basicPatchFunction,
-  addNapcorePeerToExistingPrivateChannel
+  deleteNapcoreMyselfFromSubscribedPrivateChannel,
+  deleteNapcorePeerFromExistingPrivateChannel,
+  deleteNapcorePrivateChannels
 } from "@/lib/fetchers/interchangeConnector";
 import { ExtendedCapability } from "@/types/capability";
 import { Capability, Publicationids } from "@/types/napcore/capability";
@@ -161,12 +160,12 @@ export const RemovePeerFromExistingPrivateChannel: basicDeleteFunction = async (
   return [res.status];
 };
 
-export const addPeerToExistingPrivateChannel: basicPatchFunction = async (
+/*export const addPeerToExistingPrivateChannel: basicPatchFunction = async (
   params: basicPatchParams
 ) => {
   const res = await addNapcorePeerToExistingPrivateChannel(params);
   return [res.status];
-};
+};*/
 
 export const addUserCapabilities: basicPostFunction = async (
   params: basicPostParams
@@ -261,11 +260,11 @@ const postPaths: {
   privatechannels: addPrivateChannels,
 };
 
-const patchPaths: {
+/*const patchPaths: {
   [key: string]: basicPatchFunction;
 } = {
   "privatechannels/peer" : addPeerToExistingPrivateChannel
-};
+};*/
 
 // all delete methods on path
 const deletePaths: {
@@ -276,7 +275,7 @@ const deletePaths: {
   capabilities: removeUserCapability,
   privatechannels: removePrivateChannel,
   "privatechannels/peer": removeMyselfFromSubscribedPrivateChannel,
-  existingPrivateChannel: RemovePeerFromExistingPrivateChannel,
+  "privatechannels/peer/double": RemovePeerFromExistingPrivateChannel
 };
 
 const findHandler: (params: any) =>
@@ -322,15 +321,23 @@ const findHandler: (params: any) =>
       if (Object.keys(postPaths).includes(urlPath)) {
         return { fn: postPaths[urlPath], params: { actorCommonName, body } };
       }
-    case "PATCH":
+      /*case "PATCH":
       if (Object.keys(patchPaths).includes(urlPath)) {
         return { fn: patchPaths[urlPath], params: { actorCommonName, body } };
-      }
+      }*/
     case "DELETE":
-      if (path.length > 1 && Object.keys(deletePaths).includes(path[0])) {
+      const aliasMatch = path[0];
+      const idMatch = path[1];
+      if (Object.keys(deletePaths).includes(aliasMatch)) {
         return {
-          fn: deletePaths[path[0]],
-          params: { actorCommonName, pathParam: path[1] },
+          fn: deletePaths[aliasMatch],
+          params: { actorCommonName, pathParam: idMatch },
+        };
+      }
+      if (urlPath.startsWith("privatechannels/peer")) {
+        return {
+          fn: deletePaths["privatechannels/peer"],
+          params: { actorCommonName, pathParam: path[2] },
         };
       }
     default:

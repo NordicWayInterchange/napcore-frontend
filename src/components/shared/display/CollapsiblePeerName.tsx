@@ -16,8 +16,9 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from '@mui/icons-material/Save';
-import { addPeerToExistingPrivateChannel, deletePeerFromExistingPrivateChannel } from "@/lib/fetchers/internalFetchers";
+//import { addPeerToExistingPrivateChannel } from "@/lib/fetchers/internalFetchers";
 import { IFeedback } from "@/interface/IFeedback";
+import { deletePeerFromExistingPrivateChannel } from "@/lib/fetchers/internalFetchers";
 
 interface Props {
   subItems: string[];
@@ -50,7 +51,7 @@ const CollapsiblePeerName: React.FC<Props> = ({ subItems: initialSubItems, priva
   };
 
   const handleSaveClick = async () => {
-    if (newSubItem.trim() === '') return;
+   /* if (newSubItem.trim() === '') return;
       const response = await addPeerToExistingPrivateChannel(
         actorCommonName,
         privateChannelId,
@@ -69,7 +70,7 @@ const CollapsiblePeerName: React.FC<Props> = ({ subItems: initialSubItems, priva
         setSubItems((prevItems) => [...prevItems, newSubItem.trim()]);
         setNewSubItem('');
         setIsAdding(false);
-      }
+      }*/
   }
 
   return (
