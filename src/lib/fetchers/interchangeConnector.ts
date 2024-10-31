@@ -208,10 +208,10 @@ export const addNapcorePrivateChannels: basicPostFunction = async (params) => {
   return await postIXN(actorCommonName, "/privatechannels", body);
 };
 
-/*export const addNapcorePeerToExistingPrivateChannel: basicPatchFunction = async (params) => {
+export const addNapcorePeerToExistingPrivateChannel: basicPatchFunction = async (params) => {
   const { actorCommonName, body = {} } = params;
   return await patchIXN(actorCommonName, "/privatechannels/peer", body);
-};*/
+};
 
 export const deleteNapcorePrivateChannels: basicDeleteFunction = async (
   params
