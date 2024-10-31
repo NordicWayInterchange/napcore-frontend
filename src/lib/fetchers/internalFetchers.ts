@@ -59,7 +59,7 @@ export const createPrivateChannel = (actorCommonName: string, body: Object) => {
   });
 };
 
-/*export const addPeerToExistingPrivateChannel = (actorCommonName: string, privateChannelId: string, body: Object) => {
+export const addPeerToExistingPrivateChannel = (actorCommonName: string, privateChannelId: string, body: Object) => {
   return fetch(`/api/${actorCommonName}/privatechannels/peer/${privateChannelId}`, {
     method: "patch",
     headers: {
@@ -68,7 +68,7 @@ export const createPrivateChannel = (actorCommonName: string, body: Object) => {
     body: JSON.stringify(body),
   });
 };
-*/
+
 export const deletePrivateChannel = (
   actorCommonName: string,
   privateChannelId: string

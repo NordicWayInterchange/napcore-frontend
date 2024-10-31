@@ -29,7 +29,7 @@ import {
   basicPatchFunction,
   deleteNapcoreMyselfFromSubscribedPrivateChannel,
   deleteNapcorePeerFromExistingPrivateChannel,
-  deleteNapcorePrivateChannels
+  deleteNapcorePrivateChannels, addNapcorePeerToExistingPrivateChannel
 } from "@/lib/fetchers/interchangeConnector";
 import { ExtendedCapability } from "@/types/capability";
 import { Capability, Publicationids } from "@/types/napcore/capability";
@@ -160,12 +160,13 @@ export const RemovePeerFromExistingPrivateChannel: basicDeleteFunction = async (
   return [res.status];
 };
 
-/*export const addPeerToExistingPrivateChannel: basicPatchFunction = async (
+export const addPeer: basicPatchFunction = async (
   params: basicPatchParams
 ) => {
   const res = await addNapcorePeerToExistingPrivateChannel(params);
-  return [res.status];
-};*/
+  const addedPeers: PrivateChannelPeers = await res.data;
+  return [res.status, addedPeers];
+};
 
 export const addUserCapabilities: basicPostFunction = async (
   params: basicPostParams
@@ -260,11 +261,11 @@ const postPaths: {
   privatechannels: addPrivateChannels,
 };
 
-/*const patchPaths: {
+const patchPaths: {
   [key: string]: basicPatchFunction;
 } = {
-  "privatechannels/peer" : addPeerToExistingPrivateChannel
-};*/
+  "privatechannels/peer" : addPeer
+};
 
 // all delete methods on path
 const deletePaths: {
@@ -321,10 +322,21 @@ const findHandler: (params: any) =>
       if (Object.keys(postPaths).includes(urlPath)) {
         return { fn: postPaths[urlPath], params: { actorCommonName, body } };
       }
-      /*case "PATCH":
-      if (Object.keys(patchPaths).includes(urlPath)) {
-        return { fn: patchPaths[urlPath], params: { actorCommonName, body } };
-      }*/
+    case "PATCH":
+      const alias = path[0];
+      const id = path[1];
+      if (Object.keys(patchPaths).includes(alias)) {
+        return {
+          fn: patchPaths[alias],
+          params: { actorCommonName, pathParam: id },
+        };
+      }
+      if (urlPath.startsWith("privatechannels/peer")) {
+        return {
+          fn: patchPaths["privatechannels/peer"],
+          params: { actorCommonName, pathParam: path[2] },
+        };
+      }
     case "DELETE":
       const aliasMatch = path[0];
       const idMatch = path[1];
