@@ -1,21 +1,15 @@
 import {
   Box,
   Button,
-  Card,
   Drawer,
-  FormControl,
   List,
   ListItem,
-  TextField,
   Toolbar,
-  Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 import { ExtendedCapability } from "@/types/capability";
 import { createSubscription } from "@/lib/fetchers/internalFetchers";
 import Snackbar from "@/components/shared/feedback/Snackbar";
-import { styled } from "@mui/material/styles";
-import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { IFeedback } from "@/interface/IFeedback";
 import { useSession } from "next-auth/react";
 import MapDialog from "@/components/map/MapDialog";
@@ -136,16 +130,5 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
     </>
   );
 };
-
-const StyledCard = styled(Card)(({}) => ({
-  padding: "16px",
-  width: "100%",
-}));
-
-const StyledButton = styled(Button)(({}) => ({
-  width: "150px",
-  textTransform: "none",
-  borderRadius: 100,
-}));
 
 export default CapabilitiesDrawer;
