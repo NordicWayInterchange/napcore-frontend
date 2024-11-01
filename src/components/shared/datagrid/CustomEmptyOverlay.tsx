@@ -50,14 +50,6 @@ export const CustomEmptyOverlayPrivateChannels = () => {
   );
 };
 
-export const CustomEmptyOverlayPeers = () => {
-  return (
-    <StyledGridOverlay>
-      <StyledBox>No peers in the network</StyledBox>
-    </StyledGridOverlay>
-  );
-};
-
 const StyledGridOverlay = styled("div")(({}) => ({
   display: "flex",
   flexDirection: "column",

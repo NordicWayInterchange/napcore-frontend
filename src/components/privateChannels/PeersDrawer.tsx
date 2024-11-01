@@ -195,7 +195,7 @@ const PeersDrawer = ({ peers, open, handleMoreClose, handleDeletedItem }: Props)
                 onClick={() => setDialogOpen(true)}
                 disableElevation
               >
-                Remove subscribed private channel
+                Remove private channel subscription
               </Button>
             </ListItem>
           </List>

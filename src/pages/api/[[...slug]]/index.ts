@@ -322,19 +322,31 @@ const findHandler: (params: any) =>
       if (Object.keys(postPaths).includes(urlPath)) {
         return { fn: postPaths[urlPath], params: { actorCommonName, body } };
       }
-    case "PATCH":
-      const alias = path[0];
-      const id = path[1];
-      if (Object.keys(patchPaths).includes(alias)) {
+    case "PATCH": {
+        const aliasMatch = path[0];
+        const idMatch = path[1];
+       if (aliasMatch === "privatechannels" && idMatch === "peer") {
+          if (path.length === 3) {
+            console.log("Matched PATCH for 'cache/neighbour' with single parameter");
+            return {
+              fn: patchPaths["privatechannels/peer"],
+              params: { actorCommonName, pathParam: path[2] },
+            };
+          } else {
+            console.warn(`Path length ${path.length} does not match expected values for 'privatechannels/peer'`);
+          }
+        }
+        if (Object.keys(patchPaths).includes(`${aliasMatch}/${idMatch}`)) {
+          console.log(`Matched alias in patchPaths: ${aliasMatch}/${idMatch}`);
+          return {
+            fn: patchPaths[`${aliasMatch}/${idMatch}`],
+            params: { actorCommonName, pathParam: idMatch },
+          };
+        }
+        console.warn("No matching path found for PATCH request:", urlPath);
         return {
-          fn: patchPaths[alias],
-          params: { actorCommonName, pathParam: id },
-        };
-      }
-      if (urlPath.startsWith("privatechannels/peer")) {
-        return {
-          fn: patchPaths["privatechannels/peer"],
-          params: { actorCommonName, pathParam: path[2] },
+          fn: async () => ({ status: 404, description: `Path not found: ${urlPath}` }),
+          params: {},
         };
       }
     case "DELETE": {
