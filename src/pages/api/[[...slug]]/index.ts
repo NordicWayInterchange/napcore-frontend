@@ -250,6 +250,11 @@ const getPaths: {
   "private-channels/peer": fetchPeers,
 };
 
+const patchPaths: {
+  [key: string]: basicPatchFunction;
+} = {
+  "privatechannels/peer" : addPeer
+};
 // all post methods on path
 const postPaths: {
   [key: string]: basicPostFunction;
@@ -259,12 +264,6 @@ const postPaths: {
   "x509/csr": addCerticates,
   capabilities: addUserCapabilities,
   privatechannels: addPrivateChannels,
-};
-
-const patchPaths: {
-  [key: string]: basicPatchFunction;
-} = {
-  "privatechannels/peer" : addPeer
 };
 
 // all delete methods on path
@@ -278,7 +277,6 @@ const deletePaths: {
   "privatechannels/peer/single": removeMyselfFromSubscribedPrivateChannel,
   "privatechannels/peer/double": RemovePeerFromExistingPrivateChannel
 };
-
 const findHandler: (params: any) =>
   | {
       fn:
@@ -323,32 +321,12 @@ const findHandler: (params: any) =>
         return { fn: postPaths[urlPath], params: { actorCommonName, body } };
       }
     case "PATCH": {
-        const aliasMatch = path[0];
-        const idMatch = path[1];
-       if (aliasMatch === "privatechannels" && idMatch === "peer") {
-          if (path.length === 3) {
-            console.log("Matched PATCH for 'cache/neighbour' with single parameter");
-            return {
-              fn: patchPaths["privatechannels/peer"],
-              params: { actorCommonName, pathParam: path[2] },
-            };
-          } else {
-            console.warn(`Path length ${path.length} does not match expected values for 'privatechannels/peer'`);
-          }
-        }
-        if (Object.keys(patchPaths).includes(`${aliasMatch}/${idMatch}`)) {
-          console.log(`Matched alias in patchPaths: ${aliasMatch}/${idMatch}`);
-          return {
-            fn: patchPaths[`${aliasMatch}/${idMatch}`],
-            params: { actorCommonName, pathParam: idMatch },
-          };
-        }
-        console.warn("No matching path found for PATCH request:", urlPath);
-        return {
-          fn: async () => ({ status: 404, description: `Path not found: ${urlPath}` }),
-          params: {},
-        };
+      const aliasMatch = path[0];
+      const idMatch = path[1];
+      if (aliasMatch === "privatechannels" && idMatch === "peer") {
+        return { fn: patchPaths["privatechannels/peer"], params: { actorCommonName, pathParam: path[2], body } };
       }
+    }
     case "DELETE": {
       const aliasMatch = path[0];
       const idMatch = path[1];
@@ -376,10 +354,6 @@ const findHandler: (params: any) =>
         };
       }
       console.warn("No matching path found for DELETE request:", urlPath);
-      return {
-        fn: async () => ({ status: 404, description: `Path not found: ${urlPath}` }),
-        params: {},
-      };
     }
     default:
       return {};
