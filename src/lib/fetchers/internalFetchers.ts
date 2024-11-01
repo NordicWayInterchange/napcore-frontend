@@ -61,7 +61,7 @@ export const createPrivateChannel = (actorCommonName: string, body: Object) => {
 
 export const addPeerToExistingPrivateChannel = (actorCommonName: string, privateChannelId: string, body: Object) => {
   return fetch(`/api/${actorCommonName}/privatechannels/peer/${privateChannelId}`, {
-    method: "patch",
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },

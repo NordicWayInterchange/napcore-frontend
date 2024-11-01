@@ -86,6 +86,7 @@ export type basicPostParams = {
 
 export type basicPatchParams = {
   actorCommonName: string;
+  pathParam?:string;
   body?: SubscriptionRequest | CertificateSignRequest | DeliveryRequest | CapabilityRequest | PrivateChannelRequest;
 };
 
@@ -210,8 +211,8 @@ export const addNapcorePrivateChannels: basicPostFunction = async (params) => {
 };
 
 export const addNapcorePeerToExistingPrivateChannel: basicPatchFunction = async (params) => {
-  const { actorCommonName, body = {} } = params;
-  return await patchIXN(actorCommonName, "/privatechannels/peer", body);
+  const { actorCommonName, pathParam, body = {} } = params;
+  return await patchIXN(actorCommonName, `/privatechannels/peer/${pathParam}`, body);
 };
 
 export const deleteNapcorePrivateChannels: basicDeleteFunction = async (

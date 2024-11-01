@@ -22,7 +22,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { styled } from "@mui/material/styles";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import CloseIcon from '@mui/icons-material/Close';
-import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 interface Props {
   subItems: string[];
   privateChannelId: string;
@@ -61,7 +61,6 @@ const CollapsiblePeerName: React.FC<Props> = ({ subItems: initialSubItems, priva
 
   const handleAddClick = () => {
     setIsAdding(true);
-    setIsVisible(true);
   };
 
   const handleSnackClose = (
@@ -78,7 +77,7 @@ const CollapsiblePeerName: React.FC<Props> = ({ subItems: initialSubItems, priva
       const response = await addPeerToExistingPrivateChannel(
         actorCommonName,
         privateChannelId,
-        newSubItem.trim()
+        { peerToAdd:  newSubItem.trim() }
       );
 
       setFeedback({
@@ -104,7 +103,7 @@ const CollapsiblePeerName: React.FC<Props> = ({ subItems: initialSubItems, priva
     <Card variant="outlined" >
       <CardContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Box display="flex">
-          <Typography>Peer names</Typography>
+          <Typography>Your peers</Typography>
         </Box>
         <IconButton onClick={handleExpandClick} size="small">
           <ExpandMoreIcon
@@ -118,7 +117,7 @@ const CollapsiblePeerName: React.FC<Props> = ({ subItems: initialSubItems, priva
         <List>
           {subItems.length > 0 ? subItems.map((item, index) => (
             <React.Fragment key={index}>
-              <ListItem sx={{ display: "flex", justifyContent: "space-between", paddingY: 1 }}>
+              <ListItem sx={{ display: "flex", justifyContent: "space-between" }}>
                 <ListItemText primary={item} sx={{
                   wordBreak: "break-word",
                   whiteSpace: "normal"
@@ -133,13 +132,13 @@ const CollapsiblePeerName: React.FC<Props> = ({ subItems: initialSubItems, priva
               </ListItem>
               {index < subItems.length - 1 && <Divider />}
             </React.Fragment>
-          )) : <StyledGridOverlay>
+          )) : <StyledGridOverlay style={{ color: '#FF8C00' }}>
             <IconButton
               edge="end"
             >
-              <HourglassEmptyIcon />
+              <WarningAmberIcon sx={{ color: '#FF8C00' }}/>
             </IconButton>
-            <StyledBox>No peers in the network</StyledBox>
+            <StyledBox >No peers in the network</StyledBox>
           </StyledGridOverlay>
           }
 
@@ -151,8 +150,9 @@ const CollapsiblePeerName: React.FC<Props> = ({ subItems: initialSubItems, priva
                   fullWidth
                   size="small"
                   variant="outlined"
-                  placeholder="Enter a peer name"
+                  placeholder="Enter a peer"
                   value={newSubItem}
+                  autoFocus
                   onChange={(e) => setNewSubItem(e.target.value)}
                 />
                 <IconButton
