@@ -295,7 +295,7 @@ export default function PrivateChannels() {
       <Divider style={{ margin: '20px 0', visibility: 'hidden' }} />
       {hasPeersData && (
         <Box>
-          <Subheading>My subscribed private channels</Subheading>
+          <Subheading>My private channel subscriptions</Subheading>
           <Divider style={{ margin: '5px 0', visibility: 'hidden' }} />
           <Box
             sx={{
