@@ -275,7 +275,7 @@ const deletePaths: {
   deliveries: removeDelivery,
   capabilities: removeUserCapability,
   privatechannels: removePrivateChannel,
-  "privatechannels/peer": removeMyselfFromSubscribedPrivateChannel,
+  "privatechannels/peer/single": removeMyselfFromSubscribedPrivateChannel,
   "privatechannels/peer/double": RemovePeerFromExistingPrivateChannel
 };
 
@@ -337,21 +337,38 @@ const findHandler: (params: any) =>
           params: { actorCommonName, pathParam: path[2] },
         };
       }
-    case "DELETE":
+    case "DELETE": {
       const aliasMatch = path[0];
       const idMatch = path[1];
+
+      if (aliasMatch === "privatechannels" && idMatch === "peer") {
+        if (path.length === 3) {
+          return {
+            fn: deletePaths["privatechannels/peer/single"],
+            params: { actorCommonName, pathParam: path[2] },
+          };
+        } else if (path.length === 4) {
+          return {
+            fn: deletePaths["privatechannels/peer/double"],
+            params: { actorCommonName, firstParam: path[2], secondParam: path[3] },
+          };
+        } else {
+          console.warn(`Path length ${path.length} does not match expected values for 'privatechannels/peer'`);
+        }
+      }
+
       if (Object.keys(deletePaths).includes(aliasMatch)) {
         return {
           fn: deletePaths[aliasMatch],
           params: { actorCommonName, pathParam: idMatch },
         };
       }
-      if (urlPath.startsWith("privatechannels/peer")) {
-        return {
-          fn: deletePaths["privatechannels/peer"],
-          params: { actorCommonName, pathParam: path[2] },
-        };
-      }
+      console.warn("No matching path found for DELETE request:", urlPath);
+      return {
+        fn: async () => ({ status: 404, description: `Path not found: ${urlPath}` }),
+        params: {},
+      };
+    }
     default:
       return {};
   }

@@ -91,8 +91,9 @@ export type basicPatchParams = {
 
 export type basicDeleteParams = {
   actorCommonName: string;
-  pathParam?: string;
-  pathParams?: string;
+  pathParam?:string;
+  firstParam?: string;
+  secondParam?: string;
 };
 
 export type basicGetFunction = (params: basicGetParams) => Promise<any>;
@@ -230,8 +231,7 @@ export const deleteNapcoreMyselfFromSubscribedPrivateChannel: basicDeleteFunctio
 export const deleteNapcorePeerFromExistingPrivateChannel: basicDeleteFunction = async (
   params
 ) => {
-  const { actorCommonName, pathParams } = params; // Expecting an array of parameters
-  const [firstParam, secondParam] = Array.isArray(pathParams) ? pathParams : [];
+  const { actorCommonName, firstParam, secondParam } = params;
   return await deleteIXN(actorCommonName, `/privatechannels/peer/${firstParam}/${secondParam}`);
 };
 
