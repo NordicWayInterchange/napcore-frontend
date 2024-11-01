@@ -56,7 +56,12 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
   };
 
   const saveSubscription = async (name: string, selector: string) => {
-    const response = await createSubscription(name, selector);
+    const bodyData = {
+      selector: selector,
+      description: ""
+    };
+
+    const response = await createSubscription(name, bodyData);
 
     if (response.ok) {
       setFeedback({
