@@ -325,6 +325,8 @@ const findHandler: (params: any) =>
       const idMatch = path[1];
       if (aliasMatch === "privatechannels" && idMatch === "peer") {
         return { fn: patchPaths["privatechannels/peer"], params: { actorCommonName, pathParam: path[2], body } };
+      } else {
+        console.warn(`Path length ${path.length} does not match expected values for 'privatechannels/peer'`);
       }
     }
     case "DELETE": {
@@ -353,7 +355,6 @@ const findHandler: (params: any) =>
           params: { actorCommonName, pathParam: idMatch },
         };
       }
-      console.warn("No matching path found for DELETE request:", urlPath);
     }
     default:
       return {};
