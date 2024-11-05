@@ -125,7 +125,11 @@ const PrivateChannelsCreator = () => {
                     key={index}
                     label={value}
                     onDelete={() => handleDeleteChip(value)}
-                    color="primary"
+                    sx={{
+                      backgroundColor: "sidebarActiveColor",
+                      border: "1px solid",
+                      borderColor: "sidebarBorderColor",
+                    }}
                     variant="outlined"
                   />
                 ))}

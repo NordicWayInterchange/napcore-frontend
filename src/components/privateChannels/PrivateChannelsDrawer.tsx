@@ -18,7 +18,7 @@ import { statusChips } from "@/lib/statusChips";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { styled } from "@mui/material/styles";
 import { timeConverter } from "@/lib/timeConverter";
-import CollapsiblePeerName from "@/components/shared/display/CollapsiblePeerName";
+import CollapsiblePeer from "@/components/shared/display/CollapsiblePeer";
 
 const width = 600;
 
@@ -119,7 +119,7 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
                 <StyledCard variant={"outlined"}>
                   <Typography  sx={{ marginBottom: 2 }}>Peers</Typography>
                   <FormControl fullWidth>
-                    <CollapsiblePeerName
+                    <CollapsiblePeer
                       subItems={privateChannel.peers}
                       privateChannelId={privateChannel.id as string}
                       actorCommonName={session?.user.commonName as string} />
