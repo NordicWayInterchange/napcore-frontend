@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { Chip, FormHelperText, TextField, Typography } from "@mui/material";
 import React, {useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Box } from "@mui/system";
@@ -16,25 +16,67 @@ const PrivateChannelsCreator = () => {
     message: "",
     severity: "success",
   });
-
   const { data: session } = useSession();
   const router = useRouter();
+  const [inputValue, setInputValue] = useState<string>(''); // Current input value
 
   const {
     handleSubmit,
     control,
     setValue,
     register,
-    clearErrors,
-    resetField,
+    getValues,
     reset,
-    formState: { errors },
+    formState: { errors }
   } = useForm<IFormPrivateChannelInput>({
     defaultValues: {
       peers: [],
       description: "",
     },
   });
+
+  const addChip = () => {
+    const trimmedValue = inputValue.trim();
+    if (trimmedValue && !getValues('peers').includes(trimmedValue)) {
+      setValue('peers', [...getValues('peers'), trimmedValue], { shouldValidate: true });
+      setInputValue('');
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' || event.key === ',' || event.key === ' ') {
+      event.preventDefault();
+      addChip();
+    }
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+
+    if (input.includes(',')) {
+      const parts = input.split(',').map((part) => part.trim());
+      const lastPart = parts.pop() || '';
+
+      parts.forEach((part) => {
+        if (part && !getValues('peers').includes(part)) {
+          setValue('peers', [...getValues('peers'), part], { shouldValidate: true });
+        }
+      });
+
+      setInputValue(lastPart);
+    } else {
+      setInputValue(input);
+    }
+  };
+
+  const handleDeleteChip = (valueToDelete: string) => {
+    setValue('peers', getValues('peers').filter((chip) => chip !== valueToDelete), { shouldValidate: true });
+  };
+
+  const clearForm = () => {
+    reset({ peers: [] });
+    setInputValue('');
+  };
 
   const onSubmit: SubmitHandler<IFormPrivateChannelInput> = async ({ peers, ...rest }) => {
     const peersWithoutWhitespace = peers.map(item => item.trim()).filter(item => item !== '');
@@ -73,33 +115,61 @@ const PrivateChannelsCreator = () => {
       <StyledCard variant={"outlined"}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <StyledFormControl>
-            <Controller
-              name="peers"
-              control={control}
-              rules={{
-                required: "Peers is required",
-              }}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Peers *"
-                  fullWidth
-                  onChange={(event) => {
-                    clearErrors("peers");
+            <Box display="flex" alignItems="flex-start" p={1} borderRadius={1} border={1} flexWrap="wrap"
+            sx={{borderColor: errors.peers ? 'red' : 'grey.300'}}>
+              <Typography color="textSecondary" sx={{ marginRight: '8px' }}>Peers *</Typography>
 
-                    const value = event.target.value;
-                    setValue("peers", value.split(","));
+              <Box display="flex" flexWrap="wrap" sx={{ gap: '8px', maxWidth: '100%' }}>
+                {getValues('peers').map((value, index) => (
+                  <Chip
+                    key={index}
+                    label={value}
+                    onDelete={() => handleDeleteChip(value)}
+                    color="primary"
+                    variant="outlined"
+                  />
+                ))}
+              </Box>
 
-                    if (value.trim().length < 1) {
-                      resetField("peers");
-                    }
-                  }}
-                  error={Boolean(errors.peers)}
-                  sx={{ marginRight: 1 }}
-                  helperText={errors.peers ? errors.peers.message : ""}
-                />
-              )}
-            />
+              <Controller
+                name="peers"
+                control={control}
+                rules={{
+                  required: "At least one peer is required",
+                }}
+                render={({ field }) => (
+                  <>
+                    <TextField
+                      {...field}
+                      variant="standard"
+                      placeholder="Add peers (comma, space, or enter to add)"
+                      value={inputValue}
+                      onChange={handleChange}
+                      onKeyDown={handleKeyDown}
+                      multiline
+                      minRows={1}
+                      InputProps={{
+                        disableUnderline: true,
+                        style: {
+                          minWidth: '200px',
+                          marginLeft: '8px',
+                          flexGrow: 1,
+                        },
+                      }}
+                      sx={{
+                        flexGrow: 1,
+                        marginTop: '8px',
+                        width: '100%',
+                      }}
+                    />
+                    {errors.peers && (
+                      <FormHelperText error>{errors.peers.message}</FormHelperText>
+                    )}
+                  </>
+                )}
+              />
+            </Box>
+
             <Box sx={{ display: "flex", gap: 1 }}>
               <Controller
                 name="description"
@@ -131,7 +201,7 @@ const PrivateChannelsCreator = () => {
               <StyledButton
                 color="buttonThemeColor"
                 variant="outlined"
-                onClick={() => reset()}
+                onClick={clearForm}
               >
                 Clear form
               </StyledButton>
