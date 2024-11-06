@@ -280,6 +280,7 @@ export default function PrivateChannels() {
             open={drawerOpen}
             privateChannel={privateChannelRow as PrivateChannel}
             handleDeletedItem={handleDeletedItem}
+            refetchPrivateChannel={refetch}
           />
         )}
         <DeleteSubDialog
