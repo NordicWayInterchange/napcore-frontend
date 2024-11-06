@@ -27,9 +27,10 @@ type Props = {
   open: boolean;
   handleMoreClose: () => void;
   handleDeletedItem: (deleted: boolean) => void;
+  refetchPrivateChannel: () => void;
 };
 
-const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDeletedItem }: Props) => {
+const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDeletedItem, refetchPrivateChannel }: Props) => {
   const {data: session } = useSession();
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<IFeedback>({
@@ -122,7 +123,8 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
                     <CollapsiblePeer
                       subItems={privateChannel.peers}
                       privateChannelId={privateChannel.id as string}
-                      actorCommonName={session?.user.commonName as string} />
+                      actorCommonName={session?.user.commonName as string}
+                      refetchPrivateChannel={refetchPrivateChannel}/>
                   </FormControl>
                 </StyledCard>
               </ListItem>

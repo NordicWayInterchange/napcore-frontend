@@ -28,9 +28,10 @@ type Props = {
   subItems: string[];
   privateChannelId: string;
   actorCommonName: string;
+  refetchPrivateChannel: any;
 }
 
-const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName }: Props) => {
+const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchPrivateChannel }: Props) => {
   const [expanded, setExpanded] = useState<boolean>(true);
   const [peerItems, setPeerItems] = useState<string[]>(subItems);
   const [newSubItem, setNewSubItem] = useState<string>("");
@@ -41,7 +42,6 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName }: Props)
     severity: "success"
   });
   const [isVisible, setIsVisible] = useState(true);
-  const [isVisibleAddButton, setIsVisibleAddButton] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded((prev) => !prev);
@@ -50,6 +50,11 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName }: Props)
   const handleDelete = async (index: number) => {
     const peerToDelete = peerItems[index];
     const response = await deletePeerFromExistingPrivateChannel(actorCommonName, privateChannelId, peerToDelete);
+
+    if (response.ok) {
+      refetchPrivateChannel();
+      setPeerItems((peers) => peers.filter((peer, i) => i !== index));
+    }
 
     setFeedback({
       feedback: true,
@@ -89,6 +94,13 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName }: Props)
       { peerToAdd: newSubItem.trim() }
     );
 
+    if (response.ok) {
+      setPeerItems((prevItems) => [...prevItems, newSubItem.trim()]);
+      refetchPrivateChannel();
+      setNewSubItem("");
+      setIsAdding(false);
+    }
+
     setFeedback({
       feedback: true,
       message: response.ok
@@ -97,11 +109,6 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName }: Props)
       severity: response.ok ? "success" : "warning"
     });
 
-    if (response.ok) {
-      setPeerItems((prevItems) => [...prevItems, newSubItem.trim()]);
-      setNewSubItem("");
-      setIsAdding(false);
-    }
   };
   const handleCloseTextField = () => {
     setIsVisible(false);
