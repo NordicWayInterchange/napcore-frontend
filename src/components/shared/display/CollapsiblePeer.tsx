@@ -41,7 +41,6 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
     message: "",
     severity: "success"
   });
-  const [isVisible, setIsVisible] = useState(true);
 
   const handleExpandClick = () => {
     setExpanded((prev) => !prev);
@@ -53,7 +52,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
 
     if (response.ok) {
       refetchPrivateChannel();
-      setPeerItems((peers) => peers.filter((peer, i) => i !== index));
+      setPeerItems((peers) => peers.filter((_, i) => i !== index));
     }
 
     setFeedback({
@@ -79,10 +78,14 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
     }
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      handleSaveClick();
+      try {
+        await handleSaveClick();
+      } catch (error) {
+        console.warn('Could not saveClick')
+      }
     }
   };
 
@@ -111,7 +114,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
 
   };
   const handleCloseTextField = () => {
-    setIsVisible(false);
+    setIsAdding(false);
   };
 
   return (
@@ -155,7 +158,6 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
 
           {isAdding && (
             <ListItem sx={{ display: "flex", justifyContent: "space-between", paddingY: 1 }}>
-              {isVisible && (
                 <>
                   <TextField
                     fullWidth
@@ -178,7 +180,6 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
                     </Box>
                   </IconButton>
                 </>
-              )}
             </ListItem>
           )}
         </List>
