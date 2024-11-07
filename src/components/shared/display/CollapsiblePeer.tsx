@@ -77,6 +77,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
     if (reason === "clickaway") {
       return;
     }
+    setFeedback({ feedback: false, message: "", severity: "success" });
   };
 
   const handleKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
