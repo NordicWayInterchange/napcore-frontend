@@ -50,7 +50,7 @@ export default function Home() {
     },
     {
       header: "Private channels",
-      description: "View private channels",
+      description: "View my private channels",
       url: "/private-channels",
       icon: <LockIcon />
     },
@@ -80,7 +80,7 @@ export default function Home() {
               href={shortcut.url}
               style={{
                 textDecoration: "none",
-                marginRight: 20,
+                marginRight: 15,
                 marginTop: 10,
               }}
             >
