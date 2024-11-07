@@ -134,6 +134,7 @@ const SelectorBuilder = (props: Props) => {
 
       return;
     }
+    if (description.length > 255 ) return ;
     const bodyData = {
       selector: selector,
       description: description
@@ -178,6 +179,7 @@ const SelectorBuilder = (props: Props) => {
     const value = event.target.value;
     if (value.length > 255) {
       setDescriptionError(true);
+      setDescription(value);
     } else {
       setDescriptionError(false);
       setDescription(value);
@@ -375,7 +377,7 @@ const SelectorBuilder = (props: Props) => {
                 disabled={advancedMode}
                 onChange={handleDescription}
                 error={descriptionError}
-                helperText={descriptionError ? "Description exceeds maximum length of 254 characters" : ""}
+                helperText={descriptionError ? "Description exceeds maximum length of 255 characters" : ""}
                 fullWidth
               />
             </Box>
