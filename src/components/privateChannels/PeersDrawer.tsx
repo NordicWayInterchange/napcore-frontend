@@ -110,7 +110,6 @@ const PeersDrawer = ({ peers, open, handleMoreClose, handleDeletedItem }: Props)
                 </Box>
                 <FormControl fullWidth>
                   <TextField
-                    contentEditable={false}
                     value={peers.owner}
                     label={"Owner"}
                     margin="normal"
@@ -130,7 +129,6 @@ const PeersDrawer = ({ peers, open, handleMoreClose, handleDeletedItem }: Props)
                   <Typography>Endpoint</Typography>
                   <FormControl fullWidth>
                     <TextField
-                      contentEditable={false}
                       value={peers.endpoint.host}
                       label={"Host"}
                       margin="normal"
@@ -141,7 +139,6 @@ const PeersDrawer = ({ peers, open, handleMoreClose, handleDeletedItem }: Props)
                       }}
                     />
                     <TextField
-                      contentEditable={false}
                       value={peers.endpoint.port}
                       label="Port"
                       margin="normal"
@@ -150,7 +147,6 @@ const PeersDrawer = ({ peers, open, handleMoreClose, handleDeletedItem }: Props)
                       }}
                     />
                     <TextField
-                      contentEditable={false}
                       value={peers.endpoint.queueName}
                       label="Queue name"
                       margin="normal"
@@ -167,21 +163,22 @@ const PeersDrawer = ({ peers, open, handleMoreClose, handleDeletedItem }: Props)
             <ListItem>
               <StyledCard variant={"outlined"}>
                 <Typography>Description</Typography>
-                <FormControl fullWidth>
-                  <TextField
-                    contentEditable={false}
-                    margin="normal"
-                    multiline
-                    value={peers.description}
-                    rows={4}
-                    InputProps={{
-                      readOnly: true,
-                      endAdornment: (
-                        <ContentCopy value={peers.description} />
-                      ),
-                    }}
-                  />
-                </FormControl>
+                <div>
+                  <FormControl fullWidth>
+                    <TextField
+                      margin="normal"
+                      multiline
+                      value={peers.description || ""}
+                      rows={4}
+                      InputProps={{
+                        readOnly: true,
+                        endAdornment: (
+                          <ContentCopy value={peers.description} />
+                        )
+                      }}
+                    />
+                  </FormControl>
+                </div>
               </StyledCard>
             </ListItem>
             <ListItem >
