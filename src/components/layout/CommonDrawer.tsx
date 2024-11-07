@@ -107,8 +107,7 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
                   <Typography>Endpoints</Typography>
                   <FormControl fullWidth>
                     <TextField
-                      contentEditable={false}
-                      value={item.endpoints[0].host}
+                      value={item.endpoints[0].host || ""}
                       label="Host"
                       margin="normal"
                       InputProps={{
@@ -118,8 +117,7 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
                       }}
                     />
                     <TextField
-                      contentEditable={false}
-                      value={getAttribute()}
+                      value={getAttribute() || ""}
                       label={label == "Delivery" ? "Target" : "Source"}
                       margin="normal"
                       InputProps={{
@@ -129,8 +127,7 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
                       }}
                     />
                     <TextField
-                      contentEditable={false}
-                      value={item.endpoints[0].port}
+                      value={item.endpoints[0].port || ""}
                       label="Port"
                       margin="normal"
                       InputProps={{
@@ -148,7 +145,7 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
                   <TextField
                     margin="normal"
                     multiline
-                    value={item.selector}
+                    value={item.selector || ""}
                     rows={4}
                     InputProps={{
                       endAdornment: (
@@ -160,24 +157,25 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
               </StyledCard>
             </ListItem>
             <ListItem>
-            <StyledCard variant={"outlined"}>
-              <Typography>Description</Typography>
-              <FormControl fullWidth>
-                <TextField
-                  contentEditable={false}
-                  margin="normal"
-                  multiline
-                  value={item.description}
-                  rows={4}
-                  InputProps={{
-                    readOnly: true,
-                    endAdornment: (
-                      <ContentCopy value={item.description} />
-                    ),
-                  }}
-                />
-              </FormControl>
-            </StyledCard>
+              <StyledCard variant={"outlined"}>
+                <Typography>Description</Typography>
+                <div>
+                  <FormControl fullWidth>
+                    <TextField
+                      margin="normal"
+                      multiline
+                      value={item.description || ""}
+                      rows={4}
+                      InputProps={{
+                        readOnly: true,
+                        endAdornment: (
+                          <ContentCopy value={item.description} />
+                        )
+                      }}
+                    />
+                  </FormControl>
+                </div>
+              </StyledCard>
             </ListItem>
             <ListItem>
               <Button

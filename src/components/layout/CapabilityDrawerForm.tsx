@@ -39,7 +39,6 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
           <Typography>Publisher</Typography>
           <FormControl fullWidth>
             <TextField
-              contentEditable={false}
               value={capability.publisherId}
               label="Publisher ID"
               margin="normal"
@@ -50,7 +49,6 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
               }}
             />
             <TextField
-              contentEditable={false}
               value={capability.publicationId}
               label="Publication ID"
               margin="normal"
@@ -62,7 +60,6 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
             />
             {capability.publicationType && (
               <TextField
-                contentEditable={false}
                 value={capability.publicationType}
                 label="Publication type"
                 margin="normal"
@@ -75,7 +72,6 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
             )}
             {capability.publisherName && (
               <TextField
-                contentEditable={false}
                 value={capability.publisherName}
                 label="Publisher name"
                 margin="normal"
@@ -87,7 +83,6 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
               />
             )}
             <TextField
-              contentEditable={false}
               value={capability.originatingCountry}
               label="Originating Country"
               margin="normal"
@@ -106,7 +101,6 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
           <Typography>Message</Typography>
           <FormControl fullWidth>
             <TextField
-              contentEditable={false}
               value={capability.messageType}
               label="Message Type"
               margin="normal"
@@ -117,7 +111,6 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
               }}
             />
             <TextField
-              contentEditable={false}
               value={capability.protocolVersion}
               label="Protocol Version"
               margin="normal"
@@ -169,7 +162,6 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
             }}
           >
             <TextField
-              contentEditable={false}
               value={capability.quadTree}
               label="Hash"
               margin="normal"
