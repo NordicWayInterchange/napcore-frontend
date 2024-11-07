@@ -150,7 +150,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
               </ListItem>
               {index < peerItems.length - 1 && <Divider />}
             </React.Fragment>
-          )) : <Box sx={{ display: "flex", justifyContent: "center", color: "#FF8C00", mb: '10px' }}>
+          )) : <Box sx={{ display: "flex", justifyContent: "center", color: "#E67600", mb: '10px' }}>
             <WarningAmberIcon sx={{mt: '-6px', fontWeight:"small" }}/>
             <Typography variant="body2" sx={{ml: '4px'}}>No peers in the network</Typography>
           </Box>
