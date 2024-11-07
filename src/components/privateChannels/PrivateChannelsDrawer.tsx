@@ -135,7 +135,6 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
                   <Typography>Endpoint</Typography>
                   <FormControl fullWidth>
                     <TextField
-                      contentEditable={false}
                       value={privateChannel.endpoint.host}
                       label={"Host"}
                       margin="normal"
@@ -146,7 +145,6 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
                       }}
                     />
                     <TextField
-                      contentEditable={false}
                       value={privateChannel.endpoint.port}
                       label="Port"
                       margin="normal"
@@ -155,7 +153,6 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
                       }}
                     />
                     <TextField
-                      contentEditable={false}
                       value={privateChannel.endpoint.queueName}
                       label="Queue name"
                       margin="normal"
@@ -172,21 +169,22 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
             <ListItem>
               <StyledCard variant={"outlined"}>
                 <Typography>Description</Typography>
-                <FormControl fullWidth>
-                  <TextField
-                    contentEditable={false}
-                    margin="normal"
-                    multiline
-                    value={privateChannel.description}
-                    rows={4}
-                    InputProps={{
-                      readOnly: true,
-                      endAdornment: (
-                        <ContentCopy value={privateChannel.description} />
-                      ),
-                    }}
-                  />
-                </FormControl>
+                <div>
+                  <FormControl fullWidth>
+                    <TextField
+                      margin="normal"
+                      multiline
+                      value={privateChannel.description || ""}
+                      rows={4}
+                      InputProps={{
+                        readOnly: true,
+                        endAdornment: (
+                          <ContentCopy value={privateChannel.description} />
+                        )
+                      }}
+                    />
+                  </FormControl>
+                </div>
               </StyledCard>
             </ListItem>
             <ListItem >
