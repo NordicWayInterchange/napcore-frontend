@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { StyledButton, StyledCard, StyledFormControl } from "@/components/shared/styles/StyledSelectorBuilder";
 import { IFormPrivateChannelInput } from "@/interface/IFormPrivateChanelInput";
 import { createPrivateChannel } from "@/lib/fetchers/internalFetchers";
+import CancelIcon from '@mui/icons-material/Cancel';
 
 const PrivateChannelsCreator = () => {
   const [feedback, setFeedback] = useState<IFeedback>({
@@ -130,6 +131,7 @@ const PrivateChannelsCreator = () => {
                       border: "1px solid",
                       borderColor: "sidebarBorderColor",
                     }}
+                    deleteIcon={<CancelIcon style={{ color: 'grey' }} />}
                     variant="outlined"
                   />
                 ))}
