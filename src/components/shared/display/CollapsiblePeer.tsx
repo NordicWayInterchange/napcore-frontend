@@ -23,6 +23,7 @@ import { styled } from "@mui/material/styles";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import CloseIcon from "@mui/icons-material/Close";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 
 type Props = {
   subItems: string[];
@@ -76,15 +77,16 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
     if (reason === "clickaway") {
       return;
     }
+    setFeedback({ feedback: false, message: "", severity: "success" });
   };
 
   const handleKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       event.preventDefault();
       try {
         await handleSaveClick();
       } catch (error) {
-        console.warn('Could not saveClick')
+        console.warn("Could not saveClick");
       }
     }
   };
@@ -135,14 +137,24 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
         <List>
           {peerItems.length > 0 ? peerItems.map((item, index) => (
             <React.Fragment key={index}>
-              <ListItem sx={{ display: "flex", justifyContent: "space-between"}}>
-                <ListItemText primary={item} sx={{
-                  wordBreak: "break-word",
-                  whiteSpace: "normal"
-                }} />
+              <ListItem>
+                <ListItemText primary={item}
+                              secondary={<Box sx={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                                width: "100%",
+                                ml: "1px",
+                                position: "relative",
+                                top: "-13px"
+                              }}><ContentCopy value={item} /></Box>}
+                              sx={{
+                                wordBreak: "break-word",
+                                whiteSpace: "normal"
+                              }}
+                />
                 <ListItemSecondaryAction>
-                  <IconButton
-                    onClick={() => handleDelete(index)}
+                  <IconButton sx={{ left: "13px" }}
+                              onClick={() => handleDelete(index)}
                   >
                     <DeleteIcon fontSize="medium" />
                   </IconButton>
@@ -150,36 +162,36 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
               </ListItem>
               {index < peerItems.length - 1 && <Divider />}
             </React.Fragment>
-          )) : <Box sx={{ display: "flex", justifyContent: "center", color: "#E67600", mb: '10px' }}>
-            <WarningAmberIcon sx={{mt: '-6px', fontWeight:"small" }}/>
-            <Typography variant="body2" sx={{ml: '4px'}}>No peers in the network</Typography>
+          )) : <Box sx={{ display: "flex", justifyContent: "center", color: "#E67600", mb: "10px" }}>
+            <WarningAmberIcon sx={{ mt: "-15px", fontWeight: "small" }} />
+            <Typography variant="body2" sx={{ ml: "4px", mt: "-10px" }}>No peers in the network</Typography>
           </Box>
           }
 
           {isAdding && (
             <ListItem sx={{ display: "flex", justifyContent: "space-between", paddingY: 1 }}>
-                <>
-                  <TextField
-                    fullWidth
-                    size="small"
-                    variant="outlined"
-                    placeholder="Enter a peer"
-                    value={newSubItem}
-                    onKeyDown={handleKeyDown}
-                    autoFocus
-                    onChange={(e) => setNewSubItem(e.target.value)}
-                  />
-                  <IconButton
-                    edge="end"
-                    aria-label="save"
-                    onClick={handleSaveClick}
-                  >
-                    <Box sx={{ display: "flex", gap: .75 }}>
-                      <SaveIcon fontSize="medium" />
-                      <CloseIcon fontSize="medium" onClick={handleCloseTextField} />
-                    </Box>
-                  </IconButton>
-                </>
+              <>
+                <TextField
+                  fullWidth
+                  size="small"
+                  variant="outlined"
+                  placeholder="Enter a peer"
+                  value={newSubItem}
+                  onKeyDown={handleKeyDown}
+                  autoFocus
+                  onChange={(e) => setNewSubItem(e.target.value)}
+                />
+                <IconButton
+                  edge="end"
+                  aria-label="save"
+                  onClick={handleSaveClick}
+                >
+                  <Box sx={{ display: "flex", gap: .75 }}>
+                    <SaveIcon fontSize="medium" />
+                    <CloseIcon fontSize="medium" onClick={handleCloseTextField} />
+                  </Box>
+                </IconButton>
+              </>
             </ListItem>
           )}
         </List>
@@ -187,7 +199,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
         <Box textAlign="center" sx={{ paddingY: 1, color: "primary.main" }}>
           {!isAdding && (
             <StyledButton
-              sx={{ my: 1, boxShadow: 2, mt:-1 }}
+              sx={{ my: 1, boxShadow: 2, mt: -1 }}
               startIcon={<AddIcon />}
               variant="contained"
               color="buttonThemeColor"
