@@ -87,16 +87,22 @@ const PrivateChannelsCreator = () => {
       { ...rest, peers: peersWithoutWhitespace }
     );
 
-    setFeedback({
-      feedback: true,
-      message: response.ok
-        ? "Private channel successfully created"
-        : "Private channel could not be created, try again!",
-      severity: response.ok ? "success" : "warning"
-    });
-
     if (response.ok) {
+      setFeedback({
+        feedback: true,
+        message: "Private channel successfully created",
+        severity: "success",
+      });
       await router.push('/private-channels');
+    } else {
+      const errorData = await response.json();
+      const errorMessage = errorData.message || "Private channel could not be created, try again!";
+
+      setFeedback({
+        feedback: true,
+        message: errorMessage,
+        severity: "warning",
+      });
     }
   };
 

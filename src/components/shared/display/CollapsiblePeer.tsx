@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Card,
   CardContent,
@@ -43,6 +43,14 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
     severity: "success"
   });
 
+  const addButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    if (addButtonRef.current) {
+      addButtonRef.current.focus();
+    }
+  });
+
   const handleExpandClick = () => {
     setExpanded((prev) => !prev);
   };
@@ -54,16 +62,21 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
     if (response.ok) {
       refetchPrivateChannel();
       setPeerItems((peers) => peers.filter((_, i) => i !== index));
+      setFeedback({
+        feedback: true,
+        message: `${peerToDelete.trim()} successfully deleted`,
+        severity: "success"
+      });
+    } else {
+      const errorData = await response.json();
+      const errorMessage = errorData.message || `${peerToDelete.trim()} could not be deleted, try again!`;
+
+      setFeedback({
+        feedback: true,
+        message: errorMessage,
+        severity: "warning"
+      });
     }
-
-    setFeedback({
-      feedback: true,
-      message: response.ok
-        ? `${peerToDelete.trim()} successfully deleted`
-        : `${peerToDelete.trim()} could not be deleted, try again!`,
-      severity: response.ok ? "success" : "warning"
-    });
-
   };
 
   const handleAddClick = () => {
@@ -104,15 +117,21 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
       refetchPrivateChannel();
       setNewSubItem("");
       setIsAdding(false);
-    }
+      setFeedback({
+        feedback: true,
+        message: `${newSubItem.trim()} successfully added`,
+        severity: "success"
+      });
+    } else {
+      const errorData = await response.json();
+      const errorMessage = errorData.message || `${newSubItem.trim()} could not be added, try again!`;
 
-    setFeedback({
-      feedback: true,
-      message: response.ok
-        ? `${newSubItem.trim()} successfully added`
-        : `${newSubItem.trim()} could not be added, try again!`,
-      severity: response.ok ? "success" : "warning"
-    });
+      setFeedback({
+        feedback: true,
+        message: errorMessage,
+        severity: "warning"
+      });
+    }
 
   };
   const handleCloseTextField = () => {
@@ -138,7 +157,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
           {peerItems.length > 0 ? peerItems.map((item, index) => (
             <React.Fragment key={index}>
               <ListItem>
-                <ListItemText primary={item}
+                <ListItemText
                               primaryTypographyProps={{ component: "div" }}
                               secondary={<Box sx={{
                                 display: "flex",
@@ -148,10 +167,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
                                 position: "relative",
                                 top: "-13px"
                               }}><ContentCopy value={item} /></Box>}
-                              sx={{
-                                wordBreak: "break-word",
-                                whiteSpace: "normal"
-                              }}
+                              secondaryTypographyProps={{ component: "div" }}
                 />
                 <ListItemSecondaryAction>
                   <IconButton sx={{ left: "13px" }}
@@ -200,6 +216,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
         <Box textAlign="center" sx={{ paddingY: 1, color: "primary.main" }}>
           {!isAdding && (
             <StyledButton
+              ref={addButtonRef}
               sx={{ my: 1, boxShadow: 2, mt: -1 }}
               startIcon={<AddIcon />}
               variant="contained"
