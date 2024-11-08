@@ -139,6 +139,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
             <React.Fragment key={index}>
               <ListItem>
                 <ListItemText primary={item}
+                              primaryTypographyProps={{ component: "div" }}
                               secondary={<Box sx={{
                                 display: "flex",
                                 justifyContent: "flex-end",
