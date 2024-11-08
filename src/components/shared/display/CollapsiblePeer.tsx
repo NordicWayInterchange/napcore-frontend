@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Card,
   CardContent,
@@ -41,6 +41,14 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
     feedback: false,
     message: "",
     severity: "success"
+  });
+
+  const addButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    if (addButtonRef.current) {
+      addButtonRef.current.focus();
+    }
   });
 
   const handleExpandClick = () => {
@@ -148,6 +156,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
                                 position: "relative",
                                 top: "-13px"
                               }}><ContentCopy value={item} /></Box>}
+                              secondaryTypographyProps={{ component: "div" }}
                               sx={{
                                 wordBreak: "break-word",
                                 whiteSpace: "normal"
@@ -200,6 +209,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
         <Box textAlign="center" sx={{ paddingY: 1, color: "primary.main" }}>
           {!isAdding && (
             <StyledButton
+              ref={addButtonRef}
               sx={{ my: 1, boxShadow: 2, mt: -1 }}
               startIcon={<AddIcon />}
               variant="contained"
