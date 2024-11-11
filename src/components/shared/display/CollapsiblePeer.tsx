@@ -158,11 +158,9 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
             <React.Fragment key={index}>
               <ListItem>
                 <ListItemText primary={
-                  <Box sx={primaryContainerStyle}>
                     <Box sx={primaryTextStyle}>
                       {item}
                     </Box>
-                  </Box>
                 }
                               primaryTypographyProps={{ component: "div" }}
                               secondary={<Box sx={secondaryContainerStyle}><ContentCopy value={item} /></Box>}
@@ -176,7 +174,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListItem>
-              {index < peerItems.length - 1 && <Divider />}
+              {index < peerItems.length - 1 && <Divider sx={{ borderStyle: 'dashed', borderWidth: 1,  marginX: 2 }} />}
             </React.Fragment>
           )) : <Box sx={{ display: "flex", justifyContent: "center", color: "#E67600", mb: "10px" }}>
             <WarningAmberIcon sx={{ mt: "-15px", fontWeight: "small" }} />
@@ -251,13 +249,6 @@ const StyledButton = styled(Button)(({}) => ({
   height: 40,
   width: "200px"
 }));
-
-const primaryContainerStyle = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  width: "100%"
-};
 
 const primaryTextStyle = {
   maxWidth: "calc(100% - 32px)",
