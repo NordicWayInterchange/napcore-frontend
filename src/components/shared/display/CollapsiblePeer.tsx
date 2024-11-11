@@ -11,7 +11,7 @@ import {
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
-  Button, TextField, InputAdornment
+  Button, TextField
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -158,35 +158,14 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
             <React.Fragment key={index}>
               <ListItem>
                 <ListItemText primary={
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      width: "100%"
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        maxWidth: "calc(100% - 32px)",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap"
-                      }}
-                    >
+                  <Box sx={primaryContainerStyle}>
+                    <Box sx={primaryTextStyle}>
                       {item}
                     </Box>
                   </Box>
                 }
                               primaryTypographyProps={{ component: "div" }}
-                              secondary={<Box sx={{
-                                display: "flex",
-                                justifyContent: "flex-end",
-                                width: "100%",
-                                ml: "1px",
-                                position: "relative",
-                                top: "-13px"
-                              }}><ContentCopy value={item} /></Box>}
+                              secondary={<Box sx={secondaryContainerStyle}><ContentCopy value={item} /></Box>}
                               secondaryTypographyProps={{ component: "div" }}
                 />
                 <ListItemSecondaryAction>
@@ -217,15 +196,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
                   onKeyDown={handleKeyDown}
                   autoFocus
                   onChange={(e) => setNewSubItem(e.target.value)}
-                  InputProps={{
-                    style: {
-                      color: 'sidebarBorderColor',
-                      backgroundColor: '#f9f9f9',
-                      padding: '5px 12px',
-                      borderRadius: '8px',
-                      boxShadow: '5',
-                    },
-                  }}
+                  InputProps={textFieldInputProps}
                   sx={textFieldSx}
                 />
                 <IconButton
@@ -281,6 +252,29 @@ const StyledButton = styled(Button)(({}) => ({
   width: "200px"
 }));
 
+const primaryContainerStyle = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  width: "100%"
+};
+
+const primaryTextStyle = {
+  maxWidth: "calc(100% - 32px)",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap"
+};
+
+const secondaryContainerStyle = {
+  display: "flex",
+  justifyContent: "flex-end",
+  width: "100%",
+  ml: "1px",
+  position: "relative",
+  top: "-13px"
+}
+
 const textFieldSx = {
   "& .MuiOutlinedInput-root": {
     "&.Mui-focused fieldset": {
@@ -291,3 +285,13 @@ const textFieldSx = {
     color: 'sidebarBorderColor',
   },
 };
+
+const textFieldInputProps = {
+  style: {
+    color: 'sidebarBorderColor',
+    backgroundColor: '#f9f9f9',
+    padding: '5px 12px',
+    borderRadius: '8px',
+    boxShadow: '5',
+  },
+}
