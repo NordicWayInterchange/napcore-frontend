@@ -11,7 +11,7 @@ import {
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
-  Button, TextField
+  Button, TextField, InputAdornment
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -210,13 +210,23 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
               <>
                 <TextField
                   fullWidth
+                  label="Enter a peer"
                   size="small"
                   variant="outlined"
-                  placeholder="Enter a peer"
                   value={newSubItem}
                   onKeyDown={handleKeyDown}
                   autoFocus
                   onChange={(e) => setNewSubItem(e.target.value)}
+                  InputProps={{
+                    style: {
+                      color: 'sidebarBorderColor',
+                      backgroundColor: '#f9f9f9',
+                      padding: '5px 12px',
+                      borderRadius: '8px',
+                      boxShadow: '5',
+                    },
+                  }}
+                  sx={textFieldSx}
                 />
                 <IconButton
                   edge="end"
@@ -262,6 +272,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
 };
 
 export default CollapsiblePeer;
+
 const StyledButton = styled(Button)(({}) => ({
   borderRadius: 100,
   textTransform: "none",
@@ -269,3 +280,14 @@ const StyledButton = styled(Button)(({}) => ({
   height: 40,
   width: "200px"
 }));
+
+const textFieldSx = {
+  "& .MuiOutlinedInput-root": {
+    "&.Mui-focused fieldset": {
+      borderColor: 'sidebarBorderColor',
+    },
+  },
+  "& .MuiInputLabel-root.Mui-focused": {
+    color: 'sidebarBorderColor',
+  },
+};
