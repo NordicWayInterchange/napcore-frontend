@@ -158,25 +158,30 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
             <React.Fragment key={index}>
               <ListItem>
                 <ListItemText primary={
-                    <Box sx={primaryTextStyle}>
-                      {item}
-                    </Box>
+                  <Box sx={primaryTextStyle}>
+                    {item}
+                  </Box>
                 }
                               primaryTypographyProps={{ component: "div" }}
                               secondary={<Box sx={secondaryContainerStyle}><ContentCopy value={item} /></Box>}
                               secondaryTypographyProps={{ component: "div" }}
                 />
                 <ListItemSecondaryAction>
-                  <IconButton sx={{ left: "13px" }}
-                              onClick={() => handleDelete(index)}
-                  >
+                  <IconButton sx={{ left: "13px", position: "relative", top: "-13px" }}
+                              onClick={() => handleDelete(index)}>
                     <DeleteIcon fontSize="medium" />
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListItem>
-              {index < peerItems.length - 1 && <Divider sx={{ borderStyle: 'dashed', borderWidth: 1,  marginX: 2 }} />}
+              {index < peerItems.length - 1 && <Divider sx={{
+                borderStyle: "dashed", borderWidth: 1, marginX: 2, position: "relative",
+                top: "-13px"
+              }} />}
             </React.Fragment>
-          )) : <Box sx={{ display: "flex", justifyContent: "center", color: "#E67600", mb: "10px" }}>
+          )) : <Box sx={{
+            display: "flex", justifyContent: "center", color: "#E67600", mb: "10px",
+            position: "relative", top: "-13px"
+          }}>
             <WarningAmberIcon sx={{ mt: "-15px", fontWeight: "small" }} />
             <Typography variant="body2" sx={{ ml: "4px", mt: "-10px" }}>No peers in the network</Typography>
           </Box>
@@ -193,6 +198,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
                   value={newSubItem}
                   onKeyDown={handleKeyDown}
                   autoFocus
+                  inputProps={{ maxLength: 255 }}
                   onChange={(e) => setNewSubItem(e.target.value)}
                   InputProps={textFieldInputProps}
                   sx={textFieldSx}
@@ -202,7 +208,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
                   aria-label="save"
                   onClick={handleSaveClick}
                 >
-                  <Box sx={{ display: "flex", gap: .75 }}>
+                  <Box sx={{ display: "flex", gap: .75, position: "relative", top: "-10px" }}>
                     <SaveIcon fontSize="medium" />
                     <CloseIcon fontSize="medium" onClick={handleCloseTextField} />
                   </Box>
@@ -216,7 +222,10 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
           {!isAdding && (
             <StyledButton
               ref={addButtonRef}
-              sx={{ my: 1, boxShadow: 2, mt: -1 }}
+              sx={{
+                my: 1, boxShadow: 2, mt: -1, position: "relative",
+                top: "-13px"
+              }}
               startIcon={<AddIcon />}
               variant="contained"
               color="buttonThemeColor"
@@ -254,7 +263,9 @@ const primaryTextStyle = {
   maxWidth: "calc(100% - 32px)",
   overflow: "hidden",
   textOverflow: "ellipsis",
-  whiteSpace: "nowrap"
+  whiteSpace: "nowrap",
+  position: "relative",
+  top: "-13px"
 };
 
 const secondaryContainerStyle = {
@@ -263,26 +274,31 @@ const secondaryContainerStyle = {
   width: "100%",
   ml: "1px",
   position: "relative",
-  top: "-13px"
-}
+  top: "-25px"
+};
 
 const textFieldSx = {
   "& .MuiOutlinedInput-root": {
     "&.Mui-focused fieldset": {
-      borderColor: 'sidebarBorderColor',
+      borderColor: "sidebarBorderColor"
     },
+    "&:hover": {
+      boxShadow: "3"
+    }
   },
   "& .MuiInputLabel-root.Mui-focused": {
-    color: 'sidebarBorderColor',
+    color: "sidebarBorderColor"
   },
+  position: "relative",
+  top: "-10px"
 };
 
 const textFieldInputProps = {
   style: {
-    color: 'sidebarBorderColor',
-    backgroundColor: '#f9f9f9',
-    padding: '5px 12px',
-    borderRadius: '8px',
-    boxShadow: '5',
-  },
-}
+    color: "sidebarBorderColor",
+    backgroundColor: "#f9f9f9",
+    padding: "5px 12px",
+    borderRadius: "8px",
+    boxShadow: "5"
+  }
+};
