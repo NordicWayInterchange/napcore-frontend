@@ -151,9 +151,17 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
           />
         </IconButton>
       </CardContent>
-
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <List>
+        <List>    <Box
+          sx={{
+            height: "1.5px",
+            flexGrow: 1,
+            backgroundColor: "#E67600",
+            marginX: 2,
+            position: "relative",
+            top: "-15px"
+          }}
+        />
           {peerItems.length > 0 ? peerItems.map((item, index) => (
             <React.Fragment key={index}>
               <ListItem>
@@ -178,12 +186,9 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
                 top: "-13px"
               }} />}
             </React.Fragment>
-          )) : <Box sx={{
-            display: "flex", justifyContent: "center", color: "#E67600", mb: "10px",
-            position: "relative", top: "-13px"
-          }}>
-            <WarningAmberIcon sx={{ mt: "-15px", fontWeight: "small" }} />
-            <Typography variant="body2" sx={{ ml: "4px", mt: "-10px" }}>No peers in the network</Typography>
+          )) : <Box sx={warningStyle}>
+            <WarningAmberIcon sx={{  mr: "6px", mt: "-7px" }} />
+            <Typography variant="body2" sx={{ fontWeight: "500"}}>No peers in the network</Typography>
           </Box>
           }
 
@@ -280,14 +285,14 @@ const secondaryContainerStyle = {
 const textFieldSx = {
   "& .MuiOutlinedInput-root": {
     "&.Mui-focused fieldset": {
-      borderColor: "sidebarBorderColor"
+      borderColor: "gray"
     },
     "&:hover": {
-      boxShadow: "3"
+      boxShadow: "2"
     }
   },
   "& .MuiInputLabel-root.Mui-focused": {
-    color: "sidebarBorderColor"
+    color: "gray"
   },
   position: "relative",
   top: "-10px"
@@ -302,3 +307,16 @@ const textFieldInputProps = {
     boxShadow: "5"
   }
 };
+
+const warningStyle = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: "#E67600",
+  padding: "4px 12px",
+  borderRadius: "6px",
+  boxShadow: 1,
+  height: "40px",
+  backgroundColor: "#FFF7E6",
+  position: "relative", top: "-20px"
+}

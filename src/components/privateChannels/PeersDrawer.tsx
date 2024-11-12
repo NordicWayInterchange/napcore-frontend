@@ -83,7 +83,7 @@ const PeersDrawer = ({ peers, open, handleMoreClose, handleDeletedItem }: Props)
             </ListItem>
             <ListItem>
               <StyledHeaderBox>
-                <Typography>Subscribed private channel details</Typography>
+                <Typography>Private channel subscription details</Typography>
                 <Chip
                   color={
                     statusChips[
