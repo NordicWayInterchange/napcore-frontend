@@ -124,7 +124,8 @@ const PrivateChannelsCreator = () => {
           <StyledFormControl>
             <Box display="flex" alignItems="flex-start" p={1} borderRadius={1} border={1} flexWrap="wrap"
             sx={{borderColor: errors.peers ? 'red' : 'grey.300'}}>
-              <Typography color="textSecondary" sx={{ marginRight: '8px' }}>Peers *</Typography>
+              <Typography color="textSecondary" sx={{ marginRight: '8px',  position: "relative",
+                top: "3px"}}>Peers *</Typography>
 
               <Box display="flex" flexWrap="wrap" sx={{ gap: '8px', maxWidth: '100%' }}>
                 {getValues('peers').map((value, index) => (
