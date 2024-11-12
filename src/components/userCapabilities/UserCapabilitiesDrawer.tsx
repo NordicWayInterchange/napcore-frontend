@@ -66,9 +66,12 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
         severity: "success",
       });
     } else {
+      const errorData = await response.json();
+      const errorMessage = errorData.message || `Delivery could not be created, try again!`;
+
       setFeedback({
         feedback: true,
-        message: `Delivery could not be created, try again!`,
+        message: errorMessage,
         severity: "warning",
       });
     }

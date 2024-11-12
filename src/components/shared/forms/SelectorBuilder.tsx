@@ -146,19 +146,24 @@ const SelectorBuilder = (props: Props) => {
       bodyData
     );
 
-    setFeedback({
-      feedback: true,
-      message: response.ok
-        ? `${label} successfully created`
-        : `${label} could not be created, try again!`,
-      severity: response.ok ? "success" : "warning",
-    });
-
     if (response.ok) {
+      setFeedback({
+        feedback: true,
+        message: `${label} successfully created`,
+        severity: "success"
+      });
       await router.push(label === "Delivery" ? '/deliveries' : '/subscriptions');
+    } else {
+      const errorData = await response.json();
+      const errorMessage = errorData.message || `${label} could not be created, try again!`;
+
+      setFeedback({
+        feedback: true,
+        message: errorMessage,
+        severity: "warning"
+      });
     }
   };
-
   const handleReset = () => {
     reset();
     setSelectedPublicationId('');

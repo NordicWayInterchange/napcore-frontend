@@ -49,9 +49,12 @@ export default function DeleteSubDialog(props: Props) {
         severity: "success",
       });
     } else {
+      const errorData = await response.json();
+      const errorMessage = errorData.message || `${text} could not be deleted, try again!`;
+
       setFeedback({
         feedback: true,
-        message: `${text} could not be deleted, try again!`,
+        message: errorMessage,
         severity: "warning",
       });
     }

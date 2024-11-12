@@ -103,16 +103,23 @@ const UserCapabilitiesCreator = () => {
       session?.user.commonName as string,
       payload
     );
-    setFeedback({
-      feedback: true,
-      message: response.ok
-        ? "Capability successfully created"
-        : "Capability could not be created, try again!",
-      severity: response.ok ? "success" : "warning"
-    });
 
     if (response.ok) {
+      setFeedback({
+        feedback: true,
+        message: "Capability successfully created",
+        severity: "success",
+      });
       await router.push('/capabilities');
+    } else {
+      const errorData = await response.json();
+      const errorMessage = errorData.message || "Capability could not be created, try again!";
+
+      setFeedback({
+        feedback: true,
+        message: errorMessage,
+        severity: "warning",
+      });
     }
   };
 

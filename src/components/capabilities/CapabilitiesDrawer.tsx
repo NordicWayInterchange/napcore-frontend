@@ -64,9 +64,12 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
         severity: "success",
       });
     } else {
+      const errorData = await response.json();
+      const errorMessage = errorData.message || "Subscription could not be created, try again!";
+
       setFeedback({
         feedback: true,
-        message: "Subscription could not be created, try again!",
+        message: errorMessage,
         severity: "warning",
       });
     }
