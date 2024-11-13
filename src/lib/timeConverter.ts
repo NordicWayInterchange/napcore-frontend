@@ -1,11 +1,11 @@
 /**
- * @Description Converts Unix Epoch to a readable date
+ * @Description Converts Unix Epoch to a readable date and time
  * @param time - Unix Epoch
- * @returns {string} - Readable date
+ * @returns {string} - Readable date and time
  */
 export const timeConverter = (time: number): string => {
   const date = new Date(time * 1000);
-  const locale = navigator.language; //default locale of the user's browser
+  const locale = navigator.language;
 
   const localeDateString = date.toLocaleDateString(locale, {
     day: "2-digit",
@@ -20,5 +20,5 @@ export const timeConverter = (time: number): string => {
     hour12: false
   });
 
-  return `${localeDateString}  ${localeTimeString}`;
+  return `${localeDateString} - ${localeTimeString}`;
 };

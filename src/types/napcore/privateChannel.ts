@@ -2,9 +2,7 @@ export enum PrivateChannelStatus {
   REQUESTED = "requested",
   CREATED = "created",
   ILLEGAL = "illegal",
-  NOT_VALID = "not_valid",
-  NO_OVERLAP = "no_overlap",
-  RESUBSCRIBE = "resubscribe",
+  NOT_VALID = "not_valid"
 }
 
 export type EndPoint = {

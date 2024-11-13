@@ -19,7 +19,7 @@ const PrivateChannelsCreator = () => {
   });
   const { data: session } = useSession();
   const router = useRouter();
-  const [inputValue, setInputValue] = useState<string>(''); // Current input value
+  const [inputValue, setInputValue] = useState<string>('');
 
   const {
     handleSubmit,
