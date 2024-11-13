@@ -196,10 +196,7 @@ const SelectorBuilder = (props: Props) => {
     setOpen(false);
   };
 
-  const handleSnackClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
+  const handleSnackClose = (_event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") {
       return;
     }

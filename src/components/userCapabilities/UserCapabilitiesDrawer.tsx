@@ -38,7 +38,7 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
   const selector = `(publicationId = '${capability.publicationId}')`;
 
   const handleSnackClose = (
-    event?: React.SyntheticEvent | Event,
+    _event?: React.SyntheticEvent | Event,
     reason?: string
   ) => {
     if (reason === "clickaway") {
