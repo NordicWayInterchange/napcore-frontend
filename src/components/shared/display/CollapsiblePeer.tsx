@@ -83,10 +83,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
     setIsAdding(true);
   };
 
-  const handleSnackClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
+  const handleSnackClose = (_event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") {
       return;
     }
@@ -152,45 +149,27 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
         </IconButton>
       </CardContent>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <List>    <Box
-          sx={{
-            height: "1.5px",
-            flexGrow: 1,
-            backgroundColor: "#E67600",
-            marginX: 2,
-            position: "relative",
-            top: "-15px"
-          }}
-        />
+        <List>
+          <Box sx={peerListStyle} />
           {peerItems.length > 0 ? peerItems.map((item, index) => (
             <React.Fragment key={index}>
               <ListItem>
-                <ListItemText primary={
-                  <Box sx={primaryTextStyle}>
-                    {item}
-                  </Box>
-                }
+                <ListItemText primary={<Box sx={primaryTextStyle}>{item}</Box>}
                               primaryTypographyProps={{ component: "div" }}
                               secondary={<Box sx={secondaryContainerStyle}><ContentCopy value={item} /></Box>}
-                              secondaryTypographyProps={{ component: "div" }}
-                />
+                              secondaryTypographyProps={{ component: "div" }} />
                 <ListItemSecondaryAction>
-                  <IconButton sx={{ left: "13px", position: "relative", top: "-13px" }}
-                              onClick={() => handleDelete(index)}>
+                  <IconButton sx={{ left: "13px", position: "relative", top: "-13px" }} onClick={() => handleDelete(index)}>
                     <DeleteIcon fontSize="medium" />
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListItem>
-              {index < peerItems.length - 1 && <Divider sx={{
-                borderStyle: "dashed", borderWidth: 1, marginX: 2, position: "relative",
-                top: "-13px"
-              }} />}
+              {index < peerItems.length - 1 && <Divider sx={{ borderStyle: "dashed", borderWidth: 1, marginX: 2, position: "relative", top: "-13px" }} />}
             </React.Fragment>
           )) : <Box sx={warningStyle}>
-            <WarningAmberIcon sx={{  mr: "6px", mt: "-7px" }} />
-            <Typography variant="body2" sx={{ fontWeight: "500"}}>No peers in the network</Typography>
-          </Box>
-          }
+            <WarningAmberIcon sx={{ mr: "6px", mt: "-7px" }} />
+            <Typography variant="body2" sx={{ fontWeight: "500" }}>No peers in the network</Typography>
+          </Box>}
 
           {isAdding && (
             <ListItem sx={{ display: "flex", justifyContent: "space-between", paddingY: 1 }}>
@@ -319,4 +298,13 @@ const warningStyle = {
   height: "40px",
   backgroundColor: "#FFF7E6",
   position: "relative", top: "-20px"
-}
+};
+
+const peerListStyle = {
+  height: "1.5px",
+  flexGrow: 1,
+  backgroundColor: "#E67600",
+  marginX: 2,
+  position: "relative",
+  top: "-15px"
+};
