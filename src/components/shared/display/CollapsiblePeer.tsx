@@ -142,10 +142,21 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
           <Typography>Your peers</Typography>
         </Box>
         <IconButton onClick={handleExpandClick} size="small">
+          <Box sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: 35,
+              height: 35,
+              borderRadius: "50%",
+              border: "1px solid gray",
+              transition: "gray 0.3s, border 0.3s",
+            }}>
           <ExpandMoreIcon
             fontSize="small"
             sx={{ transform: expanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s" }}
           />
+          </Box>
         </IconButton>
       </CardContent>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
@@ -168,7 +179,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
             </React.Fragment>
           )) : <Box sx={warningStyle}>
             <WarningAmberIcon sx={{ mr: "6px", mt: "-7px" }} />
-            <Typography variant="body2" sx={{ fontWeight: "500" }}>No peers in the network</Typography>
+            <Typography variant="body2" sx={{ fontWeight: "500" }}>There is no peer for this private channel</Typography>
           </Box>}
 
           {isAdding && (
