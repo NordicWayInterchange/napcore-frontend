@@ -142,16 +142,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
           <Typography>Your peers</Typography>
         </Box>
         <IconButton onClick={handleExpandClick} size="small">
-          <Box sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: 35,
-              height: 35,
-              borderRadius: "50%",
-              border: "1px solid gray",
-              transition: "gray 0.3s, border 0.3s",
-            }}>
+          <Box sx={expandMoreStyle}>
           <ExpandMoreIcon
             fontSize="small"
             sx={{ transform: expanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s" }}
@@ -263,6 +254,17 @@ const primaryTextStyle = {
   top: "-13px"
 };
 
+const expandMoreStyle = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  width: 35,
+  height: 35,
+  borderRadius: "50%",
+  border: "1px solid gray",
+  transition: "#gray 0.3s, border 0.3s",
+}
+
 const secondaryContainerStyle = {
   display: "flex",
   justifyContent: "flex-end",
@@ -278,7 +280,7 @@ const textFieldSx = {
       borderColor: "gray"
     },
     "&:hover": {
-      boxShadow: "2"
+      boxShadow: "1"
     }
   },
   "& .MuiInputLabel-root.Mui-focused": {
