@@ -143,10 +143,10 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
         </Box>
         <IconButton onClick={handleExpandClick} size="small">
           <Box sx={expandMoreStyle}>
-          <ExpandMoreIcon
-            fontSize="small"
-            sx={{ transform: expanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s" }}
-          />
+            <ExpandMoreIcon
+              fontSize="small"
+              sx={{ transform: expanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s" }}
+            />
           </Box>
         </IconButton>
       </CardContent>
@@ -161,12 +161,14 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
                               secondary={<Box sx={secondaryContainerStyle}><ContentCopy value={item} /></Box>}
                               secondaryTypographyProps={{ component: "div" }} />
                 <ListItemSecondaryAction>
-                  <IconButton sx={{ left: "13px", position: "relative", top: "-13px" }} onClick={() => handleDelete(index)}>
+                  <IconButton sx={{ left: "13px", position: "relative", top: "-13px" }}
+                              onClick={() => handleDelete(index)}>
                     <DeleteIcon fontSize="medium" />
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListItem>
-              {index < peerItems.length - 1 && <Divider sx={{ borderStyle: "dashed", borderWidth: 1, marginX: 2, position: "relative", top: "-13px" }} />}
+              {index < peerItems.length - 1 && <Divider
+                sx={{ borderStyle: "dashed", borderWidth: 1, marginX: 2, position: "relative", top: "-13px" }} />}
             </React.Fragment>
           )) : <Box sx={warningStyle}>
             <WarningAmberIcon sx={{ mr: "6px", mt: "-7px" }} />
@@ -189,16 +191,20 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
                   InputProps={textFieldInputProps}
                   sx={textFieldSx}
                 />
-                <IconButton
-                  edge="end"
-                  aria-label="save"
-                  onClick={handleSaveClick}
-                >
-                  <Box sx={{ display: "flex", gap: .75, position: "relative", top: "-10px" }}>
+                <Box sx={{
+                  display: "flex",
+                  position: "relative",
+                  right: "-13px",
+                  top: "-11px",
+                  alignItems: "center"
+                }}>
+                  <IconButton onClick={handleSaveClick} sx={{ marginRight: "-8px" }}>
                     <SaveIcon fontSize="medium" />
-                    <CloseIcon fontSize="medium" onClick={handleCloseTextField} />
-                  </Box>
-                </IconButton>
+                  </IconButton>
+                  <IconButton onClick={handleCloseTextField}>
+                    <CloseIcon fontSize="medium" />
+                  </IconButton>
+                </Box>
               </>
             </ListItem>
           )}
@@ -263,7 +269,9 @@ const expandMoreStyle = {
   borderRadius: "50%",
   border: "1px solid gray",
   transition: "#gray 0.3s, border 0.3s",
-}
+  position: "relative",
+  right: "-8px"
+};
 
 const secondaryContainerStyle = {
   display: "flex",
