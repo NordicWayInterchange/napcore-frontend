@@ -186,6 +186,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
                   value={newSubItem}
                   onKeyDown={handleKeyDown}
                   autoFocus
+                  aria-hidden="false"
                   inputProps={{ maxLength: 255 }}
                   onChange={(e) => setNewSubItem(e.target.value)}
                   InputProps={textFieldInputProps}
