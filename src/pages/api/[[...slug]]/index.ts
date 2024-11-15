@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { SubscriptionsSubscription } from "@/types/napcore/subscription";
 import {
-  addNapcoreCertificates, addNapcoreDeliveries,
+  addNapcoreCertificates,
+  addNapcoreDeliveries,
   addNapcoreCapabilities,
   addNapcoreSubscriptions,
   basicDeleteFunction,
@@ -10,14 +11,25 @@ import {
   basicGetParams,
   basicPostFunction,
   deleteNapcoreDeliveries,
-  basicPostParams, deleteNapcoreCapabilities,
+  basicPostParams,
+  deleteNapcoreCapabilities,
   deleteNapcoreSubscriptions,
   extendedGetFunction,
   fetchNapcoreCapabilities,
-  extendedGetParams, fetchNapcoreDeliveries,
+  extendedGetParams,
+  fetchNapcoreDeliveries,
   fetchNapcoreDeliveriesCapabilities,
   fetchNapcoreNetworkCapabilities,
-  fetchNapcoreSubscriptions, fetchNapcorePublicationIds
+  fetchNapcoreSubscriptions,
+  fetchNapcorePublicationIds,
+  fetchNapcorePrivateChannels,
+  addNapcorePrivateChannels,
+  fetchNapcorePrivateChannelsPeers,
+  basicPatchParams,
+  basicPatchFunction,
+  deleteNapcoreMyselfFromSubscribedPrivateChannel,
+  deleteNapcorePeerFromExistingPrivateChannel,
+  deleteNapcorePrivateChannels, addNapcorePeerToExistingPrivateChannel
 } from "@/lib/fetchers/interchangeConnector";
 import { ExtendedCapability } from "@/types/capability";
 import { Capability, Publicationids } from "@/types/napcore/capability";
@@ -28,6 +40,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { DeliveriesDelivery } from "@/types/napcore/delivery";
 import { ExtendedDelivery } from "@/types/delivery";
+import { PrivateChannel, PrivateChannelPeers } from "@/types/napcore/privateChannel";
 const logger = require("../../../lib/logger");
 
 const fetchCapabilityCounter = async (params: basicGetParams) => {
@@ -104,6 +117,55 @@ const fetchPublicationIds = async (params: extendedGetParams) => {
   const res = await fetchNapcorePublicationIds(params);
   const ids: Publicationids = await res.data;
   return [res.status, ids];
+};
+
+const fetchPrivateChannels = async (params: extendedGetParams) => {
+  const res = await fetchNapcorePrivateChannels(params);
+  const privateChannels: PrivateChannel = await res.data;
+  return [res.status, privateChannels];
+};
+
+const fetchPeers = async (params: extendedGetParams) => {
+  const res = await fetchNapcorePrivateChannelsPeers(params);
+  const privateChannelsPeers: PrivateChannelPeers = await res.data;
+  return [res.status, privateChannelsPeers];
+};
+
+export const addPrivateChannels: basicPostFunction = async (
+  params: basicPostParams
+) => {
+  const res = await addNapcorePrivateChannels(params);
+  const privateChannels: PrivateChannel = await res.data;
+  return [res.status, privateChannels];
+};
+
+export const removePrivateChannel: basicDeleteFunction = async (
+  params: basicDeleteParams
+) => {
+  const res = await deleteNapcorePrivateChannels(params);
+  return [res.status];
+};
+
+export const removeMyselfFromSubscribedPrivateChannel: basicDeleteFunction = async (
+  params: basicDeleteParams
+) => {
+  const res = await deleteNapcoreMyselfFromSubscribedPrivateChannel(params);
+  return [res.status];
+};
+
+export const RemovePeerFromExistingPrivateChannel: basicDeleteFunction = async (
+  params: basicDeleteParams
+) => {
+  const res = await deleteNapcorePeerFromExistingPrivateChannel(params);
+  return [res.status];
+};
+
+export const addPeer: basicPatchFunction = async (
+  params: basicPatchParams
+) => {
+  const res = await addNapcorePeerToExistingPrivateChannel(params);
+  const addedPeers: PrivateChannelPeers = await res.data;
+  return [res.status, addedPeers];
 };
 
 export const addUserCapabilities: basicPostFunction = async (
@@ -183,9 +245,16 @@ const getPaths: {
   "delivery-count": fetchDeliveriesCapabilityCounter,
   "deliveries/capabilities": fetchDeliveriesCapabilities,
   "user/capabilities": fetchUserCapabilities,
-  "capabilities/publicationids": fetchPublicationIds
+  "capabilities/publicationids": fetchPublicationIds,
+  "private-channels": fetchPrivateChannels,
+  "private-channels/peer": fetchPeers,
 };
 
+const patchPaths: {
+  [key: string]: basicPatchFunction;
+} = {
+  "privatechannels/peer" : addPeer
+};
 // all post methods on path
 const postPaths: {
   [key: string]: basicPostFunction;
@@ -193,7 +262,8 @@ const postPaths: {
   subscriptions: addSubscriptions,
   deliveries: addDeliveries,
   "x509/csr": addCerticates,
-  capabilities: addUserCapabilities
+  capabilities: addUserCapabilities,
+  privatechannels: addPrivateChannels,
 };
 
 // all delete methods on path
@@ -203,18 +273,22 @@ const deletePaths: {
   subscriptions: removeSubscription,
   deliveries: removeDelivery,
   capabilities: removeUserCapability,
+  privatechannels: removePrivateChannel,
+  "privatechannels/peer/single": removeMyselfFromSubscribedPrivateChannel,
+  "privatechannels/peer/double": RemovePeerFromExistingPrivateChannel
 };
-
 const findHandler: (params: any) =>
   | {
       fn:
         | basicDeleteFunction
         | basicGetFunction
         | basicPostFunction
+        | basicPatchFunction
         | extendedGetFunction;
       params:
         | basicDeleteParams
         | basicPostParams
+        | basicPatchParams
         | basicGetParams
         | extendedGetParams;
     }
@@ -246,13 +320,42 @@ const findHandler: (params: any) =>
       if (Object.keys(postPaths).includes(urlPath)) {
         return { fn: postPaths[urlPath], params: { actorCommonName, body } };
       }
-    case "DELETE":
-      if (path.length > 1 && Object.keys(deletePaths).includes(path[0])) {
+    case "PATCH": {
+      const aliasMatch = path[0];
+      const idMatch = path[1];
+      if (aliasMatch === "privatechannels" && idMatch === "peer") {
+        return { fn: patchPaths["privatechannels/peer"], params: { actorCommonName, pathParam: path[2], body } };
+      } else {
+        console.warn(`Path length ${path.length} does not match expected values for 'privatechannels/peer'`);
+      }
+    }
+    case "DELETE": {
+      const aliasMatch = path[0];
+      const idMatch = path[1];
+
+      if (aliasMatch === "privatechannels" && idMatch === "peer") {
+        if (path.length === 3) {
+          return {
+            fn: deletePaths["privatechannels/peer/single"],
+            params: { actorCommonName, pathParam: path[2] },
+          };
+        } else if (path.length === 4) {
+          return {
+            fn: deletePaths["privatechannels/peer/double"],
+            params: { actorCommonName, firstParam: path[2], secondParam: path[3] },
+          };
+        } else {
+          console.warn(`Path length ${path.length} does not match expected values for 'privatechannels/peer'`);
+        }
+      }
+
+      if (Object.keys(deletePaths).includes(aliasMatch)) {
         return {
-          fn: deletePaths[path[0]],
-          params: { actorCommonName, pathParam: path[1] },
+          fn: deletePaths[aliasMatch],
+          params: { actorCommonName, pathParam: idMatch },
         };
       }
+    }
     default:
       return {};
   }

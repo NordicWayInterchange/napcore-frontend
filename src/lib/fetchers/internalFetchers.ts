@@ -49,6 +49,54 @@ export const deleteDeliveries = (
   });
 };
 
+export const createPrivateChannel = (actorCommonName: string, body: Object) => {
+  return fetch(`/api/${actorCommonName}/privatechannels`, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+};
+
+export const addPeerToExistingPrivateChannel = (actorCommonName: string, privateChannelId: string, body: Object) => {
+  return fetch(`/api/${actorCommonName}/privatechannels/peer/${privateChannelId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+};
+
+export const deletePrivateChannel = (
+  actorCommonName: string,
+  privateChannelId: string
+) => {
+  return fetch(`/api/${actorCommonName}/privatechannels/${privateChannelId}`, {
+    method: "delete",
+  });
+};
+
+export const deletePeerFromExistingPrivateChannel = (
+  actorCommonName: string,
+  privateChannelId: string,
+  peerName: string,
+) => {
+  return fetch(`/api/${actorCommonName}/privatechannels/peer/${privateChannelId}/${peerName}`, {
+    method: "delete",
+  });
+};
+
+export const deleteMyselfFromSubscribedPrivateChannel = (
+  actorCommonName: string,
+  privateChannelId: string
+) => {
+  return fetch(`/api/${actorCommonName}/privatechannels/peer/${privateChannelId}`, {
+    method: "delete",
+  });
+};
+
 export const createUserCapability = (actorCommonName: string, body: Object) => {
   return fetch(`/api/${actorCommonName}/capabilities`, {
     method: "post",

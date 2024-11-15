@@ -11,8 +11,10 @@ export const BreadcrumbNavigation = (props: Props) => {
   const { text} = props;
 
   const getUrl = () => {
-    return text === 'Subscriptions' ? "/subscriptions" : text ==='Deliveries' ?
-      '/deliveries' : '/capabilities';
+    return text === 'Subscriptions' ? "/subscriptions" :
+           text === 'Deliveries' ? '/deliveries' :
+           text === 'Private channels' ? '/private-channels' :
+             '/capabilities';
   };
 
   return (

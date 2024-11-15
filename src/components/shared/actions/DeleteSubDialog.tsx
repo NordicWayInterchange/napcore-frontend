@@ -8,7 +8,12 @@ import {
   DialogTitle,
   Divider,
 } from "@mui/material";
-import { deleteDeliveries, deleteSubscriptions, deleteUserCapability } from "@/lib/fetchers/internalFetchers";
+import {
+  deleteDeliveries,
+  deleteMyselfFromSubscribedPrivateChannel, deletePrivateChannel,
+  deleteSubscriptions,
+  deleteUserCapability
+} from "@/lib/fetchers/internalFetchers";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import { useState } from "react";
 import { IFeedback } from "@/interface/IFeedback";
@@ -22,10 +27,12 @@ type Props = {
   text: string;
 };
 
-async function deleteArtifacts(artifactType: string, name: string, itemId: string) {
+async function deleteArtifacts(artifactType: string, name: string, itemId: string, peerId: string) {
   return await (artifactType === "Delivery" ? deleteDeliveries(name, itemId) :
     artifactType === "Subscription" ? deleteSubscriptions(name, itemId) :
-      deleteUserCapability(name, itemId));
+      artifactType === "Private channel" ? deletePrivateChannel(name, itemId) :
+      artifactType === "Subscribed private channel" ? deleteMyselfFromSubscribedPrivateChannel(name, itemId) :
+        deleteUserCapability(name, itemId));
 }
 
 export default function DeleteSubDialog(props: Props) {
@@ -37,8 +44,8 @@ export default function DeleteSubDialog(props: Props) {
     severity: "success",
   });
 
-  const handleDeletion = async (name: string, itemId: string, text: string) => {
-    const response = await deleteArtifacts(text, name, itemId);
+  const handleDeletion = async (name: string, itemId: string, text: string, peerId: string) => {
+    const response = await deleteArtifacts(text, name, itemId, peerId);
     handleDialog(false);
 
     if (response.ok) {
@@ -95,7 +102,7 @@ export default function DeleteSubDialog(props: Props) {
             variant="contained"
             color="depricatedLight"
             sx={{ borderRadius: 100, textTransform: "none" }}
-            onClick={() => handleDeletion(actorCommonName, itemId, text)}
+            onClick={() => handleDeletion(actorCommonName, itemId, text, "")}
             disableElevation
           >
             Yes, remove

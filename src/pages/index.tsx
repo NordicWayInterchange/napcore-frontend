@@ -15,6 +15,7 @@ import CellTowerIcon from "@mui/icons-material/CellTower";
 import LocalPostOfficeIcon from "@mui/icons-material/LocalPostOffice";
 import SettingsIcon from "@mui/icons-material/Settings";
 import PersonIcon from "@mui/icons-material/Person";
+import LockIcon from "@mui/icons-material/Lock";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -48,6 +49,12 @@ export default function Home() {
       icon: <LocalPostOfficeIcon />
     },
     {
+      header: "Private channels",
+      description: "View my private channels",
+      url: "/private-channels",
+      icon: <LockIcon />
+    },
+    {
       header: "Certificate",
       description: "Generate certificate",
       url: "/certificate",
@@ -73,7 +80,7 @@ export default function Home() {
               href={shortcut.url}
               style={{
                 textDecoration: "none",
-                marginRight: 20,
+                marginRight: 15,
                 marginTop: 10,
               }}
             >

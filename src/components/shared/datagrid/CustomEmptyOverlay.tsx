@@ -42,6 +42,14 @@ export const CustomEmptyOverlayUserCapabilites = () => {
   );
 };
 
+export const CustomEmptyOverlayPrivateChannels = () => {
+  return (
+    <StyledGridOverlay>
+      <StyledBox>No private channels in the network</StyledBox>
+    </StyledGridOverlay>
+  );
+};
+
 const StyledGridOverlay = styled("div")(({}) => ({
   display: "flex",
   flexDirection: "column",
