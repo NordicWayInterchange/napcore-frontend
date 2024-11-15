@@ -284,7 +284,7 @@ const textFieldSx = {
     }
   },
   "& .MuiInputLabel-root.Mui-focused": {
-    color: "gray"
+    color: "#444f55"
   },
   position: "relative",
   top: "-10px"

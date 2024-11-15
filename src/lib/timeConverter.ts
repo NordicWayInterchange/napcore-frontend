@@ -20,5 +20,5 @@ export const timeConverter = (time: number): string => {
     hour12: false
   });
 
-  return `${localeDateString} - ${localeTimeString}`;
+  return `${localeDateString}\u2003${localeTimeString}`;
 };
