@@ -149,9 +149,15 @@ export default function PrivateChannels() {
     },
     {
       ...dataGridTemplate,
+      field: "peers",
+      headerName: "Number of peers",
+      valueGetter: ({ value }) => value && value.length,
+    },
+    {
+      ...dataGridTemplate,
       field: "description",
       headerName: "Description",
-      flex: 3,
+      flex: 2,
     },
     {
       ...dataGridTemplate,
@@ -293,11 +299,11 @@ export default function PrivateChannels() {
         />
       </Box>
 
-      <Divider style={{ margin: '20px 0', visibility: 'hidden' }} />
+      <Divider style={{ margin: "20px 0", visibility: "hidden" }} />
       {hasPeersData && (
         <Box>
           <Subheading>My private channel subscriptions</Subheading>
-          <Divider style={{ margin: '5px 0', visibility: 'hidden' }} />
+          <Divider style={{ margin: "5px 0", visibility: "hidden" }} />
           <Box
             sx={{
               maxHeight: hasPeersData ? "400px": "hidden",
