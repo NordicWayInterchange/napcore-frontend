@@ -162,14 +162,14 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
                               secondary={<Box sx={secondaryContainerStyle}><ContentCopy value={item} /></Box>}
                               secondaryTypographyProps={{ component: "div" }} />
                 <Box>
-                  <IconButton sx={{ left: "13px", position: "relative", top: "-13px" }}
+                  <IconButton sx={{ left: "13px", position: "relative", top: "-15px" }}
                               onClick={() => handleDelete(index)}>
                     <DeleteIcon fontSize="medium" />
                   </IconButton>
                 </Box>
               </ListItem>
               {index < peerItems.length - 1 && <Divider
-                sx={{ borderStyle: "dashed", borderWidth: 1, marginX: 2, position: "relative", top: "-13px" }} />}
+                sx={{ borderStyle: "dashed", borderWidth: 1, marginX: 2, position: "relative", top: "-25px" }} />}
             </React.Fragment>
           )) : <Box sx={warningStyle}>
             <WarningAmberIcon sx={{ mr: "6px", mt: "-7px" }} />
@@ -193,7 +193,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
                   slotProps={{
                     input: {
                       inputProps: {
-                        maxLength: 255, // Set maxLength here
+                        maxLength: 255,
                       },
                       ...textFieldInputProps
                     },
@@ -203,7 +203,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
                   display: "flex",
                   position: "relative",
                   right: "-13px",
-                  top: "-11px",
+                  top: "-20px",
                   alignItems: "center"
                 }}>
                   <IconButton onClick={handleSaveClick} sx={{ marginRight: "-8px" }}>
@@ -224,7 +224,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
               ref={addButtonRef}
               sx={{
                 my: 1, boxShadow: 2, mt: -1, position: "relative",
-                top: "-13px"
+                top: "-25px"
               }}
               startIcon={<AddIcon />}
               variant="contained"
@@ -265,7 +265,8 @@ const primaryTextStyle = {
   textOverflow: "ellipsis",
   whiteSpace: "nowrap",
   position: "relative",
-  top: "-13px"
+  top: "-25px",
+  marginBottom: "-40px"
 };
 
 const expandMoreStyle = {
@@ -285,9 +286,9 @@ const secondaryContainerStyle = {
   display: "flex",
   justifyContent: "flex-end",
   width: "100%",
-  ml: "1px",
+  ml: "9px",
   position: "relative",
-  top: "-25px"
+  top: "-9px"
 };
 
 const textFieldSx = {
@@ -335,5 +336,5 @@ const peerListStyle = {
   backgroundColor: "#E67600",
   marginX: 2,
   position: "relative",
-  top: "-15px"
+  top: "-18px"
 };
