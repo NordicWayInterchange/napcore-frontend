@@ -16,10 +16,17 @@ export default function DataGrid(props: Props) {
         {...props}
         autoHeight
         disableRowSelectionOnClick={true}
-        sx={{ backgroundColor: "white",
+        sx={{
+          backgroundColor: "white",
           boxShadow: 1,
-          borderRadius: 1
-      }}
+          borderRadius: 1,
+          "& .MuiDataGrid-columnHeaderInner": {
+            borderBottom: "2px solid #dd7100", // Border on the header
+          },
+          "& .MuiDataGrid-columnHeaderTitle": {
+            fontWeight: "bold", // Bold text in the column header
+          },
+        }}
         initialState={{
           pagination: {
             paginationModel: {
@@ -37,14 +44,17 @@ export default function DataGrid(props: Props) {
 }
 
 const StyledDataGrid = styled(MuiDataGrid)(({}) => ({
+  "& .MuiDataGrid-columnHeaderInner": {
+    borderBottom: "2px solid #dd7100", // Apply border to the inner column header
+  },
+  "& .MuiDataGrid-columnHeaderTitle": {
+    fontWeight: "bold", // Apply bold title style
+  },
   "& .MuiDataGrid-cell:focus-within": {
     outline: "none",
   },
   "& .MuiDataGrid-columnHeader:focus-within": {
     outline: "none",
   },
-  "& .MuiDataGrid-columnHeader": {
-    borderBottom: '2px solid #dd7100',
-  },
-  "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
 }));
+

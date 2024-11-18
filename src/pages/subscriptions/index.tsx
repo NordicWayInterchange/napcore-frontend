@@ -82,7 +82,7 @@ export default function Subscriptions() {
       ...dataGridTemplate,
       field: "id",
       headerName: "ID",
-      valueGetter: ({value}) => value.substring(0, 8)
+      valueGetter: ({ value }: { value: string | undefined }) => value ? value.substring(0, 8) : '',
     },
     {
       ...dataGridTemplate,
