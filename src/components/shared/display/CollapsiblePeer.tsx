@@ -102,26 +102,27 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
   };
 
   const handleSaveClick = async () => {
-    if (newSubItem.trim() === "") return;
+    const cleanPeer = newSubItem.trim().replace(/[^a-zA-Z0-9.-]/g,'_');
+    if (cleanPeer === "") return;
     const response = await addPeerToExistingPrivateChannel(
       actorCommonName,
       privateChannelId,
-      { peerToAdd: newSubItem.trim() }
+      { peerToAdd: cleanPeer }
     );
 
     if (response.ok) {
-      setPeerItems((prevItems) => [...prevItems, newSubItem.trim()]);
+      setPeerItems((prevItems) => [...prevItems, cleanPeer]);
       refetchPrivateChannel();
       setNewSubItem("");
       setIsAdding(false);
       setFeedback({
         feedback: true,
-        message: `${newSubItem.trim()} successfully added`,
+        message: `${cleanPeer} successfully added`,
         severity: "success"
       });
     } else {
       const errorData = await response.json();
-      const errorMessage = errorData.message || `${newSubItem.trim()} could not be added, try again!`;
+      const errorMessage = errorData.message || `${cleanPeer} could not be added, try again!`;
 
       setFeedback({
         feedback: true,

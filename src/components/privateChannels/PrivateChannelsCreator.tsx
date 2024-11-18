@@ -37,7 +37,7 @@ const PrivateChannelsCreator = () => {
   });
 
   const addChip = () => {
-    const trimmedValue = inputValue.trim();
+    const trimmedValue = inputValue.trim().replace(/[^a-zA-Z0-9.-]/g,'_');
     if (trimmedValue && !getValues('peers').includes(trimmedValue)) {
       setValue('peers', [...getValues('peers'), trimmedValue], { shouldValidate: true });
       setInputValue('');

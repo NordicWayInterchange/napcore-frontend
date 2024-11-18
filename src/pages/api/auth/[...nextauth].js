@@ -25,8 +25,7 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async session({ session, token }) {
-      session.user.commonName = process.env.INTERCHANGE_PREFIX + token.email;
-
+      session.user.commonName = (process.env.INTERCHANGE_PREFIX + token.email).replace(/[^a-zA-Z0-9.\-]/g,'_');
       return session;
     },
   },
