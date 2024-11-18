@@ -10,7 +10,6 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListItemSecondaryAction,
   Button, TextField
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -162,12 +161,12 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
                               primaryTypographyProps={{ component: "div" }}
                               secondary={<Box sx={secondaryContainerStyle}><ContentCopy value={item} /></Box>}
                               secondaryTypographyProps={{ component: "div" }} />
-                <ListItemSecondaryAction>
+                <Box>
                   <IconButton sx={{ left: "13px", position: "relative", top: "-13px" }}
                               onClick={() => handleDelete(index)}>
                     <DeleteIcon fontSize="medium" />
                   </IconButton>
-                </ListItemSecondaryAction>
+                </Box>
               </ListItem>
               {index < peerItems.length - 1 && <Divider
                 sx={{ borderStyle: "dashed", borderWidth: 1, marginX: 2, position: "relative", top: "-13px" }} />}
@@ -189,10 +188,16 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
                   onKeyDown={handleKeyDown}
                   autoFocus
                   aria-hidden="false"
-                  inputProps={{ maxLength: 255 }}
                   onChange={(e) => setNewSubItem(e.target.value)}
-                  InputProps={textFieldInputProps}
                   sx={textFieldSx}
+                  slotProps={{
+                    input: {
+                      inputProps: {
+                        maxLength: 255, // Set maxLength here
+                      },
+                      ...textFieldInputProps
+                    },
+                  }}
                 />
                 <Box sx={{
                   display: "flex",
