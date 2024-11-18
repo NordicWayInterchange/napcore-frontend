@@ -24,6 +24,7 @@ import Snackbar from "@/components/shared/feedback/Snackbar";
 import CloseIcon from "@mui/icons-material/Close";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
+import { escapeString } from "@/lib/escapeString";
 
 type Props = {
   subItems: string[];
@@ -102,7 +103,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
   };
 
   const handleSaveClick = async () => {
-    const cleanPeer = newSubItem.trim().replace(/[^a-zA-Z0-9.-]/g,'_');
+    const cleanPeer = escapeString(newSubItem.trim());
     if (cleanPeer === "") return;
     const response = await addPeerToExistingPrivateChannel(
       actorCommonName,

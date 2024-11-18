@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import Auth0Provider from "next-auth/providers/auth0";
+import { escapeString } from "@/lib/escapeString";
 const logger = require("../../../lib/logger");
 
 export const authOptions = {
@@ -25,7 +26,7 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async session({ session, token }) {
-      session.user.commonName = (process.env.INTERCHANGE_PREFIX + token.email).replace(/[^a-zA-Z0-9.\-]/g,'_');
+      session.user.commonName = escapeString(process.env.INTERCHANGE_PREFIX + token.email);
       return session;
     },
   },
