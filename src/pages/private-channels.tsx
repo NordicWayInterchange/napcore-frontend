@@ -132,7 +132,7 @@ export default function PrivateChannels() {
       ...dataGridTemplate,
       field: "id",
       headerName: "ID",
-      valueGetter: ({value}) => value.substring(0, 8)
+      valueGetter: ({ value }: { value: string }) => value && value.substring(0, 8)
     },
     {
       ...dataGridTemplate,
@@ -151,7 +151,7 @@ export default function PrivateChannels() {
       ...dataGridTemplate,
       field: "peers",
       headerName: "Number of peers",
-      valueGetter: ({ value }) => value && value.length,
+      valueGetter: ({ value }: { value: string }) => value && value.length,
     },
     {
       ...dataGridTemplate,
@@ -193,7 +193,7 @@ export default function PrivateChannels() {
       ...dataGridTemplate,
       field: "id",
       headerName: "ID",
-      valueGetter: ({value}) => value.substring(0, 8)
+      valueGetter: ({ value }: { value: string }) =>  value && value.substring(0, 8)
     },
     {
       ...dataGridTemplate,
