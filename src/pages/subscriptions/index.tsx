@@ -82,7 +82,10 @@ export default function Subscriptions() {
       ...dataGridTemplate,
       field: "id",
       headerName: "ID",
-      valueGetter: ({ value }: { value: string | undefined }) => value ? value.substring(0, 8) : '',
+      renderCell: (params) => {
+        const value = params.row.id;
+        return value ? value.substring(0, 8) : '';
+      },
     },
     {
       ...dataGridTemplate,
@@ -111,7 +114,10 @@ export default function Subscriptions() {
       ...dataGridTemplate,
       field: "lastUpdatedTimestamp",
       headerName: "Last updated",
-      valueGetter: ({ value }) => value && timeConverter(value),
+      renderCell: (params) => {
+        const value = params.row.lastUpdatedTimestamp;
+        return value && timeConverter(value);
+      },
     },
     {
       ...dataGridTemplate,
