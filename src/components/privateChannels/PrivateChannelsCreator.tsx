@@ -10,6 +10,7 @@ import { StyledButton, StyledCard, StyledFormControl } from "@/components/shared
 import { IFormPrivateChannelInput } from "@/interface/IFormPrivateChanelInput";
 import { createPrivateChannel } from "@/lib/fetchers/internalFetchers";
 import CancelIcon from '@mui/icons-material/Cancel';
+import { escapeString } from "@/lib/escapeString";
 
 const PrivateChannelsCreator = () => {
   const [feedback, setFeedback] = useState<IFeedback>({
@@ -37,7 +38,7 @@ const PrivateChannelsCreator = () => {
   });
 
   const addChip = () => {
-    const trimmedValue = inputValue.trim();
+    const trimmedValue = escapeString(inputValue.trim());
     if (trimmedValue && !getValues('peers').includes(trimmedValue)) {
       setValue('peers', [...getValues('peers'), trimmedValue], { shouldValidate: true });
       setInputValue('');
