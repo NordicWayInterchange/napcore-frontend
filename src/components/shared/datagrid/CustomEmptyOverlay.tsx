@@ -29,7 +29,7 @@ export const CustomEmptyOverlayCapabilites = () => {
 export const CustomEmptyOverlayDeliveries = () => {
   return (
     <StyledGridOverlay>
-      <StyledBox>No deliveries in the network</StyledBox>
+      <StyledBox>No deliveries in the network, try creating one!</StyledBox>
     </StyledGridOverlay>
   );
 };
@@ -37,7 +37,7 @@ export const CustomEmptyOverlayDeliveries = () => {
 export const CustomEmptyOverlayUserCapabilites = () => {
   return (
     <StyledGridOverlay>
-      <StyledBox>No user capabilities in the network</StyledBox>
+      <StyledBox>No user capabilities in the network, try creating one!</StyledBox>
     </StyledGridOverlay>
   );
 };
@@ -45,7 +45,7 @@ export const CustomEmptyOverlayUserCapabilites = () => {
 export const CustomEmptyOverlayPrivateChannels = () => {
   return (
     <StyledGridOverlay>
-      <StyledBox>No private channels in the network</StyledBox>
+      <StyledBox>No private channels in the network, try creating one!</StyledBox>
     </StyledGridOverlay>
   );
 };
