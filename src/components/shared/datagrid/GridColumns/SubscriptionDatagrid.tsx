@@ -8,9 +8,9 @@ import { timeConverter } from "@/lib/timeConverter";
 export const SubscriptionDatagrid: GridColDef[] = [
   {
     ...dataGridTemplate,
-    /*flex: 0,*/
     field: "id",
     headerName: "ID",
+    valueGetter: ({value}) => value.substring(0, 8)
   },
   {
     ...dataGridTemplate,
