@@ -162,14 +162,14 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
                               secondary={<Box sx={secondaryContainerStyle}><ContentCopy value={item} /></Box>}
                               secondaryTypographyProps={{ component: "div" }} />
                 <Box>
-                  <IconButton sx={{ left: "13px", position: "relative", top: "-15px" }}
+                  <IconButton sx={{ left: "13px", position: "relative", top: "-16px" }}
                               onClick={() => handleDelete(index)}>
                     <DeleteIcon fontSize="medium" />
                   </IconButton>
                 </Box>
               </ListItem>
               {index < peerItems.length - 1 && <Divider
-                sx={{ borderStyle: "dashed", borderWidth: 1, marginX: 2, position: "relative", top: "-25px" }} />}
+                sx={{ borderStyle: "dashed", borderWidth: 1, marginX: 2, position: "relative", marginBottom: "-8px", top: "-20px" }} />}
             </React.Fragment>
           )) : <Box sx={warningStyle}>
             <WarningAmberIcon sx={{ mr: "6px", mt: "-7px" }} />
@@ -195,18 +195,18 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
                       inputProps: {
                         maxLength: 255,
                       },
-                      ...textFieldInputProps
+                      ...textFieldInputProps,
                     },
-                  }}
+                  } as any}
                 />
                 <Box sx={{
                   display: "flex",
                   position: "relative",
                   right: "-13px",
-                  top: "-20px",
+                  top: "-13px",
                   alignItems: "center"
                 }}>
-                  <IconButton onClick={handleSaveClick} sx={{ marginRight: "-8px" }}>
+                  <IconButton onClick={handleSaveClick} sx={{ marginRight: "-9px" }}>
                     <SaveIcon fontSize="medium" />
                   </IconButton>
                   <IconButton onClick={handleCloseTextField}>
@@ -224,7 +224,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
               ref={addButtonRef}
               sx={{
                 my: 1, boxShadow: 2, mt: -1, position: "relative",
-                top: "-25px"
+                top: "-15px"
               }}
               startIcon={<AddIcon />}
               variant="contained"
@@ -265,7 +265,7 @@ const primaryTextStyle = {
   textOverflow: "ellipsis",
   whiteSpace: "nowrap",
   position: "relative",
-  top: "-25px",
+  top: "-22px",
   marginBottom: "-40px"
 };
 
@@ -336,5 +336,5 @@ const peerListStyle = {
   backgroundColor: "#E67600",
   marginX: 2,
   position: "relative",
-  top: "-18px"
+  top: "-15px"
 };
