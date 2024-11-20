@@ -15,6 +15,7 @@ import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import React from "react";
 import { ExtendedCapability } from "@/types/capability";
 import { styled } from "@mui/material/styles";
+import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
 
 type Props = {
   capability: ExtendedCapability;
@@ -236,12 +237,6 @@ const StyledMenuItem = styled(MenuItem)(({}) => ({
       background: "white"
     }
   }
-}));
-
-const StyledButton = styled(Button)(({}) => ({
-  width: "150px",
-  textTransform: "none",
-  borderRadius: 100
 }));
 
 export default CapabilityDrawerForm;

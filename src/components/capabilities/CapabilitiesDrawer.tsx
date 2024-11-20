@@ -118,8 +118,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
               </StyledCard>
             </ListItem>
             <ListItem>
-              <Button
-                sx={{ borderRadius: 100, textTransform: "none" }}
+              <StyledButton
                 variant={"contained"}
                 color={"buttonThemeColor"}
                 disableElevation
@@ -128,7 +127,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                 }
               >
                 Subscribe
-              </Button>
+              </StyledButton>
             </ListItem>
           </List>
         </Box>
