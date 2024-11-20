@@ -36,7 +36,8 @@ export const SubscriptionDatagrid: GridColDef[] = [
   {
     ...dataGridTemplate,
     field: "description",
-    headerName: "Description"
+    headerName: "Description",
+    flex: 2
   },
   {
     ...dataGridTemplate,

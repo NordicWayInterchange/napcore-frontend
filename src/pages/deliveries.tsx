@@ -110,7 +110,8 @@ export default function Deliveries() {
     {
       ...dataGridTemplate,
       field: "description",
-      headerName: "Description"
+      headerName: "Description",
+      flex: 2
     },
     {
       ...dataGridTemplate,
