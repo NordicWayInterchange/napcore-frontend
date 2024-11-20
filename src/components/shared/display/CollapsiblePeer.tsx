@@ -24,6 +24,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { escapeString } from "@/lib/escapeString";
+import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
 
 type Props = {
   subItems: string[];
@@ -232,7 +233,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
               disableElevation
               onClick={handleAddClick}
             >
-              Add peer
+               Add peer
             </StyledButton>
           )}
         </Box>
@@ -248,14 +249,6 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
     </Card>
   );
 };
-
-const StyledButton = styled(Button)(({}) => ({
-  borderRadius: 100,
-  textTransform: "none",
-  marginLeft: 2,
-  height: 40,
-  width: "200px"
-}));
 
 const primaryTextStyle = {
   maxWidth: "calc(100% - 32px)",

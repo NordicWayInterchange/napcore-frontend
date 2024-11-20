@@ -201,7 +201,6 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
             <ListItem>
               <Button
                 sx={{
-                  borderRadius: 100,
                   textTransform: "none",
                 }}
                 variant={"contained"}
