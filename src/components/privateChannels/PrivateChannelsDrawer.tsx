@@ -1,7 +1,7 @@
 import {
   Box,
   Button, Card,
-  Drawer, FormControl, IconButton,
+  Drawer, FormControl, IconButton, InputAdornment,
   List,
   ListItem, ListItemText, TextField,
   Toolbar, Typography
@@ -126,28 +126,42 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
                       value={privateChannel.endpoint.host}
                       label={"Host"}
                       margin="normal"
-                      InputProps={{
-                        endAdornment: (
-                          <ContentCopy value={privateChannel.endpoint.host} />
-                        ),
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <ContentCopy value={privateChannel.endpoint.host} />
+                            </InputAdornment>
+                          ),
+                        },
                       }}
                     />
                     <TextField
                       value={privateChannel.endpoint.port}
                       label="Port"
                       margin="normal"
-                      InputProps={{
-                        endAdornment: <ContentCopy value={privateChannel.endpoint.port.toString()} />,
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <ContentCopy value={privateChannel.endpoint.port.toString()} />
+                            </InputAdornment>
+                          ),
+                        },
                       }}
                     />
                     <TextField
                       value={privateChannel.endpoint.queueName}
                       label="Queue name"
                       margin="normal"
-                      InputProps={{
-                        endAdornment: (
-                          <ContentCopy value={privateChannel.endpoint.queueName} />
-                        ),
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <ContentCopy value={privateChannel.endpoint.queueName} />
+                            </InputAdornment>
+                          ),
+                        },
                       }}
                     />
                   </FormControl>
@@ -164,11 +178,14 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
                       multiline
                       value={privateChannel.description || ""}
                       rows={4}
-                      InputProps={{
-                        readOnly: true,
-                        endAdornment: (
-                          <ContentCopy value={privateChannel.description} />
-                        )
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <ContentCopy value={privateChannel.description} />
+                            </InputAdornment>
+                          ),
+                        },
                       }}
                     />
                   </FormControl>
