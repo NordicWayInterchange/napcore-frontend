@@ -10,7 +10,7 @@ import {
   List,
   ListItem,
   ListItemText,
-  Button, TextField
+  TextField
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -18,7 +18,6 @@ import SaveIcon from "@mui/icons-material/Save";
 import { IFeedback } from "@/interface/IFeedback";
 import { addPeerToExistingPrivateChannel, deletePeerFromExistingPrivateChannel } from "@/lib/fetchers/internalFetchers";
 import AddIcon from "@mui/icons-material/Add";
-import { styled } from "@mui/material/styles";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import CloseIcon from "@mui/icons-material/Close";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
