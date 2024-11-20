@@ -18,12 +18,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
 import AddButton from "@/components/shared/actions/AddButton";
 import { performRefetch } from "@/lib/performRefetch";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Capabilities() {
   const { data: session } = useSession();
-  const { data, isLoading, remove, refetch } = useUserCapabilities(
+  const { data, isLoading, refetch } = useUserCapabilities(
     session?.user.commonName as string
   );
+  const queryClient = useQueryClient();
 
   const [userCapabilityRow, setUserCapabilityRow] = useState<ExtendedCapability>();
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
@@ -53,7 +55,7 @@ export default function Capabilities() {
 
   const handleClickClose = (close: boolean) => {
     setOpen(close);
-    remove();
+    queryClient.removeQueries({ queryKey: ['capabilities'] });
   };
 
   const handleOnRowClick = (params: any) => {

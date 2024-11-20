@@ -19,10 +19,11 @@ import CommonDrawer from "@/components/layout/CommonDrawer";
 import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
 import AddButton from "@/components/shared/actions/AddButton";
 import { performRefetch } from "@/lib/performRefetch";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Deliveries() {
   const { data: session } = useSession();
-  const { data, isLoading, remove, refetch } = useDeliveries(
+  const { data, isLoading, refetch } = useDeliveries(
     session?.user.commonName as string
   );
   const [open, setOpen] = useState<boolean>(false);
@@ -30,6 +31,7 @@ export default function Deliveries() {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const [shouldRefreshAfterDelete, setShouldRefreshAfterDelete] = useState<boolean>(false);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (isDeleted) {
@@ -66,7 +68,7 @@ export default function Deliveries() {
 
   const handleClickClose = (close: boolean) => {
     setOpen(close);
-    remove();
+    queryClient.removeQueries({ queryKey: ['deliveries'] });
   };
 
   const handleOnRowClick = (params: any) => {

@@ -12,20 +12,22 @@ import SelectorBuilder from "@/components/shared/forms/SelectorBuilder";
 import { GridEventListener } from "@mui/x-data-grid";
 import { BreadcrumbNavigation } from "@/components/shared/actions/BreadcrumbNavigation";
 import { NewFormDataGrid } from "@/components/shared/datagrid/GridColumns/NewFormDatagrid";
+import { useQueryClient } from "@tanstack/react-query";
 
 const NewSubscription = () => {
   const { data: session } = useSession();
   const [selector, setSelector] = useState<string>(" ");
   const [publicationIdRow, setPublicationIdRow] = useState<string>("");
 
-  const { data, isLoading, remove } = useMatchingCapabilities(
+  const { data, isLoading } = useMatchingCapabilities(
     session?.user.commonName as string,
     selector
   );
+  const queryClient = useQueryClient();
 
   const handleChange = (selector: string) => {
     setSelector(selector);
-    remove();
+    queryClient.removeQueries({ queryKey: ['matchingCapabilities'] });
   };
 
   const handleOnRowClick: GridEventListener<"rowClick"> = (params) => {

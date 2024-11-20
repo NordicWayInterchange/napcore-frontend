@@ -1,10 +1,10 @@
 import Layout from "@/components/layout/Layout";
-import React from "react";
+import React, { useEffect } from "react";
 import {
-  Hydrate,
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { AppProps } from "next/app";
 import { ThemeProvider } from "@mui/material";
@@ -25,12 +25,17 @@ export default function App({
   const healthCheckRoute = ["/health-check"];
   const displayProviders = !healthCheckRoute.includes(pathname);
 
+  useEffect(() => {
+    if (pageProps.dehydratedState) {
+      queryClient.setQueryData(['dehydratedState'], pageProps.dehydratedState);
+    }
+  }, [pageProps.dehydratedState, queryClient]);
+
   return (
     <>
       {displayProviders ? (
         <SessionProvider session={session}>
           <QueryClientProvider client={queryClient}>
-            <Hydrate state={pageProps.dehydratedState}>
               <ThemeProvider
                 theme={
                   process.env.NEXT_PUBLIC_THEME_PROVIDER === "trafficdata"
@@ -42,7 +47,6 @@ export default function App({
                   <Component {...pageProps} />
                 </Layout>
               </ThemeProvider>
-            </Hydrate>
             <ReactQueryDevtools />
           </QueryClientProvider>
         </SessionProvider>
