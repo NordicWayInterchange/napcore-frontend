@@ -46,7 +46,7 @@ export const TRANSPORTPORTAL_COLORS = {
   sidebarBorderColor: "#158925", //vegvesen grøn
   avatarBackgroundColor: "#444f55",
   cardBackgroundColor: "#EBF5E6",
-  buttonThemeColor: createColor("#158925"), //vegvesen grøn
+  buttonThemeColor: createColor("#444f55"),
   menuItemBackgroundColor:"#ECF4F9",
   menuItemHoverColor:"#A0BDD4",
   ...SHARED_COLORS,

@@ -14,6 +14,7 @@ import { IFeedback } from "@/interface/IFeedback";
 import { useSession } from "next-auth/react";
 import MapDialog from "@/components/map/MapDialog";
 import CapabilityDrawerForm from "@/components/layout/CapabilityDrawerForm";
+import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
 
 const width = 600;
 
@@ -98,8 +99,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
           <List>
             <CapabilityDrawerForm capability={capability} handleMoreClose={handleMoreClose} setOpenMap={setOpenMap}/>
             <ListItem>
-              <Button
-                sx={{ borderRadius: 100, textTransform: "none" }}
+              <StyledButton
                 variant={"contained"}
                 color={"buttonThemeColor"}
                 disableElevation
@@ -108,7 +108,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                 }
               >
                 Subscribe
-              </Button>
+              </StyledButton>
             </ListItem>
           </List>
         </Box>
