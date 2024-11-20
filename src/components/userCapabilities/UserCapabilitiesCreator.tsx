@@ -25,7 +25,6 @@ import { usePublicationIds } from "@/hooks/usePublicationIds";
 import { useRouter } from "next/router";
 import { handleQuadtree } from "@/lib/handleQuadtree";
 import { menuItemStyles, StyledButton, StyledCard, StyledFormControl } from "@/components/shared/styles/StyledSelectorBuilder";
-import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 
 const QUADTREE_REGEX = /^[0-3]+(,[0-3]+)*$/i;
 
