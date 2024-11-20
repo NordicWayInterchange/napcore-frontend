@@ -249,8 +249,6 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
   );
 };
 
-export default CollapsiblePeer;
-
 const StyledButton = styled(Button)(({}) => ({
   borderRadius: 100,
   textTransform: "none",
@@ -338,3 +336,6 @@ const peerListStyle = {
   position: "relative",
   top: "-15px"
 };
+
+export default CollapsiblePeer;
+

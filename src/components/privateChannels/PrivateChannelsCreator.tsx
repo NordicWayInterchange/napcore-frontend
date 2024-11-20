@@ -1,3 +1,5 @@
+import { Chip, FormHelperText, OutlinedInput, TextField, Typography } from "@mui/material";
+import React, {useState } from "react";
 import { Chip, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -222,4 +224,21 @@ const PrivateChannelsCreator = () => {
   );
 };
 
+const textFieldStyle = {
+  flexGrow: 1,
+  marginTop: '10px',
+  width: '100%',
+  borderRadius: '8px',
+  backgroundColor: "#f9f9f9",
+
+  "& .MuiOutlinedInput-root": {
+    "&.Mui-focused fieldset": {
+      borderColor: "gray",
+    },
+
+  },
+  padding: '2px 2px'
+};
+
 export default PrivateChannelsCreator;
+
