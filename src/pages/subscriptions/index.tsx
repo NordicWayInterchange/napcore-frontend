@@ -108,7 +108,8 @@ export default function Subscriptions() {
     {
       ...dataGridTemplate,
       field: "description",
-      headerName: "Description"
+      headerName: "Description",
+      flex: 2,
     },
     {
       ...dataGridTemplate,

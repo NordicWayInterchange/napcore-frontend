@@ -1,11 +1,15 @@
 import { styled } from "@mui/material/styles";
 import React from "react";
 import { Box } from "@mui/system";
+import SentimentNeutralIcon from "@mui/icons-material/SentimentNeutral";
 
 export const CustomEmptyOverlayMatching = () => {
   return (
     <StyledGridOverlay>
-      <StyledBox>No matching capabilities for the specified input</StyledBox>
+      <StyledBox>
+        <SentimentNeutralIcon fontSize="medium" color="disabled" sx={{ mt: -0.5 }} />
+        No matching capabilities for the specified input
+      </StyledBox>
     </StyledGridOverlay>
   );
 };
@@ -13,7 +17,10 @@ export const CustomEmptyOverlayMatching = () => {
 export const CustomEmptyOverlaySubscription = () => {
   return (
     <StyledGridOverlay>
-      <StyledBox>Could not find any subscriptions, try creating one!</StyledBox>
+      <StyledBox>
+        <SentimentNeutralIcon fontSize="medium" color="disabled" sx={{ mt: -0.5 }} />
+        Could not find any subscriptions, try creating one!
+      </StyledBox>
     </StyledGridOverlay>
   );
 };
@@ -21,7 +28,10 @@ export const CustomEmptyOverlaySubscription = () => {
 export const CustomEmptyOverlayCapabilites = () => {
   return (
     <StyledGridOverlay>
-      <StyledBox>No capabilities in the network</StyledBox>
+      <StyledBox>
+        <SentimentNeutralIcon fontSize="medium" color="disabled" sx={{ mt: -0.5 }} />
+        No capabilities in the network
+      </StyledBox>
     </StyledGridOverlay>
   );
 };
@@ -29,7 +39,10 @@ export const CustomEmptyOverlayCapabilites = () => {
 export const CustomEmptyOverlayDeliveries = () => {
   return (
     <StyledGridOverlay>
-      <StyledBox>No deliveries in the network, try creating one!</StyledBox>
+      <StyledBox>
+        <SentimentNeutralIcon fontSize="medium" color="disabled" sx={{ mt: -0.5 }} />
+        Could not find any deliveries in the network, try creating one!
+      </StyledBox>
     </StyledGridOverlay>
   );
 };
@@ -37,7 +50,10 @@ export const CustomEmptyOverlayDeliveries = () => {
 export const CustomEmptyOverlayUserCapabilites = () => {
   return (
     <StyledGridOverlay>
-      <StyledBox>No user capabilities in the network, try creating one!</StyledBox>
+      <StyledBox>
+        <SentimentNeutralIcon fontSize="medium" color="disabled" sx={{ mt: -0.5 }} />
+        Could not find any user capabilities in the network, try creating one!
+      </StyledBox>
     </StyledGridOverlay>
   );
 };
@@ -45,7 +61,10 @@ export const CustomEmptyOverlayUserCapabilites = () => {
 export const CustomEmptyOverlayPrivateChannels = () => {
   return (
     <StyledGridOverlay>
-      <StyledBox>No private channels in the network, try creating one!</StyledBox>
+      <StyledBox>
+        <SentimentNeutralIcon fontSize="medium" color="disabled" sx={{ mt: -0.5 }} />
+        Could not find any private channels in the network, try creating one!
+      </StyledBox>
     </StyledGridOverlay>
   );
 };
@@ -55,9 +74,11 @@ const StyledGridOverlay = styled("div")(({}) => ({
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
-  height: "100%",
+  height: "100%"
 }));
 
 const StyledBox = styled(Box)(({}) => ({
-  mt: 1,
+  display: "flex",
+  alignItems: "center",
+  gap: "8px"
 }));
