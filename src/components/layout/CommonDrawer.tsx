@@ -1,7 +1,7 @@
 import {
   Box,
   Button, Card,
-  Drawer, FormControl, IconButton,
+  Drawer, FormControl, IconButton, InputAdornment,
   List,
   ListItem, ListItemText, TextField,
   Toolbar, Typography
@@ -110,28 +110,42 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
                       value={item.endpoints[0].host || ""}
                       label="Host"
                       margin="normal"
-                      InputProps={{
-                        endAdornment: (
-                          <ContentCopy value={item.endpoints[0].host} />
-                        ),
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <ContentCopy value={item.endpoints[0].host} />
+                            </InputAdornment>
+                          ),
+                        },
                       }}
                     />
                     <TextField
                       value={getAttribute() || ""}
                       label={label == "Delivery" ? "Target" : "Source"}
                       margin="normal"
-                      InputProps={{
-                        endAdornment: (
-                          <ContentCopy value={getAttribute()} />
-                        ),
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <ContentCopy value={getAttribute()} />
+                            </InputAdornment>
+                          ),
+                        },
                       }}
                     />
                     <TextField
                       value={item.endpoints[0].port || ""}
                       label="Port"
                       margin="normal"
-                      InputProps={{
-                        endAdornment: <ContentCopy value={item.endpoints[0].port.toString()} />,
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <ContentCopy value={item.endpoints[0].port.toString()} />,
+                            </InputAdornment>
+                          ),
+                        },
                       }}
                     />
                   </FormControl>
@@ -147,10 +161,14 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
                     multiline
                     value={item.selector || ""}
                     rows={4}
-                    InputProps={{
-                      endAdornment: (
-                        <ContentCopy value={item.selector} />
-                      ),
+                    slotProps={{
+                      input: {
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <ContentCopy value={item.selector} />
+                          </InputAdornment>
+                        ),
+                      },
                     }}
                   />
                 </FormControl>
@@ -166,11 +184,14 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
                       multiline
                       value={item.description || ""}
                       rows={4}
-                      InputProps={{
-                        readOnly: true,
-                        endAdornment: (
-                          <ContentCopy value={item.description} />
-                        )
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <ContentCopy value={item.description} />
+                            </InputAdornment>
+                          ),
+                        },
                       }}
                     />
                   </FormControl>

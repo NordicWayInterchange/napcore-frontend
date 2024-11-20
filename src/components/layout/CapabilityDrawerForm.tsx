@@ -2,7 +2,7 @@ import {
   Button,
   Card,
   FormControl,
-  IconButton,
+  IconButton, InputAdornment,
   InputLabel,
   ListItem,
   MenuItem,
@@ -42,20 +42,28 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
               value={capability.publisherId}
               label="Publisher ID"
               margin="normal"
-              InputProps={{
-                endAdornment: (
-                  <ContentCopy value={capability.publisherId} />
-                )
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <ContentCopy value={capability.publisherId} />
+                    </InputAdornment>
+                  ),
+                },
               }}
             />
             <TextField
               value={capability.publicationId}
               label="Publication ID"
               margin="normal"
-              InputProps={{
-                endAdornment: (
-                  <ContentCopy value={capability.publicationId} />
-                )
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <ContentCopy value={capability.publicationId} />
+                    </InputAdornment>
+                  ),
+                },
               }}
             />
             {capability.publicationType && (
@@ -63,10 +71,14 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
                 value={capability.publicationType}
                 label="Publication type"
                 margin="normal"
-                InputProps={{
-                  endAdornment: (
-                    <ContentCopy value={capability.publicationType} />
-                  )
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <ContentCopy value={capability.publicationType} />
+                      </InputAdornment>
+                    ),
+                  },
                 }}
               />
             )}
@@ -75,10 +87,14 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
                 value={capability.publisherName}
                 label="Publisher name"
                 margin="normal"
-                InputProps={{
-                  endAdornment: (
-                    <ContentCopy value={capability.publisherName} />
-                  )
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <ContentCopy value={capability.publisherName} />
+                      </InputAdornment>
+                    ),
+                  },
                 }}
               />
             )}
@@ -86,10 +102,14 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
               value={capability.originatingCountry}
               label="Originating Country"
               margin="normal"
-              InputProps={{
-                endAdornment: (
-                  <ContentCopy value={capability.originatingCountry} />
-                )
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <ContentCopy value={capability.originatingCountry} />
+                    </InputAdornment>
+                  ),
+                },
               }}
             />
           </FormControl>
@@ -104,20 +124,28 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
               value={capability.messageType}
               label="Message Type"
               margin="normal"
-              InputProps={{
-                endAdornment: (
-                  <ContentCopy value={capability.messageType} />
-                )
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <ContentCopy value={capability.messageType} />
+                    </InputAdornment>
+                  ),
+                },
               }}
             />
             <TextField
               value={capability.protocolVersion}
               label="Protocol Version"
               margin="normal"
-              InputProps={{
-                endAdornment: (
-                  <ContentCopy value={capability.protocolVersion} />
-                )
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <ContentCopy value={capability.protocolVersion} />
+                    </InputAdornment>
+                  ),
+                },
               }}
             />
             {capability.causeCodesDictionary && (
@@ -168,11 +196,6 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
               sx={{
                 flexGrow: 1,
                 marginRight: 1
-              }}
-              InputProps={{
-                endAdornment: (
-                  <ContentCopy value={capability.quadTree.toString()} />
-                )
               }}
             />
             <StyledButton
