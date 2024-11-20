@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Drawer,
   List,
   ListItem,
