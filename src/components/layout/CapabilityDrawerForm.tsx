@@ -200,6 +200,7 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props
               }}
             />
             <StyledButton
+              sx={{mt:2.75}}
               color="buttonThemeColor"
               variant="outlined"
               onClick={() => setOpenMap(true)}

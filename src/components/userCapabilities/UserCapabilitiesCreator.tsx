@@ -366,6 +366,7 @@ const UserCapabilitiesCreator = () => {
                 )}
               />
               <StyledButton
+                sx={{mt:-1}}
                 color="buttonThemeColor"
                 variant="outlined"
                 disabled={!!getFieldState("quadTree").error}
