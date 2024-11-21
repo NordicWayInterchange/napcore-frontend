@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Card, TextField } from "@mui/material";
+import { Card, TextField } from "@mui/material";
 import CertificateDialog from "@/components/certificate/CertificateDialog";
 import { createPKCS10 } from "@/lib/pkcs10Generator";
 import { Box } from "@mui/system";

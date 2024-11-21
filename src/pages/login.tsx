@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "./api/auth/[...nextauth]";
 import Image from "next/image";
 import logo from "@/../public/napcore-logo.png";
-import { Button, Card, Typography } from "@mui/material";
+import { Card, Typography } from "@mui/material";
 import * as React from "react";
 import { Box } from "@mui/system";
 import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
