@@ -1,6 +1,5 @@
 import {
   AppBar,
-  Button,
   Dialog,
   IconButton,
   Slide,
@@ -11,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import { TransitionProps } from "@mui/material/transitions";
 import CloseIcon from "@mui/icons-material/Close";
 import { Box } from "@mui/system";
+import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
 
 type Props = {
   quadtreeCallback?: (value: string[]) => void;
@@ -78,9 +78,9 @@ export default function MapDialog(props: Props) {
             </IconButton>
           </Box>
           {interactive && (
-            <Button autoFocus color="inherit" onClick={onClose}>
-              save
-            </Button>
+            <StyledButton autoFocus color="inherit" onClick={onClose}>
+              SAVE
+            </StyledButton>
           )}
         </Toolbar>
       </AppBar>

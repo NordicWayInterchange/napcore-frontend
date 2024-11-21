@@ -166,7 +166,7 @@ export default function Deliveries() {
         }}
         sx={{
           '& .MuiDataGrid-columnHeaders': {
-            borderBottom: '2px solid #1976d2', // You can change the color here
+            borderBottom: '2px solid #1976d2',
           },
         }}
       />

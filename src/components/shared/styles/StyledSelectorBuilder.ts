@@ -13,18 +13,17 @@ export const StyledButton = styled(Button)(({}) => ({
   height: 40,
   width: '200px',
   borderColor: 'buttonThemeColor',
-  paddingBottom: '10px', // Ensures there’s enough space at the bottom
+  paddingBottom: '10px',
   position: 'relative',
   '&:hover': {
-    // On hover, show the bottom border using the ::after pseudo-element
     '&::after': {
-      content: '""', // Creates an empty content for the pseudo-element
+      content: '""',
       position: 'absolute',
-      bottom: 0, // Places it at the bottom of the button
+      bottom: 0,
       left: 0,
-      width: '100%', // Full width of the button
-      height: '3px', // Thickness of the border
-      backgroundColor: '#FF9600', // The color of the border
+      width: '100%',
+      height: '3px',
+      backgroundColor: '#FF9600',
     },
   },
 }));
