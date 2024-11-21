@@ -1,5 +1,5 @@
 import React from "react";
-import { Divider } from "@mui/material";
+import { Divider, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { Box } from "@mui/system";
 import Link from "next/link";
@@ -16,6 +16,7 @@ import LocalPostOfficeIcon from "@mui/icons-material/LocalPostOffice";
 import SettingsIcon from "@mui/icons-material/Settings";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
+import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -34,13 +35,13 @@ export default function Home() {
       header: "Network capabilities",
       description: "View all capabilities",
       url: "network-capabilities",
-      icon: <CellTowerIcon />,
+      icon: <CellTowerIcon />
     },
     {
       header: "My capabilities",
       description: "View my capabilities",
       url: "capabilities",
-      icon: <PersonIcon />,
+      icon: <PersonIcon />
     },
     {
       header: "Deliveries",
@@ -65,6 +66,16 @@ export default function Home() {
   return (
     <Box flex={1}>
       <Mainheading>Welcome, {session?.user?.name}!</Mainheading>
+      <Box sx={commonNameStyle}>
+        <Typography
+          sx={{ fontSize: "0.95rem", fontWeight: "bold" }}>
+          Your common name is:
+        </Typography>
+        <Typography variant="h6" sx={{ fontSize: "0.95rem", textAlign: "center" }}>
+          {session?.user?.commonName}
+        </Typography>
+        <Box sx={{ mt: -.5 }}><ContentCopy value={session?.user?.commonName.toString() || ""} /></Box>
+      </Box>
       <Divider sx={{ marginY: 3 }} />
       <Subheading>Shortcuts</Subheading>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
@@ -111,10 +122,31 @@ export default function Home() {
           hideFooterPagination={true}
           sort={{ field: "lastUpdatedTimestamp", sort: "desc" }}
           slots={{
-            noRowsOverlay: CustomEmptyOverlaySubscription,
+            noRowsOverlay: CustomEmptyOverlaySubscription
           }}
         />
       </Box>
     </Box>
   );
 }
+
+const commonNameStyle = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  flexDirection: "row",
+  padding: 1,
+  borderRadius: 2,
+  borderBottom: "2px solid #dd7100",
+  boxShadow: 3,
+  maxWidth: "fit-content",
+  margin: "left",
+  gap: 0.5,
+  mt: 1.5,
+  wordBreak: "break-word",
+  flexShrink: 0,
+  "@media (min-width:600px)": {
+    flexDirection: "row",
+    maxWidth: "fit-content"
+  }
+};
