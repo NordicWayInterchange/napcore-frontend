@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -17,6 +16,7 @@ import {
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import { useState } from "react";
 import { IFeedback } from "@/interface/IFeedback";
+import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
 
 type Props = {
   actorCommonName: string;
@@ -90,23 +90,21 @@ export default function DeleteSubDialog(props: Props) {
         </DialogContent>
         <Divider />
         <DialogActions sx={{ display: "flex", justifyContent: "space-evenly" }}>
-          <Button
-            variant="text"
+          <StyledButton
+            variant="outlined"
             color="inherit"
             onClick={() => handleDialog(false)}
-            sx={{ borderRadius: 100, textTransform: "none" }}
           >
             Cancel
-          </Button>
-          <Button
+          </StyledButton>
+          <StyledButton
             variant="contained"
             color="depricatedLight"
-            sx={{ borderRadius: 100, textTransform: "none" }}
             onClick={() => handleDeletion(actorCommonName, itemId, text, "")}
             disableElevation
           >
             Yes, remove
-          </Button>
+          </StyledButton>
         </DialogActions>
       </Dialog>
       {feedback.feedback && (

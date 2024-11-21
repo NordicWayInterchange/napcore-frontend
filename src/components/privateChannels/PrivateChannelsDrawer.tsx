@@ -19,6 +19,7 @@ import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { styled } from "@mui/material/styles";
 import { timeConverter } from "@/lib/timeConverter";
 import CollapsiblePeer from "@/components/shared/display/CollapsiblePeer";
+import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
 
 const width = 600;
 
@@ -205,18 +206,14 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
               </StyledCard>
             </ListItem>
             <ListItem >
-              <Button
-                sx={{
-                  borderRadius: 100,
-                  textTransform: "none",
-                }}
+              <StyledButton
                 variant={"contained"}
                 color={"redLight"}
                 onClick={() => setDialogOpen(true)}
                 disableElevation
               >
                 Remove private channel
-              </Button>
+              </StyledButton>
             </ListItem>
           </List>
         </Box>

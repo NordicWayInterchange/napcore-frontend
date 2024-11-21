@@ -1,5 +1,5 @@
 import {
-  Box, Button, Card,
+  Box, Card,
   Drawer, FormControl, IconButton, InputAdornment,
   List,
   ListItem, ListItemText, TextField,
@@ -17,6 +17,7 @@ import { styled } from "@mui/material/styles";
 import { timeConverter } from "@/lib/timeConverter";
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import { useSession } from "next-auth/react";
+import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
 
 const width = 600;
 
@@ -203,18 +204,14 @@ const PeersDrawer = ({ peers, open, handleMoreClose, handleDeletedItem }: Props)
               </StyledCard>
             </ListItem>
             <ListItem >
-              <Button
-                sx={{
-                  borderRadius: 100,
-                  textTransform: "none",
-                }}
+              <StyledButton
                 variant={"contained"}
                 color={"redLight"}
                 onClick={() => setDialogOpen(true)}
                 disableElevation
               >
                 Remove private channel subscription
-              </Button>
+              </StyledButton>
             </ListItem>
           </List>
         </Box>

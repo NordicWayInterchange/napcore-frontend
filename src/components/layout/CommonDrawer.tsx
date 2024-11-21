@@ -1,6 +1,6 @@
 import {
   Box,
-  Button, Card,
+  Card,
   Drawer, FormControl, IconButton, InputAdornment,
   List,
   ListItem, ListItemText, TextField,
@@ -17,6 +17,7 @@ import { statusChips } from "@/lib/statusChips";
 import { timeConverter } from "@/lib/timeConverter";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { styled } from "@mui/material/styles";
+import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
 
 const width = 600;
 
@@ -199,17 +200,14 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
               </StyledCard>
             </ListItem>
             <ListItem>
-              <Button
-                sx={{
-                  textTransform: "none",
-                }}
+              <StyledButton
                 variant={"contained"}
                 color={"redLight"}
                 onClick={() => setDialogOpen(true)}
                 disableElevation
               >
                 Remove {label}
-              </Button>
+              </StyledButton>
             </ListItem>
           </List>
         </Box>

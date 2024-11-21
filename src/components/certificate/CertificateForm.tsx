@@ -12,6 +12,7 @@ import { useSession } from "next-auth/react";
 import { CertificateSignResponse } from "@/types/napcore/certificate";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import Subheading from "@/components/shared/display/typography/Subheading";
+import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
 
 export const CertificateForm = () => {
   const {
@@ -150,12 +151,6 @@ const StyledBox = styled(Box)(({}) => ({
   flexDirection: "column",
   gap: "20px",
   alignItems: "center",
-}));
-
-const StyledButton = styled(Button)(({}) => ({
-  width: "200px",
-  textTransform: "none",
-  borderRadius: 100,
 }));
 
 const StyledCard = styled(Card)(({}) => ({
