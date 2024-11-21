@@ -1,8 +1,7 @@
 export enum PrivateChannelStatus {
   REQUESTED = "requested",
   CREATED = "created",
-  ILLEGAL = "illegal",
-  NOT_VALID = "not_valid"
+  TEAR_DOWN = "tear_down"
 }
 
 export type EndPoint = {

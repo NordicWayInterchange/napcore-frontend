@@ -5,6 +5,7 @@ export enum SubscriptionStatus {
   NOT_VALID = "not_valid",
   NO_OVERLAP = "no_overlap",
   RESUBSCRIBE = "resubscribe",
+  ERROR = "error"
 }
 
 export type Endpoint = {
