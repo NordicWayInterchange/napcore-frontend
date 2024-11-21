@@ -7,9 +7,10 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "./api/auth/[...nextauth]";
 import Image from "next/image";
 import logo from "@/../public/napcore-logo.png";
-import { Button, Card, Typography } from "@mui/material";
+import { Card, Typography } from "@mui/material";
 import * as React from "react";
 import { Box } from "@mui/system";
+import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
 
 export default function Login({}: InferGetServerSidePropsType<
   typeof getServerSideProps
@@ -38,7 +39,7 @@ export default function Login({}: InferGetServerSidePropsType<
         Sign in will redirect you to our authentication provider.
       </Typography>
 
-      <Button
+      <StyledButton
         variant="contained"
         color={"buttonThemeColor"}
         sx={{ textTransform: "none", width: 200, alignSelf: "center" }}
@@ -48,7 +49,7 @@ export default function Login({}: InferGetServerSidePropsType<
         }}
       >
         <Typography>Sign in</Typography>
-      </Button>
+      </StyledButton>
     </Card>
   );
 }

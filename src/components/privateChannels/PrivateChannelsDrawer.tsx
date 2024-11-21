@@ -1,6 +1,6 @@
 import {
   Box,
-  Button, Card,
+  Card,
   Drawer, FormControl, IconButton, InputAdornment,
   List,
   ListItem, ListItemText, TextField,
@@ -193,18 +193,14 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
               </StyledCard>
             </ListItem>
             <ListItem >
-              <Button
-                sx={{
-                  borderRadius: 100,
-                  textTransform: "none",
-                }}
+              <StyledButton
                 variant={"contained"}
                 color={"redLight"}
                 onClick={() => setDialogOpen(true)}
                 disableElevation
               >
                 Remove private channel
-              </Button>
+              </StyledButton>
             </ListItem>
           </List>
         </Box>

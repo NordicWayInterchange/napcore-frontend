@@ -68,7 +68,7 @@ export default function Home() {
       <Mainheading>Welcome, {session?.user?.name}!</Mainheading>
       <Box sx={commonNameStyle}>
         <Typography
-          sx={{ fontSize: "0.85rem", fontWeight: 600 }}>
+          sx={{ fontSize: "0.85rem", fontWeight: 600}}>
           Your common name is:
         </Typography>
         <Typography variant="h6" sx={{ fontSize: "0.85rem", textAlign: "center" }}>

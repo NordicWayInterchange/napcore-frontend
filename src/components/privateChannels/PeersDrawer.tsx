@@ -1,5 +1,5 @@
 import {
-  Box, Button, Card,
+  Box, Card,
   Drawer, FormControl, IconButton, InputAdornment,
   List,
   ListItem, ListItemText, TextField,
@@ -191,18 +191,14 @@ const PeersDrawer = ({ peers, open, handleMoreClose, handleDeletedItem }: Props)
               </StyledCard>
             </ListItem>
             <ListItem >
-              <Button
-                sx={{
-                  borderRadius: 100,
-                  textTransform: "none",
-                }}
+              <StyledButton
                 variant={"contained"}
                 color={"redLight"}
                 onClick={() => setDialogOpen(true)}
                 disableElevation
               >
                 Remove private channel subscription
-              </Button>
+              </StyledButton>
             </ListItem>
           </List>
         </Box>

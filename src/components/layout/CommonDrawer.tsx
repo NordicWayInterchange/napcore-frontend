@@ -1,6 +1,6 @@
 import {
   Box,
-  Button, Card,
+  Card,
   Drawer, FormControl, IconButton, InputAdornment,
   List,
   ListItem, ListItemText, TextField,
@@ -187,17 +187,14 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
               </StyledCard>
             </ListItem>
             <ListItem>
-              <Button
-                sx={{
-                  textTransform: "none",
-                }}
+              <StyledButton
                 variant={"contained"}
                 color={"redLight"}
                 onClick={() => setDialogOpen(true)}
                 disableElevation
               >
                 Remove {label}
-              </Button>
+              </StyledButton>
             </ListItem>
           </List>
         </Box>
