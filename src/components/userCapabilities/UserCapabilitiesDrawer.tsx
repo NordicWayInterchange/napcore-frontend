@@ -1,10 +1,10 @@
 import {
   Box,
   Button,
-  Drawer,
+  Drawer, FormControl,
   List,
-  ListItem,
-  Toolbar,
+  ListItem, TextField,
+  Toolbar, Typography
 } from "@mui/material";
 import React, { useState } from "react";
 import { ExtendedCapability } from "@/types/capability";
@@ -15,6 +15,7 @@ import CapabilityDrawerForm from "@/components/layout/CapabilityDrawerForm";
 import { createDelivery } from "@/lib/fetchers/internalFetchers";
 import { IFeedback } from "@/interface/IFeedback";
 import Snackbar from "@/components/shared/feedback/Snackbar";
+import { StyledCard } from "@/components/shared/styles/StyledSelectorBuilder";
 
 const width = 600;
 
@@ -34,7 +35,8 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
     message: "",
     severity: "success",
   });
-
+  const [descriptionError, setDescriptionError] = useState(false);
+  const [description, setDescription] = useState<string>("");
   const selector = `(publicationId = '${capability.publicationId}')`;
 
   const handleSnackClose = (
@@ -56,8 +58,26 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
     setDialogOpen(close);
   };
 
-  const saveDelivery = async (name: string, selector: Object) => {
-    const response = await createDelivery(name, selector);
+  const handleDescription = (event: any) => {
+    const value = event.target.value;
+    if (value.length > 255) {
+      setDescriptionError(true);
+      setDescription(value);
+    } else {
+      setDescriptionError(false);
+      setDescription(value);
+    }
+  };
+
+
+  const saveDelivery = async (name: string, selector: string) => {
+    if (description.length > 255 ) return ;
+
+    const bodyData = {
+      selector: selector,
+      description: description
+    };
+    const response = await createDelivery(name, bodyData);
 
     if (response.ok) {
       setFeedback({
@@ -102,6 +122,25 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
         <Box sx={{ padding: 1, width: 1 }}>
           <List>
             <CapabilityDrawerForm capability={capability} handleMoreClose={handleMoreClose} setOpenMap={setOpenMap}/>
+            <ListItem>
+              <StyledCard variant={"outlined"}>
+                <Typography sx={{ mb:2 }}>Description</Typography>
+                <div>
+                  <FormControl fullWidth>
+                    <TextField
+                      name="description"
+                      multiline
+                      rows={4}
+                      onChange={handleDescription}
+                      error={descriptionError}
+                      helperText={descriptionError ? "Description exceeds maximum length of 255 characters" : ""}
+                      fullWidth
+                    />
+                  </FormControl>
+                </div>
+              </StyledCard>
+            </ListItem>
+
             <ListItem sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <Button
                 sx={{ borderRadius: 100, textTransform: "none", width: 150}}
@@ -109,7 +148,7 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
                 color={"buttonThemeColor"}
                 disableElevation
                 onClick={() =>
-                  saveDelivery(session?.user.commonName as string, {selector})
+                  saveDelivery(session?.user.commonName as string, selector)
                 }
               >
                 Deliver

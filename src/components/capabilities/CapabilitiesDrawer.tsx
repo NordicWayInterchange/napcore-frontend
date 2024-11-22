@@ -1,10 +1,10 @@
 import {
   Box,
   Button,
-  Drawer,
+  Drawer, FormControl,
   List,
-  ListItem,
-  Toolbar,
+  ListItem, TextField,
+  Toolbar, Typography
 } from "@mui/material";
 import React, { useState } from "react";
 import { ExtendedCapability } from "@/types/capability";
@@ -14,6 +14,7 @@ import { IFeedback } from "@/interface/IFeedback";
 import { useSession } from "next-auth/react";
 import MapDialog from "@/components/map/MapDialog";
 import CapabilityDrawerForm from "@/components/layout/CapabilityDrawerForm";
+import { StyledCard } from "@/components/shared/styles/StyledSelectorBuilder";
 
 const width = 600;
 
@@ -31,6 +32,8 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
     message: "",
     severity: "success",
   });
+  const [descriptionError, setDescriptionError] = useState(false);
+  const [description, setDescription] = useState<string>("");
 
   const selector = `(publicationId = '${capability.publicationId}')`;
 
@@ -46,10 +49,22 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
     setOpenMap(false);
   };
 
+  const handleDescription = (event: any) => {
+    const value = event.target.value;
+    if (value.length > 255) {
+      setDescriptionError(true);
+      setDescription(value);
+    } else {
+      setDescriptionError(false);
+      setDescription(value);
+    }
+  };
+
   const saveSubscription = async (name: string, selector: string) => {
+    if (description.length > 255 ) return ;
     const bodyData = {
       selector: selector,
-      description: ""
+      description: description
     };
 
     const response = await createSubscription(name, bodyData);
@@ -97,6 +112,24 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
         <Box sx={{ padding: 1, width: 1 }}>
           <List>
             <CapabilityDrawerForm capability={capability} handleMoreClose={handleMoreClose} setOpenMap={setOpenMap}/>
+            <ListItem>
+              <StyledCard variant={"outlined"}>
+                <Typography sx={{ mb:2 }}>Description</Typography>
+                <div>
+                <FormControl fullWidth>
+                  <TextField
+                    name="description"
+                    multiline
+                    rows={4}
+                    onChange={handleDescription}
+                    error={descriptionError}
+                    helperText={descriptionError ? "Description exceeds maximum length of 255 characters" : ""}
+                    fullWidth
+                  />
+                </FormControl>
+                </div>
+              </StyledCard>
+            </ListItem>
             <ListItem>
               <Button
                 sx={{ borderRadius: 100, textTransform: "none" }}
