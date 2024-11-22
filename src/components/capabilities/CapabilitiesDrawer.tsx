@@ -49,15 +49,15 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
     setOpenMap(false);
   };
 
+  const removeDescriptionError = () => {
+    setDescription("");
+    setDescriptionError(false);
+  }
+
   const handleDescription = (event: any) => {
     const value = event.target.value;
-    if (value.length > 255) {
-      setDescriptionError(true);
-      setDescription(value);
-    } else {
-      setDescriptionError(false);
-      setDescription(value);
-    }
+    setDescription(value);
+    setDescriptionError(value.length > 255);
   };
 
   const saveSubscription = async (name: string, selector: string) => {
@@ -106,12 +106,15 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
         variant="temporary"
         anchor="right"
         open={open}
-        onClose={() => handleMoreClose()}
+        onClose={() => {handleMoreClose(); removeDescriptionError();}}
       >
         <Toolbar />
         <Box sx={{ padding: 1, width: 1 }}>
           <List>
-            <CapabilityDrawerForm capability={capability} handleMoreClose={handleMoreClose} setOpenMap={setOpenMap}/>
+            <CapabilityDrawerForm capability={capability}
+                                  handleMoreClose={handleMoreClose}
+                                  removeDescriptionError={removeDescriptionError}
+                                  setOpenMap={setOpenMap}/>
             <ListItem>
               <StyledCard variant={"outlined"}>
                 <Typography sx={{ mb:2 }}>Description</Typography>

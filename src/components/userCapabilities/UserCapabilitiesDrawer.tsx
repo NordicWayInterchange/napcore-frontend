@@ -58,17 +58,16 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
     setDialogOpen(close);
   };
 
+  const removeDescriptionError = () => {
+    setDescription("");
+    setDescriptionError(false);
+  }
+
   const handleDescription = (event: any) => {
     const value = event.target.value;
-    if (value.length > 255) {
-      setDescriptionError(true);
-      setDescription(value);
-    } else {
-      setDescriptionError(false);
-      setDescription(value);
-    }
+    setDescription(value);
+    setDescriptionError(value.length > 255);
   };
-
 
   const saveDelivery = async (name: string, selector: string) => {
     if (description.length > 255 ) return ;
@@ -116,12 +115,15 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
         variant="temporary"
         anchor="right"
         open={open}
-        onClose={() => handleMoreClose()}
+        onClose={() => {handleMoreClose(); removeDescriptionError(); }}
       >
         <Toolbar />
         <Box sx={{ padding: 1, width: 1 }}>
           <List>
-            <CapabilityDrawerForm capability={capability} handleMoreClose={handleMoreClose} setOpenMap={setOpenMap}/>
+            <CapabilityDrawerForm capability={capability}
+                                  handleMoreClose={handleMoreClose}
+                                  setOpenMap={setOpenMap}
+                                  removeDescriptionError={removeDescriptionError}/>
             <ListItem>
               <StyledCard variant={"outlined"}>
                 <Typography sx={{ mb:2 }}>Description</Typography>
