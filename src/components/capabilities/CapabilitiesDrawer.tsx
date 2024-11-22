@@ -14,9 +14,8 @@ import { IFeedback } from "@/interface/IFeedback";
 import { useSession } from "next-auth/react";
 import MapDialog from "@/components/map/MapDialog";
 import CapabilityDrawerForm from "@/components/layout/CapabilityDrawerForm";
-import { StyledCard } from "@/components/shared/styles/StyledSelectorBuilder";
-
-const width = 600;
+import { drawerStyle, StyledCard } from "@/components/shared/styles/StyledSelectorBuilder";
+import { handleDescription } from "@/lib/handleDescription";
 
 type Props = {
   capability: ExtendedCapability;
@@ -54,12 +53,6 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
     setDescriptionError(false);
   }
 
-  const handleDescription = (event: any) => {
-    const value = event.target.value;
-    setDescription(value);
-    setDescriptionError(value.length > 255);
-  };
-
   const saveSubscription = async (name: string, selector: string) => {
     if (description.length > 255 ) return ;
     const bodyData = {
@@ -90,19 +83,8 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
   return (
     <>
       <Drawer
-        sx={{
-          width: width,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: width,
-            boxSizing: "border-box",
-          },
-        }}
-        PaperProps={{
-          sx: {
-            backgroundColor: "#F9F9F9",
-          },
-        }}
+        sx={drawerStyle}
+        PaperProps={{ sx: { backgroundColor: "#F9F9F9"}}}
         variant="temporary"
         anchor="right"
         open={open}
@@ -124,7 +106,8 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                     name="description"
                     multiline
                     rows={4}
-                    onChange={handleDescription}
+                    onChange={(event) =>
+                      handleDescription(event, setDescription, setDescriptionError)}
                     error={descriptionError}
                     helperText={descriptionError ? "Description exceeds maximum length of 255 characters" : ""}
                     fullWidth

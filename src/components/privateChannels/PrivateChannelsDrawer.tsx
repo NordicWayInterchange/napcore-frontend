@@ -19,8 +19,7 @@ import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { styled } from "@mui/material/styles";
 import { timeConverter } from "@/lib/timeConverter";
 import CollapsiblePeer from "@/components/shared/display/CollapsiblePeer";
-
-const width = 600;
+import { drawerStyle } from "@/components/shared/styles/StyledSelectorBuilder";
 
 type Props = {
   privateChannel: PrivateChannel;
@@ -58,19 +57,8 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
   return (
     <>
       <Drawer
-        sx={{
-          width: width,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: width,
-            boxSizing: "border-box",
-          },
-        }}
-        PaperProps={{
-          sx: {
-            backgroundColor: "#F9F9F9",
-          },
-        }}
+        sx={drawerStyle}
+        PaperProps={{ sx: { backgroundColor: "#F9F9F9"}}}
         variant="temporary"
         anchor="right"
         open={open}

@@ -17,8 +17,7 @@ import { styled } from "@mui/material/styles";
 import { timeConverter } from "@/lib/timeConverter";
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import { useSession } from "next-auth/react";
-
-const width = 600;
+import { drawerStyle } from "@/components/shared/styles/StyledSelectorBuilder";
 
 type Props = {
   peers: PrivateChannelPeers;
@@ -37,7 +36,7 @@ const PeersDrawer = ({ peers, open, handleMoreClose, handleDeletedItem }: Props)
   });
 
   const handleSnackClose = (
-    event?: React.SyntheticEvent | Event,
+    _event?: React.SyntheticEvent | Event,
     reason?: string
   ) => {
     if (reason === "clickaway") {
@@ -54,19 +53,8 @@ const PeersDrawer = ({ peers, open, handleMoreClose, handleDeletedItem }: Props)
   return (
     <>
       <Drawer
-        sx={{
-          width: width,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: width,
-            boxSizing: "border-box",
-          },
-        }}
-        PaperProps={{
-          sx: {
-            backgroundColor: "#F9F9F9",
-          },
-        }}
+        sx={drawerStyle}
+        PaperProps={{ sx: { backgroundColor: "#F9F9F9"}}}
         variant="temporary"
         anchor="right"
         open={open}
