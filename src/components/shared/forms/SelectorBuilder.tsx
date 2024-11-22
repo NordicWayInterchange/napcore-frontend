@@ -31,6 +31,7 @@ import { ExtendedDelivery } from "@/types/delivery";
 import { useRouter } from "next/router";
 import { handleQuadtree } from "@/lib/handleQuadtree";
 import { StyledButton, StyledCard, StyledFormControl,menuItemStyles } from "@/components/shared/styles/StyledSelectorBuilder";
+import { handleDescription } from "@/lib/handleDescription";
 
 type Props = {
   matchingElements: ExtendedCapability[] | ExtendedDelivery[] | [];
@@ -178,17 +179,6 @@ const SelectorBuilder = (props: Props) => {
   const handleTextArea = (event: any) => {
     const value = event.target.value;
     setSelector(value);
-  };
-
-  const handleDescription = (event: any) => {
-    const value = event.target.value;
-    if (value.length > 255) {
-      setDescriptionError(true);
-      setDescription(value);
-    } else {
-      setDescriptionError(false);
-      setDescription(value);
-    }
   };
 
   const handleClose = () => {
@@ -377,7 +367,8 @@ const SelectorBuilder = (props: Props) => {
                 value={description}
                 label="Description"
                 disabled={advancedMode}
-                onChange={handleDescription}
+                onChange={(event) =>
+                  handleDescription(event, setDescription, setDescriptionError)}
                 error={descriptionError}
                 helperText={descriptionError ? "Description exceeds maximum length of 255 characters" : ""}
                 fullWidth
