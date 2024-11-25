@@ -19,14 +19,18 @@ import { styled } from "@mui/material/styles";
 type Props = {
   capability: ExtendedCapability;
   handleMoreClose: () => void;
+  removeDescriptionError: () => void;
   setOpenMap: (open: boolean) => void;
 };
-const CapabilityDrawerForm = ({ capability, handleMoreClose, setOpenMap }: Props) => {
+const CapabilityDrawerForm = ({ capability, handleMoreClose, removeDescriptionError, setOpenMap }: Props) => {
 
   return (
     <>
       <ListItem sx={{ justifyContent: "flex-end" }}>
-        <IconButton onClick={handleMoreClose}>
+        <IconButton onClick={() => {
+          handleMoreClose();
+          removeDescriptionError();
+        }}>
           <CloseIcon />
         </IconButton>
       </ListItem>

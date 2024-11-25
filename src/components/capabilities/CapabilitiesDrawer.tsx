@@ -1,10 +1,10 @@
 import {
   Box,
   Button,
-  Drawer,
+  Drawer, FormControl,
   List,
-  ListItem,
-  Toolbar,
+  ListItem, TextField,
+  Toolbar, Typography
 } from "@mui/material";
 import React, { useState } from "react";
 import { ExtendedCapability } from "@/types/capability";
@@ -14,8 +14,8 @@ import { IFeedback } from "@/interface/IFeedback";
 import { useSession } from "next-auth/react";
 import MapDialog from "@/components/map/MapDialog";
 import CapabilityDrawerForm from "@/components/layout/CapabilityDrawerForm";
-
-const width = 600;
+import { drawerStyle, StyledCard } from "@/components/shared/styles/StyledSelectorBuilder";
+import { handleDescription } from "@/lib/handleDescription";
 
 type Props = {
   capability: ExtendedCapability;
@@ -31,6 +31,8 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
     message: "",
     severity: "success",
   });
+  const [descriptionError, setDescriptionError] = useState(false);
+  const [description, setDescription] = useState<string>("");
 
   const selector = `(publicationId = '${capability.publicationId}')`;
 
@@ -46,10 +48,16 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
     setOpenMap(false);
   };
 
+  const removeDescriptionError = () => {
+    setDescription("");
+    setDescriptionError(false);
+  }
+
   const saveSubscription = async (name: string, selector: string) => {
+    if (description.length > 255 ) return ;
     const bodyData = {
       selector: selector,
-      description: ""
+      description: description
     };
 
     const response = await createSubscription(name, bodyData);
@@ -75,28 +83,40 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
   return (
     <>
       <Drawer
-        sx={{
-          width: width,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: width,
-            boxSizing: "border-box",
-          },
-        }}
-        PaperProps={{
-          sx: {
-            backgroundColor: "#F9F9F9",
-          },
-        }}
+        sx={drawerStyle}
+        PaperProps={{ sx: { backgroundColor: "#F9F9F9"}}}
         variant="temporary"
         anchor="right"
         open={open}
-        onClose={() => handleMoreClose()}
+        onClose={() => {handleMoreClose(); removeDescriptionError();}}
       >
         <Toolbar />
         <Box sx={{ padding: 1, width: 1 }}>
           <List>
-            <CapabilityDrawerForm capability={capability} handleMoreClose={handleMoreClose} setOpenMap={setOpenMap}/>
+            <CapabilityDrawerForm capability={capability}
+                                  handleMoreClose={handleMoreClose}
+                                  removeDescriptionError={removeDescriptionError}
+                                  setOpenMap={setOpenMap}/>
+            <ListItem>
+              <StyledCard variant={"outlined"}>
+                <Typography sx={{ mb:2 }}>Description</Typography>
+                <div>
+                <FormControl fullWidth>
+                  <TextField
+                    name="description"
+                    label="Add description"
+                    multiline
+                    rows={4}
+                    onChange={(event) =>
+                      handleDescription(event, setDescription, setDescriptionError)}
+                    error={descriptionError}
+                    helperText={descriptionError ? "Description exceeds maximum length of 255 characters" : ""}
+                    fullWidth
+                  />
+                </FormControl>
+                </div>
+              </StyledCard>
+            </ListItem>
             <ListItem>
               <Button
                 sx={{ borderRadius: 100, textTransform: "none" }}

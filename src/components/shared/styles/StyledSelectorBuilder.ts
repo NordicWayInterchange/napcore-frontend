@@ -1,6 +1,8 @@
 import { styled } from "@mui/material/styles";
 import { Button, Card, FormControl } from "@mui/material";
 
+const width = 600;
+
 export const StyledFormControl = styled(FormControl)(({}) => ({
   display: "flex",
   flexDirection: "column",
@@ -29,3 +31,12 @@ export const menuItemStyles = {
     },
   }
 };
+
+export const drawerStyle = {
+  width: width,
+  flexShrink: 0,
+  "& .MuiDrawer-paper": {
+    width: width,
+    boxSizing: "border-box",
+  },
+}

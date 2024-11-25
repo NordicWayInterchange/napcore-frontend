@@ -17,8 +17,7 @@ import { statusChips } from "@/lib/statusChips";
 import { timeConverter } from "@/lib/timeConverter";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { styled } from "@mui/material/styles";
-
-const width = 600;
+import { drawerStyle } from "@/components/shared/styles/StyledSelectorBuilder";
 
 type Props = {
   item: ExtendedSubscription | ExtendedDelivery;
@@ -43,19 +42,8 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
   return (
     <>
       <Drawer
-        sx={{
-          width: width,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: width,
-            boxSizing: "border-box",
-          },
-        }}
-        PaperProps={{
-          sx: {
-            backgroundColor: "#F9F9F9",
-          },
-        }}
+        sx={drawerStyle}
+        PaperProps={{ sx: {backgroundColor: "#F9F9F9"}}}
         variant="temporary"
         anchor="right"
         open={open}
