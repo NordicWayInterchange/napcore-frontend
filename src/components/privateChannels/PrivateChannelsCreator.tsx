@@ -1,4 +1,4 @@
-import { Chip, TextField, Typography } from "@mui/material";
+import { Chip, OutlinedInput, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Box } from "@mui/system";
@@ -155,19 +155,18 @@ const PrivateChannelsCreator = () => {
                 onKeyDown={handleKeyDown}
                 multiline
                 minRows={1}
-                InputProps={{
-                  disableUnderline: true,
-                  style: {
-                    minWidth: "200px",
-                    marginLeft: "8px",
-                    flexGrow: 1
-                  }
+                slots={{
+                  input: OutlinedInput,
                 }}
-                sx={{
-                  flexGrow: 1,
-                  marginTop: "8px",
-                  width: "100%"
+                slotProps={{
+                  input: {
+                    inputProps: {
+                      placeholder: 'Add peers (comma, space, or enter to add)',
+                      maxLength: 255,
+                    },
+                  },
                 }}
+                sx={textFieldStyle}
               />
             </Box>
 
