@@ -82,7 +82,10 @@ export default function Deliveries() {
       ...dataGridTemplate,
       field: "id",
       headerName: "ID",
-      valueGetter: ({value}) => value.substring(0, 8)
+      renderCell: (params) => {
+        const value = params.row.id;
+        return value ? value.substring(0, 8) : '';
+      },
     },
     {
       ...dataGridTemplate,
@@ -105,13 +108,17 @@ export default function Deliveries() {
     {
       ...dataGridTemplate,
       field: "description",
-      headerName: "Description"
+      headerName: "Description",
+      flex: 2
     },
     {
       ...dataGridTemplate,
       field: "lastUpdatedTimestamp",
       headerName: "Last updated",
-      valueGetter: ({ value }) => value && timeConverter(value),
+      renderCell: (params) => {
+        const value = params.row.lastUpdatedTimestamp;
+        return value && timeConverter(value);
+      },
     },
     {
       ...dataGridTemplate,
@@ -156,6 +163,11 @@ export default function Deliveries() {
         slots={{
           footer: CustomFooter,
           noRowsOverlay: CustomEmptyOverlayDeliveries,
+        }}
+        sx={{
+          '& .MuiDataGrid-columnHeaders': {
+            borderBottom: '2px solid #1976d2',
+          },
         }}
       />
       {deliveryRow && (

@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -13,6 +12,7 @@ import { useSession } from "next-auth/react";
 import { handleDecoding, handleFile } from "@/lib/handleFile";
 import { Box } from "@mui/system";
 import { styled } from "@mui/material/styles";
+import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
 
 type Props = {
   privateKey: string;
@@ -93,11 +93,6 @@ export default function CertificateDialog(props: Props) {
     </>
   );
 }
-
-const StyledButton = styled(Button)(({}) => ({
-  borderRadius: 100,
-  textTransform: "none",
-}));
 
 const StyledBox = styled(Box)(({}) => ({
   display: "flex",

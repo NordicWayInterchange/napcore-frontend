@@ -10,8 +10,7 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListItemSecondaryAction,
-  Button, TextField
+  TextField
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -19,12 +18,12 @@ import SaveIcon from "@mui/icons-material/Save";
 import { IFeedback } from "@/interface/IFeedback";
 import { addPeerToExistingPrivateChannel, deletePeerFromExistingPrivateChannel } from "@/lib/fetchers/internalFetchers";
 import AddIcon from "@mui/icons-material/Add";
-import { styled } from "@mui/material/styles";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import CloseIcon from "@mui/icons-material/Close";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { escapeString } from "@/lib/escapeString";
+import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
 
 type Props = {
   subItems: string[];
@@ -162,15 +161,15 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
                               primaryTypographyProps={{ component: "div" }}
                               secondary={<Box sx={secondaryContainerStyle}><ContentCopy value={item} /></Box>}
                               secondaryTypographyProps={{ component: "div" }} />
-                <ListItemSecondaryAction>
-                  <IconButton sx={{ left: "13px", position: "relative", top: "-13px" }}
+                <Box>
+                  <IconButton sx={{ left: "13px", position: "relative", top: "-16px" }}
                               onClick={() => handleDelete(index)}>
                     <DeleteIcon fontSize="medium" />
                   </IconButton>
-                </ListItemSecondaryAction>
+                </Box>
               </ListItem>
               {index < peerItems.length - 1 && <Divider
-                sx={{ borderStyle: "dashed", borderWidth: 1, marginX: 2, position: "relative", top: "-13px" }} />}
+                sx={{ borderStyle: "dashed", borderWidth: 1, marginX: 2, position: "relative", marginBottom: "-8px", top: "-20px" }} />}
             </React.Fragment>
           )) : <Box sx={warningStyle}>
             <WarningAmberIcon sx={{ mr: "6px", mt: "-7px" }} />
@@ -189,19 +188,25 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
                   onKeyDown={handleKeyDown}
                   autoFocus
                   aria-hidden="false"
-                  inputProps={{ maxLength: 255 }}
                   onChange={(e) => setNewSubItem(e.target.value)}
-                  InputProps={textFieldInputProps}
                   sx={textFieldSx}
+                  slotProps={{
+                    input: {
+                      inputProps: {
+                        maxLength: 255,
+                      },
+                      ...textFieldInputProps,
+                    },
+                  } as any}
                 />
                 <Box sx={{
                   display: "flex",
                   position: "relative",
                   right: "-13px",
-                  top: "-11px",
+                  top: "-13px",
                   alignItems: "center"
                 }}>
-                  <IconButton onClick={handleSaveClick} sx={{ marginRight: "-8px" }}>
+                  <IconButton onClick={handleSaveClick} sx={{ marginRight: "-9px" }}>
                     <SaveIcon fontSize="medium" />
                   </IconButton>
                   <IconButton onClick={handleCloseTextField}>
@@ -219,7 +224,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
               ref={addButtonRef}
               sx={{
                 my: 1, boxShadow: 2, mt: -1, position: "relative",
-                top: "-13px"
+                top: "-15px"
               }}
               startIcon={<AddIcon />}
               variant="contained"
@@ -227,7 +232,7 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
               disableElevation
               onClick={handleAddClick}
             >
-              Add peer
+               Add peer
             </StyledButton>
           )}
         </Box>
@@ -244,23 +249,14 @@ const CollapsiblePeer = ({ subItems, privateChannelId, actorCommonName, refetchP
   );
 };
 
-export default CollapsiblePeer;
-
-const StyledButton = styled(Button)(({}) => ({
-  borderRadius: 100,
-  textTransform: "none",
-  marginLeft: 2,
-  height: 40,
-  width: "200px"
-}));
-
 const primaryTextStyle = {
   maxWidth: "calc(100% - 32px)",
   overflow: "hidden",
   textOverflow: "ellipsis",
   whiteSpace: "nowrap",
   position: "relative",
-  top: "-13px"
+  top: "-22px",
+  marginBottom: "-40px"
 };
 
 const expandMoreStyle = {
@@ -280,9 +276,9 @@ const secondaryContainerStyle = {
   display: "flex",
   justifyContent: "flex-end",
   width: "100%",
-  ml: "1px",
+  ml: "9px",
   position: "relative",
-  top: "-25px"
+  top: "-9px"
 };
 
 const textFieldSx = {
@@ -332,3 +328,6 @@ const peerListStyle = {
   position: "relative",
   top: "-15px"
 };
+
+export default CollapsiblePeer;
+

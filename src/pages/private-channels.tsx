@@ -132,7 +132,10 @@ export default function PrivateChannels() {
       ...dataGridTemplate,
       field: "id",
       headerName: "ID",
-      valueGetter: ({value}) => value.substring(0, 8)
+      renderCell: (params) => {
+        const value = params.row.id;
+        return value ? value.substring(0, 8) : '';
+      },
     },
     {
       ...dataGridTemplate,
@@ -151,7 +154,10 @@ export default function PrivateChannels() {
       ...dataGridTemplate,
       field: "peers",
       headerName: "Number of peers",
-      valueGetter: ({ value }) => value && value.length,
+      renderCell: (params) => {
+        const value = params.row.peers;
+        return Array.isArray(value) ? value.length : 0;
+      },
     },
     {
       ...dataGridTemplate,
@@ -163,7 +169,10 @@ export default function PrivateChannels() {
       ...dataGridTemplate,
       field: "lastUpdated",
       headerName: "Last updated",
-      valueGetter: ({ value }) => value && timeConverter(value),
+      renderCell: (params) => {
+        const value = params.row.lastUpdated;
+        return value && timeConverter(value);
+      },
     },
     {
       ...dataGridTemplate,
@@ -193,7 +202,10 @@ export default function PrivateChannels() {
       ...dataGridTemplate,
       field: "id",
       headerName: "ID",
-      valueGetter: ({value}) => value.substring(0, 8)
+      renderCell: (params) => {
+        const value = params.row.id;
+        return value ? value.substring(0, 8) : '';
+      },
     },
     {
       ...dataGridTemplate,
@@ -224,7 +236,10 @@ export default function PrivateChannels() {
       ...dataGridTemplate,
       field: "lastUpdated",
       headerName: "Last updated",
-      valueGetter: ({ value }) => value && timeConverter(value),
+      renderCell: (params) => {
+        const value = params.row.lastUpdated;
+        return value && timeConverter(value);
+      },
     },
     {
       ...dataGridTemplate,

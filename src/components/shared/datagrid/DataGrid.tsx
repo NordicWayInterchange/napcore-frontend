@@ -44,7 +44,7 @@ const StyledDataGrid = styled(MuiDataGrid)(({}) => ({
     outline: "none",
   },
   "& .MuiDataGrid-columnHeader": {
-    borderBottom: '2px solid #dd7100',
+    borderBottom: '2px solid #dd7100 !important',
   },
   "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
 }));

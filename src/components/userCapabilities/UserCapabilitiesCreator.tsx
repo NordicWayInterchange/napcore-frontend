@@ -209,12 +209,14 @@ const UserCapabilitiesCreator = () => {
                       if (validateUniquePublicationId(publisherIdInput + ":" + userInput)) return;
                     }
                     }
-                    InputProps={{
-                      startAdornment: showAdornment && (
-                        <InputAdornment position="start">
-                          {publisherIdInput ? publisherIdInput + ":" : ""}
-                        </InputAdornment>
-                      ),
+                    slotProps={{
+                      input: {
+                        startAdornment: showAdornment && (
+                          <InputAdornment position="start">
+                            {publisherIdInput ? publisherIdInput + ":" : ""}
+                          </InputAdornment>
+                        ),
+                      },
                     }}
                   />
                 )}
@@ -364,6 +366,7 @@ const UserCapabilitiesCreator = () => {
                 )}
               />
               <StyledButton
+                sx={{mt:-1}}
                 color="buttonThemeColor"
                 variant="outlined"
                 disabled={!!getFieldState("quadTree").error}

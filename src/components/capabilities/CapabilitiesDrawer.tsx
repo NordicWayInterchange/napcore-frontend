@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Drawer, FormControl,
   List,
   ListItem, TextField,
@@ -16,6 +15,7 @@ import MapDialog from "@/components/map/MapDialog";
 import CapabilityDrawerForm from "@/components/layout/CapabilityDrawerForm";
 import { drawerStyle, StyledCard } from "@/components/shared/styles/StyledSelectorBuilder";
 import { handleDescription } from "@/lib/handleDescription";
+import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
 
 type Props = {
   capability: ExtendedCapability;
@@ -118,8 +118,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
               </StyledCard>
             </ListItem>
             <ListItem>
-              <Button
-                sx={{ borderRadius: 100, textTransform: "none" }}
+              <StyledButton
                 variant={"contained"}
                 color={"buttonThemeColor"}
                 disableElevation
@@ -128,7 +127,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                 }
               >
                 Subscribe
-              </Button>
+              </StyledButton>
             </ListItem>
           </List>
         </Box>

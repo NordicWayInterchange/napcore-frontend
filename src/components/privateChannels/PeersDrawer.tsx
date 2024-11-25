@@ -1,6 +1,6 @@
 import {
-  Box, Button, Card,
-  Drawer, FormControl, IconButton,
+  Box, Card,
+  Drawer, FormControl, IconButton, InputAdornment,
   List,
   ListItem, ListItemText, TextField,
   Toolbar, Typography
@@ -17,7 +17,7 @@ import { styled } from "@mui/material/styles";
 import { timeConverter } from "@/lib/timeConverter";
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import { useSession } from "next-auth/react";
-import { drawerStyle } from "@/components/shared/styles/StyledSelectorBuilder";
+import { StyledButton, drawerStyle } from "@/components/shared/styles/StyledSelectorBuilder";
 
 type Props = {
   peers: PrivateChannelPeers;
@@ -101,10 +101,14 @@ const PeersDrawer = ({ peers, open, handleMoreClose, handleDeletedItem }: Props)
                     value={peers.owner}
                     label={"Owner"}
                     margin="normal"
-                    InputProps={{
-                      endAdornment: (
-                        <ContentCopy value={peers.owner} />
-                      ),
+                    slotProps={{
+                      input: {
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <ContentCopy value={peers.owner} />
+                          </InputAdornment>
+                        ),
+                      },
                     }}
                   />
                 </FormControl>
@@ -120,28 +124,42 @@ const PeersDrawer = ({ peers, open, handleMoreClose, handleDeletedItem }: Props)
                       value={peers.endpoint.host}
                       label={"Host"}
                       margin="normal"
-                      InputProps={{
-                        endAdornment: (
-                          <ContentCopy value={peers.endpoint.host} />
-                        ),
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <ContentCopy value={peers.endpoint.host} />
+                            </InputAdornment>
+                          ),
+                        },
                       }}
                     />
                     <TextField
                       value={peers.endpoint.port}
                       label="Port"
                       margin="normal"
-                      InputProps={{
-                        endAdornment: <ContentCopy value={peers.endpoint.port.toString()} />,
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <ContentCopy value={peers.endpoint.port.toString()} />
+                            </InputAdornment>
+                          ),
+                        },
                       }}
                     />
                     <TextField
                       value={peers.endpoint.queueName}
                       label="Queue name"
                       margin="normal"
-                      InputProps={{
-                        endAdornment: (
-                          <ContentCopy value={peers.endpoint.queueName} />
-                        ),
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <ContentCopy value={peers.endpoint.queueName} />
+                            </InputAdornment>
+                          ),
+                        },
                       }}
                     />
                   </FormControl>
@@ -158,11 +176,14 @@ const PeersDrawer = ({ peers, open, handleMoreClose, handleDeletedItem }: Props)
                       multiline
                       value={peers.description || ""}
                       rows={4}
-                      InputProps={{
-                        readOnly: true,
-                        endAdornment: (
-                          <ContentCopy value={peers.description} />
-                        )
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <ContentCopy value={peers.description} />
+                            </InputAdornment>
+                          ),
+                        },
                       }}
                     />
                   </FormControl>
@@ -170,18 +191,15 @@ const PeersDrawer = ({ peers, open, handleMoreClose, handleDeletedItem }: Props)
               </StyledCard>
             </ListItem>
             <ListItem >
-              <Button
-                sx={{
-                  borderRadius: 100,
-                  textTransform: "none",
-                }}
+              <StyledButton
                 variant={"contained"}
                 color={"redLight"}
                 onClick={() => setDialogOpen(true)}
                 disableElevation
+                sx={{ width: '263px'}}
               >
                 Remove private channel subscription
-              </Button>
+              </StyledButton>
             </ListItem>
           </List>
         </Box>

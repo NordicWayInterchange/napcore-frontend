@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Divider, Grid } from "@mui/material";
+import { Divider } from "@mui/material";
 import React from "react";
 import { useMatchingCapabilities } from "@/hooks/useMatchingCapabilities";
 import DataGrid from "@/components/shared/datagrid/DataGrid";
@@ -28,7 +28,7 @@ const NewSubscription = () => {
     remove();
   };
 
-  const handleOnRowClick: GridEventListener<'rowClick'> = (params) => {
+  const handleOnRowClick: GridEventListener<"rowClick"> = (params) => {
     setPublicationIdRow(params.row.publicationId);
   };
 
@@ -41,16 +41,28 @@ const NewSubscription = () => {
       </Subheading>
       <Divider sx={{ marginY: 1 }} />
       <BreadcrumbNavigation text="Subscriptions" />
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
+      <Box
+        display="flex"
+        flexWrap="wrap"
+        gap={3}
+      >
+        <Box flex={1}
+             sx={{
+               width: { xs: "100%", sm: "100%", md: "100%", lg: "50%", xl: "50%" }
+             }}
+        >
           <SelectorBuilder
             matchingElements={data || []}
             selectorCallback={handleChange}
             publicationIdRow={publicationIdRow}
             label="Subscription"
           />
-        </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
+        </Box>
+        <Box flex={1}
+             sx={{
+               width: { xs: "100%", sm: "100%", md: "100%", lg: "50%", xl: "50%" }
+             }}
+        >
           <DataGrid
             columns={NewFormDataGrid}
             rows={data || []}
@@ -62,8 +74,8 @@ const NewSubscription = () => {
               noRowsOverlay: CustomEmptyOverlayMatching
             }}
           />
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Box>
   );
 };

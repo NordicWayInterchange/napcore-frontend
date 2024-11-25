@@ -1,10 +1,11 @@
-import { Divider, Grid } from "@mui/material";
+import { Divider } from "@mui/material";
 import React from "react";
 import { Box } from "@mui/system";
 import Subheading from "@/components/shared/display/typography/Subheading";
 import Mainheading from "@/components/shared/display/typography/Mainheading";
 import UserCapabilitiesCreator from "@/components/userCapabilities/UserCapabilitiesCreator";
 import { BreadcrumbNavigation } from "@/components/shared/actions/BreadcrumbNavigation";
+
 const NewUserCapability = () => {
 
   return (
@@ -15,11 +16,19 @@ const NewUserCapability = () => {
       </Subheading>
       <Divider sx={{ marginY: 1 }} />
       <BreadcrumbNavigation text="My capabilities" />
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
+      <Box
+        display="flex"
+        flexWrap="wrap"
+        gap={3}
+      >
+        <Box
+          sx={{
+            width: { xs: "100%", sm: "100%", md: "100%", lg: "50%", xl: "50%" }
+          }}
+        >
           <UserCapabilitiesCreator />
-        </Grid>
-        </Grid>
+        </Box>
+      </Box>
     </Box>
   );
 };

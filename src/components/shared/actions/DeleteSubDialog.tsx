@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -17,6 +16,7 @@ import {
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import { useState } from "react";
 import { IFeedback } from "@/interface/IFeedback";
+import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
 
 type Props = {
   actorCommonName: string;
@@ -27,7 +27,7 @@ type Props = {
   text: string;
 };
 
-async function deleteArtifacts(artifactType: string, name: string, itemId: string, peerId: string) {
+async function deleteArtifacts(artifactType: string, name: string, itemId: string) {
   return await (artifactType === "Delivery" ? deleteDeliveries(name, itemId) :
     artifactType === "Subscription" ? deleteSubscriptions(name, itemId) :
       artifactType === "Private channel" ? deletePrivateChannel(name, itemId) :
@@ -44,8 +44,8 @@ export default function DeleteSubDialog(props: Props) {
     severity: "success",
   });
 
-  const handleDeletion = async (name: string, itemId: string, text: string, peerId: string) => {
-    const response = await deleteArtifacts(text, name, itemId, peerId);
+  const handleDeletion = async (name: string, itemId: string, text: string) => {
+    const response = await deleteArtifacts(text, name, itemId);
     handleDialog(false);
 
     if (response.ok) {
@@ -90,23 +90,21 @@ export default function DeleteSubDialog(props: Props) {
         </DialogContent>
         <Divider />
         <DialogActions sx={{ display: "flex", justifyContent: "space-evenly" }}>
-          <Button
-            variant="text"
+          <StyledButton
+            variant="outlined"
             color="inherit"
             onClick={() => handleDialog(false)}
-            sx={{ borderRadius: 100, textTransform: "none" }}
           >
             Cancel
-          </Button>
-          <Button
+          </StyledButton>
+          <StyledButton
             variant="contained"
             color="depricatedLight"
-            sx={{ borderRadius: 100, textTransform: "none" }}
-            onClick={() => handleDeletion(actorCommonName, itemId, text, "")}
+            onClick={() => handleDeletion(actorCommonName, itemId, text)}
             disableElevation
           >
             Yes, remove
-          </Button>
+          </StyledButton>
         </DialogActions>
       </Dialog>
       {feedback.feedback && (

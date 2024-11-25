@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Drawer, FormControl,
   List,
   ListItem, TextField,
@@ -15,7 +14,7 @@ import CapabilityDrawerForm from "@/components/layout/CapabilityDrawerForm";
 import { createDelivery } from "@/lib/fetchers/internalFetchers";
 import { IFeedback } from "@/interface/IFeedback";
 import Snackbar from "@/components/shared/feedback/Snackbar";
-import { drawerStyle, StyledCard } from "@/components/shared/styles/StyledSelectorBuilder";
+import { drawerStyle, StyledCard, StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
 import { handleDescription } from "@/lib/handleDescription";
 
 type Props = {
@@ -128,8 +127,7 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
             </ListItem>
 
             <ListItem sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <Button
-                sx={{ borderRadius: 100, textTransform: "none", width: 150}}
+              <StyledButton
                 variant={"contained"}
                 color={"buttonThemeColor"}
                 disableElevation
@@ -138,19 +136,15 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
                 }
               >
                 Deliver
-              </Button>
-              <Button
-                sx={{
-                  borderRadius: 100,
-                  textTransform: "none",
-                }}
+              </StyledButton>
+              <StyledButton
                 variant={"contained"}
                 color={"redLight"}
                 onClick={() => setDialogOpen(true)}
                 disableElevation
               >
                 Remove Capability
-              </Button>
+              </StyledButton>
             </ListItem>
           </List>
         </Box>

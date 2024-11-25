@@ -1,8 +1,7 @@
-import { Button } from "@mui/material";
 import React from "react";
 import Link from "next/link";
 import AddIcon from "@mui/icons-material/Add";
-import { styled } from "@mui/material/styles";
+import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
 
 type Props = {
   text: string;
@@ -37,11 +36,3 @@ export default function AddButton(props: Props) {
     </>
   );
 }
-
-const StyledButton = styled(Button)(({}) => ({
-  borderRadius: 100,
-  textTransform: "none",
-  marginLeft: 2,
-  height: 40,
-  width: "200px"
-}));

@@ -1,7 +1,7 @@
 import {
   Box,
-  Button, Card,
-  Drawer, FormControl, IconButton,
+  Card,
+  Drawer, FormControl, IconButton, InputAdornment,
   List,
   ListItem, ListItemText, TextField,
   Toolbar, Typography
@@ -19,7 +19,7 @@ import { ContentCopy } from "@/components/shared/actions/ContentCopy";
 import { styled } from "@mui/material/styles";
 import { timeConverter } from "@/lib/timeConverter";
 import CollapsiblePeer from "@/components/shared/display/CollapsiblePeer";
-import { drawerStyle } from "@/components/shared/styles/StyledSelectorBuilder";
+import { StyledButton, drawerStyle } from "@/components/shared/styles/StyledSelectorBuilder";
 
 type Props = {
   privateChannel: PrivateChannel;
@@ -126,28 +126,42 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
                       value={privateChannel.endpoint.host}
                       label={"Host"}
                       margin="normal"
-                      InputProps={{
-                        endAdornment: (
-                          <ContentCopy value={privateChannel.endpoint.host} />
-                        ),
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <ContentCopy value={privateChannel.endpoint.host} />
+                            </InputAdornment>
+                          ),
+                        },
                       }}
                     />
                     <TextField
                       value={privateChannel.endpoint.port}
                       label="Port"
                       margin="normal"
-                      InputProps={{
-                        endAdornment: <ContentCopy value={privateChannel.endpoint.port.toString()} />,
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <ContentCopy value={privateChannel.endpoint.port.toString()} />
+                            </InputAdornment>
+                          ),
+                        },
                       }}
                     />
                     <TextField
                       value={privateChannel.endpoint.queueName}
                       label="Queue name"
                       margin="normal"
-                      InputProps={{
-                        endAdornment: (
-                          <ContentCopy value={privateChannel.endpoint.queueName} />
-                        ),
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <ContentCopy value={privateChannel.endpoint.queueName} />
+                            </InputAdornment>
+                          ),
+                        },
                       }}
                     />
                   </FormControl>
@@ -164,11 +178,14 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
                       multiline
                       value={privateChannel.description || ""}
                       rows={4}
-                      InputProps={{
-                        readOnly: true,
-                        endAdornment: (
-                          <ContentCopy value={privateChannel.description} />
-                        )
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <ContentCopy value={privateChannel.description} />
+                            </InputAdornment>
+                          ),
+                        },
                       }}
                     />
                   </FormControl>
@@ -176,18 +193,14 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
               </StyledCard>
             </ListItem>
             <ListItem >
-              <Button
-                sx={{
-                  borderRadius: 100,
-                  textTransform: "none",
-                }}
+              <StyledButton
                 variant={"contained"}
                 color={"redLight"}
                 onClick={() => setDialogOpen(true)}
                 disableElevation
               >
                 Remove private channel
-              </Button>
+              </StyledButton>
             </ListItem>
           </List>
         </Box>
