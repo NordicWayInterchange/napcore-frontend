@@ -113,6 +113,7 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
                   <FormControl fullWidth>
                     <TextField
                       name="description"
+                      label="Add description"
                       multiline
                       rows={4}
                       onChange={(event) =>
