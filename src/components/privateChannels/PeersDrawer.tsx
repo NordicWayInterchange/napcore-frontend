@@ -196,6 +196,7 @@ const PeersDrawer = ({ peers, open, handleMoreClose, handleDeletedItem }: Props)
                 color={"redLight"}
                 onClick={() => setDialogOpen(true)}
                 disableElevation
+                sx={{ width: '263px'}}
               >
                 Remove private channel subscription
               </StyledButton>
