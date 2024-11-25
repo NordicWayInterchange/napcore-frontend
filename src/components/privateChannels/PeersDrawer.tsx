@@ -17,7 +17,7 @@ import { styled } from "@mui/material/styles";
 import { timeConverter } from "@/lib/timeConverter";
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import { useSession } from "next-auth/react";
-import { drawerStyle } from "@/components/shared/styles/StyledSelectorBuilder";
+import { StyledButton, drawerStyle } from "@/components/shared/styles/StyledSelectorBuilder";
 
 type Props = {
   peers: PrivateChannelPeers;

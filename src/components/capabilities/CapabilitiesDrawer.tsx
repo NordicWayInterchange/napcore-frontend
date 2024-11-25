@@ -15,6 +15,7 @@ import MapDialog from "@/components/map/MapDialog";
 import CapabilityDrawerForm from "@/components/layout/CapabilityDrawerForm";
 import { drawerStyle, StyledCard } from "@/components/shared/styles/StyledSelectorBuilder";
 import { handleDescription } from "@/lib/handleDescription";
+import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
 
 type Props = {
   capability: ExtendedCapability;
