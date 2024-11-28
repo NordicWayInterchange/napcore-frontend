@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Divider, IconButton } from "@mui/material";
+import { Box, Divider, IconButton, Tooltip } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import DataGrid from "@/components/shared/datagrid/DataGrid";
 import { dataGridTemplate } from "@/components/shared/datagrid/DataGridTemplate";
@@ -11,13 +11,15 @@ import { Chip } from "@/components/shared/display/Chip";
 import { CustomEmptyOverlayUserCapabilites } from "@/components/shared/datagrid/CustomEmptyOverlay";
 import Mainheading from "@/components/shared/display/typography/Mainheading";
 import Subheading from "@/components/shared/display/typography/Subheading";
-import {useUserCapabilities } from "@/hooks/useCapabilities";
+import { useUserCapabilities } from "@/hooks/useCapabilities";
 import UserCapabilitiesDrawer from "@/components/userCapabilities/UserCapabilitiesDrawer";
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
 import AddButton from "@/components/shared/actions/AddButton";
 import { performRefetch } from "@/lib/performRefetch";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import Link from "next/link";
 
 export default function Capabilities() {
   const { data: session } = useSession();
@@ -69,7 +71,7 @@ export default function Capabilities() {
     {
       ...dataGridTemplate,
       field: "publicationId",
-      headerName: "Publication ID",
+      headerName: "Publication ID"
     },
     {
       ...dataGridTemplate,
@@ -86,17 +88,17 @@ export default function Capabilities() {
             label={cell.value}
           />
         );
-      },
+      }
     },
     {
       ...dataGridTemplate,
       field: "protocolVersion",
-      headerName: "Protocol version",
+      headerName: "Protocol version"
     },
     {
       ...dataGridTemplate,
       field: "originatingCountry",
-      headerName: "Originating country",
+      headerName: "Originating country"
     },
     {
       ...dataGridTemplate,
@@ -117,8 +119,8 @@ export default function Capabilities() {
             </IconButton>
           </Box>
         );
-      },
-    },
+      }
+    }
   ];
 
   return (
@@ -129,8 +131,34 @@ export default function Capabilities() {
         capability to view more information and remove.
       </Subheading>
       <Divider sx={{ marginY: 2 }} />
-      <AddButton text="Add capability" labelUrl="capability"></AddButton>
-      <Divider style={{ margin: '5px 0', visibility: 'hidden' }}/>
+      <Box position="relative" display="inline-flex">
+        <AddButton text="Add capability" labelUrl="capability"></AddButton>
+        <Box
+          position="absolute"
+          top={0}
+          right={0}
+          sx={{
+            transform: "translate(50%, -50%)"
+          }}
+        >
+          <Tooltip title={
+            <span style={{ fontSize: ".88rem" }}>
+          Do you need help with filling out this form? Please visit our  <Link
+              href="https://github.com/NordicWayInterchange/interchange/blob/federation-master/GLOSSARY.md"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+         glossary
+      </Link>
+        </span>
+          } arrow placement="right">
+            <IconButton size="small">
+              <HelpOutlineIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      </Box>
+      <Divider style={{ margin: "5px 0", visibility: "hidden" }} />
       <DataGrid
         columns={tableHeaders}
         rows={data || []}
@@ -140,7 +168,7 @@ export default function Capabilities() {
         sort={{ field: "userCapabilityRow?.id", sort: "desc" }}
         slots={{
           footer: CustomFooter,
-          noRowsOverlay: CustomEmptyOverlayUserCapabilites,
+          noRowsOverlay: CustomEmptyOverlayUserCapabilites
         }}
       />
       {userCapabilityRow && (
