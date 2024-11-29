@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Divider, IconButton, Tooltip } from "@mui/material";
+import { Box, Divider, IconButton } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import DataGrid from "@/components/shared/datagrid/DataGrid";
 import { dataGridTemplate } from "@/components/shared/datagrid/DataGridTemplate";
@@ -18,8 +18,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
 import AddButton from "@/components/shared/actions/AddButton";
 import { performRefetch } from "@/lib/performRefetch";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import Link from "next/link";
 
 export default function Capabilities() {
   const { data: session } = useSession();
