@@ -131,34 +131,8 @@ export default function Capabilities() {
         capability to view more information and remove.
       </Subheading>
       <Divider sx={{ marginY: 2 }} />
-      <Box position="relative" display="inline-flex">
-        <AddButton text="Add capability" labelUrl="capability"></AddButton>
-        <Box
-          position="absolute"
-          top={0}
-          right={0}
-          sx={{
-            transform: "translate(50%, -50%)"
-          }}
-        >
-          <Tooltip title={
-            <span style={{ fontSize: ".88rem" }}>
-          Do you need help with filling out this form? Please visit our  <Link
-              href="https://github.com/NordicWayInterchange/interchange/blob/federation-master/GLOSSARY.md"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-         glossary
-      </Link>
-        </span>
-          } arrow placement="right">
-            <IconButton size="small">
-              <HelpOutlineIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      </Box>
-      <Divider style={{ margin: "5px 0", visibility: "hidden" }} />
+      <AddButton text="Add capability" labelUrl="capability"></AddButton>
+      <Divider style={{ margin: '5px 0', visibility: 'hidden' }}/>
       <DataGrid
         columns={tableHeaders}
         rows={data || []}

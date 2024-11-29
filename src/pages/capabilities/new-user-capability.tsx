@@ -5,6 +5,7 @@ import Subheading from "@/components/shared/display/typography/Subheading";
 import Mainheading from "@/components/shared/display/typography/Mainheading";
 import UserCapabilitiesCreator from "@/components/userCapabilities/UserCapabilitiesCreator";
 import { BreadcrumbNavigation } from "@/components/shared/actions/BreadcrumbNavigation";
+import UserAssistance from "@/components/shared/actions/UserAssistance";
 
 const NewUserCapability = () => {
 
@@ -12,7 +13,10 @@ const NewUserCapability = () => {
     <Box flex={1}>
       <Mainheading>Add my capability</Mainheading>
       <Subheading>
-        Add a user capability with the form.
+        <Box position="relative" display="inline-flex">
+          Add a user capability with the form.
+          <UserAssistance />
+        </Box>
       </Subheading>
       <Divider sx={{ marginY: 1 }} />
       <BreadcrumbNavigation text="My capabilities" />

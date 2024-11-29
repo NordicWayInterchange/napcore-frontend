@@ -5,13 +5,17 @@ import Subheading from "@/components/shared/display/typography/Subheading";
 import Mainheading from "@/components/shared/display/typography/Mainheading";
 import { BreadcrumbNavigation } from "@/components/shared/actions/BreadcrumbNavigation";
 import PrivateChannelsCreator from "@/components/privateChannels/PrivateChannelsCreator";
+import UserAssistance from "@/components/shared/actions/UserAssistance";
 const NewUserCapability = () => {
 
   return (
     <Box flex={1}>
       <Mainheading>Add private channel</Mainheading>
       <Subheading>
+        <Box position="relative" display="inline-flex">
         Add a private channel with the form.
+          <UserAssistance/>
+        </Box>
       </Subheading>
       <Divider sx={{ marginY: 1 }} />
       <BreadcrumbNavigation text="Private channels" />
