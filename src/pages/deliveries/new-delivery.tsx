@@ -12,6 +12,7 @@ import SelectorBuilder from "@/components/shared/forms/SelectorBuilder";
 import { GridEventListener } from "@mui/x-data-grid";
 import { BreadcrumbNavigation } from "@/components/shared/actions/BreadcrumbNavigation";
 import { NewFormDataGrid } from "@/components/shared/datagrid/GridColumns/NewFormDatagrid";
+import UserAssistance from "@/components/shared/actions/UserAssistance";
 
 const NewDelivery = () => {
   const { data: session } = useSession();
@@ -36,8 +37,11 @@ const NewDelivery = () => {
     <Box flex={1}>
       <Mainheading>Create Delivery</Mainheading>
       <Subheading>
+        <Box position="relative" display="inline-flex">
         Create a delivery with the form, or specify your own selector in
         advanced mode.
+          <UserAssistance/>
+        </Box>
       </Subheading>
       <Divider sx={{ marginY: 1 }} />
       <BreadcrumbNavigation text="Deliveries" />

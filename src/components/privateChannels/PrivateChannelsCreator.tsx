@@ -149,7 +149,6 @@ const PrivateChannelsCreator = () => {
 
               <TextField
                 variant="standard"
-                placeholder="Add peers (comma, space, or enter to add)"
                 value={inputValue}
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}
@@ -232,7 +231,6 @@ const textFieldStyle = {
     "&.Mui-focused fieldset": {
       borderColor: "gray",
     },
-
   },
   padding: '2px 2px'
 };

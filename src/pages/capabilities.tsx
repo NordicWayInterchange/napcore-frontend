@@ -11,7 +11,7 @@ import { Chip } from "@/components/shared/display/Chip";
 import { CustomEmptyOverlayUserCapabilites } from "@/components/shared/datagrid/CustomEmptyOverlay";
 import Mainheading from "@/components/shared/display/typography/Mainheading";
 import Subheading from "@/components/shared/display/typography/Subheading";
-import {useUserCapabilities } from "@/hooks/useCapabilities";
+import { useUserCapabilities } from "@/hooks/useCapabilities";
 import UserCapabilitiesDrawer from "@/components/userCapabilities/UserCapabilitiesDrawer";
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -69,7 +69,7 @@ export default function Capabilities() {
     {
       ...dataGridTemplate,
       field: "publicationId",
-      headerName: "Publication ID",
+      headerName: "Publication ID"
     },
     {
       ...dataGridTemplate,
@@ -86,17 +86,17 @@ export default function Capabilities() {
             label={cell.value}
           />
         );
-      },
+      }
     },
     {
       ...dataGridTemplate,
       field: "protocolVersion",
-      headerName: "Protocol version",
+      headerName: "Protocol version"
     },
     {
       ...dataGridTemplate,
       field: "originatingCountry",
-      headerName: "Originating country",
+      headerName: "Originating country"
     },
     {
       ...dataGridTemplate,
@@ -117,8 +117,8 @@ export default function Capabilities() {
             </IconButton>
           </Box>
         );
-      },
-    },
+      }
+    }
   ];
 
   return (
@@ -140,7 +140,7 @@ export default function Capabilities() {
         sort={{ field: "userCapabilityRow?.id", sort: "desc" }}
         slots={{
           footer: CustomFooter,
-          noRowsOverlay: CustomEmptyOverlayUserCapabilites,
+          noRowsOverlay: CustomEmptyOverlayUserCapabilites
         }}
       />
       {userCapabilityRow && (
