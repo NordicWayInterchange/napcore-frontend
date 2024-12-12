@@ -215,6 +215,7 @@ const fetchNetworkCapabilities = async (params: basicGetParams) => {
 
       return {
         ...capability.application,
+        ...capability.metadata,
         causeCodesDictionary: causeCodes && causeCodes.filter(Boolean),
       };
     }),
