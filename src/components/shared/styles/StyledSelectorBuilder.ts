@@ -15,7 +15,7 @@ export const StyledButton = styled(Button)(({}) => ({
   height: 40,
   width: '200px',
   borderColor: 'buttonThemeColor',
-  paddingBottom: '10px',
+  paddingBottom: '5px',
   position: 'relative',
   '&:hover': {
     '&::after': {

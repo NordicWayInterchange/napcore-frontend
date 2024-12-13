@@ -14,6 +14,8 @@ export type Application = {
   originatingCountry: string;
   quadTree: Array<string>;
   causeCode?: Array<number>;
+  shardCount: number;
+  redirectPolicy: string;
 };
 
 export type Metadata = {
