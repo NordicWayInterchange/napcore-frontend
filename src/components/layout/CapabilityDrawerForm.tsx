@@ -181,28 +181,28 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, removeDescriptionEr
           </FormControl>
         </StyledCard>
       </ListItem>
-      {capability.shardCount && <ListItem>
-        <StyledCard variant={"outlined"}>
-          <Typography>Shards</Typography>
-          <FormControl fullWidth>
-            <TextField
-              value={capability.shardCount}
-              label="Number of shards"
-              margin="normal"
-              slotProps={{
-                input: {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <ContentCopy value={capability.shardCount} />
-                    </InputAdornment>
-                  )
-                }
-              }}
-            />
-          </FormControl>
-        </StyledCard>
-      </ListItem>
-      }
+      {capability.shardCount > 1 && (<ListItem>
+          <StyledCard variant={"outlined"}>
+            <Typography>Shards</Typography>
+            <FormControl fullWidth>
+              <TextField
+                value={capability.shardCount}
+                label="Number of shards"
+                margin="normal"
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <ContentCopy value={capability.shardCount.toString()} />
+                      </InputAdornment>
+                    )
+                  }
+                }}
+              />
+            </FormControl>
+          </StyledCard>
+        </ListItem>
+      )}
       <ListItem>
         <StyledCard variant={"outlined"}>
           <Typography>Quadtree</Typography>
