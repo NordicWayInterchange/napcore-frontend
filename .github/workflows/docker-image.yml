@@ -41,7 +41,7 @@ jobs:
 
       - name: Push docker image to GCP
         run: |
-          docker tag napcore-frontend ${{ vars.REGIONAL_ARTIFACT_REGISTRY_URL }}/${{ vars.PROJECT_ID }}/${{ vars.ARTIFACT_REGISTRY_URL }}/napcore-frontend:${{ env.IMAGE_TAG }}
+          docker tag napcore-frontend  ${{ vars.REGIONAL_ARTIFACT_REGISTRY_URL }}/${{ vars.PROJECT_ID }}/${{ vars.ARTIFACT_REGISTRY_REPOSITORY }}/napcore-frontend:${{ env.IMAGE_TAG }}
           docker push --all-tags ${{ vars.REGIONAL_ARTIFACT_REGISTRY_URL }}/${{ vars.PROJECT_ID }}/${{ vars.ARTIFACT_REGISTRY_URL }}/napcore-frontend
 
       - name: Login to Github container registry
