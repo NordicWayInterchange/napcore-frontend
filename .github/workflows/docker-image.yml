@@ -51,5 +51,5 @@ jobs:
 
       - name: Push docker image to Github container registry
         run: |
-          docker tag napcore-frontend ghcr.io/nordicwayinterchange/napcore-frontend${{ env.IMAGE_TAG }}
+          docker tag napcore-frontend ghcr.io/nordicwayinterchange/napcore-frontend:${{ env.IMAGE_TAG }}
           docker push --all-tags ghcr.io/nordicwayinterchange/napcore-frontend
