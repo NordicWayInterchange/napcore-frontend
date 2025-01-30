@@ -37,10 +37,12 @@ jobs:
         run: echo "IMAGE_TAG=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
 
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag ${{ vars.REGIONAL_ARTIFACT_REGISTRY_URL }}/${{ vars.PROJECT_ID }}/${{ vars.ARTIFACT_REGISTRY_REPOSITORY }}/napcore-frontend:${{ env.IMAGE_TAG }}
+        run: docker build . --file Dockerfile -t napcore-frontend
 
       - name: Push docker image to GCP
-        run: docker push --all-tags ${{ vars.REGIONAL_ARTIFACT_REGISTRY_URL }}/${{ vars.PROJECT_ID }}/${{ vars.ARTIFACT_REGISTRY_REPOSITORY }}/napcore-frontend
+        run: |
+          docker tag napcore-frontend ${{ vars.REGIONAL_ARTIFACT_REGISTRY_URL }}/${{ vars.PROJECT_ID }}/${{ vars.ARTIFACT_REGISTRY_REPOSITORY }}/napcore-frontend:{{ env.IMAGE_TAG }}
+          docker push --all-tags ${{ vars.REGIONAL_ARTIFACT_REGISTRY_URL }}/${{ vars.PROJECT_ID }}/${{ vars.ARTIFACT_REGISTRY_REPOSITORY }}/napcore-frontend
 
       - name: Login to Github container registry
         uses: docker/login-action@v3.3.0
@@ -51,4 +53,5 @@ jobs:
 
       - name: Push docker image to Github container registry
         run: |
+          docker tag napcore-frontend ghcr.io/nordicwayinterchange/napcore-frontend:${{ env.IMAGE_TAG }}
           docker push --all-tags ghcr.io/nordicwayinterchange/napcore-frontend
