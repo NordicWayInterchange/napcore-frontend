@@ -108,22 +108,15 @@ export const fetchNapcoreNetworkCapabilities: basicGetFunction = async (
   params
 ) => {
   const { actorCommonName, selector = "" } = params;
-  return await fetchIXN(
-    actorCommonName,
-    "/subscriptions/capabilities",
-    selector
+  return await fetchIXN(actorCommonName, "/subscriptions/capabilities", selector
   );
 };
 
 export const fetchNapcoreSubscriptions: extendedGetFunction = async (
   params
 ) => {
-  const { actorCommonName, selector = "", pathParam = "" } = params;
-  return await fetchIXN(
-    actorCommonName,
-    `/subscriptions/${pathParam}`,
-    selector
-  );
+  const { actorCommonName, selector = "" } = params;
+  return await fetchIXN(actorCommonName, `/subscriptions`, selector);
 };
 
 export const addNapcoreSubscriptions: basicPostFunction = async (params) => {
@@ -155,11 +148,7 @@ export const fetchNapcoreDeliveriesCapabilities: basicGetFunction = async (
   params
 ) => {
   const { actorCommonName, selector = "" } = params;
-  return await fetchIXN(
-    actorCommonName,
-    "/deliveries/capabilities",
-    selector
-  );
+  return await fetchIXN(actorCommonName, "/deliveries/capabilities", selector);
 };
 
 export const deleteNapcoreDeliveries: basicDeleteFunction = async (
