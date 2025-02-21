@@ -206,6 +206,7 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
         handleDialog={handleClickClose}
         handleDeletedItem={handleDeletedItem}
         text={label}
+        handleMoreClose={handleMoreClose}
       />
     </>
   );

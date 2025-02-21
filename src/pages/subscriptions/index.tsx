@@ -180,6 +180,7 @@ export default function Subscriptions() {
         actorCommonName={session?.user.commonName as string}
         handleDeletedItem={handleDeletedItem}
         text="Subscription"
+        handleMoreClose={handleMoreClose}
       />
     </Box>
   );

@@ -186,6 +186,7 @@ export default function Deliveries() {
         actorCommonName={session?.user.commonName as string}
         handleDeletedItem={handleDeletedItem}
         text="Delivery"
+        handleMoreClose={handleMoreClose}
       />
     </Box>
   );

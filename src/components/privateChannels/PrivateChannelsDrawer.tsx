@@ -220,6 +220,7 @@ const PrivateChannelsDrawer = ({ privateChannel, open, handleMoreClose, handleDe
         handleDialog={handleClickClose}
         handleDeletedItem={handleDeletedItem}
         text="Private channel"
+        handleMoreClose={handleMoreClose}
       />
     </>
   );

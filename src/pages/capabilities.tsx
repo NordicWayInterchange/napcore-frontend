@@ -158,6 +158,7 @@ export default function Capabilities() {
         actorCommonName={session?.user.commonName as string}
         handleDeletedItem={handleDeletedItem}
         text="Capability"
+        handleMoreClose={handleMoreClose}
       />
     </Box>
   );

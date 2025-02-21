@@ -311,6 +311,7 @@ export default function PrivateChannels() {
           actorCommonName={session?.user.commonName as string}
           handleDeletedItem={handleDeletedItem}
           text="Private channel"
+          handleMoreClose={handleMoreClose}
         />
       </Box>
 
@@ -351,6 +352,7 @@ export default function PrivateChannels() {
               actorCommonName={session?.user.commonName as string}
               handleDeletedItem={handleDeletedPeerItem}
               text="Subscribed private channel"
+              handleMoreClose={handleMoreClose}
             />
           </Box>
         </Box>

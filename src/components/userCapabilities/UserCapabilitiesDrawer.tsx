@@ -86,6 +86,7 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
         severity: "warning",
       });
     }
+    handleMoreClose();
   };
 
   return (
@@ -164,6 +165,7 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
         handleDialog={handleClickClose}
         handleDeletedItem={handleDeletedItem}
         text="Capability"
+        handleMoreClose={handleMoreClose}
       />
       <MapDialog
         open={openMap}

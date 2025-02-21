@@ -78,6 +78,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
         severity: "warning",
       });
     }
+    handleMoreClose();
   };
 
   return (

@@ -219,6 +219,7 @@ const PeersDrawer = ({ peers, open, handleMoreClose, handleDeletedItem }: Props)
         actorCommonName={session?.user.commonName as string}
         handleDeletedItem={handleDeletedItem}
         text="Subscribed private channel"
+        handleMoreClose={handleMoreClose}
       />
     </>
   );
