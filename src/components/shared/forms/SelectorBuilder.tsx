@@ -291,7 +291,7 @@ const SelectorBuilder = (props: Props) => {
                     >
                       {causeCodes.map((country, index) => (
                         <MenuItem key={index} value={country.value} sx={menuItemStyles}>
-                          {country.value}: {country.label}
+                          {country.value}{country.label ? ':' : ''} {country.label}
                         </MenuItem>
                       ))}
                     </Select>

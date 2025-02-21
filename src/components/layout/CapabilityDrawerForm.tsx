@@ -171,7 +171,7 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, removeDescriptionEr
                         key={index}
                         value={cause.value}
                       >
-                        {cause.value}: {cause.label}
+                        {cause.value}{cause.label ? ':' : ''} {cause.label}
                       </StyledMenuItem>
                     );
                   })}
