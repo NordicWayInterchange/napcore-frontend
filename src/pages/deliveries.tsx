@@ -50,7 +50,9 @@ export default function Deliveries() {
   }, [shouldRefreshAfterDelete, refetch]);
 
 
-  const handleDelete = (delivery: ExtendedDelivery) => {
+  const handleDelete = (delivery: ExtendedDelivery, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.stopPropagation();
+    setDrawerOpen(false);
     setDeliveryRow(delivery);
     setOpen(true);
   };
@@ -131,7 +133,7 @@ export default function Deliveries() {
       renderCell: (params) => {
         return (
           <Box>
-            <IconButton onClick={() => handleDelete(params.row)}>
+            <IconButton onClick={(event) => handleDelete(params.row, event)}>
               <DeleteIcon />
             </IconButton>
             <IconButton onClick={() => handleMore(params.row)}>

@@ -18,6 +18,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
 import AddButton from "@/components/shared/actions/AddButton";
 import { performRefetch } from "@/lib/performRefetch";
+import { ExtendedSubscription } from "@/types/subscription";
 
 export default function Capabilities() {
   const { data: session } = useSession();
@@ -37,7 +38,9 @@ export default function Capabilities() {
     }
   }, [isDeleted, refetch]);
 
-  const handleDelete = (capability: ExtendedCapability) => {
+  const handleDelete = (capability: ExtendedCapability, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.stopPropagation();
+    setDrawerOpen(false);
     setUserCapabilityRow(capability);
     setOpen(true);
   };
@@ -109,7 +112,7 @@ export default function Capabilities() {
       renderCell: (params) => {
         return (
           <Box>
-            <IconButton onClick={() => handleDelete(params.row)}>
+            <IconButton onClick={(event) => handleDelete(params.row, event)}>
               <DeleteIcon />
             </IconButton>
             <IconButton onClick={() => handleMore(params.row)}>

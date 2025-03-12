@@ -22,6 +22,7 @@ import PeersDrawer from "@/components/privateChannels/PeersDrawer";
 import { usePeers } from "@/hooks/usePeers";
 import { timeConverter } from "@/lib/timeConverter";
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
+import { ExtendedSubscription } from "@/types/subscription";
 
 export default function PrivateChannels() {
 
@@ -101,7 +102,9 @@ export default function PrivateChannels() {
     setPeersDrawerOpen(false);
   };
 
-  const handleDelete = (privateChannel: PrivateChannel) => {
+  const handleDelete = (privateChannel: PrivateChannel, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.stopPropagation();
+    setDrawerOpen(false);
     setPrivateChannelRow(privateChannel);
     setOpen(true);
   };
@@ -185,7 +188,7 @@ export default function PrivateChannels() {
       renderCell: (params) => {
         return (
           <Box>
-            <IconButton onClick={() => handleDelete(params.row)}>
+            <IconButton onClick={(event) => handleDelete(params.row, event)}>
               <DeleteIcon />
             </IconButton>
             <IconButton onClick={() => handleMore(params.row)}>

@@ -50,7 +50,9 @@ export default function Subscriptions() {
     };
   }, [shouldRefreshAfterDelete, refetch]);
 
-  const handleDelete = (subscription: ExtendedSubscription) => {
+  const handleDelete = (subscription: ExtendedSubscription, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.stopPropagation();
+    setDrawerOpen(false);
     setSubscriptionRow(subscription);
     setOpen(true);
   };
@@ -131,7 +133,7 @@ export default function Subscriptions() {
       renderCell: (params) => {
         return (
           <Box>
-            <IconButton onClick={() => handleDelete(params.row)}>
+            <IconButton onClick={(event) => handleDelete(params.row, event)}>
               <DeleteIcon />
             </IconButton>
             <IconButton onClick={() => handleMore(params.row)}>
