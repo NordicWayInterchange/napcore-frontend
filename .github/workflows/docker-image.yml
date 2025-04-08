@@ -40,8 +40,6 @@ jobs:
       - name: Build the Docker image
         run: docker build . -t napcore-frontend --file Dockerfile
 
-
-
       - name: Push docker image to Github container registry
         run: |
           docker tag napcore-frontend ghcr.io/nordicwayinterchange/napcore-frontend:${{ env.IMAGE_TAG }}
