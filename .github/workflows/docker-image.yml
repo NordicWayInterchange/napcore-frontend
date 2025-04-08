@@ -17,6 +17,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout (Latest)
+        uses: actions/checkout@v4
+        if: github.event.inputs.git-ref == ''
+
+      - name: Checkout (Custom commit or branch)
+        uses: actions/checkout@v4
+        if: github.event.inputs.git-ref != ''
+        with:
+          ref: ${{ github.event.inputs.git-ref }}
+
       - name: Create tag
         run: echo "IMAGE_TAG=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
 
