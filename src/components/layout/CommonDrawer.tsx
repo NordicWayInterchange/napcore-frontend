@@ -43,7 +43,7 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
     <>
       <Drawer
         sx={drawerStyle}
-        PaperProps={{ sx: {backgroundColor: "#F9F9F9"}}}
+        PaperProps={{ sx: { backgroundColor: "#F9F9F9" } }}
         variant="temporary"
         anchor="right"
         open={open}
@@ -64,7 +64,7 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
                   color={
                     statusChips[
                       item.status.toString() as keyof typeof statusChips
-                      ] as any
+                    ] as any
                   }
                   label={item.status}
                 />
@@ -94,20 +94,23 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
                 <StyledCard variant={"outlined"}>
                   <Typography>Endpoints</Typography>
                   <FormControl fullWidth>
-                    <TextField
-                      value={item.endpoints[0].host || ""}
-                      label="Host"
-                      margin="normal"
-                      slotProps={{
-                        input: {
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <ContentCopy value={item.endpoints[0].host} />
-                            </InputAdornment>
-                          ),
-                        },
-                      }}
-                    />
+                    {item.endpoints.map((endpoint, index) => (
+                      <TextField
+                        key={index}
+                        value={endpoint.host || ""}
+                        label="Host"
+                        margin="normal"
+                        slotProps={{
+                          input: {
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <ContentCopy value={endpoint.host} />
+                              </InputAdornment>
+                            ),
+                          },
+                        }}
+                      />
+                    ))}
                     <TextField
                       value={getAttribute() || ""}
                       label={label == "Delivery" ? "Target" : "Source"}
@@ -122,20 +125,23 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
                         },
                       }}
                     />
-                    <TextField
-                      value={item.endpoints[0].port || ""}
-                      label="Port"
-                      margin="normal"
-                      slotProps={{
-                        input: {
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <ContentCopy value={item.endpoints[0].port.toString()} />,
-                            </InputAdornment>
-                          ),
-                        },
-                      }}
-                    />
+                    {item.endpoints.map((endpoint, index) => (
+                      <TextField
+                        key={index}
+                        value={endpoint.port || ""}
+                        label="Port"
+                        margin="normal"
+                        slotProps={{
+                          input: {
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <ContentCopy value={endpoint.port.toString()} />
+                              </InputAdornment>
+                            ),
+                          },
+                        }}
+                      />
+                    ))}
                   </FormControl>
                 </StyledCard>
               </ListItem>
