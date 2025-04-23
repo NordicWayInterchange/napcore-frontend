@@ -98,7 +98,7 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
                       <TextField
                         key={index}
                         value={endpoint.host || ""}
-                        label="Host"
+                        label={`Host ${index + 1}`}
                         margin="normal"
                         slotProps={{
                           input: {
@@ -129,7 +129,7 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
                       <TextField
                         key={index}
                         value={endpoint.port || ""}
-                        label="Port"
+                        label={`Port ${index + 1}`}
                         margin="normal"
                         slotProps={{
                           input: {
