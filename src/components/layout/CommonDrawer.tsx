@@ -82,8 +82,9 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
                   </Box>
                   <Box>
                     <ListItemText
-                      primary={"Last updated"}
-                      secondary={timeConverter(item.lastUpdatedTimestamp)}
+                      primary={label == "Delivery" ? "Last updated" : "Last status change" }
+                      secondary={ label == "Delivery" ? timeConverter((item as ExtendedDelivery).lastUpdatedTimestamp) :
+                        timeConverter((item as ExtendedSubscription).lastStatusChange)}
                     />
                   </Box>
                 </Box>
