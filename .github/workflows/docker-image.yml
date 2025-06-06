@@ -27,8 +27,8 @@ jobs:
           version: '446.0.1'
           project_id: ${{ vars.PROJECT_ID }}
 
-      #- name: Login to Artifact Registry
-      #  run: gcloud auth configure-docker ${{ vars.REGIONAL_ARTIFACT_REGISTRY_URL }} --quiet
+      - name: Login to Artifact Registry
+        run: gcloud auth configure-docker ${{ vars.REGIONAL_ARTIFACT_REGISTRY_URL }} --quiet
 
       - name: Create tag
         run: echo "IMAGE_TAG=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
@@ -36,10 +36,10 @@ jobs:
       - name: Build the Docker image
         run: docker build . -t napcore-frontend --file Dockerfile
 
-      #- name: Push docker image to GCP
-      #  run: |
-      #    docker tag napcore-frontend  ${{ vars.REGIONAL_ARTIFACT_REGISTRY_URL }}/${{ vars.PROJECT_ID }}/${{ vars.ARTIFACT_REGISTRY_REPOSITORY }}/napcore-frontend:${{ env.IMAGE_TAG }}
-      #    docker push --all-tags ${{ vars.REGIONAL_ARTIFACT_REGISTRY_URL }}/${{ vars.PROJECT_ID }}/${{ vars.ARTIFACT_REGISTRY_REPOSITORY }}/napcore-frontend
+      - name: Push docker image to GCP
+        run: |
+          docker tag napcore-frontend  ${{ vars.REGIONAL_ARTIFACT_REGISTRY_URL }}/${{ vars.PROJECT_ID }}/${{ vars.ARTIFACT_REGISTRY_REPOSITORY }}/napcore-frontend:${{ env.IMAGE_TAG }}
+          docker push --all-tags ${{ vars.REGIONAL_ARTIFACT_REGISTRY_URL }}/${{ vars.PROJECT_ID }}/${{ vars.ARTIFACT_REGISTRY_REPOSITORY }}/napcore-frontend
 
       - name: Login to Github container registry
         uses: docker/login-action@v3.4.0
