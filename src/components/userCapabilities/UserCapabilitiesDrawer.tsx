@@ -108,12 +108,12 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
                                   removeDescriptionError={removeDescriptionError}/>
             <ListItem>
               <StyledCard variant={"outlined"}>
-                <Typography sx={{ mb:2 }}>Description</Typography>
+                <Typography sx={{ mb:2 }}>Delivery Description</Typography>
                 <div>
                   <FormControl fullWidth>
                     <TextField
                       name="description"
-                      label="Add description"
+                      label="Enter a description for the delivery"
                       multiline
                       rows={4}
                       onChange={(event) =>

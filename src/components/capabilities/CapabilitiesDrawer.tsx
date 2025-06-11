@@ -100,12 +100,12 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                                   setOpenMap={setOpenMap}/>
             <ListItem>
               <StyledCard variant={"outlined"}>
-                <Typography sx={{ mb:2 }}>Description</Typography>
+                <Typography sx={{ mb:2 }}>Description for Subscription</Typography>
                 <div>
                 <FormControl fullWidth>
                   <TextField
                     name="description"
-                    label="Add description"
+                    label="Enter a description for the subscription"
                     multiline
                     rows={4}
                     onChange={(event) =>
