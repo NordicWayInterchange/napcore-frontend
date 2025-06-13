@@ -7,16 +7,12 @@ permissions:
 
 on:
   push:
-    branches: [ "develop" ]
   pull_request:
     branches: [ "develop" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - name: 'Authenticate to Google Cloud'

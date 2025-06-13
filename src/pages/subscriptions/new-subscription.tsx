@@ -73,7 +73,7 @@ const NewSubscription = () => {
             onRowClick={handleOnRowClick}
             loading={isLoading}
             getRowId={(row) => row.publicationId}
-            sort={{ field: "lastUpdatedTimestamp", sort: "desc" }}
+            sort={{ field: "lastStatusChange", sort: "desc" }}
             slots={{
               noRowsOverlay: CustomEmptyOverlayMatching
             }}

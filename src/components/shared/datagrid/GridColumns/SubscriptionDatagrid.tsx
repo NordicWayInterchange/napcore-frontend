@@ -41,10 +41,10 @@ export const SubscriptionDatagrid: GridColDef[] = [
   },
   {
     ...dataGridTemplate,
-    field: "lastUpdatedTimestamp",
-    headerName: "Last updated",
+    field: "lastStatusChange",
+    headerName: "Last status change",
     renderCell: (params) => {
-      const value = params.row.lastUpdatedTimestamp;
+      const value = params.row.lastStatusChange;
       return value && timeConverter(value);
     },
   }
