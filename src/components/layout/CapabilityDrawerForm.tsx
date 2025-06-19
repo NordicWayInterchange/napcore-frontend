@@ -1,13 +1,14 @@
 import {
   Card,
   FormControl,
-  IconButton, InputAdornment,
+  IconButton,
+  InputAdornment,
   InputLabel,
   ListItem,
   MenuItem,
   Select,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { ContentCopy } from "@/components/shared/actions/ContentCopy";
@@ -21,16 +22,26 @@ type Props = {
   handleMoreClose: () => void;
   removeDescriptionError: () => void;
   setOpenMap: (open: boolean) => void;
+  setDialogOpen: (open: boolean) => void;
+  type: string;
 };
-const CapabilityDrawerForm = ({ capability, handleMoreClose, removeDescriptionError, setOpenMap }: Props) => {
-
+const CapabilityDrawerForm = ({
+  capability,
+  handleMoreClose,
+  removeDescriptionError,
+  setOpenMap,
+  setDialogOpen,
+  type
+}: Props) => {
   return (
     <>
       <ListItem sx={{ justifyContent: "flex-end" }}>
-        <IconButton onClick={() => {
-          handleMoreClose();
-          removeDescriptionError();
-        }}>
+        <IconButton
+          onClick={() => {
+            handleMoreClose();
+            removeDescriptionError();
+          }}
+        >
           <CloseIcon />
         </IconButton>
       </ListItem>
@@ -158,20 +169,15 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, removeDescriptionEr
                   MenuProps={{ PaperProps: { sx: { maxHeight: 200 } } }}
                   label="Cause codes"
                   multiple
-                  defaultValue={capability.causeCodesDictionary.map(
-                    (cause) => {
-                      return cause["value"];
-                    }
-                  )}
+                  defaultValue={capability.causeCodesDictionary.map((cause) => {
+                    return cause["value"];
+                  })}
                 >
                   {capability.causeCodesDictionary.map((cause, index) => {
                     return (
-                      <StyledMenuItem
-                        disabled
-                        key={index}
-                        value={cause.value}
-                      >
-                        {cause.value}{cause.label ? ':' : ''} {cause.label}
+                      <StyledMenuItem disabled key={index} value={cause.value}>
+                        {cause.value}
+                        {cause.label ? ":" : ""} {cause.label}
                       </StyledMenuItem>
                     );
                   })}
@@ -181,7 +187,8 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, removeDescriptionEr
           </FormControl>
         </StyledCard>
       </ListItem>
-      {capability.shardCount > 1 && (<ListItem>
+      {capability.shardCount > 1 && (
+        <ListItem>
           <StyledCard variant={"outlined"}>
             <Typography>Shards</Typography>
             <FormControl fullWidth>
@@ -195,8 +202,8 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, removeDescriptionEr
                       <InputAdornment position="end">
                         <ContentCopy value={capability.shardCount.toString()} />
                       </InputAdornment>
-                    )
-                  }
+                    ),
+                  },
                 }}
               />
             </FormControl>
@@ -211,7 +218,7 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, removeDescriptionEr
             sx={{
               display: "flex",
               flexDirection: "row",
-              alignItems: "center"
+              alignItems: "center",
             }}
           >
             <TextField
@@ -220,11 +227,11 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, removeDescriptionEr
               margin="normal"
               sx={{
                 flexGrow: 1,
-                marginRight: 1
+                marginRight: 1,
               }}
             />
             <StyledButton
-              sx={{mt:2.75}}
+              sx={{ mt: 2.75 }}
               color="buttonThemeColor"
               variant="outlined"
               onClick={() => setOpenMap(true)}
@@ -234,30 +241,49 @@ const CapabilityDrawerForm = ({ capability, handleMoreClose, removeDescriptionEr
           </FormControl>
         </StyledCard>
       </ListItem>
+
+      {type === "delivery" && (
+        <ListItem
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <StyledButton
+            variant={"contained"}
+            color={"redLight"}
+            onClick={() => setDialogOpen(true)}
+            disableElevation
+          >
+            Remove Capability
+          </StyledButton>
+        </ListItem>
+      )}
     </>
   );
 };
 
 const StyledCard = styled(Card)(({}) => ({
   padding: "16px",
-  width: "100%"
+  width: "100%",
 }));
 
 const StyledMenuItem = styled(MenuItem)(({}) => ({
   "&.MuiMenuItem-root": {
     color: "black",
-    opacity: 1
+    opacity: 1,
   },
   "&.Mui-disabled": {
     color: "black",
-    opacity: 1
+    opacity: 1,
   },
   "&.Mui-selected": {
     backgroundColor: "white",
     "&.Mui-focusVisible": {
-      background: "white"
-    }
-  }
+      background: "white",
+    },
+  },
 }));
 
 export default CapabilityDrawerForm;
