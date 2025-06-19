@@ -367,7 +367,6 @@ const SelectorBuilder = (props: Props) => {
                 rows={4}
                 value={description}
                 label="Description"
-                disabled={advancedMode}
                 onChange={(event) =>
                   handleDescription(event, setDescription, setDescriptionError)}
                 error={descriptionError}
@@ -377,7 +376,7 @@ const SelectorBuilder = (props: Props) => {
             </Box>
             <FormControlLabel
               control={<Switch onChange={handleChange} />}
-              label="Advanced mode (will disable form)"
+              label="Advanced mode (disables all fields except description)"
             />
             {advancedMode && (
               <>
