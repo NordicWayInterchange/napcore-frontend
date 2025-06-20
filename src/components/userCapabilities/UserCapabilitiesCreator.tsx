@@ -170,12 +170,6 @@ const UserCapabilitiesCreator = () => {
     if (userInput !== '') {
       setShowAdornment(true);
     }
-    if (!isValidPublicationIDFormat(userInput)) {
-      setPublisherIdFormatError("PublisherId must contain exactly two uppercase letters followed by five digits in the format.")
-      return;
-    } else {
-      setPublisherIdFormatError('')
-    }
   };
 
   return (
@@ -199,6 +193,17 @@ const UserCapabilitiesCreator = () => {
                       field.onChange(e);
                       handleTextChange(e);
                     }}
+                    onBlur={(event) => {
+                      const userInput = event.target.value;
+                      setValue("publisherId", userInput);
+                      if (!isValidPublicationIDFormat(userInput)) {
+                        setPublisherIdFormatError("PublisherId must contain exactly two uppercase letters followed by five digits in the format.")
+                        return;
+                      } else {
+                        setPublisherIdFormatError('')
+                      }
+                    }
+                    }
                   />
                 )}
               />
