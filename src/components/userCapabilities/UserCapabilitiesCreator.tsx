@@ -170,6 +170,12 @@ const UserCapabilitiesCreator = () => {
     if (userInput !== '') {
       setShowAdornment(true);
     }
+    if (!isValidPublicationIDFormat(userInput)) {
+      setPublisherIdFormatError("PublisherId must contain exactly two uppercase letters followed by five digits in the format.")
+      return;
+    } else {
+      setPublisherIdFormatError('')
+    }
   };
 
   return (
@@ -192,15 +198,6 @@ const UserCapabilitiesCreator = () => {
                     onChange={(e) => {
                       field.onChange(e);
                       handleTextChange(e);
-                    }}
-                    onBlur={(event) => {
-                      const userInput = event.target.value;
-                      setPublisherIdInput(userInput);
-                      if (!isValidPublicationIDFormat(userInput)) {
-                        setPublisherIdFormatError("PublisherId must contain exactly two uppercase letters followed by five digits in the format.")
-                      } else {
-                        setPublisherIdFormatError('')
-                      }
                     }}
                   />
                 )}
@@ -395,14 +392,14 @@ const UserCapabilitiesCreator = () => {
                 color="buttonThemeColor"
                 variant="contained"
                 type="submit"
-                disabled={!!getFieldState("quadTree").error}
+                disabled={!!getFieldState("quadTree").error || publisherIdFormatError.trim() !== ''}
               >
                 Create my capability
               </StyledButton>
               <StyledButton
                 color="buttonThemeColor"
                 variant="outlined"
-                onClick={() => {reset(); setShowAdornment(false); setDuplicatePublicationIdError('');}}
+                onClick={() => {reset(); setShowAdornment(false); setDuplicatePublicationIdError(''); setPublisherIdFormatError('');}}
               >
                 Clear form
               </StyledButton>
