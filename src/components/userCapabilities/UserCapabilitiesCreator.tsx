@@ -379,6 +379,13 @@ const UserCapabilitiesCreator = () => {
                     helperText={
                       "Only comma (,) separated numbers between 0-3 is allowed."
                     }
+                    slotProps={{
+                      input: {
+                        inputProps: {
+                          maxLength: 255,
+                        }
+                        }
+                    } as any}
                   />
                 )}
               />
