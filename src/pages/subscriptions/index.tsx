@@ -115,10 +115,10 @@ export default function Subscriptions() {
     },
     {
       ...dataGridTemplate,
-      field: "lastUpdatedTimestamp",
-      headerName: "Last updated",
+      field: "lastStatusChange",
+      headerName: "Last status change",
       renderCell: (params) => {
-        const value = params.row.lastUpdatedTimestamp;
+        const value = params.row.lastStatusChange;
         return value && timeConverter(value);
       },
     },
@@ -164,7 +164,7 @@ export default function Subscriptions() {
           footer: CustomFooter,
           noRowsOverlay: CustomEmptyOverlaySubscription,
         }}
-        sort={{ field: "lastUpdatedTimestamp", sort: "desc" }}
+        sort={{ field: "lastStatusChange", sort: "desc" }}
       />
       {subscriptionRow && (
         <CommonDrawer

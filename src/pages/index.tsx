@@ -120,7 +120,7 @@ export default function Home() {
           rows={data?.slice(0, 4) || []}
           loading={isLoading}
           hideFooterPagination={true}
-          sort={{ field: "lastUpdatedTimestamp", sort: "desc" }}
+          sort={{ field: "lastStatusChange", sort: "desc" }}
           slots={{
             noRowsOverlay: CustomEmptyOverlaySubscription
           }}

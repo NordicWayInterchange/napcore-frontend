@@ -105,15 +105,17 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
             <CapabilityDrawerForm capability={capability}
                                   handleMoreClose={handleMoreClose}
                                   setOpenMap={setOpenMap}
-                                  removeDescriptionError={removeDescriptionError}/>
+                                  removeDescriptionError={removeDescriptionError}
+                                  setDialogOpen={setDialogOpen}
+                                  type="delivery"/>
             <ListItem>
               <StyledCard variant={"outlined"}>
-                <Typography sx={{ mb:2 }}>Description</Typography>
+                <Typography sx={{ mb:2 }}>Delivery Description</Typography>
                 <div>
                   <FormControl fullWidth>
                     <TextField
                       name="description"
-                      label="Add description"
+                      label="Enter a description to create a delivery"
                       multiline
                       rows={4}
                       onChange={(event) =>
@@ -137,14 +139,6 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
                 }
               >
                 Deliver
-              </StyledButton>
-              <StyledButton
-                variant={"contained"}
-                color={"redLight"}
-                onClick={() => setDialogOpen(true)}
-                disableElevation
-              >
-                Remove Capability
               </StyledButton>
             </ListItem>
           </List>

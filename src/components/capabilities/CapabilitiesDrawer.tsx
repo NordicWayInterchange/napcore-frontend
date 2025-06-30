@@ -96,16 +96,18 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
           <List>
             <CapabilityDrawerForm capability={capability}
                                   handleMoreClose={handleMoreClose}
+                                  setOpenMap={setOpenMap}
                                   removeDescriptionError={removeDescriptionError}
-                                  setOpenMap={setOpenMap}/>
+                                  setDialogOpen={() => {}}
+                                  type="subscription"/>
             <ListItem>
               <StyledCard variant={"outlined"}>
-                <Typography sx={{ mb:2 }}>Description</Typography>
+                <Typography sx={{ mb:2 }}>Description for Subscription</Typography>
                 <div>
                 <FormControl fullWidth>
                   <TextField
                     name="description"
-                    label="Add description"
+                    label="Enter a description to create subscription"
                     multiline
                     rows={4}
                     onChange={(event) =>

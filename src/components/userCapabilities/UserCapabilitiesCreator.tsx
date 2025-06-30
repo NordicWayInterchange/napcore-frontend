@@ -30,6 +30,7 @@ const QUADTREE_REGEX = /^[0-3]+(,[0-3]+)*$/i;
 
 const UserCapabilitiesCreator = () => {
   const [duplicatePublicationIdError, setDuplicatePublicationIdError] = useState('');
+  const [publisherIdFormatError, setPublisherIdFormatError] = useState('');
   const [predefinedQuadtree, setPredefinedQuadtree] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [publisherIdInput, setPublisherIdInput] = useState("");
@@ -78,6 +79,7 @@ const UserCapabilitiesCreator = () => {
   const watchMessageType = watch("messageType");
   const DENM = MessageTypes.DENM;
   const DATEX_2 = MessageTypes.DATEX_2;
+  const VALID_PUBLISHER_ID_FORMAT_REGEX = /^[A-Z]{2}\d{5}$/;
 
   /*
   Remove cause codes from form, if the message type DENM is removed.
@@ -126,6 +128,10 @@ const UserCapabilitiesCreator = () => {
   const findPublicationIds = (value: any) => {
     return data?.some((id: any) => id === value);
   };
+
+  const isValidPublicationIDFormat = (value: string) => {
+    return VALID_PUBLISHER_ID_FORMAT_REGEX.test(value);
+  }
 
   const validateUniquePublicationId = (value: string) => {
     if (value && findPublicationIds(value)) {
@@ -180,13 +186,24 @@ const UserCapabilitiesCreator = () => {
                   <TextField
                     {...field}
                     fullWidth
-                    error={!!errors.publisherId}
-                    helperText={errors.publisherId ? errors.publisherId.message : ''}
+                    error={!!publisherIdFormatError || !!errors.publisherId}
+                    helperText={errors.publisherId ? errors.publisherId.message : publisherIdFormatError}
                     label="Publisher ID *"
                     onChange={(e) => {
                       field.onChange(e);
                       handleTextChange(e);
                     }}
+                    onBlur={(event) => {
+                      const userInput = event.target.value;
+                      setValue("publisherId", userInput);
+                      if (!isValidPublicationIDFormat(userInput)) {
+                        setPublisherIdFormatError("PublisherId must contain exactly two uppercase letters followed by five digits in the format.")
+                        return;
+                      } else {
+                        setPublisherIdFormatError('')
+                      }
+                    }
+                    }
                   />
                 )}
               />
@@ -362,6 +379,13 @@ const UserCapabilitiesCreator = () => {
                     helperText={
                       "Only comma (,) separated numbers between 0-3 is allowed."
                     }
+                    slotProps={{
+                      input: {
+                        inputProps: {
+                          maxLength: 255,
+                        }
+                        }
+                    } as any}
                   />
                 )}
               />
@@ -380,14 +404,14 @@ const UserCapabilitiesCreator = () => {
                 color="buttonThemeColor"
                 variant="contained"
                 type="submit"
-                disabled={!!getFieldState("quadTree").error}
+                disabled={!!getFieldState("quadTree").error || publisherIdFormatError.trim() !== ''}
               >
                 Create my capability
               </StyledButton>
               <StyledButton
                 color="buttonThemeColor"
                 variant="outlined"
-                onClick={() => {reset(); setShowAdornment(false); setDuplicatePublicationIdError('');}}
+                onClick={() => {reset(); setShowAdornment(false); setDuplicatePublicationIdError(''); setPublisherIdFormatError('');}}
               >
                 Clear form
               </StyledButton>
