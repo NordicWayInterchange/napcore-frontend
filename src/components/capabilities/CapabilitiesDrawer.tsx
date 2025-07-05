@@ -16,6 +16,9 @@ import CapabilityDrawerForm from "@/components/layout/CapabilityDrawerForm";
 import { drawerStyle, StyledCard } from "@/components/shared/styles/StyledSelectorBuilder";
 import { handleDescription } from "@/lib/handleDescription";
 import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
+import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
+import { ConfirmationNumber } from "@mui/icons-material";
+import ConfirmSubDialog from "@/components/shared/actions/ConfirmSubDialog";
 
 type Props = {
   capability: ExtendedCapability;
@@ -33,6 +36,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
   });
   const [descriptionError, setDescriptionError] = useState(false);
   const [description, setDescription] = useState<string>("");
+  const [dialogMessage, setDialogMessage] = useState<string | null>(null);
 
   const selector = `(publicationId = '${capability.publicationId}')`;
 
@@ -54,6 +58,8 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
   }
 
   const saveSubscription = async (name: string, selector: string) => {
+    setDialogMessage("true");
+
     if (description.length > 255 ) return ;
     const bodyData = {
       selector: selector,
@@ -85,38 +91,54 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
     <>
       <Drawer
         sx={drawerStyle}
-        PaperProps={{ sx: { backgroundColor: "#F9F9F9"}}}
+        PaperProps={{ sx: { backgroundColor: "#F9F9F9" } }}
         variant="temporary"
         anchor="right"
         open={open}
-        onClose={() => {handleMoreClose(); removeDescriptionError();}}
+        onClose={() => {
+          handleMoreClose();
+          removeDescriptionError();
+        }}
       >
         <Toolbar />
         <Box sx={{ padding: 1, width: 1 }}>
           <List>
-            <CapabilityDrawerForm capability={capability}
-                                  handleMoreClose={handleMoreClose}
-                                  setOpenMap={setOpenMap}
-                                  removeDescriptionError={removeDescriptionError}
-                                  setDialogOpen={() => {}}
-                                  type="subscription"/>
+            <CapabilityDrawerForm
+              capability={capability}
+              handleMoreClose={handleMoreClose}
+              setOpenMap={setOpenMap}
+              removeDescriptionError={removeDescriptionError}
+              setDialogOpen={() => {}}
+              type="subscription"
+            />
             <ListItem>
               <StyledCard variant={"outlined"}>
-                <Typography sx={{ mb:2 }}>Description for Subscription</Typography>
+                <Typography sx={{ mb: 2 }}>
+                  Description for Subscription
+                </Typography>
                 <div>
-                <FormControl fullWidth>
-                  <TextField
-                    name="description"
-                    label="Enter a description to create subscription"
-                    multiline
-                    rows={4}
-                    onChange={(event) =>
-                      handleDescription(event, setDescription, setDescriptionError)}
-                    error={descriptionError}
-                    helperText={descriptionError ? "Description exceeds maximum length of 255 characters" : ""}
-                    fullWidth
-                  />
-                </FormControl>
+                  <FormControl fullWidth>
+                    <TextField
+                      name="description"
+                      label="Enter a description to create subscription"
+                      multiline
+                      rows={4}
+                      onChange={(event) =>
+                        handleDescription(
+                          event,
+                          setDescription,
+                          setDescriptionError
+                        )
+                      }
+                      error={descriptionError}
+                      helperText={
+                        descriptionError
+                          ? "Description exceeds maximum length of 255 characters"
+                          : ""
+                      }
+                      fullWidth
+                    />
+                  </FormControl>
                 </div>
               </StyledCard>
             </ListItem>
@@ -135,6 +157,21 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
           </List>
         </Box>
       </Drawer>
+      {dialogMessage && (
+        <ConfirmSubDialog
+          open={true}
+          actorCommonName={session?.user.commonName as string}
+          itemId={capability.id as string}
+          shardCount={capability.shardCount.toString()}
+          handleMoreClose={handleMoreClose}
+          handleDialog={function (close: boolean): void {
+            throw new Error("Function not implemented.");
+          }}
+          handleDeletedItem={function (deleted: boolean): void {
+            throw new Error("Function not implemented.");
+          }}
+        />
+      )}
       {feedback.feedback && (
         <Snackbar
           message={feedback.message}
