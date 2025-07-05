@@ -37,6 +37,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
   const [descriptionError, setDescriptionError] = useState(false);
   const [description, setDescription] = useState<string>("");
   const [dialogMessage, setDialogMessage] = useState<string | null>(null);
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
   const selector = `(publicationId = '${capability.publicationId}')`;
 
@@ -59,7 +60,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
 
   const saveSubscription = async (name: string, selector: string) => {
     setDialogMessage("true");
-
+    if (capability.shardCount == 1) return;
     if (description.length > 255 ) return ;
     const bodyData = {
       selector: selector,
@@ -86,6 +87,10 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
     }
     handleMoreClose();
   };
+
+  const handleClickClose = (close: boolean) => {
+    setDialogOpen(close);
+  }
 
   return (
     <>
@@ -147,9 +152,13 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                 variant={"contained"}
                 color={"buttonThemeColor"}
                 disableElevation
-                onClick={() =>
-                  saveSubscription(session?.user.commonName as string, selector)
-                }
+                onClick={() => {
+                  setDialogOpen(true);
+                  saveSubscription(
+                    session?.user.commonName as string,
+                    selector
+                  );
+                }}
               >
                 Subscribe
               </StyledButton>
@@ -159,17 +168,12 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
       </Drawer>
       {dialogMessage && (
         <ConfirmSubDialog
-          open={true}
+          open={dialogOpen}
           actorCommonName={session?.user.commonName as string}
           itemId={capability.id as string}
           shardCount={capability.shardCount.toString()}
           handleMoreClose={handleMoreClose}
-          handleDialog={function (close: boolean): void {
-            throw new Error("Function not implemented.");
-          }}
-          handleDeletedItem={function (deleted: boolean): void {
-            throw new Error("Function not implemented.");
-          }}
+          handleDialog={handleClickClose}
         />
       )}
       {feedback.feedback && (
