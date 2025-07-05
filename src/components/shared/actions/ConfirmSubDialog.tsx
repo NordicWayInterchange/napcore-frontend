@@ -17,7 +17,6 @@ type Props = {
   open: boolean;
   handleDialog: (close: boolean) => void;
   itemId: string;
-  handleDeletedItem: (deleted: boolean) => void;
   shardCount: string;
   handleMoreClose: () => void;
 };
@@ -50,7 +49,7 @@ export default function ConfirmSubDialog(props: Props) {
   return (
     <>
       <Dialog open={open} onClose={() => handleDialog(false)}>
-        <DialogTitle>User confirmation</DialogTitle>
+        <DialogTitle>Subscription confirmation</DialogTitle>
         <DialogContent>
           <DialogContentText>
             There is {shardCount} shards in this capability. Do you want to subscribe?
