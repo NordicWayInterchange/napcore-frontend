@@ -49,10 +49,10 @@ export default function ConfirmSubDialog(props: Props) {
   return (
     <>
       <Dialog open={open} onClose={() => handleDialog(false)}>
-        <DialogTitle>Subscription confirmation</DialogTitle>
+        <DialogTitle>Subscription Acknowledgment</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            There is {shardCount} shards in this capability. Do you want to subscribe?
+            Please note that this capability contains {shardCount} shards. Do you still want to subscribe?
           </DialogContentText>
         </DialogContent>
         <Divider />
