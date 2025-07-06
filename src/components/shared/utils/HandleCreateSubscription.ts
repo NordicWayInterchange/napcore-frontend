@@ -3,15 +3,16 @@ import { createSubscription } from "@/lib/fetchers/internalFetchers";
 
 export async function HandleCreateSubscription(
   name: string,
-  bodyData: {
-    selector: string;
-    description: string;
-  },
   setFeedback: (
     value: ((prevState: IFeedback) => IFeedback) | IFeedback
-  ) => void
+  ) => void,
+  selector: string,
+  description: string
 ) {
-
+  const bodyData = {
+    selector: selector,
+    description: description
+  };
   const response = await createSubscription(name, bodyData);
 
   if (response.ok) {
