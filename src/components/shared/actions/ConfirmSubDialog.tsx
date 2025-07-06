@@ -13,6 +13,7 @@ import { IFeedback } from "@/interface/IFeedback";
 import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { createSubscription } from "@/lib/fetchers/internalFetchers";
+import { HandleCreateSubscription } from "@/components/shared/utils/HandleCreateSubscription";
 
 type Props = {
   actorCommonName: string;
@@ -35,32 +36,14 @@ export default function ConfirmSubDialog(props: Props) {
   });
 
 
-  const handleCreateSubscription = async (name: string, selector: string, description: string) => {
+  const clickedCreateSubscription = async (name: string, selector: string, description: string) => {
     handleDialog(false);
-
     if (description.length > 255 ) return ;
     const bodyData = {
       selector: selector,
       description: description
     };
-    const response = await createSubscription(name, bodyData);
-
-    if (response.ok) {
-      setFeedback({
-        feedback: true,
-        message: "Subscription successfully created",
-        severity: "success",
-      });
-    } else {
-      const errorData = await response.json();
-      const errorMessage = errorData.message || "Subscription could not be created, try again!";
-
-      setFeedback({
-        feedback: true,
-        message: errorMessage,
-        severity: "warning",
-      });
-    }
+    await HandleCreateSubscription(name, bodyData, setFeedback);
     handleMoreClose();
   };
 
@@ -111,7 +94,7 @@ export default function ConfirmSubDialog(props: Props) {
           <StyledButton
             variant="contained"
             color="greenLight"
-            onClick={() => handleCreateSubscription(actorCommonName, selector, description)}
+            onClick={() => clickedCreateSubscription(actorCommonName, selector, description)}
             disableElevation
           >
             Yes, subscribe
