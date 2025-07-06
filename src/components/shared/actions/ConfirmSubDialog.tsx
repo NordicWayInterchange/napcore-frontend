@@ -1,16 +1,19 @@
 import * as React from "react";
 import {
+  Box,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Divider,
+  Divider, IconButton, Tooltip
 } from "@mui/material";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import { useState } from "react";
 import { IFeedback } from "@/interface/IFeedback";
 import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
+import Link from "next/link";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 type Props = {
   actorCommonName: string;
@@ -52,7 +55,22 @@ export default function ConfirmSubDialog(props: Props) {
         <DialogTitle>Subscription Acknowledgment</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Please note that this capability contains {shardCount} shards. Do you still want to subscribe?
+            Please note that this capability contains {shardCount} shards. Do
+            you want to subscribe?
+            <Tooltip
+              title={
+                <span style={{ fontSize: ".88rem"}}>
+                  A sharded capability has defined shardCount greater than one
+                  and a sharded subscription has defined shardId in the selector
+                </span>
+              }
+              arrow
+              placement="right"
+            >
+              <IconButton size="small">
+                <HelpOutlineIcon fontSize="small" sx={{ mt: -1 }} />
+              </IconButton>
+            </Tooltip>
           </DialogContentText>
         </DialogContent>
         <Divider />
@@ -64,11 +82,7 @@ export default function ConfirmSubDialog(props: Props) {
           >
             Cancel
           </StyledButton>
-          <StyledButton
-            variant="contained"
-            color="greenLight"
-            disableElevation
-          >
+          <StyledButton variant="contained" color="greenLight" disableElevation>
             Yes, subscribe
           </StyledButton>
         </DialogActions>
