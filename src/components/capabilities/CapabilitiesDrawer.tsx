@@ -174,6 +174,8 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
           shardCount={capability.shardCount.toString()}
           handleMoreClose={handleMoreClose}
           handleDialog={handleClickClose}
+          selector={selector}
+          description={description}
         />
       )}
       {feedback.feedback && (

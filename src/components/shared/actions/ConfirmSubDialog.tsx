@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  Box,
   Dialog,
   DialogActions,
   DialogContent,
@@ -12,8 +11,8 @@ import Snackbar from "@/components/shared/feedback/Snackbar";
 import { useState } from "react";
 import { IFeedback } from "@/interface/IFeedback";
 import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
-import Link from "next/link";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import { createSubscription } from "@/lib/fetchers/internalFetchers";
 
 type Props = {
   actorCommonName: string;
@@ -22,10 +21,12 @@ type Props = {
   itemId: string;
   shardCount: string;
   handleMoreClose: () => void;
+  selector: string;
+  description: string;
 };
 
 export default function ConfirmSubDialog(props: Props) {
-  const {open, handleDialog, shardCount, handleMoreClose } = props;
+  const {open, handleDialog, shardCount, handleMoreClose, actorCommonName, selector, description } = props;
 
   const [feedback, setFeedback] = useState<IFeedback>({
     feedback: false,
@@ -33,8 +34,33 @@ export default function ConfirmSubDialog(props: Props) {
     severity: "success",
   });
 
-  const handleDeletion = async (name: string, itemId: string, text: string) => {
+
+  const handleCreateSubscription = async (name: string, selector: string, description: string) => {
     handleDialog(false);
+
+    if (description.length > 255 ) return ;
+    const bodyData = {
+      selector: selector,
+      description: description
+    };
+    const response = await createSubscription(name, bodyData);
+
+    if (response.ok) {
+      setFeedback({
+        feedback: true,
+        message: "Subscription successfully created",
+        severity: "success",
+      });
+    } else {
+      const errorData = await response.json();
+      const errorMessage = errorData.message || "Subscription could not be created, try again!";
+
+      setFeedback({
+        feedback: true,
+        message: errorMessage,
+        severity: "warning",
+      });
+    }
     handleMoreClose();
   };
 
@@ -56,7 +82,7 @@ export default function ConfirmSubDialog(props: Props) {
         <DialogContent>
           <DialogContentText>
             Please note that this capability contains {shardCount} shards. Do
-            you want to subscribe?
+            you still want to subscribe?
             <Tooltip
               title={
                 <span style={{ fontSize: ".88rem"}}>
@@ -82,7 +108,12 @@ export default function ConfirmSubDialog(props: Props) {
           >
             Cancel
           </StyledButton>
-          <StyledButton variant="contained" color="greenLight" disableElevation>
+          <StyledButton
+            variant="contained"
+            color="greenLight"
+            onClick={() => handleCreateSubscription(actorCommonName, selector, description)}
+            disableElevation
+          >
             Yes, subscribe
           </StyledButton>
         </DialogActions>
