@@ -7,7 +7,6 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { ExtendedCapability } from "@/types/capability";
-import { createSubscription } from "@/lib/fetchers/internalFetchers";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import { IFeedback } from "@/interface/IFeedback";
 import { useSession } from "next-auth/react";
@@ -16,9 +15,8 @@ import CapabilityDrawerForm from "@/components/layout/CapabilityDrawerForm";
 import { drawerStyle, StyledCard } from "@/components/shared/styles/StyledSelectorBuilder";
 import { handleDescription } from "@/lib/handleDescription";
 import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
-import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
-import { ConfirmationNumber } from "@mui/icons-material";
 import ConfirmSubDialog from "@/components/shared/actions/ConfirmSubDialog";
+import { HandleCreateSubscription } from "@/components/shared/utils/HandleCreateSubscription";
 
 type Props = {
   capability: ExtendedCapability;
@@ -66,25 +64,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
       selector: selector,
       description: description
     };
-
-    const response = await createSubscription(name, bodyData);
-
-    if (response.ok) {
-      setFeedback({
-        feedback: true,
-        message: "Subscription successfully created",
-        severity: "success",
-      });
-    } else {
-      const errorData = await response.json();
-      const errorMessage = errorData.message || "Subscription could not be created, try again!";
-
-      setFeedback({
-        feedback: true,
-        message: errorMessage,
-        severity: "warning",
-      });
-    }
+    await HandleCreateSubscription(name, bodyData, setFeedback)
     handleMoreClose();
   };
 
