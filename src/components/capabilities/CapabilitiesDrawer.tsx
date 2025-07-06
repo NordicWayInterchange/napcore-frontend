@@ -34,7 +34,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
   });
   const [descriptionError, setDescriptionError] = useState(false);
   const [description, setDescription] = useState<string>("");
-  const [dialogMessage, setDialogMessage] = useState<string | null>(null);
+  const [dialogMessage, setDialogMessage] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
   const selector = `(publicationId = '${capability.publicationId}')`;
@@ -57,14 +57,10 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
   }
 
   const saveSubscription = async (name: string, selector: string) => {
-    setDialogMessage("true");
-    if (capability.shardCount == 1) return;
+    setDialogMessage(true);
     if (description.length > 255 ) return ;
-    const bodyData = {
-      selector: selector,
-      description: description
-    };
-    await HandleCreateSubscription(name, bodyData, setFeedback)
+    if (capability.shardCount == 1 ) return;
+    await HandleCreateSubscription(name, setFeedback, selector, description)
     handleMoreClose();
   };
 

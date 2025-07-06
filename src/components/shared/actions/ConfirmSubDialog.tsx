@@ -39,11 +39,7 @@ export default function ConfirmSubDialog(props: Props) {
   const clickedCreateSubscription = async (name: string, selector: string, description: string) => {
     handleDialog(false);
     if (description.length > 255 ) return ;
-    const bodyData = {
-      selector: selector,
-      description: description
-    };
-    await HandleCreateSubscription(name, bodyData, setFeedback);
+    await HandleCreateSubscription(name, setFeedback, selector, description);
     handleMoreClose();
   };
 
