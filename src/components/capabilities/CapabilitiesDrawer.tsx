@@ -57,9 +57,9 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
   }
 
   const saveSubscription = async (name: string, selector: string) => {
-    setDialogMessage(true);
     if (description.length > 255 ) return ;
-    if (capability.shardCount == 1 ) return;
+    if (capability.shardCount > 1 ) {setDialogMessage(true); return; }
+    setDialogMessage(false);
     await HandleCreateSubscription(name, setFeedback, selector, description)
     handleMoreClose();
   };
