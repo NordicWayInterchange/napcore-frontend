@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Divider } from "@mui/material";
 import React from "react";
 import { useMatchingCapabilities } from "@/hooks/useMatchingCapabilities";
@@ -14,6 +14,10 @@ import { BreadcrumbNavigation } from "@/components/shared/actions/BreadcrumbNavi
 import { NewFormDataGrid } from "@/components/shared/datagrid/GridColumns/NewFormDatagrid";
 import UserAssistance from "@/components/shared/actions/UserAssistance";
 
+function getSubscriptionConfirmationText(publisherId: string, sharcCount: number): string {
+  return `${publisherId},`
+}
+
 const NewSubscription = () => {
   const { data: session } = useSession();
   const [selector, setSelector] = useState<string>(" ");
@@ -23,6 +27,23 @@ const NewSubscription = () => {
     session?.user.commonName as string,
     selector
   );
+  const [dialogMessage, setDialogMessage] = useState<boolean>(false);
+
+  useEffect(() => {
+    const result = (data ?? [])?.filter((item: { shardCount: number }) => item.shardCount == 1)
+      .map((item: { publisherId: string, shardCount: number }) => ({
+        publisherId: item.publisherId,
+        shardCount: item.shardCount,
+      }));
+    let fullText = null;
+    const formattedMessages = result
+      .map(item => getSubscriptionConfirmationText(item.publisherId, item.shardCount)).join(" ");
+    if (formattedMessages.length > 0) {
+      fullText = `Please note that there is more than one shard in ${formattedMessages.length > 1 ? 'capabilities' : ' capability'} ${formattedMessages} Do you still want to subscribe??`;
+    }
+    setDialogMessage(true);
+    console.log(fullText);
+  }, [data]);
 
   const handleChange = (selector: string) => {
     setSelector(selector);
