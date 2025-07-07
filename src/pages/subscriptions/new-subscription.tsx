@@ -28,6 +28,8 @@ const NewSubscription = () => {
     selector
   );
   const [dialogMessage, setDialogMessage] = useState<boolean>(false);
+  const [subscriptionConfirmationText, setSubscriptionConfirmationText] = useState<string>("");
+
 
   useEffect(() => {
     const result = (data ?? [])?.filter((item: { shardCount: number }) => item.shardCount == 1)
@@ -35,13 +37,14 @@ const NewSubscription = () => {
         publisherId: item.publisherId,
         shardCount: item.shardCount,
       }));
-    let fullText = null;
+    let fullText = "";
     const formattedMessages = result
       .map(item => getSubscriptionConfirmationText(item.publisherId, item.shardCount)).join(" ");
     if (formattedMessages.length > 0) {
-      fullText = `Please note that there is more than one shard in ${formattedMessages.length > 1 ? 'capabilities' : ' capability'} ${formattedMessages} Do you still want to subscribe??`;
+      fullText = `Please note that there is more than one shard in ${formattedMessages.length > 1 ? 'capabilities' : ' capability'} ${formattedMessages} Do you still want to subscribe?`;
     }
     setDialogMessage(true);
+    setSubscriptionConfirmationText(fullText);
     console.log(fullText);
   }, [data]);
 
@@ -80,6 +83,8 @@ const NewSubscription = () => {
             matchingElements={data || []}
             selectorCallback={handleChange}
             publicationIdRow={publicationIdRow}
+            dialogMessage={dialogMessage}
+            subscriptionConfirmationText={subscriptionConfirmationText}
             label="Subscription"
           />
         </Box>
