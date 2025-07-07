@@ -4,12 +4,12 @@ import {
   Divider,
   FormControl,
   FormControlLabel,
-  FormHelperText,
+  FormHelperText, IconButton, InputAdornment,
   InputLabel,
   MenuItem,
   Select,
   Switch,
-  TextField,
+  TextField, Tooltip
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { generateSelector } from "@/lib/generateSelector";
@@ -33,6 +33,7 @@ import { handleQuadtree } from "@/lib/handleQuadtree";
 import { StyledButton, StyledCard, StyledFormControl,menuItemStyles } from "@/components/shared/styles/StyledSelectorBuilder";
 import { handleDescription } from "@/lib/handleDescription";
 import { Cheatsheet } from "@/components/shared/forms/Cheatsheet";
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 type Props = {
   matchingElements: ExtendedCapability[] | ExtendedDelivery[] | [];
@@ -235,6 +236,19 @@ const SelectorBuilder = (props: Props) => {
                     disabled={advancedMode}
                     fullWidth
                     label="Publication ID"
+                    slotProps={{
+                      input: {
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Tooltip title="" placement="top">
+                              <IconButton edge="end" size="small">
+                                <InfoOutlinedIcon fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
                   />
                 )}
               />
@@ -326,6 +340,19 @@ const SelectorBuilder = (props: Props) => {
                       fullWidth
                       disabled={advancedMode}
                       label="publication type"
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <Tooltip title="" placement="top">
+                                <IconButton edge="end" size="small">
+                                  <InfoOutlinedIcon fontSize="small" />
+                                </IconButton>
+                              </Tooltip>
+                            </InputAdornment>
+                          ),
+                        },
+                      }}
                     />
                   )}
                 />
@@ -348,6 +375,19 @@ const SelectorBuilder = (props: Props) => {
                     helperText={
                       "Only comma (,) separated numbers between 0-3 is allowed"
                     }
+                    slotProps={{
+                      input: {
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Tooltip title="" placement="top">
+                              <IconButton edge="end" size="small">
+                                <InfoOutlinedIcon fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
                   />
                 )}
               />
@@ -373,6 +413,19 @@ const SelectorBuilder = (props: Props) => {
                 error={descriptionError}
                 helperText={descriptionError ? "Description exceeds maximum length of 255 characters" : ""}
                 fullWidth
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Tooltip title="" placement="top">
+                          <IconButton edge="end" size="small">
+                            <InfoOutlinedIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                      </InputAdornment>
+                    ),
+                  },
+                }}
               />
             </Box>
             <FormControlLabel
