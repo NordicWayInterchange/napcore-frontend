@@ -2,12 +2,12 @@ import { MessageTypes } from "@/types/messageType";
 import {
 
   FormControl,
-  FormHelperText,
+  FormHelperText, IconButton,
   InputAdornment,
   InputLabel,
   MenuItem,
   Select,
-  TextField
+  TextField, Tooltip
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { createUserCapability } from "@/lib/fetchers/internalFetchers";
@@ -25,6 +25,7 @@ import { usePublicationIds } from "@/hooks/usePublicationIds";
 import { useRouter } from "next/router";
 import { handleQuadtree } from "@/lib/handleQuadtree";
 import { menuItemStyles, StyledButton, StyledCard, StyledFormControl } from "@/components/shared/styles/StyledSelectorBuilder";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 const QUADTREE_REGEX = /^[0-3]+(,[0-3]+)*$/i;
 
@@ -204,6 +205,19 @@ const UserCapabilitiesCreator = () => {
                       }
                     }
                     }
+                    slotProps={{
+                      input: {
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Tooltip title="" placement="top">
+                              <IconButton edge="end" size="small">
+                                <InfoOutlinedIcon fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
                   />
                 )}
               />
@@ -233,6 +247,15 @@ const UserCapabilitiesCreator = () => {
                             {publisherIdInput ? publisherIdInput + ":" : ""}
                           </InputAdornment>
                         ),
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Tooltip title="" placement="top">
+                              <IconButton edge="end" size="small">
+                                <InfoOutlinedIcon fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                          </InputAdornment>
+                        ),
                       },
                     }}
                   />
@@ -251,6 +274,19 @@ const UserCapabilitiesCreator = () => {
                     error={!!errors.protocolVersion}
                     helperText={errors.protocolVersion ? "Protocol version is required." : ''}
                     label="Protocol version *"
+                    slotProps={{
+                      input: {
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Tooltip title="" placement="top">
+                              <IconButton edge="end" size="small">
+                                <InfoOutlinedIcon fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
                   />
                 )}
               />
@@ -342,6 +378,19 @@ const UserCapabilitiesCreator = () => {
                               error={!!errors.publisherName}
                               helperText={errors.publisherName ? "Publisher name is required." : ""}
                               label="Publisher name *"
+                              slotProps={{
+                                input: {
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      <Tooltip title="" placement="top">
+                                        <IconButton edge="end" size="small">
+                                          <InfoOutlinedIcon fontSize="small" />
+                                        </IconButton>
+                                      </Tooltip>
+                                    </InputAdornment>
+                                  ),
+                                },
+                              }}
                             />
                           )}
                         />
@@ -358,6 +407,19 @@ const UserCapabilitiesCreator = () => {
                               error={!!errors.publicationType}
                               helperText={errors.publicationType ? "publication type is required." : ""}
                               label="Publication type *"
+                              slotProps={{
+                                input: {
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      <Tooltip title="" placement="top">
+                                        <IconButton edge="end" size="small">
+                                          <InfoOutlinedIcon fontSize="small" />
+                                        </IconButton>
+                                      </Tooltip>
+                                    </InputAdornment>
+                                  ),
+                                },
+                              }}
                     />
                 )}
               />
@@ -381,6 +443,15 @@ const UserCapabilitiesCreator = () => {
                     }
                     slotProps={{
                       input: {
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Tooltip title="" placement="top">
+                              <IconButton edge="end" size="small">
+                                <InfoOutlinedIcon fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                          </InputAdornment>
+                        ),
                         inputProps: {
                           maxLength: 255,
                         }
