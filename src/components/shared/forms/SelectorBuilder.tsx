@@ -35,23 +35,23 @@ import { handleDescription } from "@/lib/handleDescription";
 import ConfirmSubDialog from "@/components/shared/actions/ConfirmSubDialog";
 import { Cheatsheet } from "@/components/shared/forms/Cheatsheet";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { HandleCreateSubscription } from "@/components/shared/utils/HandleCreateSubscription";
 
 type Props = {
   matchingElements: ExtendedCapability[] | ExtendedDelivery[] | [];
   selectorCallback: (selector: string) => void;
   label: string;
   publicationIdRow: string;
+  dialogMessage: boolean;
+  subscriptionConfirmationText: string;
 };
 
 const MATCHING_CAP_LIMIT = 1;
 const QUADTREE_REGEX = /^[0-3]+(,[0-3]+)*$/i;
 
-async function createArtifacts(artifactType: string, name: string, bodyData: Object) {
-  return await (artifactType === "Delivery" ? createDelivery(name, bodyData) : createSubscription(name, bodyData));
-}
 
 const SelectorBuilder = (props: Props) => {
-  const { selectorCallback, matchingElements, label, publicationIdRow } = props;
+  const { selectorCallback, matchingElements, label, publicationIdRow, dialogMessage, subscriptionConfirmationText } = props;
   const [selector, setSelector] = useState<string>("");
   const [descriptionError, setDescriptionError] = useState(false);
   const [description, setDescription] = useState<string>("");
@@ -66,8 +66,8 @@ const SelectorBuilder = (props: Props) => {
     severity: "success",
   });
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-  const [dialogMessage, setDialogMessage] = useState<boolean>(false);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+  const [displayDialogMessage, setDisplayDialogMessage] = useState<boolean>(false);
 
   const { data: session } = useSession();
   const router = useRouter();
@@ -79,6 +79,20 @@ const SelectorBuilder = (props: Props) => {
   const handleMoreClose = () => {
     setDrawerOpen(false);
   };
+
+  async function createArtifacts(artifactType: string, name: string, bodyData: Object) {
+    console.log('dialogMessage', dialogMessage);
+    return artifactType === "Delivery"
+      ? createDelivery(name, bodyData)
+      : (() => {
+        if (dialogMessage) {
+          setDisplayDialogMessage(true);
+          return;
+        }
+        setDisplayDialogMessage(false);
+        return createSubscription(name, bodyData);
+      })();
+  }
   const {
     handleSubmit,
     control,
@@ -105,7 +119,7 @@ const SelectorBuilder = (props: Props) => {
       description: "",
     },
   });
-  console.log('selector', selector);
+
   const watchMessageType = watch("messageType");
   const DENM = MessageTypes.DENM;
   const DATEX_2 = MessageTypes.DATEX_2;
@@ -155,13 +169,39 @@ const SelectorBuilder = (props: Props) => {
       description: description
     };
 
-    const response = await createArtifacts(
+    if (label == "Delivery") {
+      const response = await createDelivery( session?.user.commonName as string, bodyData);
+      if (response?.ok) {
+        setFeedback({
+          feedback: true,
+          message: `${label} successfully created`,
+          severity: "success"
+        });
+        await router.push('/deliveries');
+      } else {
+        const errorData = await response?.json();
+        const errorMessage = errorData?.message || `${label} could not be created, try again!`;
+
+        setFeedback({
+          feedback: true,
+          message: errorMessage,
+          severity: "warning"
+        })
+      }
+    } else {
+      if(dialogMessage) {setDisplayDialogMessage(true); return;}
+      setDisplayDialogMessage(false);
+      await HandleCreateSubscription(session?.user.commonName as string, setFeedback, selector, description);
+      await router.push('/subscriptions');
+    }
+
+    /*const response = await createArtifacts(
       label,
       session?.user.commonName as string,
       bodyData
     );
 
-    if (response.ok) {
+    if (response?.ok) {
       setFeedback({
         feedback: true,
         message: `${label} successfully created`,
@@ -169,15 +209,15 @@ const SelectorBuilder = (props: Props) => {
       });
       await router.push(label === "Delivery" ? '/deliveries' : '/subscriptions');
     } else {
-      const errorData = await response.json();
-      const errorMessage = errorData.message || `${label} could not be created, try again!`;
+      const errorData = await response?.json();
+      const errorMessage = errorData?.message || `${label} could not be created, try again!`;
 
       setFeedback({
         feedback: true,
         message: errorMessage,
         severity: "warning"
       });
-    }
+    }*/
   };
   const handleReset = () => {
     reset();
@@ -543,7 +583,7 @@ const SelectorBuilder = (props: Props) => {
           </StyledFormControl>
         </form>
       </StyledCard>
-      {dialogMessage && (
+      {displayDialogMessage && (
         <ConfirmSubDialog
           open={dialogOpen}
           actorCommonName={session?.user.commonName as string}
@@ -551,7 +591,7 @@ const SelectorBuilder = (props: Props) => {
           handleDialog={handleClickClose}
           selector={selector}
           description={description}
-          text= {`Please note that this capability contains shards greater than one. Do you still want to subscribe?`}
+          text= {subscriptionConfirmationText}
         />
       )}
       <MapDialog
