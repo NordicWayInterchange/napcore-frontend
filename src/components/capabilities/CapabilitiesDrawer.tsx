@@ -146,12 +146,11 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
         <ConfirmSubDialog
           open={dialogOpen}
           actorCommonName={session?.user.commonName as string}
-          itemId={capability.id as string}
-          shardCount={capability.shardCount.toString()}
           handleMoreClose={handleMoreClose}
           handleDialog={handleClickClose}
           selector={selector}
           description={description}
+          text= {`Please note that this capability contains ${capability.shardCount.toString()} shards. Do you still want to subscribe?`}
         />
       )}
       {feedback.feedback && (

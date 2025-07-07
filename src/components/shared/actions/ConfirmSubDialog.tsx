@@ -19,15 +19,14 @@ type Props = {
   actorCommonName: string;
   open: boolean;
   handleDialog: (close: boolean) => void;
-  itemId: string;
-  shardCount: string;
   handleMoreClose: () => void;
   selector: string;
   description: string;
+  text: string;
 };
 
 export default function ConfirmSubDialog(props: Props) {
-  const {open, handleDialog, shardCount, handleMoreClose, actorCommonName, selector, description } = props;
+  const {open, handleDialog, handleMoreClose, actorCommonName, selector, description, text } = props;
 
   const [feedback, setFeedback] = useState<IFeedback>({
     feedback: false,
@@ -60,8 +59,7 @@ export default function ConfirmSubDialog(props: Props) {
         <DialogTitle>Subscription Acknowledgment</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Please note that this capability contains {shardCount} shards. Do
-            you still want to subscribe?
+            {text}
             <Tooltip
               title={
                 <span style={{ fontSize: ".88rem"}}>

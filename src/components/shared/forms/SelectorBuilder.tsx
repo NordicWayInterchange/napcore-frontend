@@ -32,6 +32,7 @@ import { useRouter } from "next/router";
 import { handleQuadtree } from "@/lib/handleQuadtree";
 import { StyledButton, StyledCard, StyledFormControl,menuItemStyles } from "@/components/shared/styles/StyledSelectorBuilder";
 import { handleDescription } from "@/lib/handleDescription";
+import ConfirmSubDialog from "@/components/shared/actions/ConfirmSubDialog";
 
 type Props = {
   matchingElements: ExtendedCapability[] | ExtendedDelivery[] | [];
@@ -62,9 +63,20 @@ const SelectorBuilder = (props: Props) => {
     message: "",
     severity: "success",
   });
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [dialogMessage, setDialogMessage] = useState<boolean>(false);
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+
   const { data: session } = useSession();
   const router = useRouter();
 
+  const handleClickClose = (close: boolean) => {
+    setDialogOpen(close);
+  }
+
+  const handleMoreClose = () => {
+    setDrawerOpen(false);
+  };
   const {
     handleSubmit,
     control,
@@ -91,7 +103,7 @@ const SelectorBuilder = (props: Props) => {
       description: "",
     },
   });
-
+  console.log('selector', selector);
   const watchMessageType = watch("messageType");
   const DENM = MessageTypes.DENM;
   const DATEX_2 = MessageTypes.DATEX_2;
@@ -421,6 +433,17 @@ const SelectorBuilder = (props: Props) => {
           </StyledFormControl>
         </form>
       </StyledCard>
+      {dialogMessage && (
+        <ConfirmSubDialog
+          open={dialogOpen}
+          actorCommonName={session?.user.commonName as string}
+          handleMoreClose={handleMoreClose}
+          handleDialog={handleClickClose}
+          selector={selector}
+          description={description}
+          text= {`Please note that this capability contains shards greater than one. Do you still want to subscribe?`}
+        />
+      )}
       <MapDialog
         open={open}
         onClose={handleClose}
