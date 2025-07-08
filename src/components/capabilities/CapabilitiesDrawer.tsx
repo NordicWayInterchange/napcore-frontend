@@ -151,7 +151,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
           selector={selector}
           description={description}
           text= {`Please note that this capability contains ${capability.shardCount.toString()} shards. Do you still want to subscribe?`}
-          form={"CapabilitiesDrawer"}
+          form="CapabilitiesDrawer"
         />
       )}
       {feedback.feedback && (
