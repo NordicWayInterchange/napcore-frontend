@@ -33,6 +33,7 @@ import { StyledButton, StyledCard, StyledFormControl,menuItemStyles } from "@/co
 import { handleDescription } from "@/lib/handleDescription";
 import ConfirmSubDialog from "@/components/shared/actions/ConfirmSubDialog";
 import { HandleCreateSubscription } from "@/components/shared/utils/HandleCreateSubscription";
+import { router } from "next/client";
 
 type Props = {
   matchingElements: ExtendedCapability[] | ExtendedDelivery[] | [];
@@ -74,7 +75,7 @@ const SelectorBuilder = (props: Props) => {
   }
 
   const handleMoreClose = () => {
-    setDrawerOpen(false);
+    setDrawerOpen(true);
   };
 
   /*async function createArtifacts(artifactType: string, name: string, bodyData: Object) {
@@ -151,6 +152,7 @@ const SelectorBuilder = (props: Props) => {
 
 
   const onSubmit: SubmitHandler<IFormInputs> = async () => {
+    setDialogOpen(true);
     if (matchingElements.length < MATCHING_CAP_LIMIT) {
       setFeedback({
         feedback: true,
@@ -194,8 +196,8 @@ const SelectorBuilder = (props: Props) => {
         return;
       }
       //setDisplayDialogMessage(false);
-      setDialogOpen(true);
-      await HandleCreateSubscription(session?.user.commonName as string, setFeedback, selector, description, "selectorBuilder");
+      //await HandleCreateSubscription(session?.user.commonName as string, setFeedback, selector, description, "selectorBuilder");
+      //await router.push('/subscriptions');
       handleMoreClose();
     }
 

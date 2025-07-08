@@ -23,7 +23,7 @@ export async function HandleCreateSubscription(
       message: "Subscription successfully created",
       severity: "success",
     });
-    if (form === "selectorBuilder")  await router.push('/subscriptions');
+    //if (form === "selectorBuilder")  await router.push('/subscriptions');
   } else {
     const errorData = await response.json();
     const errorMessage =

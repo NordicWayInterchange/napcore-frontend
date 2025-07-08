@@ -52,7 +52,6 @@ export default function ConfirmSubDialog(props: Props) {
     setFeedback({ feedback: false, message: "", severity: "success" });
   };
 
-  console.log('Show here');
   return (
     <>
       <Dialog open={open} onClose={() => handleDialog(false)}>
