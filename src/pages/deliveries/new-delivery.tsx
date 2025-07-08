@@ -38,30 +38,34 @@ const NewDelivery = () => {
       <Mainheading>Create Delivery</Mainheading>
       <Subheading>
         <Box position="relative" display="inline-flex">
-        Create a delivery with the form, or specify your own selector in
-        advanced mode.
-          <UserAssistance/>
+          Create a delivery with the form, or specify your own selector in
+          advanced mode.
+          <UserAssistance />
         </Box>
       </Subheading>
       <Divider sx={{ marginY: 1 }} />
       <BreadcrumbNavigation text="Deliveries" />
       <Box display="flex" flexWrap="wrap" gap={3}>
-        <Box flex={1}
-             sx={{
-               width: { xs: "100%", sm: "100%", md: "100%", lg: "50%", xl: "50%" }
-             }}
+        <Box
+          flex={1}
+          sx={{
+            width: { xs: "100%", sm: "100%", md: "100%", lg: "50%", xl: "50%" },
+          }}
         >
           <SelectorBuilder
             matchingElements={data || []}
             selectorCallback={handleChange}
             publicationIdRow={publicationIdRow}
             label="Delivery"
+            dialogMessage={false}
+            subscriptionConfirmationText=""
           />
         </Box>
-        <Box flex={1}
-             sx={{
-               width: { xs: "100%", sm: "100%", md: "100%", lg: "50%", xl: "50%" }
-             }}
+        <Box
+          flex={1}
+          sx={{
+            width: { xs: "100%", sm: "100%", md: "100%", lg: "50%", xl: "50%" },
+          }}
         >
           <DataGrid
             columns={NewFormDataGrid}
@@ -71,7 +75,7 @@ const NewDelivery = () => {
             getRowId={(row) => row.publicationId}
             sort={{ field: "lastUpdatedTimestamp", sort: "desc" }}
             slots={{
-              noRowsOverlay: CustomEmptyOverlayMatching
+              noRowsOverlay: CustomEmptyOverlayMatching,
             }}
           />
         </Box>
