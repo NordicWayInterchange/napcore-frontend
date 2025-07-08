@@ -73,7 +73,7 @@ export default function QuadtreeGenerator({
 
   const generateSelectedLayersFromQuadtree = () => {
     const rectangles = [];
-    console.log('hovered', hovered);
+
     quadtree.forEach((hash) => {
       const bbox = adapter.bbox(hash);
       const bounds = L.latLngBounds(
