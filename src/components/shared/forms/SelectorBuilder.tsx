@@ -458,7 +458,7 @@ const SelectorBuilder = (props: Props) => {
           selector={selector}
           description={description}
           text= {subscriptionConfirmationText}
-          form={"SelectorBuilder"}
+          form="SelectorBuilder"
         />
       )}
     </>

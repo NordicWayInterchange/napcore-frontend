@@ -14,7 +14,7 @@ import { BreadcrumbNavigation } from "@/components/shared/actions/BreadcrumbNavi
 import { NewFormDataGrid } from "@/components/shared/datagrid/GridColumns/NewFormDatagrid";
 import UserAssistance from "@/components/shared/actions/UserAssistance";
 
-function getSubscriptionConfirmationText(publisherId: string, sharcCount: number): string {
+function getSubscriptionConfirmationText(publisherId: string): string {
   return `${publisherId},`
 }
 
@@ -30,7 +30,7 @@ const NewSubscription = () => {
   const [dialogMessage, setDialogMessage] = useState<boolean>(false);
   const [subscriptionConfirmationText, setSubscriptionConfirmationText] = useState<string>("");
 
-  const matchingCapabilitiesWithShardsGreaterThanOne = (data ?? [])?.filter((item: { shardCount: number }) => item.shardCount > 1)
+  const matchingCapabilitiesWithShardsGreaterThanOne = (data ?? [])?.filter((item: { shardCount: number }) => item.shardCount == 1)
     .map((item: { publisherId: string, shardCount: number }, index) => ({
       publisherId: item.publisherId,
       shardCount: item.shardCount,
@@ -39,7 +39,7 @@ const NewSubscription = () => {
   useEffect(() => {
     let fullText = "";
     const formattedMessages = matchingCapabilitiesWithShardsGreaterThanOne
-      .map(item => getSubscriptionConfirmationText(item.publisherId, item.shardCount)).join(" ");
+      .map(item => getSubscriptionConfirmationText(item.publisherId)).join(" ");
     if (formattedMessages) {
       setDialogMessage(true);
       fullText = `Please note that there is more than one shard in the matching 
