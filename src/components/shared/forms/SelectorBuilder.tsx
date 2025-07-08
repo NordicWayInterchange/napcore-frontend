@@ -139,17 +139,16 @@ const SelectorBuilder = (props: Props) => {
 
 
   const onSubmit: SubmitHandler<IFormInputs> = async () => {
-    setDialogOpen(true);
     if (matchingElements.length < MATCHING_CAP_LIMIT) {
       setFeedback({
         feedback: true,
         message: "You have no matching capabilities",
         severity: "info",
       });
-
       return;
     }
     if (description.length > 255 ) return ;
+    setDialogOpen(true);
     const bodyData = {
       selector: selector,
       description: description
