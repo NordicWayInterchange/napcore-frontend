@@ -168,7 +168,7 @@ const SelectorBuilder = (props: Props) => {
       description: description
     };
 
-    /*if (label == "Delivery") {
+    if (label == "Delivery") {
       const response = await createDelivery( session?.user.commonName as string, bodyData);
       if (response.ok) {
         setFeedback({
@@ -187,7 +187,8 @@ const SelectorBuilder = (props: Props) => {
           severity: "warning"
         })
       }
-    } else {
+    }
+    /*else {
       console.log('dialogMessage', dialogMessage);
 
       if (dialogMessage) {
@@ -199,7 +200,7 @@ const SelectorBuilder = (props: Props) => {
       //await HandleCreateSubscription(session?.user.commonName as string, setFeedback, selector, description, "selectorBuilder");
       //await router.push('/subscriptions');
       handleMoreClose();
-    }
+    }*/
 
     /*const response = await createArtifacts(
       label,
