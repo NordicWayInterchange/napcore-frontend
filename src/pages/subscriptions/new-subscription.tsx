@@ -30,7 +30,7 @@ const NewSubscription = () => {
   const [dialogMessage, setDialogMessage] = useState<boolean>(false);
   const [subscriptionConfirmationText, setSubscriptionConfirmationText] = useState<string>("");
 
-  const matchingCapabilitiesWithShardsGreaterThanOne = (data ?? [])?.filter((item: { shardCount: number }) => item.shardCount == 1)
+  const matchingCapabilitiesWithShardsGreaterThanOne = (data ?? [])?.filter((item: { shardCount: number }) => item.shardCount > 1)
     .map((item: { publisherId: string, shardCount: number }, index) => ({
       publisherId: item.publisherId,
       shardCount: item.shardCount,
@@ -42,7 +42,8 @@ const NewSubscription = () => {
       .map(item => getSubscriptionConfirmationText(item.publisherId, item.shardCount)).join(" ");
     if (formattedMessages) {
       setDialogMessage(true);
-      fullText = `Please note that there is more than one shard in the matching ${matchingCapabilitiesWithShardsGreaterThanOne.length > 1 ? 'capabilities' : 'capability'} ${formattedMessages} Do you still want to subscribe?`;
+      fullText = `Please note that there is more than one shard in the matching 
+      ${matchingCapabilitiesWithShardsGreaterThanOne.length > 1 ? 'capabilities' : 'capability'} ${formattedMessages} Do you still want to subscribe?`;
       setSubscriptionConfirmationText(fullText);
     }
   }, [matchingCapabilitiesWithShardsGreaterThanOne]);
