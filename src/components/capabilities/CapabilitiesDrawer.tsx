@@ -60,7 +60,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
     if (description.length > 255 ) return ;
     if (capability.shardCount == 1 ) {setDialogMessage(true); return; }
     setDialogMessage(false);
-    await HandleCreateSubscription(name, setFeedback, selector, description)
+    await HandleCreateSubscription(name, setFeedback, selector, description, "CapabilitiesDrawer")
     handleMoreClose();
   };
 
