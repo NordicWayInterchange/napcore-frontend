@@ -159,6 +159,8 @@ const SelectorBuilder = (props: Props) => {
       description: description
     };
 
+    if(dialogMessage) return;
+
     const response = await createArtifacts(
       label,
       session?.user.commonName as string,

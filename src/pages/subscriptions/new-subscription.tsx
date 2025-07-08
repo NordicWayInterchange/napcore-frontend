@@ -43,7 +43,7 @@ const NewSubscription = () => {
     if (formattedMessages) {
       setDialogMessage(true);
       fullText = `Please note that there is more than one shard in the matching 
-      ${matchingCapabilitiesWithShardsGreaterThanOne.length > 1 ? 'capabilities' : 'capability'} ${formattedMessages} Do you still want to subscribe?`;
+      ${matchingCapabilitiesWithShardsGreaterThanOne.length > 1 ? 'capabilities:' : 'capability:'} ${formattedMessages} Do you still want to subscribe?`;
       setSubscriptionConfirmationText(fullText);
     }
   }, [matchingCapabilitiesWithShardsGreaterThanOne]);

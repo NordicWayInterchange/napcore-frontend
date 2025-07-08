@@ -13,7 +13,6 @@ import { IFeedback } from "@/interface/IFeedback";
 import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { HandleCreateSubscription } from "@/components/shared/utils/HandleCreateSubscription";
-import { router } from "next/client";
 
 type Props = {
   actorCommonName: string;
@@ -39,8 +38,7 @@ export default function ConfirmSubDialog(props: Props) {
   const clickedCreateSubscription = async (name: string, selector: string, description: string) => {
     handleDialog(false);
     if (description.length > 255 ) return ;
-    await HandleCreateSubscription(name, setFeedback, selector, description);
-    if (form === "SelectorBuilder")  await router.push('/subscriptions');
+    await HandleCreateSubscription(name, setFeedback, selector, description, form);
     handleMoreClose();
   };
 

@@ -9,6 +9,7 @@ export async function HandleCreateSubscription(
   ) => void,
   selector: string,
   description: string,
+  form: string
 ) {
   const bodyData = {
     selector: selector,
@@ -22,6 +23,7 @@ export async function HandleCreateSubscription(
       message: "Subscription successfully created",
       severity: "success",
     });
+    if (form === "SelectorBuilder")  await router.push('/subscriptions');
   } else {
     const errorData = await response.json();
     const errorMessage =
