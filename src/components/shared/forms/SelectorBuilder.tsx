@@ -153,12 +153,12 @@ const SelectorBuilder = (props: Props) => {
     }
     if (description.length > 255 ) return ;
     setDialogOpen(true);
+    if(dialogMessage) return;
+
     const bodyData = {
       selector: selector,
       description: description
     };
-
-    if(dialogMessage) return;
 
     const response = await createArtifacts(
       label,
