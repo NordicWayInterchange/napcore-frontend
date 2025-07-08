@@ -1,5 +1,6 @@
 import { IFeedback } from "@/interface/IFeedback";
 import { createSubscription } from "@/lib/fetchers/internalFetchers";
+import { router } from "next/client";
 
 export async function HandleCreateSubscription(
   name: string,
@@ -7,7 +8,8 @@ export async function HandleCreateSubscription(
     value: ((prevState: IFeedback) => IFeedback) | IFeedback
   ) => void,
   selector: string,
-  description: string
+  description: string,
+  form: string,
 ) {
   const bodyData = {
     selector: selector,
@@ -21,6 +23,7 @@ export async function HandleCreateSubscription(
       message: "Subscription successfully created",
       severity: "success",
     });
+    if (form === "selectorBuilder")  await router.push('/subscriptions');
   } else {
     const errorData = await response.json();
     const errorMessage =

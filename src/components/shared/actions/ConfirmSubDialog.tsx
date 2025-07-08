@@ -12,7 +12,6 @@ import { useState } from "react";
 import { IFeedback } from "@/interface/IFeedback";
 import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import { createSubscription } from "@/lib/fetchers/internalFetchers";
 import { HandleCreateSubscription } from "@/components/shared/utils/HandleCreateSubscription";
 
 type Props = {
@@ -38,7 +37,7 @@ export default function ConfirmSubDialog(props: Props) {
   const clickedCreateSubscription = async (name: string, selector: string, description: string) => {
     handleDialog(false);
     if (description.length > 255 ) return ;
-    await HandleCreateSubscription(name, setFeedback, selector, description);
+    await HandleCreateSubscription(name, setFeedback, selector, description, "confirmSubDialog");
     handleMoreClose();
   };
 
@@ -53,10 +52,11 @@ export default function ConfirmSubDialog(props: Props) {
     setFeedback({ feedback: false, message: "", severity: "success" });
   };
 
+  console.log('Show here');
   return (
     <>
       <Dialog open={open} onClose={() => handleDialog(false)}>
-        <DialogTitle>Subscription Acknowledgment</DialogTitle>
+        <DialogTitle>Subscription acknowledgment</DialogTitle>
         <DialogContent>
           <DialogContentText>
             {text}

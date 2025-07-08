@@ -14,8 +14,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { generateSelector } from "@/lib/generateSelector";
 import {
-  createDelivery,
-  createSubscription
+  createDelivery
 } from "@/lib/fetchers/internalFetchers";
 import MapDialog from "../../map/MapDialog";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -78,7 +77,7 @@ const SelectorBuilder = (props: Props) => {
     setDrawerOpen(false);
   };
 
-  async function createArtifacts(artifactType: string, name: string, bodyData: Object) {
+  /*async function createArtifacts(artifactType: string, name: string, bodyData: Object) {
     console.log('dialogMessage', dialogMessage);
     return artifactType === "Delivery"
       ? createDelivery(name, bodyData)
@@ -90,7 +89,7 @@ const SelectorBuilder = (props: Props) => {
         setDisplayDialogMessage(false);
         return createSubscription(name, bodyData);
       })();
-  }
+  }*/
   const {
     handleSubmit,
     control,
@@ -121,7 +120,7 @@ const SelectorBuilder = (props: Props) => {
   const watchMessageType = watch("messageType");
   const DENM = MessageTypes.DENM;
   const DATEX_2 = MessageTypes.DATEX_2;
-
+  console.log('subscriptionConfirmationText', subscriptionConfirmationText);
   /*
   Generate a new selector when the form state changes.
   Send the selector backwards via selectorCallback(selector) to find matching capabilities.
@@ -161,7 +160,7 @@ const SelectorBuilder = (props: Props) => {
 
       return;
     }
-    if (description.length > 255 ) return ;
+
     const bodyData = {
       selector: selector,
       description: description
@@ -169,7 +168,7 @@ const SelectorBuilder = (props: Props) => {
 
     if (label == "Delivery") {
       const response = await createDelivery( session?.user.commonName as string, bodyData);
-      if (response?.ok) {
+      if (response.ok) {
         setFeedback({
           feedback: true,
           message: `${label} successfully created`,
@@ -177,8 +176,8 @@ const SelectorBuilder = (props: Props) => {
         });
         await router.push('/deliveries');
       } else {
-        const errorData = await response?.json();
-        const errorMessage = errorData?.message || `${label} could not be created, try again!`;
+        const errorData = await response.json();
+        const errorMessage = errorData.message || `${label} could not be created, try again!`;
 
         setFeedback({
           feedback: true,
@@ -187,10 +186,17 @@ const SelectorBuilder = (props: Props) => {
         })
       }
     } else {
-      if(dialogMessage) {setDisplayDialogMessage(true); return;}
-      setDisplayDialogMessage(false);
-      await HandleCreateSubscription(session?.user.commonName as string, setFeedback, selector, description);
-      await router.push('/subscriptions');
+      console.log('dialogMessage', dialogMessage);
+
+      if (dialogMessage) {
+        console.log('HERE');
+        //setDisplayDialogMessage(true);
+        return;
+      }
+      //setDisplayDialogMessage(false);
+      setDialogOpen(true);
+      await HandleCreateSubscription(session?.user.commonName as string, setFeedback, selector, description, "selectorBuilder");
+      handleMoreClose();
     }
 
     /*const response = await createArtifacts(
@@ -473,17 +479,6 @@ const SelectorBuilder = (props: Props) => {
           </StyledFormControl>
         </form>
       </StyledCard>
-      {displayDialogMessage && (
-        <ConfirmSubDialog
-          open={dialogOpen}
-          actorCommonName={session?.user.commonName as string}
-          handleMoreClose={handleMoreClose}
-          handleDialog={handleClickClose}
-          selector={selector}
-          description={description}
-          text= {subscriptionConfirmationText}
-        />
-      )}
       <MapDialog
         open={open}
         onClose={handleClose}
@@ -496,6 +491,17 @@ const SelectorBuilder = (props: Props) => {
           severity={feedback.severity}
           open={feedback.feedback}
           handleClose={handleSnackClose}
+        />
+      )}
+      {dialogMessage && (
+        <ConfirmSubDialog
+          open={dialogOpen}
+          actorCommonName={session?.user.commonName as string}
+          handleMoreClose={handleMoreClose}
+          handleDialog={handleClickClose}
+          selector={selector}
+          description={description}
+          text= {subscriptionConfirmationText}
         />
       )}
     </>
