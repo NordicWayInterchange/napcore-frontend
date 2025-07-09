@@ -14,10 +14,6 @@ import { BreadcrumbNavigation } from "@/components/shared/actions/BreadcrumbNavi
 import { NewFormDataGrid } from "@/components/shared/datagrid/GridColumns/NewFormDatagrid";
 import UserAssistance from "@/components/shared/actions/UserAssistance";
 
-function getSubscriptionConfirmationText(publisherId: string): string {
-  return `${publisherId},`
-}
-
 const NewSubscription = () => {
   const { data: session } = useSession();
   const [selector, setSelector] = useState<string>(" ");
@@ -30,22 +26,21 @@ const NewSubscription = () => {
   const [dialogMessage, setDialogMessage] = useState<boolean>(false);
   const [subscriptionConfirmationText, setSubscriptionConfirmationText] = useState<string>("");
 
-  const matchingCapabilitiesWithShardsGreaterThanOne = (data ?? [])?.filter((item: { shardCount: number }) => item.shardCount == 1)
-    .map((item: { publisherId: string, shardCount: number }, index) => ({
-      publisherId: item.publisherId,
-      shardCount: item.shardCount,
-    }));
-
   useEffect(() => {
     let fullText = "";
-    const formattedMessages = matchingCapabilitiesWithShardsGreaterThanOne
-      .map(item => getSubscriptionConfirmationText(item.publisherId)).join(" ");
-    if (formattedMessages) {
+    const total: number | undefined = data
+      ?.flat()
+      .reduce((sum, item) => sum + (item.shardCount ?? 0), 0);
+
+    const isGreaterThanFive = (total ?? 0) > 5;
+    if (isGreaterThanFive) {
       setDialogMessage(true);
       fullText = `Please note the total number of shards for the matching capabilities are more than five. Do you still want to subscribe?`;
       setSubscriptionConfirmationText(fullText);
+    } else {
+      setDialogMessage(false);
     }
-  }, [matchingCapabilitiesWithShardsGreaterThanOne]);
+  }, [data]);
 
   const handleChange = (selector: string) => {
     setSelector(selector);
