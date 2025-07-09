@@ -58,7 +58,10 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
 
   const saveSubscription = async (name: string, selector: string) => {
     if (description.length > 255 ) return ;
-    if (capability.shardCount == 1 ) {setDialogMessage(true); return; }
+    if (capability.shardCount > 1 ) {
+      setDialogMessage(true);
+      return;
+    }
     setDialogMessage(false);
     await HandleCreateSubscription(name, setFeedback, selector, description, "CapabilitiesDrawer")
     handleMoreClose();
@@ -150,7 +153,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
           handleDialog={handleClickClose}
           selector={selector}
           description={description}
-          text= {`Please note this capability contains ${capability.shardCount.toString()} shards. Do you still want to subscribe?`}
+          text= {`Please note that there are ${capability.shardCount.toString()} shards for this capability. Do you still want to subscribe?`}
           form="CapabilitiesDrawer"
         />
       )}
