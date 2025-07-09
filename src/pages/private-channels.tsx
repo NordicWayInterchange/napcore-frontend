@@ -261,6 +261,7 @@ export default function PrivateChannels() {
         const value = params.row.lastUpdated;
         return value && timeConverter(value);
       },
+      flex: 2
     },
     {
       ...dataGridTemplate,
