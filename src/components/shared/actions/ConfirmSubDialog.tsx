@@ -63,8 +63,7 @@ export default function ConfirmSubDialog(props: Props) {
             <Tooltip
               title={
                 <span style={{ fontSize: ".88rem"}}>
-                  A sharded capability has defined shardCount greater than one
-                  and a sharded subscription has defined shardId in the selector
+                  The sharded capability has large volume of messages
                 </span>
               }
               arrow
