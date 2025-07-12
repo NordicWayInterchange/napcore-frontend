@@ -312,6 +312,26 @@ E.g. 'DENM:1.2.2'" placement="top">
                     {Boolean(errors.originatingCountry) && (
                       <FormHelperText>Originating country is required</FormHelperText>
                     )}
+                    <Box
+                      position="absolute"
+                      right={32}
+                      top="50%"
+                      sx={{
+                        transform: 'translateY(-50%)',
+                        pointerEvents: 'auto',
+                      }}
+                    >
+                      <Tooltip title="Country code (based on ISO 3166-1 alpha-2). Country code where the payload message is created" arrow>
+                        <IconButton
+                          size="small"
+                          sx={{
+                            p: 0.5,
+                          }}
+                        >
+                          <InfoOutlinedIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
                   </FormControl>
                 )}
               />
