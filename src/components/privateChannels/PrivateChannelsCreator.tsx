@@ -1,4 +1,4 @@
-import { Chip, OutlinedInput, TextField, Typography } from "@mui/material";
+import { Chip, IconButton, InputAdornment, OutlinedInput, TextField, Tooltip, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Box } from "@mui/system";
@@ -11,6 +11,7 @@ import { IFormPrivateChannelInput } from "@/interface/IFormPrivateChanelInput";
 import { createPrivateChannel } from "@/lib/fetchers/internalFetchers";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { escapeString } from "@/lib/escapeString";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 const PrivateChannelsCreator = () => {
   const [feedback, setFeedback] = useState<IFeedback>({
@@ -159,6 +160,15 @@ const PrivateChannelsCreator = () => {
                 }}
                 slotProps={{
                   input: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Tooltip title="Use a comma, space, or press enter to separate peers—otherwise, they won't be added properly." placement="top">
+                          <IconButton edge="end" size="small">
+                            <InfoOutlinedIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                      </InputAdornment>
+                    ),
                     inputProps: {
                       placeholder: 'Add peers (comma, space, or enter to add)',
                       maxLength: 255,
