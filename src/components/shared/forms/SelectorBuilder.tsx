@@ -266,6 +266,26 @@ const SelectorBuilder = (props: Props) => {
                         </MenuItem>
                       ))}
                     </Select>
+                    <Box
+                      position="absolute"
+                      right={32}
+                      top="50%"
+                      sx={{
+                        transform: 'translateY(-50%)',
+                        pointerEvents: 'auto',
+                      }}
+                    >
+                      <Tooltip title="Country code (based on ISO 3166-1 alpha-2). Country code where the payload message is created" arrow>
+                        <IconButton
+                          size="small"
+                          sx={{
+                            p: 0.5,
+                          }}
+                        >
+                          <InfoOutlinedIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
                   </FormControl>
                 )}
               />
@@ -287,6 +307,26 @@ const SelectorBuilder = (props: Props) => {
                         </MenuItem>
                       ))}
                     </Select>
+                    <Box
+                      position="absolute"
+                      right={32}
+                      top="50%"
+                      sx={{
+                        transform: 'translateY(-50%)',
+                        pointerEvents: 'auto',
+                      }}
+                    >
+                      <Tooltip title="This is the type of the published message" arrow>
+                        <IconButton
+                          size="small"
+                          sx={{
+                            p: 0.5,
+                          }}
+                        >
+                          <InfoOutlinedIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
                   </FormControl>
                 )}
               />
@@ -327,6 +367,19 @@ const SelectorBuilder = (props: Props) => {
                       fullWidth
                       disabled={advancedMode}
                       label="publisher name"
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <Tooltip title="This is the identifier for the datex message distributer. Obtained from the nationalIdentifier section of the datex document." placement="top">
+                                <IconButton edge="end" size="small">
+                                  <InfoOutlinedIcon fontSize="small" />
+                                </IconButton>
+                              </Tooltip>
+                            </InputAdornment>
+                          ),
+                        },
+                      }}
                     />
                   )}
                 />
@@ -345,7 +398,7 @@ const SelectorBuilder = (props: Props) => {
                         input: {
                           endAdornment: (
                             <InputAdornment position="end">
-                              <Tooltip title="" placement="top">
+                              <Tooltip title="Publication type - only one. E.g: SituationPublication or MeasuredDataPublication or VmsPublication" placement="top">
                                 <IconButton edge="end" size="small">
                                   <InfoOutlinedIcon fontSize="small" />
                                 </IconButton>

@@ -280,8 +280,8 @@ const UserCapabilitiesCreator = () => {
                       input: {
                         endAdornment: (
                           <InputAdornment position="end">
-                            <Tooltip title="Represent the version of standard used to create the message.
-E.g. 'DENM:1.2.2'" placement="top">
+                            <Tooltip title="This represents the version of standard used to create the message.
+E.g. 'DENM:1.2.2'." placement="top">
                               <IconButton edge="end" size="small">
                                 <InfoOutlinedIcon fontSize="small" />
                               </IconButton>
@@ -321,7 +321,7 @@ E.g. 'DENM:1.2.2'" placement="top">
                         pointerEvents: 'auto',
                       }}
                     >
-                      <Tooltip title="Country code (based on ISO 3166-1 alpha-2). Country code where the payload message is created" arrow>
+                      <Tooltip title="Country code is where the payload message created and is based on ISO 3166-1 alpha-2. " arrow>
                         <IconButton
                           size="small"
                           sx={{
@@ -357,6 +357,26 @@ E.g. 'DENM:1.2.2'" placement="top">
                     {Boolean(errors.messageType) && (
                       <FormHelperText>Message type is required</FormHelperText>
                     )}
+                    <Box
+                      position="absolute"
+                      right={32}
+                      top="50%"
+                      sx={{
+                        transform: 'translateY(-50%)',
+                        pointerEvents: 'auto',
+                      }}
+                    >
+                      <Tooltip title="This is the type of the published message" arrow>
+                        <IconButton
+                          size="small"
+                          sx={{
+                            p: 0.5,
+                          }}
+                        >
+                          <InfoOutlinedIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
                   </FormControl>
                 )}
               />
@@ -385,6 +405,26 @@ E.g. 'DENM:1.2.2'" placement="top">
                       ))}
                     </Select>
                     {errors.causeCode && <FormHelperText>Cause code is required.</FormHelperText>}
+                    <Box
+                      position="absolute"
+                      right={32}
+                      top="50%"
+                      sx={{
+                        transform: 'translateY(-50%)',
+                        pointerEvents: 'auto',
+                      }}
+                    >
+                      <Tooltip title="Country code (based on ISO 3166-1 alpha-2). Country code where the payload message is created" arrow>
+                        <IconButton
+                          size="small"
+                          sx={{
+                            p: 0.5,
+                          }}
+                        >
+                          <InfoOutlinedIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
                   </FormControl>
                 )}
               />
