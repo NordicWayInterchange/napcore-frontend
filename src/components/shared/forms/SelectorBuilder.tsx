@@ -32,6 +32,7 @@ import { useRouter } from "next/router";
 import { handleQuadtree } from "@/lib/handleQuadtree";
 import { StyledButton, StyledCard, StyledFormControl,menuItemStyles } from "@/components/shared/styles/StyledSelectorBuilder";
 import { handleDescription } from "@/lib/handleDescription";
+import { Cheatsheet } from "@/components/shared/forms/Cheatsheet";
 
 type Props = {
   matchingElements: ExtendedCapability[] | ExtendedDelivery[] | [];
@@ -399,6 +400,7 @@ const SelectorBuilder = (props: Props) => {
                     Verify
                   </StyledButton>
                 </Box>
+                <Cheatsheet/>
               </>
             )}
             <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
