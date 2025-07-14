@@ -11,8 +11,8 @@ import Snackbar from "@/components/shared/feedback/Snackbar";
 import { useState } from "react";
 import { IFeedback } from "@/interface/IFeedback";
 import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { HandleCreateSubscription } from "@/components/shared/utils/HandleCreateSubscription";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 type Props = {
   actorCommonName: string;
@@ -70,7 +70,7 @@ export default function ConfirmSubDialog(props: Props) {
               placement="right"
             >
               <IconButton size="small">
-                <HelpOutlineIcon fontSize="small" sx={{ mt: -1 }} />
+                <InfoOutlinedIcon fontSize="small" sx={{ mt: -2 }} />
               </IconButton>
             </Tooltip>
           </DialogContentText>
