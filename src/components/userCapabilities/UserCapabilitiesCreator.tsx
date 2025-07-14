@@ -314,7 +314,7 @@ E.g. 'DENM:1.2.2'." placement="top">
                     )}
                     <Box
                       position="absolute"
-                      right={32}
+                      right={30}
                       top="50%"
                       sx={{
                         transform: 'translateY(-50%)',
@@ -359,7 +359,7 @@ E.g. 'DENM:1.2.2'." placement="top">
                     )}
                     <Box
                       position="absolute"
-                      right={32}
+                      right={30}
                       top="50%"
                       sx={{
                         transform: 'translateY(-50%)',

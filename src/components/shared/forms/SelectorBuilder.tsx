@@ -284,7 +284,7 @@ const SelectorBuilder = (props: Props) => {
                     </Select>
                     <Box
                       position="absolute"
-                      right={32}
+                      right={30}
                       top="50%"
                       sx={{
                         transform: 'translateY(-50%)',
@@ -325,8 +325,8 @@ const SelectorBuilder = (props: Props) => {
                     </Select>
                     <Box
                       position="absolute"
-                      right={32}
-                      top="50%"
+                      right={30}
+                      top="35%"
                       sx={{
                         transform: 'translateY(-50%)',
                         pointerEvents: 'auto',
