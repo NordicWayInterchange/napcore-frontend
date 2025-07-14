@@ -34,8 +34,6 @@ import { handleDescription } from "@/lib/handleDescription";
 import ConfirmSubDialog from "@/components/shared/actions/ConfirmSubDialog";
 import { Cheatsheet } from "@/components/shared/forms/Cheatsheet";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { HandleCreateSubscription } from "@/components/shared/utils/HandleCreateSubscription";
-import { router } from "next/client";
 
 type Props = {
   matchingElements: ExtendedCapability[] | ExtendedDelivery[] | [];
@@ -189,6 +187,7 @@ const SelectorBuilder = (props: Props) => {
     setSelectedPublicationId('');
     setDescription('');
     setDescriptionError(false);
+    setDialogOpen(false);
   };
 
   const handleVerify = () => {
