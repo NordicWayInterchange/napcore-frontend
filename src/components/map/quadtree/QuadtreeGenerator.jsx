@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import L from "leaflet";
-import { useMap, Rectangle, LayerGroup, useMapEvents, Tooltip } from "react-leaflet";
+import { useMap, Rectangle, useMapEvents, Tooltip } from "react-leaflet";
 import {
   rectangleStyle,
   rectangleStyleHover,
@@ -21,7 +21,6 @@ export default function QuadtreeGenerator({
   const [selectedLayers, setSelectedLayers] = useState([]);
   const [prevHash, setPrevHash] = useState();
   const [mousePosition, setMousePosition] = useState();
-  const [hovered, setHovered] = useState(true);
 
   useEffect(() => {
     if (!interactive) return;
@@ -87,12 +86,8 @@ export default function QuadtreeGenerator({
           hash={hash}
           bounds={bounds}
           pathOptions={rectangleStyleSelect}
-          eventHandlers={{
-            mouseover: () => setHovered(true),
-            mouseout: () => setHovered(false),
-          }}
         >
-          {hovered && <Tooltip sticky>{hash}</Tooltip>}
+          <Tooltip sticky>{hash}</Tooltip>
         </Rectangle>
       );
     });
