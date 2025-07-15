@@ -26,23 +26,6 @@ const CheatsheetGrid: GridColDef[] = [
   },
   {
     ...dataGridTemplate,
-    field: "description",
-    headerName: "Description",
-    flex: 2,
-    renderCell: (params) => (
-      <Box
-        sx={{
-          whiteSpace: 'normal',
-          wordBreak: 'break-word',
-          mt: 1.5,
-        }}
-      >
-        {params.value}
-      </Box>
-    )
-  },
-  {
-    ...dataGridTemplate,
     field: "selector",
     headerName: "Example selector",
     flex: 2,
@@ -58,38 +41,49 @@ const CheatsheetGrid: GridColDef[] = [
       </Box>
     )
   },
+  {
+    ...dataGridTemplate,
+    field: "description",
+    headerName: "Description",
+    flex: 2,
+    renderCell: (params) => (
+      <Box
+        sx={{
+          whiteSpace: 'normal',
+          wordBreak: 'break-word',
+          mt: 1.5,
+        }}
+      >
+        {params.value}
+      </Box>
+    )
+  }
 ];
 
 const cheatsheetContent = [
   {
     "id": 1,
-    "operator": "=, <>, <, <=, >, >=",
-    "description": "",
-    "selector": "originatingCountry = 'NO'",
+    "operator": "BETWEEN",
+    "description": "Checks if value is withing range",
+    "selector": "quadTree > '1123'",
   },
   {
     "id": 2,
-    "operator": "BETWEEN",
-    "description": "Checks if value is withing range",
-    "selector": "NO12345:test111",
-  },
-  {
-    "id": 3,
     "operator": "IS NULL, IS NOT NULL",
     "description": "Checks if value is null/ not null",
     "selector": "causeCode IS NULL, quadtree IS NOT NULL",
   },
   {
-    "id": 4,
+    "id": 3,
     "operator": "=, <>, <, <=, >, >=",
     "description": "",
     "selector": "originatingCountry = 'NO'",
   }, {
-    "id": 5,
+    "id": 4,
     "operator": "AND, OR, NOT",
     "description": "Combines logical statements",
     "selector": "\n" +
-      "(messageType = 'DENM') AND (quadTree like '%,123%') AND originatingCountry = 'NO'",
+      "(messageType = 'DENM') AND (quadTree like '%,123%') OR originatingCountry = 'NO'",
   },
 ];
 
