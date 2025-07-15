@@ -17,7 +17,7 @@ const CheatsheetGrid: GridColDef[] = [
         sx={{
           whiteSpace: 'normal',
           wordBreak: 'break-word',
-          py: 2,
+          py: 2
         }}
       >
         {params.value}
@@ -34,7 +34,7 @@ const CheatsheetGrid: GridColDef[] = [
         sx={{
           whiteSpace: 'normal',
           wordBreak: 'break-word',
-          mt: 2,
+          mt: 1.5,
         }}
       >
         {params.value}
@@ -51,7 +51,7 @@ const CheatsheetGrid: GridColDef[] = [
         sx={{
           whiteSpace: 'normal',
           wordBreak: 'break-word',
-          mt: 2,
+          mt: 1.5,
         }}
       >
         {params.value}
@@ -88,7 +88,8 @@ const cheatsheetContent = [
     "id": 5,
     "operator": "AND, OR, NOT",
     "description": "Combines logical statements",
-    "selector": "messageType = 'DENM' and quadTree like '%,1234%' AND originatingCountry = 'NO'",
+    "selector": "\n" +
+      "(messageType = 'DENM') AND (quadTree like '%,123%') AND originatingCountry = 'NO'",
   },
 ];
 
