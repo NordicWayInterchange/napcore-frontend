@@ -11,19 +11,52 @@ const CheatsheetGrid: GridColDef[] = [
     ...dataGridTemplate,
     field: "operator",
     headerName: "SQL operator",
-    flex: 1
+    flex: 1,
+    renderCell: (params) => (
+      <Box
+        sx={{
+          whiteSpace: 'normal',
+          wordBreak: 'break-word',
+          py: 2,
+        }}
+      >
+        {params.value}
+      </Box>
+    )
   },
   {
     ...dataGridTemplate,
     field: "description",
     headerName: "Description",
-    flex: 2
+    flex: 2,
+    renderCell: (params) => (
+      <Box
+        sx={{
+          whiteSpace: 'normal',
+          wordBreak: 'break-word',
+          mt: 2,
+        }}
+      >
+        {params.value}
+      </Box>
+    )
   },
   {
     ...dataGridTemplate,
     field: "selector",
     headerName: "Example selector",
     flex: 2,
+    renderCell: (params) => (
+      <Box
+        sx={{
+          whiteSpace: 'normal',
+          wordBreak: 'break-word',
+          mt: 2,
+        }}
+      >
+        {params.value}
+      </Box>
+    )
   },
 ];
 
@@ -62,11 +95,9 @@ const cheatsheetContent = [
 export const Cheatsheet = () => {
   return (
     <Box flex={1}>
-      <Subheading>Selector cheat sheet</Subheading>
+      <Subheading>Selector cheatsheet</Subheading>
       <Typography>Need assistance with the selector? Check out our cheat sheet</Typography>
       <Divider sx={{ marginY: 2 }} />
-
-      <div style={{ height: 400, width: '100%' }}>
       <DataGrid
         columns={CheatsheetGrid}
         rows={cheatsheetContent || []}
@@ -74,7 +105,6 @@ export const Cheatsheet = () => {
         sort={{ field: "operator", sort: "desc" }}
         getRowHeight={() => 'auto'}
       />
-      </div>
     </Box>
   );
 }
