@@ -19,6 +19,7 @@ import Subheading from "@/components/shared/display/typography/Subheading";
 import CommonDrawer from "@/components/layout/CommonDrawer";
 import AddButton from "@/components/shared/actions/AddButton";
 import { performRefetch } from "@/lib/performRefetch";
+import SearchBox from "@/components/shared/SearchBox";
 
 export default function Subscriptions() {
   const { data: session } = useSession();
@@ -31,6 +32,7 @@ export default function Subscriptions() {
     useState<ExtendedSubscription>();
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const [shouldRefreshAfterDelete, setShouldRefreshAfterDelete] = useState<boolean>(false);
+  const [searchId, setSearchId] = useState("");
 
   useEffect(() => {
     if (isDeleted) {
@@ -78,6 +80,14 @@ export default function Subscriptions() {
   const handleDeletedItem = (deleted: boolean) => {
     setIsDeleted(deleted);
   };
+
+  const rows = Array.isArray(data) ? data : [];
+
+  const filteredRows = searchId.trim()
+    ? rows.filter((row) =>
+      row.id?.toString().includes(searchId.trim())
+    )
+    : rows;
 
   const tableHeaders: GridColDef[] = [
     {
@@ -153,11 +163,14 @@ export default function Subscriptions() {
         view more information or unsubscribe.
       </Subheading>
       <Divider sx={{ marginY: 2 }} />
+      <Box display="flex" flexDirection="row" gap={10}>
       <AddButton text="Add subscription" labelUrl="subscription"></AddButton>
+      <SearchBox searchId={searchId} setSearchId={setSearchId} label="subscription" />
+      </Box>
       <Divider style={{ margin: '5px 0', visibility: 'hidden' }}/>
       <DataGrid
         columns={tableHeaders}
-        rows={data || []}
+        rows={filteredRows || []}
         onRowClick={handleOnRowClick}
         loading={isLoading}
         slots={{
