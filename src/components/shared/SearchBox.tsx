@@ -23,17 +23,17 @@ const SearchBox = ({searchId, setSearchId, label}: Props) => {
 
 const textFieldSx = {
   "& .MuiInputLabel-root.Mui-focused": {
-    color: "#444f55",
+    color: "searchBoxFocusedFontColor",
   },
   '& .MuiInput-underline:before': {
-    borderBottom: '2px solid gray', // normal state
+    borderBottom: '2px solid gray',
   },
   '& .MuiInput-underline:after': {
-    borderBottom: '2px solid black', // focused state
+    borderBottom: '2px solid black',
   },
   position: "relative",
-  top: "-10px",
-  bgcolor: "white",
+  top: "-3px",
+  bgcolor: "mainBackgroundColor",
 };
 
 export default SearchBox;

@@ -42,6 +42,7 @@ export const TRAFFICDATA_COLORS = {
 export const TRANSPORTPORTAL_COLORS = {
   navbarBackgroundColor: "#444F55",
   mainBackgroundColor: "#f0f1f1",
+  searchBoxFocusedFontColor: "#444f55",
   sidebarActiveColor: "#EBF5E6",
   sidebarBorderColor: "#158925", //vegvesen grøn
   avatarBackgroundColor: "#444f55",
