@@ -165,7 +165,7 @@ export default function Deliveries() {
       <Divider sx={{ marginY: 2 }} />
       <Box display="flex" flexDirection="row" gap={5}>
       <AddButton text="Create delivery" labelUrl="delivery"></AddButton>
-        <SearchBox searchId={searchId} setSearchId={setSearchId} label="delivery" />
+      <SearchBox searchId={searchId} setSearchId={setSearchId} label="delivery" />
       </Box>
       <Divider style={{ margin: '5px 0', visibility: 'hidden' }}/>
       <DataGrid
