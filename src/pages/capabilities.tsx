@@ -18,7 +18,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
 import AddButton from "@/components/shared/actions/AddButton";
 import { performRefetch } from "@/lib/performRefetch";
-import { ExtendedSubscription } from "@/types/subscription";
 import SearchBox from "@/components/shared/SearchBox";
 
 export default function Capabilities() {

@@ -13,6 +13,7 @@ import { Chip } from "@/components/shared/display/Chip";
 import { CustomEmptyOverlayCapabilites } from "@/components/shared/datagrid/CustomEmptyOverlay";
 import Mainheading from "@/components/shared/display/typography/Mainheading";
 import Subheading from "@/components/shared/display/typography/Subheading";
+import SearchBox from "@/components/shared/SearchBox";
 
 export default function NetworkCapabilities() {
   const { data: session } = useSession();
@@ -21,6 +22,7 @@ export default function NetworkCapabilities() {
   );
   const [capabilityRow, setCapabilityRow] = useState<ExtendedCapability>();
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+  const [searchId, setSearchId] = useState("");
 
   const handleMore = (capability: ExtendedCapability) => {
     setCapabilityRow(capability);
@@ -89,6 +91,14 @@ export default function NetworkCapabilities() {
     handleMore(params.row);
   };
 
+  const rows = Array.isArray(data) ? data : [];
+
+  const filteredCapabilitiesRows = searchId.trim()
+    ? rows.filter((row) =>
+      row.publicationId?.toString().includes(searchId.trim())
+    )
+    : rows;
+
   return (
     <Box flex={1}>
       <Mainheading>Network Capabilities</Mainheading>
@@ -96,10 +106,12 @@ export default function NetworkCapabilities() {
         These are all of the capabilites in the network. You can click a
         capability to view more information and subscribe.
       </Subheading>
-      <Divider sx={{ marginY: 3 }} />
+      <Divider sx={{ marginY: 2 }} />
+      <SearchBox searchId={searchId} setSearchId={setSearchId} label="capabilities" searchElement="publicationID"/>
+      <Divider style={{ margin: '5px 0', visibility: 'hidden' }}/>
       <DataGrid
         columns={tableHeaders}
-        rows={data || []}
+        rows={filteredCapabilitiesRows || []}
         onRowClick={handleOnRowClick}
         loading={isLoading}
         getRowId={(row) => row.publicationId}
