@@ -63,27 +63,28 @@ const CheatsheetGrid: GridColDef[] = [
 const cheatsheetContent = [
   {
     "id": 1,
-    "operator": "BETWEEN",
-    "description": "Checks if value is within range",
-    "selector": "quadTree > '1123'",
-  },
-  {
-    "id": 2,
     "operator": "IS NULL, IS NOT NULL",
     "description": "Checks if value is null/ not null",
     "selector": "causeCode IS NULL, quadtree IS NOT NULL",
   },
   {
-    "id": 3,
+    "id": 2,
     "operator": "=, <>, <, <=, >, >=",
     "description": "Comparison operators",
     "selector": "originatingCountry = 'SE'",
-  }, {
+  },
+  {
+    "id": 3,
+    "operator": "LIKE",
+    "description": "Comparison operators. Wildcards: '%' stands for any sequence of characters, including an empty sequence." +
+      " '_' matches a single character",
+    "selector": "quadTree like '%,123%'",
+  },
+  {
     "id": 4,
     "operator": "AND, OR, NOT",
     "description": "Combines logical statements",
-    "selector": "\n" +
-      "(messageType = 'DENM') AND (quadTree like '%,123%') OR originatingCountry = 'NO'",
+    "selector": "(messageType = 'DENM') AND ((causeCode = 1) OR (causeCode = 2)) AND NOT (originatingCountry = 'NO')",
   },
 ];
 
