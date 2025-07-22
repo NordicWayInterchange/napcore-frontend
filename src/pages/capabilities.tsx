@@ -137,13 +137,12 @@ export default function Capabilities() {
     <Box flex={1}>
       <Mainheading>My Capabilities</Mainheading>
       <Subheading>
-        These are all of user capabilites in the network. You can click a
-        capability to view more information and remove.
+        These are all of user capabilites in the network. You can click a capability to see details, remove or deliver.
       </Subheading>
       <Divider sx={{ marginY: 2 }} />
       <Box display="flex" flexDirection="row" gap={5}>
       <AddButton text="Add capability" labelUrl="capability"></AddButton>
-      <SearchBox searchId={searchId} setSearchId={setSearchId} label="capabilities" searchElement="publicationID"/>
+      <SearchBox searchId={searchId} setSearchId={setSearchId} label="capability" searchElement="publicationID"/>
       </Box>
       <Divider style={{ margin: '5px 0', visibility: 'hidden' }}/>
       <DataGrid

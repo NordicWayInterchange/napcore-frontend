@@ -160,7 +160,7 @@ export default function Deliveries() {
       <Mainheading>Deliveries</Mainheading>
       <Subheading>
         These are all of the deliveries in the network. You can click a
-        delivery to view more information and create a delivery.
+        delivery to see details or remove.
       </Subheading>
       <Divider sx={{ marginY: 2 }} />
       <Box display="flex" flexDirection="row" gap={5}>

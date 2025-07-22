@@ -160,7 +160,7 @@ export default function Subscriptions() {
       <Mainheading>Subscriptions</Mainheading>
       <Subheading>
         These are all of your subscriptions. You can click a subscription to
-        view more information or unsubscribe.
+        see details or unsubscribe.
       </Subheading>
       <Divider sx={{ marginY: 2 }} />
       <Box display="flex" flexDirection="row" gap={5}>

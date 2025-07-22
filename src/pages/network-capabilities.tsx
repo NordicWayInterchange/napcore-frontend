@@ -104,11 +104,11 @@ export default function NetworkCapabilities() {
       <Mainheading>Network Capabilities</Mainheading>
       <Subheading>
         These are all of the capabilites in the network. You can click a
-        capability to view more information and subscribe.
+        capability to see details or subscribe.
       </Subheading>
       <Divider sx={{ marginY: 2 }} />
-      <SearchBox searchId={searchId} setSearchId={setSearchId} label="capabilities" searchElement="publicationID"/>
-      <Divider style={{ margin: '5px 0', visibility: 'hidden' }}/>
+      <SearchBox searchId={searchId} setSearchId={setSearchId} label="capability" searchElement="publicationID"/>
+      <Divider style={{ margin: '8px 0', visibility: 'hidden' }}/>
       <DataGrid
         columns={tableHeaders}
         rows={filteredCapabilitiesRows || []}

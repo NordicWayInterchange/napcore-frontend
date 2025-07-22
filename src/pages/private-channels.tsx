@@ -290,7 +290,7 @@ export default function PrivateChannels() {
       <Mainheading>Private channels</Mainheading>
       <Subheading>
         These are all of private channels in the network. You can click a private channel or a private channel subscription
-        to view more information and remove.
+        to see details or remove.
       </Subheading>
       <Divider sx={{ marginY: 2 }} />
       <Box display="flex" flexDirection="row" gap={5}>
@@ -345,7 +345,7 @@ export default function PrivateChannels() {
           <Subheading>My private channel subscriptions</Subheading>
           <SearchBox searchId={peerSearchId} setSearchId={setPeerSearchId} label="my private channel subscription" searchElement="ID"/>
           </Box>
-          <Divider style={{ margin: "5px 0", visibility: "hidden" }} />
+          <Divider style={{ margin: "10px 0", visibility: "hidden" }} />
           <Box
             sx={{
               maxHeight: hasPeersData ? "400px": "hidden",
