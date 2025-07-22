@@ -28,7 +28,7 @@ export async function HandleCreateSubscription(
     if (response.statusText === "Conflict") {
       setFeedback({
         feedback: true,
-        message: `Subscription already exists!`,
+        message: "Subscription already exists!",
         severity: "warning",
       });
     } else {
