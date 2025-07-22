@@ -163,7 +163,7 @@ export default function Subscriptions() {
         view more information or unsubscribe.
       </Subheading>
       <Divider sx={{ marginY: 2 }} />
-      <Box display="flex" flexDirection="row" gap={10}>
+      <Box display="flex" flexDirection="row" gap={5}>
       <AddButton text="Add subscription" labelUrl="subscription"></AddButton>
       <SearchBox searchId={searchId} setSearchId={setSearchId} label="subscription" />
       </Box>

@@ -26,10 +26,10 @@ const textFieldSx = {
     color: "searchBoxFocusedFontColor",
   },
   '& .MuiInput-underline:before': {
-    borderBottom: '2px solid gray',
+    borderBottom: '2px solid #dd7100',
   },
   '& .MuiInput-underline:after': {
-    borderBottom: '2px solid black',
+    borderBottom: '2px solid #FF9600',
   },
   position: "relative",
   top: "-3px",
