@@ -106,6 +106,7 @@ const fetchUserCapabilities = async (params: extendedGetParams) => {
 
       return {
         ...userCapability.application,
+        ...userCapability.metadata,
         causeCodesDictionary: causeCodes && causeCodes.filter(Boolean),
         id: userCapability.id,
       };
