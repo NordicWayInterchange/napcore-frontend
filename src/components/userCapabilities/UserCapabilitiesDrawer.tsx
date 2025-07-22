@@ -77,14 +77,22 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
         severity: "success",
       });
     } else {
-      const errorData = await response.json();
-      const errorMessage = errorData.message || `Delivery could not be created, try again!`;
+      if (response.statusText === "Conflict") {
+        setFeedback({
+          feedback: true,
+          message: "Delivery already exists!",
+          severity: "warning",
+        });
+      } else {
+        const errorData = await response.json();
+        const errorMessage = errorData.message || `Delivery could not be created, try again!`;
 
-      setFeedback({
-        feedback: true,
-        message: errorMessage,
-        severity: "warning",
-      });
+        setFeedback({
+          feedback: true,
+          message: errorMessage,
+          severity: "warning",
+        });
+      }
     }
     handleMoreClose();
   };
