@@ -256,8 +256,7 @@ const SelectorBuilder = (props: Props) => {
                       input: {
                         endAdornment: (
                           <InputAdornment position="end">
-                            <Tooltip title="This is the identifier for the datex message distributer. Obtained from the nationalIdentifier
-                            section of the datex document." placement="top">
+                            <Tooltip title="Publication ID is a unique identifier and is concatenation of publisherId with a ':' between e.g. 'DE15608:IVIM_BERLIN_067'." placement="top">
                               <IconButton edge="end" size="small">
                                 <InfoOutlinedIcon fontSize="small" />
                               </IconButton>
@@ -449,8 +448,8 @@ const SelectorBuilder = (props: Props) => {
                       input: {
                         endAdornment: (
                           <InputAdornment position="end">
-                            <Tooltip title="Relevant spatial index location of the C-ITS message. f a larger area is needed, you need to chain multiple quadTree values together,
-                            separated by a comma. The property needs to start and end with a comma." placement="top">
+                            <Tooltip title="Relevant spatial index location of the C-ITS message. If a larger area is needed, you need to chain multiple quadTree values together,
+                            separated by a comma." placement="top">
                               <IconButton edge="end" size="small">
                                 <InfoOutlinedIcon fontSize="small" />
                               </IconButton>

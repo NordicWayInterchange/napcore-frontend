@@ -209,8 +209,7 @@ const UserCapabilitiesCreator = () => {
                       input: {
                         endAdornment: (
                           <InputAdornment position="end">
-                            <Tooltip title="This is the identifier for the datex message distributer. Obtained from the nationalIdentifier
-                            section of the datex document." placement="top">
+                            <Tooltip title="Publisher ID starts with country code which is exactly two uppercase letters followed by five digits" placement="top">
                               <IconButton edge="end" size="small">
                                 <InfoOutlinedIcon fontSize="small" />
                               </IconButton>
@@ -250,8 +249,7 @@ const UserCapabilitiesCreator = () => {
                         ),
                         endAdornment: (
                           <InputAdornment position="end">
-                            <Tooltip title="Concatenation of publisherId and a unique identifier for the dataset/publication with a ':' between e.g. 'DE15608:IVIM_BERLIN_067'.
-                            Each dataset/publication identifier needs to be unique for the given publisher." placement="top">
+                            <Tooltip title="Publication ID is a unique identifier and is concatenation of publisherId with a ':' between e.g. 'DE15608:IVIM_BERLIN_067'." placement="top">
                               <IconButton edge="end" size="small">
                                 <InfoOutlinedIcon fontSize="small" />
                               </IconButton>
@@ -508,8 +506,8 @@ E.g. 'DENM:1.2.2'." placement="top">
                       input: {
                         endAdornment: (
                           <InputAdornment position="end">
-                            <Tooltip title="Relevant spatial index location of the C-ITS message. f a larger area is needed, you need to chain multiple quadTree values together,
-                            separated by a comma. The property needs to start and end with a comma." placement="top">
+                            <Tooltip title="Relevant spatial index location of the C-ITS message. If a larger area is needed, you need to chain multiple quadTree values together,
+                            separated by a comma." placement="top">
                               <IconButton edge="end" size="small">
                                 <InfoOutlinedIcon fontSize="small" />
                               </IconButton>
