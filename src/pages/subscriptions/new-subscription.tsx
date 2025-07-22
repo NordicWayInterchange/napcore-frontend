@@ -51,6 +51,8 @@ const NewSubscription = () => {
     setPublicationIdRow(params.row.publicationId);
   };
 
+  console.log('data', data);
+
   return (
     <Box flex={1}>
       <Mainheading>Create subscription</Mainheading>
