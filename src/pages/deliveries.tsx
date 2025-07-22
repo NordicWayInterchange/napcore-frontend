@@ -19,6 +19,7 @@ import CommonDrawer from "@/components/layout/CommonDrawer";
 import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
 import AddButton from "@/components/shared/actions/AddButton";
 import { performRefetch } from "@/lib/performRefetch";
+import SearchBox from "@/components/shared/SearchBox";
 
 export default function Deliveries() {
   const { data: session } = useSession();
@@ -30,6 +31,7 @@ export default function Deliveries() {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const [shouldRefreshAfterDelete, setShouldRefreshAfterDelete] = useState<boolean>(false);
+  const [searchId, setSearchId] = useState("");
 
   useEffect(() => {
     if (isDeleted) {
@@ -78,6 +80,14 @@ export default function Deliveries() {
   const handleDeletedItem = (deleted: boolean) => {
     setIsDeleted(deleted);
   };
+
+  const rows = Array.isArray(data) ? data : [];
+
+  const filteredDeliveryRows = searchId.trim()
+    ? rows.filter((row) =>
+      row.id?.toString().includes(searchId.trim())
+    )
+    : rows;
 
   const tableHeaders: GridColDef[] = [
     {
@@ -153,11 +163,14 @@ export default function Deliveries() {
         delivery to view more information and create a delivery.
       </Subheading>
       <Divider sx={{ marginY: 2 }} />
+      <Box display="flex" flexDirection="row" gap={5}>
       <AddButton text="Create delivery" labelUrl="delivery"></AddButton>
+        <SearchBox searchId={searchId} setSearchId={setSearchId} label="delivery" />
+      </Box>
       <Divider style={{ margin: '5px 0', visibility: 'hidden' }}/>
       <DataGrid
         columns={tableHeaders}
-        rows={data || []}
+        rows={filteredDeliveryRows || []}
         onRowClick={handleOnRowClick}
         loading={isLoading}
         getRowId={(row) => row.id}

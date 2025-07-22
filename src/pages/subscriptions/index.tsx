@@ -83,7 +83,7 @@ export default function Subscriptions() {
 
   const rows = Array.isArray(data) ? data : [];
 
-  const filteredRows = searchId.trim()
+  const filteredSubscriptionRows = searchId.trim()
     ? rows.filter((row) =>
       row.id?.toString().includes(searchId.trim())
     )
@@ -170,7 +170,7 @@ export default function Subscriptions() {
       <Divider style={{ margin: '5px 0', visibility: 'hidden' }}/>
       <DataGrid
         columns={tableHeaders}
-        rows={filteredRows || []}
+        rows={filteredSubscriptionRows || []}
         onRowClick={handleOnRowClick}
         loading={isLoading}
         slots={{

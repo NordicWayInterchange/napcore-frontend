@@ -14,7 +14,7 @@ const SearchBox = ({searchId, setSearchId, label}: Props) => {
       variant="standard"
       value={searchId}
       onChange={(e) => setSearchId ? setSearchId(e.target.value) : null}
-      style={{ marginRight: 1, width: '250px' }}
+      style={{ marginRight: 1, width: '300px' }}
       type="text"
       sx={textFieldSx}
     />
