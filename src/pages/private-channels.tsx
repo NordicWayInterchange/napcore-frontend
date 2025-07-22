@@ -295,7 +295,7 @@ export default function PrivateChannels() {
       <Divider sx={{ marginY: 2 }} />
       <Box display="flex" flexDirection="row" gap={5}>
       <AddButton text="Create private channel" labelUrl="privateChannel"></AddButton>
-      <SearchBox searchId={searchId} setSearchId={setSearchId} label="private channel" />
+      <SearchBox searchId={searchId} setSearchId={setSearchId} label="private channel" searchElement="ID"/>
       </Box>
       <Divider style={{ margin: '5px 0', visibility: 'hidden' }} />
       <Subheading>My private channels</Subheading>
@@ -343,7 +343,7 @@ export default function PrivateChannels() {
         <Box>
           <Box display="flex" flexDirection="row" gap={5}>
           <Subheading>My private channel subscriptions</Subheading>
-          <SearchBox searchId={peerSearchId} setSearchId={setPeerSearchId} label="my private channel subscription" />
+          <SearchBox searchId={peerSearchId} setSearchId={setPeerSearchId} label="my private channel subscription" searchElement="ID"/>
           </Box>
           <Divider style={{ margin: "5px 0", visibility: "hidden" }} />
           <Box

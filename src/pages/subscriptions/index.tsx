@@ -165,7 +165,7 @@ export default function Subscriptions() {
       <Divider sx={{ marginY: 2 }} />
       <Box display="flex" flexDirection="row" gap={5}>
       <AddButton text="Add subscription" labelUrl="subscription"></AddButton>
-      <SearchBox searchId={searchId} setSearchId={setSearchId} label="subscription" />
+      <SearchBox searchId={searchId} setSearchId={setSearchId} label="subscription" searchElement="ID"/>
       </Box>
       <Divider style={{ margin: '5px 0', visibility: 'hidden' }}/>
       <DataGrid
