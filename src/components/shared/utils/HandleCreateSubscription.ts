@@ -13,7 +13,7 @@ export async function HandleCreateSubscription(
 ) {
   const bodyData = {
     selector: selector,
-    description: description
+    description: description,
   };
   const response = await createSubscription(name, bodyData);
 
@@ -23,16 +23,24 @@ export async function HandleCreateSubscription(
       message: "Subscription successfully created",
       severity: "success",
     });
-    if (form === "SelectorBuilder")  await router.push('/subscriptions');
+    if (form === "SelectorBuilder") await router.push("/subscriptions");
   } else {
-    const errorData = await response.json();
-    const errorMessage =
-      errorData.message || "Subscription could not be created, try again!";
+    if (response.statusText === "Conflict") {
+      setFeedback({
+        feedback: true,
+        message: `Subscription already exists!`,
+        severity: "warning",
+      });
+    } else {
+      const errorData = await response.json();
+      const errorMessage =
+        errorData.message || "Subscription could not be created, try again!";
 
-    setFeedback({
-      feedback: true,
-      message: errorMessage,
-      severity: "warning",
-    });
+      setFeedback({
+        feedback: true,
+        message: errorMessage,
+        severity: "warning",
+      });
+    }
   }
 }
