@@ -7,19 +7,19 @@ import { Box } from "@mui/system";
 import { CustomEmptyOverlayMatching } from "@/components/shared/datagrid/CustomEmptyOverlay";
 import Subheading from "@/components/shared/display/typography/Subheading";
 import Mainheading from "@/components/shared/display/typography/Mainheading";
-import { useMatchingDeliveries } from "@/hooks/useMatchingDeliveries";
 import SelectorBuilder from "@/components/shared/forms/SelectorBuilder";
 import { GridEventListener } from "@mui/x-data-grid";
 import { BreadcrumbNavigation } from "@/components/shared/actions/BreadcrumbNavigation";
 import { NewFormDataGrid } from "@/components/shared/datagrid/GridColumns/NewFormDatagrid";
 import UserAssistance from "@/components/shared/actions/UserAssistance";
+import { useMatchingCapabilitiesForDeliveries } from "@/hooks/useMatchingDeliveries";
 
 const NewDelivery = () => {
   const { data: session } = useSession();
   const [selector, setSelector] = useState<string>(" ");
   const [publicationIdRow, setPublicationIdRow] = useState<string>("");
 
-  const { data, isLoading, remove } = useMatchingDeliveries(
+  const { data, isLoading, remove } = useMatchingCapabilitiesForDeliveries(
     session?.user.commonName as string,
     selector
   );

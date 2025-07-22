@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ExtendedCapability } from "@/types/capability";
 import { ExtendedDelivery } from "@/types/delivery";
 
-const fetchMatchingDeliveries: (
+const fetchMatchingCapabilitiesForDeliveries: (
   commonName: string,
   selector: string
 ) => Promise<ExtendedDelivery[]> = async (commonName, selector) => {
@@ -19,11 +19,11 @@ const fetchMatchingDeliveries: (
   }
 };
 
-const useMatchingDeliveries = (commonName: string, selector: string) => {
+const useMatchingCapabilitiesForDeliveries = (commonName: string, selector: string) => {
   return useQuery({
     queryKey: ["matchingDeliveries"],
-    queryFn: () => fetchMatchingDeliveries(commonName, selector),
+    queryFn: () => fetchMatchingCapabilitiesForDeliveries(commonName, selector),
   });
 };
 
-export { useMatchingDeliveries };
+export { useMatchingCapabilitiesForDeliveries };
