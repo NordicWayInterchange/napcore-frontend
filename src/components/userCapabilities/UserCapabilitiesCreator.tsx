@@ -278,7 +278,7 @@ const UserCapabilitiesCreator = () => {
                       input: {
                         endAdornment: (
                           <InputAdornment position="end">
-                            <Tooltip title="This represents the version of standard used to create the message.
+                            <Tooltip title="Protocol version represents the version of standard used to create the message.
 E.g. 'DENM:1.2.2'." placement="top">
                               <IconButton edge="end" size="small">
                                 <InfoOutlinedIcon fontSize="small" />
@@ -364,7 +364,7 @@ E.g. 'DENM:1.2.2'." placement="top">
                         pointerEvents: 'auto',
                       }}
                     >
-                      <Tooltip title="This is the type of the published message" arrow>
+                      <Tooltip title="Message type is the type of the published message" arrow>
                         <IconButton
                           size="small"
                           sx={{
@@ -412,7 +412,7 @@ E.g. 'DENM:1.2.2'." placement="top">
                         pointerEvents: 'auto',
                       }}
                     >
-                      <Tooltip title="Country code (based on ISO 3166-1 alpha-2). Country code where the payload message is created" arrow>
+                      <Tooltip title="DENM messages are covered by specifying an array of causeCode." arrow>
                         <IconButton
                           size="small"
                           sx={{
@@ -443,7 +443,7 @@ E.g. 'DENM:1.2.2'." placement="top">
                                 input: {
                                   endAdornment: (
                                     <InputAdornment position="end">
-                                      <Tooltip title="" placement="top">
+                                      <Tooltip title="Publisher name is the identifier for the datex message distributer and is btained from the national identifier section of the datex document." placement="top">
                                         <IconButton edge="end" size="small">
                                           <InfoOutlinedIcon fontSize="small" />
                                         </IconButton>
@@ -472,7 +472,8 @@ E.g. 'DENM:1.2.2'." placement="top">
                                 input: {
                                   endAdornment: (
                                     <InputAdornment position="end">
-                                      <Tooltip title="" placement="top">
+                                      <Tooltip title="Only applies for DATEX2 publications. Publication type (only one) E.g: SituationPublication or MeasuredDataPublication
+or VmsPublication" placement="top">
                                         <IconButton edge="end" size="small">
                                           <InfoOutlinedIcon fontSize="small" />
                                         </IconButton>

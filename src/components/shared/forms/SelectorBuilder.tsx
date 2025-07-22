@@ -331,7 +331,7 @@ const SelectorBuilder = (props: Props) => {
                         pointerEvents: 'auto',
                       }}
                     >
-                      <Tooltip title="This is the type of the published message" arrow>
+                      <Tooltip title="Message type is the type of the published message" arrow>
                         <IconButton
                           size="small"
                           sx={{
@@ -386,7 +386,7 @@ const SelectorBuilder = (props: Props) => {
                         input: {
                           endAdornment: (
                             <InputAdornment position="end">
-                              <Tooltip title="This is the identifier for the datex message distributer. Obtained from the nationalIdentifier section of the datex document." placement="top">
+                              <Tooltip title="Publisher name is the identifier for the datex message distributer and is btained from the national identifier section of the datex document." placement="top">
                                 <IconButton edge="end" size="small">
                                   <InfoOutlinedIcon fontSize="small" />
                                 </IconButton>
@@ -413,7 +413,8 @@ const SelectorBuilder = (props: Props) => {
                         input: {
                           endAdornment: (
                             <InputAdornment position="end">
-                              <Tooltip title="Publication type - only one. E.g: SituationPublication or MeasuredDataPublication or VmsPublication" placement="top">
+                              <Tooltip title="Only applies for DATEX2 publications. Publication type (only one) E.g: SituationPublication or MeasuredDataPublication
+or VmsPublication" placement="top">
                                 <IconButton edge="end" size="small">
                                   <InfoOutlinedIcon fontSize="small" />
                                 </IconButton>
