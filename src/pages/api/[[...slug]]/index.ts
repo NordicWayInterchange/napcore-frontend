@@ -230,6 +230,7 @@ const fetchDeliveriesCapabilities = async (params: basicGetParams) => {
     deliveries.map((delivery) => {
       return {
         ...delivery.application,
+        ...delivery.metadata,
       };
     }),
   ];
