@@ -64,7 +64,7 @@ const cheatsheetContent = [
   {
     "id": 1,
     "operator": "BETWEEN",
-    "description": "Checks if value is withing range",
+    "description": "Checks if value is within range",
     "selector": "quadTree > '1123'",
   },
   {
@@ -76,8 +76,8 @@ const cheatsheetContent = [
   {
     "id": 3,
     "operator": "=, <>, <, <=, >, >=",
-    "description": "",
-    "selector": "originatingCountry = 'NO'",
+    "description": "Comparison operators",
+    "selector": "originatingCountry = 'SE'",
   }, {
     "id": 4,
     "operator": "AND, OR, NOT",
@@ -91,13 +91,13 @@ export const Cheatsheet = () => {
   return (
     <Box flex={1}>
       <Subheading>Selector cheatsheet</Subheading>
-      <Typography>Need assistance with the selector? Check out our cheat sheet</Typography>
+      <Typography>Need assistance with writing your own selector? Check below for inspiration.</Typography>
       <Divider sx={{ marginY: 2 }} />
       <DataGrid
         columns={CheatsheetGrid}
         rows={cheatsheetContent || []}
         hideFooterPagination={true}
-        sort={{ field: "operator", sort: "desc" }}
+        sort={{ field: "operator", sort: "asc" }}
         getRowHeight={() => 'auto'}
       />
     </Box>
