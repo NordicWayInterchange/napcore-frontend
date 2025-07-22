@@ -1,5 +1,6 @@
-import {TextField} from "@mui/material";
+import { InputAdornment, TextField } from "@mui/material";
 import React from "react";
+import SearchIcon from '@mui/icons-material/Search';
 
 interface Props {
   searchId: string,
@@ -10,7 +11,12 @@ interface Props {
 const SearchBox = ({searchId, setSearchId, label}: Props) => {
   return (
     <TextField
-      label={`Find ${label} by ID in table`}
+      label={
+        <span style={{ display: 'flex', alignItems: 'center', gap: 4, transform: 'translateY(-1px)' }}>
+          <SearchIcon fontSize="small"/>
+          {`Find ${label} by ID in table`}
+        </span>
+      }
       variant="standard"
       value={searchId}
       onChange={(e) => setSearchId ? setSearchId(e.target.value) : null}
