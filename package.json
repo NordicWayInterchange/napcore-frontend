@@ -42,7 +42,7 @@
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
     "@tanstack/react-query-devtools": "^4.28.0",
-    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",
     "@types/leaflet": "^1.9.3",
     "eslint-config-prettier": "^10.1.8",
