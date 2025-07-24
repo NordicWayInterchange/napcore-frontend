@@ -41,6 +41,7 @@
     "typescript": "^5.8.3"
   },
   "devDependencies": {
+    "@jest/globals": "^30.0.5",
     "@svgr/webpack": "^8.1.0",
     "@tanstack/react-query-devtools": "^4.28.0",
     "@testing-library/jest-dom": "^6.6.3",

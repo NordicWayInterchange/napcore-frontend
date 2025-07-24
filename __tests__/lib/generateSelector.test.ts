@@ -1,4 +1,5 @@
 import { generateSelector } from "@/lib/generateSelector";
+import { describe, it, expect } from '@jest/globals';
 
 describe("Generate Selector", () => {
   const capability = {

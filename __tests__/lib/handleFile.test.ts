@@ -1,4 +1,5 @@
 import { handleDecoding } from "@/lib/handleFile";
+import { describe, it, expect } from '@jest/globals';
 
 describe("Can correctly decode Base64", () => {
   const encoded = "VGVzdCBmb3IgQmFzZTY0IGRlY29kaW5n";
