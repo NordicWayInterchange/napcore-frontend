@@ -22,7 +22,6 @@ import PeersDrawer from "@/components/privateChannels/PeersDrawer";
 import { usePeers } from "@/hooks/usePeers";
 import { timeConverter } from "@/lib/timeConverter";
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
-import { ExtendedSubscription } from "@/types/subscription";
 import SearchBox from "@/components/shared/SearchBox";
 
 export default function PrivateChannels() {
