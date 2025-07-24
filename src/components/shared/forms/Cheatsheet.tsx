@@ -71,14 +71,14 @@ const cheatsheetContent = [
     "id": 2,
     "operator": "=, <>, <, <=, >, >=",
     "description": "Comparison operators",
-    "selector": "originatingCountry = 'SE'",
+    "selector": "shardId >= 6",
   },
   {
     "id": 3,
     "operator": "LIKE",
     "description": "Comparison operators. Wildcards: '%' stands for any sequence of characters, including an empty sequence." +
       " '_' matches a single character",
-    "selector": "quadTree like '%,123%'",
+    "selector": "NOT (quadTree like '%,123%')",
   },
   {
     "id": 4,
