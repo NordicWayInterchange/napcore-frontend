@@ -1,8 +1,9 @@
 import Layout from "@/components/layout/Layout";
 import React from "react";
 import {
+  HydrationBoundary,
   QueryClient,
-  QueryClientProvider,
+  QueryClientProvider
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { AppProps } from "next/app";
@@ -29,6 +30,7 @@ export default function App({
       {displayProviders ? (
         <SessionProvider session={session}>
           <QueryClientProvider client={queryClient}>
+            <HydrationBoundary state={pageProps.dehydratedState}>
               <ThemeProvider
                 theme={
                   process.env.NEXT_PUBLIC_THEME_PROVIDER === "trafficdata"
@@ -40,6 +42,7 @@ export default function App({
                   <Component {...pageProps} />
                 </Layout>
               </ThemeProvider>
+            </HydrationBoundary>
             <ReactQueryDevtools />
           </QueryClientProvider>
         </SessionProvider>
