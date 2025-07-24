@@ -515,6 +515,20 @@ or VmsPublication" placement="top">
                     label="Selector"
                     sx={{ marginRight: 1 }}
                     onChange={handleTextArea}
+                    slotProps={{
+                      input: {
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Tooltip title="Selector can match to one or more capabilities that belong to the same Service Provider, and declares an endpoint for the a client
+                            to push messages to. The system then routes messages into datastreams dependent on the capability they match." placement="top">
+                              <IconButton edge="end" size="small">
+                                <InfoOutlinedIcon fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
                   />
                   <StyledButton
                     color="buttonThemeColor"
