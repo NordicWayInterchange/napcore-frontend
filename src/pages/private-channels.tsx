@@ -112,7 +112,9 @@ export default function PrivateChannels() {
     setOpen(true);
   };
 
-  const peerHandleDelete = (peers: PrivateChannelPeers) => {
+  const peerHandleDelete = (peers: PrivateChannelPeers, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.stopPropagation();
+    setDrawerOpen(false);
     setPeersRow(peers);
     setPeerOpen(true);
   };
@@ -274,7 +276,7 @@ export default function PrivateChannels() {
       renderCell: (params) => {
         return (
           <Box>
-            <IconButton onClick={() => peerHandleDelete(params.row)}>
+            <IconButton onClick={(event) => peerHandleDelete(params.row, event)}>
               <DeleteIcon />
             </IconButton>
             <IconButton onClick={() => handlePeersMore(params.row)}>
