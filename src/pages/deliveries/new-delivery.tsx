@@ -12,6 +12,7 @@ import { GridEventListener } from "@mui/x-data-grid";
 import { BreadcrumbNavigation } from "@/components/shared/actions/BreadcrumbNavigation";
 import { NewFormDataGrid } from "@/components/shared/datagrid/GridColumns/NewFormDatagrid";
 import UserAssistance from "@/components/shared/actions/UserAssistance";
+import { useQueryClient } from "@tanstack/react-query";
 import { useMatchingCapabilitiesForDeliveries } from "@/hooks/useMatchingCapabilitiesForDeliveries";
 
 const NewDelivery = () => {
@@ -19,14 +20,15 @@ const NewDelivery = () => {
   const [selector, setSelector] = useState<string>(" ");
   const [publicationIdRow, setPublicationIdRow] = useState<string>("");
 
-  const { data, isLoading, remove } = useMatchingCapabilitiesForDeliveries(
+  const { data, isLoading } = useMatchingCapabilitiesForDeliveries(
     session?.user.commonName as string,
     selector
   );
+  const queryClient = useQueryClient();
 
   const handleChange = (selector: string) => {
     setSelector(selector);
-    remove();
+    queryClient.removeQueries({ queryKey: ['matchingDeliveries'] });
   };
 
   const handleOnRowClick: GridEventListener<"rowClick"> = (params) => {

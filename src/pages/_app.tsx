@@ -1,7 +1,6 @@
 import Layout from "@/components/layout/Layout";
 import React from "react";
 import {
-  Hydrate,
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
@@ -30,7 +29,6 @@ export default function App({
       {displayProviders ? (
         <SessionProvider session={session}>
           <QueryClientProvider client={queryClient}>
-            <Hydrate state={pageProps.dehydratedState}>
               <ThemeProvider
                 theme={
                   process.env.NEXT_PUBLIC_THEME_PROVIDER === "trafficdata"
@@ -42,7 +40,6 @@ export default function App({
                   <Component {...pageProps} />
                 </Layout>
               </ThemeProvider>
-            </Hydrate>
             <ReactQueryDevtools />
           </QueryClientProvider>
         </SessionProvider>

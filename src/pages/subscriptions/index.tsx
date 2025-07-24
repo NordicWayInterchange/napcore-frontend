@@ -19,11 +19,12 @@ import Subheading from "@/components/shared/display/typography/Subheading";
 import CommonDrawer from "@/components/layout/CommonDrawer";
 import AddButton from "@/components/shared/actions/AddButton";
 import { performRefetch } from "@/lib/performRefetch";
+import { useQueryClient } from "@tanstack/react-query";
 import SearchBox from "@/components/shared/SearchBox";
 
 export default function Subscriptions() {
   const { data: session } = useSession();
-  const { data, isLoading, remove, refetch} = useSubscriptions(
+  const { data, isLoading, refetch} = useSubscriptions(
     session?.user?.commonName as string
   );
   const [open, setOpen] = useState<boolean>(false);
@@ -32,6 +33,7 @@ export default function Subscriptions() {
     useState<ExtendedSubscription>();
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const [shouldRefreshAfterDelete, setShouldRefreshAfterDelete] = useState<boolean>(false);
+  const queryClient = useQueryClient();
   const [searchId, setSearchId] = useState("");
 
   useEffect(() => {
@@ -70,7 +72,7 @@ export default function Subscriptions() {
 
   const handleClickClose = (close: boolean) => {
     setOpen(close);
-    remove();
+    queryClient.removeQueries({ queryKey: ['subscriptions'] });
   };
 
   const handleOnRowClick = (params: any) => {

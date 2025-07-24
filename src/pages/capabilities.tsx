@@ -19,10 +19,11 @@ import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
 import AddButton from "@/components/shared/actions/AddButton";
 import { performRefetch } from "@/lib/performRefetch";
 import SearchBox from "@/components/shared/SearchBox";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Capabilities() {
   const { data: session } = useSession();
-  const { data, isLoading, remove, refetch } = useUserCapabilities(
+  const { data, isLoading, refetch } = useUserCapabilities(
     session?.user.commonName as string
   );
 
@@ -30,6 +31,7 @@ export default function Capabilities() {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const queryClient = useQueryClient();
   const [searchId, setSearchId] = useState("");
 
   useEffect(() => {
@@ -57,7 +59,7 @@ export default function Capabilities() {
 
   const handleClickClose = (close: boolean) => {
     setOpen(close);
-    remove();
+    queryClient.removeQueries({ queryKey: ['capabilities'] });
   };
 
   const handleOnRowClick = (params: any) => {

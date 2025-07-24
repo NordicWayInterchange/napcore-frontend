@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { ExtendedCapability } from "@/types/capability";
 import { ExtendedDelivery } from "@/types/delivery";
 
 const fetchMatchingCapabilitiesForDeliveries: (
