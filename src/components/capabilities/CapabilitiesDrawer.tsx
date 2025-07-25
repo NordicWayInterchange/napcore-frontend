@@ -98,7 +98,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
             <ListItem>
               <StyledCard variant={"outlined"}>
                 <Typography sx={{ mb: 2 }}>
-                  Description for Subscription
+                  Description to create a subscription
                 </Typography>
                 <div>
                   <FormControl fullWidth>

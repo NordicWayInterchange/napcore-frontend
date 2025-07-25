@@ -110,7 +110,7 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
                                   type="delivery"/>
             <ListItem>
               <StyledCard variant={"outlined"}>
-                <Typography sx={{ mb:2 }}>Delivery Description</Typography>
+                <Typography sx={{ mb:2 }}>Description to create a delivery</Typography>
                 <div>
                   <FormControl fullWidth>
                     <TextField

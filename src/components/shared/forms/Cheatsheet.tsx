@@ -10,7 +10,7 @@ const CheatsheetGrid: GridColDef[] = [
   {
     ...dataGridTemplate,
     field: "operator",
-    headerName: "SQL operator",
+    headerName: "Operator",
     flex: 1,
     renderCell: (params) => (
       <Box
