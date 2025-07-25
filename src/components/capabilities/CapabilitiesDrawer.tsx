@@ -104,7 +104,7 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                   <FormControl fullWidth>
                     <TextField
                       name="description"
-                      label="Enter a description to create subscription"
+                      label="Enter a description for Subscription"
                       multiline
                       rows={4}
                       onChange={(event) =>
