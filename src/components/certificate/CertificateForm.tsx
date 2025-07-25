@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, TextField } from "@mui/material";
+import { Card, IconButton, InputAdornment, TextField, Tooltip } from "@mui/material";
 import CertificateDialog from "@/components/certificate/CertificateDialog";
 import { createPKCS10 } from "@/lib/pkcs10Generator";
 import { Box } from "@mui/system";
@@ -13,6 +13,7 @@ import { CertificateSignResponse } from "@/types/napcore/certificate";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import Subheading from "@/components/shared/display/typography/Subheading";
 import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 export const CertificateForm = () => {
   const {
@@ -101,6 +102,19 @@ export const CertificateForm = () => {
                     ? errors.countryCode.message
                     : ""
                 }
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Tooltip title="Country code contains of two uppercase letters." placement="top">
+                          <IconButton edge="end" size="small">
+                            <InfoOutlinedIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                      </InputAdornment>
+                    )
+                  },
+                }}
               />
             )}
           />
