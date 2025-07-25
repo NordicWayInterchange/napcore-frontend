@@ -5,7 +5,7 @@ const withTM = require('next-transpile-modules')([
 /** @type {import('next').NextConfig} */
 const nextConfig = withTM({
   reactStrictMode: true,
-  // other config options here if needed
+  output: 'standalone',
 });
 
 module.exports = nextConfig;
