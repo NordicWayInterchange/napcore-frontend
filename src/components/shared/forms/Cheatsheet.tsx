@@ -78,13 +78,13 @@ const cheatsheetContent = [
     "operator": "LIKE",
     "description": "Comparison operators. Wildcards: '%' stands for any sequence of characters, including an empty sequence." +
       " '_' matches a single character",
-    "selector": "NOT (quadTree like '%,123%')",
+    "selector": "(quadTree like '%,12002031%' OR quadTree like '%,1200201%' AND quadTree like '%,10223310%')",
   },
   {
     "id": 4,
     "operator": "AND, OR, NOT",
     "description": "Combines logical statements",
-    "selector": "(messageType = 'DENM') AND ((causeCode = 1) OR (causeCode = 2)) AND NOT (originatingCountry = 'NO')",
+    "selector": "NOT (messageType = 'DENM') AND ((causeCode = 1) OR (causeCode = 2)) AND (originatingCountry = 'NO')"
   },
 ];
 
