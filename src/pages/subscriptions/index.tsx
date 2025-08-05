@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Box, Divider, IconButton } from "@mui/material";
+import { Box, Divider, IconButton, IconButtonPropsColorOverrides, Toolbar } from "@mui/material";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
-import { GridColDef } from "@mui/x-data-grid";
+import { GridColDef, GridToolbarContainer } from "@mui/x-data-grid";
 import { useSession } from "next-auth/react";
 import { dataGridTemplate } from "@/components/shared/datagrid/DataGridTemplate";
 import DataGrid from "@/components/shared/datagrid/DataGrid";
@@ -20,6 +20,20 @@ import CommonDrawer from "@/components/layout/CommonDrawer";
 import AddButton from "@/components/shared/actions/AddButton";
 import { performRefetch } from "@/lib/performRefetch";
 import SearchBox from "@/components/shared/SearchBox";
+import { GridRowSelectionModel } from '@mui/x-data-grid';
+
+
+function CustomToolbar({ onDelete }: { onDelete: () => void }) {
+  return (
+    <GridToolbarContainer>
+      <Toolbar style={{ justifyContent: 'flex-first', width: '100%' }}>
+        <IconButton onClick={onDelete} title="Delete selected">
+          <DeleteIcon />
+        </IconButton>
+      </Toolbar>
+    </GridToolbarContainer>
+  );
+}
 
 export default function Subscriptions() {
   const { data: session } = useSession();
@@ -33,6 +47,7 @@ export default function Subscriptions() {
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const [shouldRefreshAfterDelete, setShouldRefreshAfterDelete] = useState<boolean>(false);
   const [searchId, setSearchId] = useState("");
+  const [selectionModel, setSelectionModel] = React.useState<GridRowSelectionModel>([]);
 
   useEffect(() => {
     if (isDeleted) {
@@ -155,6 +170,10 @@ export default function Subscriptions() {
     },
   ];
 
+  const handleCheckboxDelete = () => {
+    alert(`Delete clicked for: ${selectionModel.join(', ')}`);
+  };
+
   return (
     <Box flex={1}>
       <Mainheading>Subscriptions</Mainheading>
@@ -176,7 +195,9 @@ export default function Subscriptions() {
         slots={{
           footer: CustomFooter,
           noRowsOverlay: CustomEmptyOverlaySubscription,
+          toolbar: () => <CustomToolbar onDelete={handleCheckboxDelete} />
         }}
+        checkboxSelection
         sort={{ field: "lastStatusChange", sort: "desc" }}
       />
       {subscriptionRow && (
