@@ -21,7 +21,19 @@ import AddButton from "@/components/shared/actions/AddButton";
 import { performRefetch } from "@/lib/performRefetch";
 import { useQueryClient } from "@tanstack/react-query";
 import SearchBox from "@/components/shared/SearchBox";
-import { GridRowSelectionModel } from '@mui/x-data-grid';
+import MultipleDeleteSubDialog from "@/components/shared/actions/MultipleDeleteSubDialog";
+
+
+interface RowData {
+  id: string;
+  name: string;
+}
+
+const initialRows: RowData[] = [
+  { id: 'id1', name: 'Item 1' },
+  { id: 'id2', name: 'Item 2' },
+  { id: 'id3', name: 'Item 3' },
+];
 
 
 function CustomToolbar({ onDelete }: { onDelete: () => void }) {
@@ -49,7 +61,12 @@ export default function Subscriptions() {
   const [shouldRefreshAfterDelete, setShouldRefreshAfterDelete] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const [searchId, setSearchId] = useState("");
-  const [selectionModel, setSelectionModel] = React.useState<GridRowSelectionModel>([]);
+  const [subRows, setSubRows] = React.useState<RowData[]>(initialRows);
+  const [selectedSubscriptionIds, setSelectedSubscriptionIds] = useState(() => new Set<string>());
+  const [selectedSubscriptionIdsRow, setSelectedSubscriptionIdsRow] =  useState<string>("");
+
+  const isAllSelected = subRows.length > 0 && selectedSubscriptionIds.size === subRows.length;
+
 
   useEffect(() => {
     if (isDeleted) {
@@ -172,8 +189,42 @@ export default function Subscriptions() {
     },
   ];
 
+  const handleToggleAll = () => {
+    if (isAllSelected) {
+      setSelectedSubscriptionIds(new Set<string>());
+    } else {
+      const allIds = rows.map((r) => r.id);
+      setSelectedSubscriptionIds(new Set<string>(allIds));
+    }
+  };
+
+  const handleCheckboxChange = (id: string) => {
+    setSelectedSubscriptionIds((prev) => {
+      const newSet = new Set<string>(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
+  };
+
   const handleCheckboxDelete = () => {
-    alert(`Delete clicked for: ${selectionModel.join(', ')}`);
+    const ids = Array.from(selectedSubscriptionIds);
+
+    if (ids.length === 0) {
+      alert('No rows selected');
+      return;
+    }
+
+    const idString = ids.join(','); // Formats correctly for 1 or more IDs
+
+    if (!confirm(`Delete selected rows: ${idString}?`)) return;
+
+    console.log(idString);
+    setSelectedSubscriptionIdsRow(idString);
+    setOpen(true);
   };
 
   return (
@@ -218,6 +269,15 @@ export default function Subscriptions() {
         actorCommonName={session?.user.commonName as string}
         handleDeletedItem={handleDeletedItem}
         text="Subscription"
+        handleMoreClose={handleMoreClose}
+      />
+
+      <MultipleDeleteSubDialog
+        itemId={selectedSubscriptionIdsRow as string}
+        handleDialog={handleClickClose}
+        open={open}
+        actorCommonName={session?.user.commonName as string}
+        handleDeletedItem={handleDeletedItem}
         handleMoreClose={handleMoreClose}
       />
     </Box>

@@ -17,6 +17,15 @@ export const deleteSubscriptions = (
   });
 };
 
+export const deleteMultipleSubscriptions = (
+  actorCommonName: string,
+  subscriptionIds: Set<string>
+) => {
+  return fetch(`/api/${actorCommonName}/subscriptions/multiple/${subscriptionIds}`, {
+    method: "delete",
+  });
+};
+
 export const createCertificate = (actorCommonName: string, csr: string) => {
   const csrRequest = {
     csr: csr,
