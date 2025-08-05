@@ -29,7 +29,7 @@ import {
   basicPatchFunction,
   deleteNapcoreMyselfFromSubscribedPrivateChannel,
   deleteNapcorePeerFromExistingPrivateChannel,
-  deleteNapcorePrivateChannels, addNapcorePeerToExistingPrivateChannel
+  deleteNapcorePrivateChannels, addNapcorePeerToExistingPrivateChannel, deleteNapcoreMultipleSubscriptions
 } from "@/lib/fetchers/interchangeConnector";
 import { ExtendedCapability } from "@/types/capability";
 import { Capability, Publicationids } from "@/types/napcore/capability";
@@ -199,6 +199,13 @@ export const removeSubscription: basicDeleteFunction = async (
   return [res.status];
 };
 
+export const removeMultipleSubscriptions: basicDeleteFunction = async (
+  params: basicDeleteParams
+) => {
+  const res = await deleteNapcoreMultipleSubscriptions(params);
+  return [res.status];
+};
+
 export const removeDelivery: basicDeleteFunction = async (
   params: basicDeleteParams
 ) => {
@@ -278,7 +285,8 @@ const deletePaths: {
   capabilities: removeUserCapability,
   privatechannels: removePrivateChannel,
   "privatechannels/peer/single": removeMyselfFromSubscribedPrivateChannel,
-  "privatechannels/peer/double": RemovePeerFromExistingPrivateChannel
+  "privatechannels/peer/double": RemovePeerFromExistingPrivateChannel,
+  "subscriptions/multiple/single": removeMultipleSubscriptions,
 };
 const findHandler: (params: any) =>
   | {
@@ -351,6 +359,17 @@ const findHandler: (params: any) =>
           console.warn(`Path length ${path.length} does not match expected values for 'privatechannels/peer'`);
         }
       }
+
+      if (aliasMatch === "subscriptions" && idMatch === "multiple") {
+        if (path.length === 3) {
+          return {
+            fn: deletePaths["subscriptions/multiple/single"],
+            params: { actorCommonName, pathParam: path[2] },
+          };
+        }
+        } else {
+          console.warn(`Path length ${path.length} does not match expected values for 'subscriptions/multiple'`);
+        }
 
       if (Object.keys(deletePaths).includes(aliasMatch)) {
         return {

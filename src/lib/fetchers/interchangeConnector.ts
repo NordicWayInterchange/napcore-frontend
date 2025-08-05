@@ -131,6 +131,13 @@ export const deleteNapcoreSubscriptions: basicDeleteFunction = async (
   return await deleteIXN(actorCommonName, `/subscriptions/${pathParam}`);
 };
 
+export const deleteNapcoreMultipleSubscriptions: basicDeleteFunction = async (
+  params
+) => {
+  const { actorCommonName, pathParam } = params;
+  return await deleteIXN(actorCommonName, `/subscriptions/multiple/${pathParam}`);
+};
+
 export const addNapcoreCertificates: basicPostFunction = async (params) => {
   const { actorCommonName, body = {} } = params;
   return await postIXN(actorCommonName, "/x509/csr", body);
