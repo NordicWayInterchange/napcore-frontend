@@ -77,7 +77,7 @@ export default function MultipleDeleteSubDialog(props: Props) {
         <DialogTitle>Remove Subscription(s)</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to remove this/these Subscription(s)?
+            Are you sure you want to remove <strong>{itemId}</strong> Subscription(s)?
           </DialogContentText>
           <DialogContentText>This action can not be undone.</DialogContentText>
         </DialogContent>
