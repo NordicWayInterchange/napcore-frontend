@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Box, Checkbox, Divider, IconButton, IconButtonPropsColorOverrides, Toolbar, Tooltip } from "@mui/material";
+import { Box, Checkbox, Divider, IconButton, Tooltip } from "@mui/material";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
-import { GridColDef, GridRenderCellParams, GridToolbarContainer } from "@mui/x-data-grid";
+import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { useSession } from "next-auth/react";
 import { dataGridTemplate } from "@/components/shared/datagrid/DataGridTemplate";
 import DataGrid from "@/components/shared/datagrid/DataGrid";
@@ -59,13 +59,6 @@ export default function Subscriptions() {
     };
   }, [shouldRefreshAfterDelete, refetch]);
 
-  const handleDelete = (subscription: ExtendedSubscription, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.stopPropagation();
-    setDrawerOpen(false);
-    setSubscriptionRow(subscription);
-    setOpen(true);
-  };
-
   const handleMore = (subscription: ExtendedSubscription) => {
     setSubscriptionRow(subscription);
     setDrawerOpen(true);
@@ -113,11 +106,11 @@ export default function Subscriptions() {
           <Tooltip title="Delete selected subscriptions">
             <span>
               <IconButton
-                sx={{ ml: '-10px', mt: '3px' }}
+                sx={{ ml: '-10px', mt: '1px' }}
                 onClick={handleCheckboxDelete}
                 disabled={selectedSubscriptionIds.size === 0}
               >
-                <DeleteIcon fontSize="small" />
+                <DeleteIcon fontSize="medium" />
               </IconButton>
             </span>
           </Tooltip>
@@ -161,7 +154,7 @@ export default function Subscriptions() {
       ...dataGridTemplate,
       field: "description",
       headerName: "Description",
-      flex: 3,
+      flex: 2,
     },
     {
       ...dataGridTemplate,
@@ -183,9 +176,6 @@ export default function Subscriptions() {
       renderCell: (params) => {
         return (
           <Box>
-            {/*<IconButton onClick={(event) => handleDelete(params.row, event)}>*/}
-            {/*  <DeleteIcon />*/}
-            {/*</IconButton>*/}
             <IconButton onClick={() => handleMore(params.row)}>
               <MoreVertIcon />
             </IconButton>
@@ -196,11 +186,11 @@ export default function Subscriptions() {
   ];
 
   const handleToggleAll = ( event: React.ChangeEvent<HTMLInputElement>) => {
+    event.stopPropagation();
     const allSubscriptionIds = rows.map((r) => r.id);
     const currentSubscriptionSelected = new Set(selectedSubscriptionIds);
     const isAllCurrentlySelected = allSubscriptionIds.every((id) => currentSubscriptionSelected.has(id));
 
-    event.stopPropagation();
     if (isAllCurrentlySelected) {
       setSelectedSubscriptionIds(new Set<string>());
     } else {
@@ -232,6 +222,7 @@ export default function Subscriptions() {
     const idString = ids.join(",");
     setSelectedSubscriptionIdsRow(idString);
     setOpen(true);
+    setSelectedSubscriptionIds(new Set<string>());
   };
 
   return (
