@@ -40,7 +40,7 @@ export default function Subscriptions() {
   const [selectedSubscriptionIds, setSelectedSubscriptionIds] = useState(() => new Set<string>());
   const [selectedSubscriptionIdsRow, setSelectedSubscriptionIdsRow] =  useState<string>("");
 
-  const isAllSelected = subRows.length > 0 && selectedSubscriptionIds.size === subRows.length;
+  const isAllCheckboxSelected = subRows.length > 0 && selectedSubscriptionIds.size === subRows.length;
 
 
   useEffect(() => {
@@ -106,16 +106,16 @@ export default function Subscriptions() {
       sortable: false,
       disableColumnMenu: true,
       renderHeader: () => (
-        <Box display="flex" alignItems="center">
+        <Box display="flex" alignItems="left">
           <Checkbox
-            checked={isAllSelected}
-            indeterminate={selectedSubscriptionIds.size > 0 && !isAllSelected}
+            checked={isAllCheckboxSelected}
+            indeterminate={selectedSubscriptionIds.size > 0 && !isAllCheckboxSelected}
             onChange={(event) => handleToggleAll(event)}
           />
           <Tooltip title="Delete selected subscriptions">
             <span>
               <IconButton
-                size="small"
+                sx={{ ml: '-10px', mt: '3px' }}
                 onClick={handleCheckboxDelete}
                 disabled={selectedSubscriptionIds.size === 0}
               >
@@ -163,7 +163,7 @@ export default function Subscriptions() {
       ...dataGridTemplate,
       field: "description",
       headerName: "Description",
-      flex: 2,
+      flex: 3,
     },
     {
       ...dataGridTemplate,
@@ -185,9 +185,9 @@ export default function Subscriptions() {
       renderCell: (params) => {
         return (
           <Box>
-            <IconButton onClick={(event) => handleDelete(params.row, event)}>
-              <DeleteIcon />
-            </IconButton>
+            {/*<IconButton onClick={(event) => handleDelete(params.row, event)}>*/}
+            {/*  <DeleteIcon />*/}
+            {/*</IconButton>*/}
             <IconButton onClick={() => handleMore(params.row)}>
               <MoreVertIcon />
             </IconButton>
@@ -198,16 +198,16 @@ export default function Subscriptions() {
   ];
 
   const handleToggleAll = ( event: React.ChangeEvent<HTMLInputElement>) => {
-    const allIds = rows.map((r) => r.id);
-    const currentSelected = new Set(selectedSubscriptionIds);
-    const isAllCurrentlySelected = allIds.every((id) => currentSelected.has(id));
+    const allSubscriptionIds = rows.map((r) => r.id);
+    const currentSubscriptionSelected = new Set(selectedSubscriptionIds);
+    const isAllCurrentlySelected = allSubscriptionIds.every((id) => currentSubscriptionSelected.has(id));
 
     event.stopPropagation();
     if (isAllCurrentlySelected) {
       setSelectedSubscriptionIds(new Set<string>());
     } else {
-      const allIds = rows.map((r) => r.id);
-      setSelectedSubscriptionIds(new Set<string>(allIds));
+      const allSubscriptionIds = rows.map((r) => r.id);
+      setSelectedSubscriptionIds(new Set<string>(allSubscriptionIds));
     }
   };
 
