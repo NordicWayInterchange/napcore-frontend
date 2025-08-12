@@ -22,6 +22,7 @@ import { performRefetch } from "@/lib/performRefetch";
 import { useQueryClient } from "@tanstack/react-query";
 import SearchBox from "@/components/shared/SearchBox";
 import MultipleDeleteSubDialog from "@/components/shared/actions/MultipleDeleteSubDialog";
+import { tooltipFontStyle } from "@/components/shared/styles/TooltipFontStyle";
 
 export default function Subscriptions() {
   const { data: session } = useSession();
@@ -105,7 +106,11 @@ export default function Subscriptions() {
             indeterminate={selectedSubscriptionIds.size > 0 && !isAllCheckboxSelected}
             onChange={(event) => handleToggleAll(event)}
           />
-          <Tooltip title="Delete selected subscriptions">
+          <Tooltip title="Delete selected subscriptions" slotProps={{
+            tooltip: {
+              sx: tooltipFontStyle,
+            },
+          }}>
             <span>
               <IconButton
                 sx={{ ml: '-10px', mt: '1px' }}

@@ -43,6 +43,7 @@ import { handleDescription } from "@/lib/handleDescription";
 import ConfirmSubDialog from "@/components/shared/actions/ConfirmSubDialog";
 import { Cheatsheet } from "@/components/shared/forms/Cheatsheet";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { tooltipFontStyle } from "@/components/shared/styles/TooltipFontStyle";
 
 type Props = {
   matchingElements: ExtendedCapability[] | ExtendedDelivery[] | [];
@@ -293,6 +294,11 @@ const SelectorBuilder = (props: Props) => {
                             <Tooltip
                               title="Publication ID is a unique identifier and is concatenation of publisherId with a ':' between e.g. 'DE15608:IVIM_BERLIN_067'."
                               placement="top"
+                              slotProps={{
+                                tooltip: {
+                                  sx: tooltipFontStyle,
+                                },
+                              }}
                             >
                               <IconButton edge="end" size="small">
                                 <InfoOutlinedIcon fontSize="small" />
@@ -334,6 +340,11 @@ const SelectorBuilder = (props: Props) => {
                       <Tooltip
                         title="Country code (based on ISO 3166-1 alpha-2). Country code where the payload message is created"
                         arrow
+                        slotProps={{
+                          tooltip: {
+                            sx: tooltipFontStyle,
+                          },
+                        }}
                       >
                         <IconButton
                           size="small"
@@ -379,6 +390,11 @@ const SelectorBuilder = (props: Props) => {
                       <Tooltip
                         title="Message type is the type of the published message"
                         arrow
+                        slotProps={{
+                          tooltip: {
+                            sx: tooltipFontStyle,
+                          },
+                        }}
                       >
                         <IconButton
                           size="small"
@@ -442,6 +458,11 @@ const SelectorBuilder = (props: Props) => {
                               <Tooltip
                                 title="Publisher name is the identifier for the datex message distributer and is btained from the national identifier section of the datex document."
                                 placement="top"
+                                slotProps={{
+                                  tooltip: {
+                                    sx: tooltipFontStyle,
+                                  },
+                                }}
                               >
                                 <IconButton edge="end" size="small">
                                   <InfoOutlinedIcon fontSize="small" />
@@ -473,6 +494,11 @@ const SelectorBuilder = (props: Props) => {
                                 title="Only applies for DATEX2 publications. Publication type (only one) E.g: SituationPublication or MeasuredDataPublication
 or VmsPublication"
                                 placement="top"
+                                slotProps={{
+                                  tooltip: {
+                                    sx: tooltipFontStyle,
+                                  },
+                                }}
                               >
                                 <IconButton edge="end" size="small">
                                   <InfoOutlinedIcon fontSize="small" />
@@ -502,7 +528,7 @@ or VmsPublication"
                       setValue,
                       clearErrors,
                       setPredefinedQuadtree,
-                      resetField
+                      resetField,
                     )}
                     disabled={advancedMode}
                     error={Boolean(errors.quadTree)}
@@ -518,6 +544,11 @@ or VmsPublication"
                               title="Relevant spatial index location of the C-ITS message. If a larger area is needed, you need to chain multiple quadTree values together,
                             separated by a comma."
                               placement="top"
+                              slotProps={{
+                                tooltip: {
+                                  sx: tooltipFontStyle,
+                                },
+                              }}
                             >
                               <IconButton edge="end" size="small">
                                 <InfoOutlinedIcon fontSize="small" />
@@ -564,6 +595,11 @@ or VmsPublication"
                         <Tooltip
                           title="Please note that the description cannot exceed 255 characters."
                           placement="top"
+                          slotProps={{
+                            tooltip: {
+                              sx: tooltipFontStyle,
+                            },
+                          }}
                         >
                           <IconButton edge="end" size="small">
                             <InfoOutlinedIcon fontSize="small" />
@@ -595,8 +631,16 @@ or VmsPublication"
                       input: {
                         endAdornment: (
                           <InputAdornment position="end">
-                            <Tooltip title="Selector can match to one or more capabilities that belong to the same Service Provider, and declares an endpoint for the a client
-                            to push messages to. The system then routes messages into datastreams dependent on the capability they match." placement="top">
+                            <Tooltip
+                              title="Selector can match to one or more capabilities that belong to the same Service Provider, and declares an endpoint for the a client
+                            to push messages to. The system then routes messages into datastreams dependent on the capability they match."
+                              placement="top"
+                              slotProps={{
+                                tooltip: {
+                                  sx: tooltipFontStyle,
+                                },
+                              }}
+                            >
                               <IconButton edge="end" size="small">
                                 <InfoOutlinedIcon fontSize="small" />
                               </IconButton>

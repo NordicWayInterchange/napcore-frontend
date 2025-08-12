@@ -14,6 +14,7 @@ import Snackbar from "@/components/shared/feedback/Snackbar";
 import Subheading from "@/components/shared/display/typography/Subheading";
 import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { tooltipFontStyle } from "@/components/shared/styles/TooltipFontStyle";
 
 export const CertificateForm = () => {
   const {
@@ -77,7 +78,7 @@ export const CertificateForm = () => {
   };
 
   return (
-    <StyledCard variant={"outlined"} sx={{boxShadow:2}}>
+    <StyledCard variant={"outlined"} sx={{ boxShadow: 2 }}>
       <Subheading>Create a new certificate</Subheading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <StyledBox>
@@ -88,8 +89,8 @@ export const CertificateForm = () => {
               required: "Country code is required",
               pattern: {
                 value: /^[a-z]{2}$/i,
-                message: "Invalid country code"
-              }
+                message: "Invalid country code",
+              },
             }}
             render={({ field }) => (
               <TextField
@@ -98,15 +99,21 @@ export const CertificateForm = () => {
                 label="Country code *"
                 error={Boolean(errors.countryCode)}
                 helperText={
-                  errors.countryCode
-                    ? errors.countryCode.message
-                    : ""
+                  errors.countryCode ? errors.countryCode.message : ""
                 }
                 slotProps={{
                   input: {
                     endAdornment: (
                       <InputAdornment position="end">
-                        <Tooltip title="Country code contains of two uppercase letters." placement="top">
+                        <Tooltip
+                          title="Country code contains of two uppercase letters."
+                          placement="top"
+                          slotProps={{
+                            tooltip: {
+                              sx: tooltipFontStyle,
+                            },
+                          }}
+                        >
                           <IconButton edge="end" size="small">
                             <InfoOutlinedIcon fontSize="small" />
                           </IconButton>
