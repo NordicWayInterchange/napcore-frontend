@@ -29,17 +29,25 @@ const CheatsheetGrid: GridColDef[] = [
     field: "selector",
     headerName: "Example selector",
     flex: 2,
-    renderCell: (params) => (
-      <Box
-        sx={{
-          whiteSpace: 'normal',
-          wordBreak: 'break-word',
-          mt: 1.5,
-        }}
-      >
-        {params.value}
-      </Box>
-    )
+    renderCell: (params) => {
+      const selector = Array.isArray(params.value) ? params.value : [];
+
+      return (
+        <Box
+          sx={{
+            whiteSpace: 'normal',
+            wordBreak: 'break-word',
+            mt: 1.5,
+          }}
+        >
+        <ul style={{ margin: 0, paddingLeft: 20 }}>
+          {selector.map((point, index) => (
+            <li key={index}>{point}</li>
+          ))}
+        </ul>
+        </Box>
+      );
+    }
   },
   {
     ...dataGridTemplate,
@@ -65,26 +73,33 @@ const cheatsheetContent = [
     "id": 1,
     "operator": "IS NULL, IS NOT NULL",
     "description": "Checks if value is null/ not null",
-    "selector": "causeCode IS NULL, quadtree IS NOT NULL",
+    "selector": ["causeCode IS NULL, quadtree IS NOT NULL"],
   },
   {
     "id": 2,
     "operator": "=, <>, <, <=, >, >=",
     "description": "Comparison operators",
-    "selector": "shardId >= 6",
+    "selector": ["shardId >= 6"],
   },
   {
     "id": 3,
     "operator": "LIKE",
     "description": "Comparison operators. Wildcards: '%' stands for any sequence of characters, including an empty sequence." +
       " '_' matches a single character",
-    "selector": "(quadTree like '%,12002031%' OR quadTree like '%,1200201%' AND quadTree like '%,10223310%')",
+    "selector": ["(quadTree like '%,12002031%' OR quadTree like '%,1200201%' AND quadTree like '%,10223310%')"],
   },
   {
     "id": 4,
     "operator": "AND, OR, NOT",
     "description": "Combines logical statements",
-    "selector": "NOT (messageType = 'DENM') AND ((causeCode = 1) OR (causeCode = 2)) AND (originatingCountry = 'NO')"
+    "selector": ["NOT (messageType = 'DENM') AND ((causeCode = 1) OR (causeCode = 2)) AND (originatingCountry = 'NO')"]
+  },
+  {
+    "id": 5,
+    "operator": "NOT",
+    "description": "Combines logical statements",
+    "selector": ["quadTree not LIKE '%,12002010%' : find tiles outside sub-tile",
+      "quadTree not LIKE '%,12%' : find tiles outside super-tile"]
   },
 ];
 
