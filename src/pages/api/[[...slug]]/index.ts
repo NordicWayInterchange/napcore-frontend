@@ -29,7 +29,7 @@ import {
   basicPatchFunction,
   deleteNapcoreMyselfFromSubscribedPrivateChannel,
   deleteNapcorePeerFromExistingPrivateChannel,
-  deleteNapcorePrivateChannels, addNapcorePeerToExistingPrivateChannel, deleteNapcoreMultipleSubscriptions
+  deleteNapcorePrivateChannels, addNapcorePeerToExistingPrivateChannel
 } from "@/lib/fetchers/interchangeConnector";
 import { ExtendedCapability } from "@/types/capability";
 import { Capability, Publicationids } from "@/types/napcore/capability";
@@ -199,13 +199,6 @@ export const removeSubscription: basicDeleteFunction = async (
   return [res.status];
 };
 
-export const removeMultipleSubscriptions: basicDeleteFunction = async (
-  params: basicDeleteParams
-) => {
-  const res = await deleteNapcoreMultipleSubscriptions(params);
-  return [res.status];
-};
-
 export const removeDelivery: basicDeleteFunction = async (
   params: basicDeleteParams
 ) => {
@@ -285,8 +278,7 @@ const deletePaths: {
   capabilities: removeUserCapability,
   privatechannels: removePrivateChannel,
   "privatechannels/peer/single": removeMyselfFromSubscribedPrivateChannel,
-  "privatechannels/peer/double": RemovePeerFromExistingPrivateChannel,
-  "subscriptions/multiple/single": removeMultipleSubscriptions,
+  "privatechannels/peer/double": RemovePeerFromExistingPrivateChannel
 };
 const findHandler: (params: any) =>
   | {

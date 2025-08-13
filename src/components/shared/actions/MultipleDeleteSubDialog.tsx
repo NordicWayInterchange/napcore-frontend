@@ -8,7 +8,7 @@ import {
   Divider,
 } from "@mui/material";
 import {
-  deleteDeliveries, deleteMultipleSubscriptions,
+  deleteDeliveries,
   deleteMyselfFromSubscribedPrivateChannel, deletePrivateChannel,
   deleteSubscriptions,
   deleteUserCapability
@@ -37,7 +37,7 @@ export default function MultipleDeleteSubDialog(props: Props) {
   });
 
   const handleDeletion = async (name: string, itemIds: string) => {
-    const response = await deleteMultipleSubscriptions(name, itemIds);
+    const response = await deleteSubscriptions(name, itemIds);
     handleDialog(false);
 
     if (response.ok) {
