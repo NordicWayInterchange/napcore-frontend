@@ -93,14 +93,7 @@ const cheatsheetContent = [
     "operator": "AND, OR, NOT",
     "description": "Combines logical statements",
     "selector": ["NOT (messageType = 'DENM') AND ((causeCode = 1) OR (causeCode = 2)) AND (originatingCountry = 'NO')"]
-  },
-  {
-    "id": 5,
-    "operator": "NOT",
-    "description": "Combines logical statements",
-    "selector": ["quadTree not LIKE '%,12002010%' : find tiles outside sub-tile",
-      "quadTree not LIKE '%,12%' : find tiles outside super-tile"]
-  },
+  }
 ];
 
 export const Cheatsheet = () => {

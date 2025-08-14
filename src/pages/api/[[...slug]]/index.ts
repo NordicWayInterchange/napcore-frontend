@@ -351,18 +351,6 @@ const findHandler: (params: any) =>
           console.warn(`Path length ${path.length} does not match expected values for 'privatechannels/peer'`);
         }
       }
-
-      if (aliasMatch === "subscriptions" && idMatch === "multiple") {
-        if (path.length === 3) {
-          return {
-            fn: deletePaths["subscriptions/multiple/single"],
-            params: { actorCommonName, pathParam: path[2] },
-          };
-        }
-        } else {
-          console.warn(`Path length ${path.length} does not match expected values for 'subscriptions/multiple'`);
-        }
-
       if (Object.keys(deletePaths).includes(aliasMatch)) {
         return {
           fn: deletePaths[aliasMatch],
