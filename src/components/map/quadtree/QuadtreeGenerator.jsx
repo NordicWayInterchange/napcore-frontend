@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import L from "leaflet";
-import { useMap, Rectangle, LayerGroup, useMapEvents } from "react-leaflet";
+import { useMap, Rectangle, useMapEvents, Tooltip } from "react-leaflet";
 import {
   rectangleStyle,
   rectangleStyleHover,
@@ -86,7 +86,9 @@ export default function QuadtreeGenerator({
           hash={hash}
           bounds={bounds}
           pathOptions={rectangleStyleSelect}
-        />
+        >
+          <Tooltip sticky>{hash}</Tooltip>
+        </Rectangle>
       );
     });
 

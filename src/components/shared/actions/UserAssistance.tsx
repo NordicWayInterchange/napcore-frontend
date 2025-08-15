@@ -1,9 +1,9 @@
 import { IconButton, Tooltip } from "@mui/material";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { Box } from "@mui/system";
 import React from "react";
 import { styled } from "@mui/material/styles";
 import Link from "next/link";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 export default function UserAssistance() {
 
@@ -28,7 +28,7 @@ export default function UserAssistance() {
         </span>
       } arrow placement="right">
         <IconButton size="small">
-          <HelpOutlineIcon fontSize="small" />
+          <InfoOutlinedIcon fontSize="small" />
         </IconButton>
       </Tooltip>
     </Box>

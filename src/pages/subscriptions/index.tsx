@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Box, Divider, IconButton } from "@mui/material";
+import { Box, Checkbox, Divider, IconButton, Tooltip } from "@mui/material";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
-import { GridColDef } from "@mui/x-data-grid";
+import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { useSession } from "next-auth/react";
 import { dataGridTemplate } from "@/components/shared/datagrid/DataGridTemplate";
 import DataGrid from "@/components/shared/datagrid/DataGrid";
@@ -19,10 +19,12 @@ import Subheading from "@/components/shared/display/typography/Subheading";
 import CommonDrawer from "@/components/layout/CommonDrawer";
 import AddButton from "@/components/shared/actions/AddButton";
 import { performRefetch } from "@/lib/performRefetch";
+import { useQueryClient } from "@tanstack/react-query";
+import SearchBox from "@/components/shared/SearchBox";
 
 export default function Subscriptions() {
   const { data: session } = useSession();
-  const { data, isLoading, remove, refetch} = useSubscriptions(
+  const { data, isLoading, refetch} = useSubscriptions(
     session?.user?.commonName as string
   );
   const [open, setOpen] = useState<boolean>(false);
@@ -31,6 +33,8 @@ export default function Subscriptions() {
     useState<ExtendedSubscription>();
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const [shouldRefreshAfterDelete, setShouldRefreshAfterDelete] = useState<boolean>(false);
+  const queryClient = useQueryClient();
+  const [searchId, setSearchId] = useState("");
 
   useEffect(() => {
     if (isDeleted) {
@@ -68,7 +72,7 @@ export default function Subscriptions() {
 
   const handleClickClose = (close: boolean) => {
     setOpen(close);
-    remove();
+    queryClient.removeQueries({ queryKey: ['subscriptions'] });
   };
 
   const handleOnRowClick = (params: any) => {
@@ -78,6 +82,14 @@ export default function Subscriptions() {
   const handleDeletedItem = (deleted: boolean) => {
     setIsDeleted(deleted);
   };
+
+  const rows = Array.isArray(data) ? data : [];
+
+  const filteredSubscriptionRows = searchId.trim()
+    ? rows.filter((row) =>
+      row.id?.toString().includes(searchId.trim())
+    )
+    : rows;
 
   const tableHeaders: GridColDef[] = [
     {
@@ -150,19 +162,22 @@ export default function Subscriptions() {
       <Mainheading>Subscriptions</Mainheading>
       <Subheading>
         These are all of your subscriptions. You can click a subscription to
-        view more information or unsubscribe.
+        see details or unsubscribe.
       </Subheading>
       <Divider sx={{ marginY: 2 }} />
+      <Box display="flex" flexDirection="row" gap={5}>
       <AddButton text="Add subscription" labelUrl="subscription"></AddButton>
+      <SearchBox searchId={searchId} setSearchId={setSearchId} label="subscription" searchElement="ID"/>
+      </Box>
       <Divider style={{ margin: '5px 0', visibility: 'hidden' }}/>
       <DataGrid
         columns={tableHeaders}
-        rows={data || []}
+        rows={filteredSubscriptionRows || []}
         onRowClick={handleOnRowClick}
         loading={isLoading}
         slots={{
           footer: CustomFooter,
-          noRowsOverlay: CustomEmptyOverlaySubscription,
+          noRowsOverlay: CustomEmptyOverlaySubscription
         }}
         sort={{ field: "lastStatusChange", sort: "desc" }}
       />

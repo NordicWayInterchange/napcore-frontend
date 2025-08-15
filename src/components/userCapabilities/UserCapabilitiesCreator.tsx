@@ -2,12 +2,12 @@ import { MessageTypes } from "@/types/messageType";
 import {
 
   FormControl,
-  FormHelperText,
+  FormHelperText, IconButton,
   InputAdornment,
   InputLabel,
   MenuItem,
   Select,
-  TextField
+  TextField, Tooltip
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { createUserCapability } from "@/lib/fetchers/internalFetchers";
@@ -25,6 +25,8 @@ import { usePublicationIds } from "@/hooks/usePublicationIds";
 import { useRouter } from "next/router";
 import { handleQuadtree } from "@/lib/handleQuadtree";
 import { menuItemStyles, StyledButton, StyledCard, StyledFormControl } from "@/components/shared/styles/StyledSelectorBuilder";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { tooltipFontStyle } from "@/components/shared/styles/TooltipFontStyle";
 
 const QUADTREE_REGEX = /^[0-3]+(,[0-3]+)*$/i;
 
@@ -204,6 +206,24 @@ const UserCapabilitiesCreator = () => {
                       }
                     }
                     }
+                    slotProps={{
+                      input: {
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Tooltip title="Publisher ID starts with country code which is exactly two uppercase letters followed by five digits" placement="top"
+                                     slotProps={{
+                                       tooltip: {
+                                         sx: tooltipFontStyle,
+                                       },
+                                     }}>
+                              <IconButton edge="end" size="small">
+                                <InfoOutlinedIcon fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
                   />
                 )}
               />
@@ -233,6 +253,20 @@ const UserCapabilitiesCreator = () => {
                             {publisherIdInput ? publisherIdInput + ":" : ""}
                           </InputAdornment>
                         ),
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Tooltip title="Publication ID is a unique identifier and is concatenation of publisherId with a ':' between e.g. 'DE15608:IVIM_BERLIN_067'." placement="top"
+                                     slotProps={{
+                                       tooltip: {
+                                         sx: tooltipFontStyle,
+                                       },
+                                     }}>
+                              <IconButton edge="end" size="small">
+                                <InfoOutlinedIcon fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                          </InputAdornment>
+                        ),
                       },
                     }}
                   />
@@ -251,6 +285,24 @@ const UserCapabilitiesCreator = () => {
                     error={!!errors.protocolVersion}
                     helperText={errors.protocolVersion ? "Protocol version is required." : ''}
                     label="Protocol version *"
+                    slotProps={{
+                      input: {
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Tooltip title="Protocol version represents the version of standard used to create the message.
+E.g. 'DENM:1.2.2'." placement="top"    slotProps={{
+                              tooltip: {
+                                sx: tooltipFontStyle,
+                              },
+                            }}>
+                              <IconButton edge="end" size="small">
+                                <InfoOutlinedIcon fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
                   />
                 )}
               />
@@ -273,6 +325,30 @@ const UserCapabilitiesCreator = () => {
                     {Boolean(errors.originatingCountry) && (
                       <FormHelperText>Originating country is required</FormHelperText>
                     )}
+                    <Box
+                      position="absolute"
+                      right={30}
+                      top="50%"
+                      sx={{
+                        transform: 'translateY(-50%)',
+                        pointerEvents: 'auto',
+                      }}
+                    >
+                      <Tooltip title="Country code is where the payload message created and is based on ISO 3166-1 alpha-2. " arrow    slotProps={{
+                        tooltip: {
+                          sx: tooltipFontStyle,
+                        },
+                      }}>
+                        <IconButton
+                          size="small"
+                          sx={{
+                            p: 0.5,
+                          }}
+                        >
+                          <InfoOutlinedIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
                   </FormControl>
                 )}
               />
@@ -298,6 +374,30 @@ const UserCapabilitiesCreator = () => {
                     {Boolean(errors.messageType) && (
                       <FormHelperText>Message type is required</FormHelperText>
                     )}
+                    <Box
+                      position="absolute"
+                      right={30}
+                      top="50%"
+                      sx={{
+                        transform: 'translateY(-50%)',
+                        pointerEvents: 'auto',
+                      }}
+                    >
+                      <Tooltip title="Message type is the type of the published message" arrow slotProps={{
+                        tooltip: {
+                          sx: tooltipFontStyle,
+                        },
+                      }}>
+                        <IconButton
+                          size="small"
+                          sx={{
+                            p: 0.5,
+                          }}
+                        >
+                          <InfoOutlinedIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
                   </FormControl>
                 )}
               />
@@ -326,6 +426,30 @@ const UserCapabilitiesCreator = () => {
                       ))}
                     </Select>
                     {errors.causeCode && <FormHelperText>Cause code is required.</FormHelperText>}
+                    <Box
+                      position="absolute"
+                      right={32}
+                      top="50%"
+                      sx={{
+                        transform: 'translateY(-50%)',
+                        pointerEvents: 'auto',
+                      }}
+                    >
+                      <Tooltip title="DENM messages are covered by specifying an array of causeCode." arrow  slotProps={{
+                        tooltip: {
+                          sx: tooltipFontStyle,
+                        },
+                      }}>
+                        <IconButton
+                          size="small"
+                          sx={{
+                            p: 0.5,
+                          }}
+                        >
+                          <InfoOutlinedIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
                   </FormControl>
                 )}
               />
@@ -342,6 +466,24 @@ const UserCapabilitiesCreator = () => {
                               error={!!errors.publisherName}
                               helperText={errors.publisherName ? "Publisher name is required." : ""}
                               label="Publisher name *"
+                              slotProps={{
+                                input: {
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      <Tooltip title="Publisher name is the identifier for the datex message distributer and is btained from the national identifier section of the datex document." placement="top"
+                                               slotProps={{
+                                                 tooltip: {
+                                                   sx: tooltipFontStyle,
+                                                 },
+                                               }}>
+                                        <IconButton edge="end" size="small">
+                                          <InfoOutlinedIcon fontSize="small" />
+                                        </IconButton>
+                                      </Tooltip>
+                                    </InputAdornment>
+                                  ),
+                                },
+                              }}
                             />
                           )}
                         />
@@ -358,6 +500,24 @@ const UserCapabilitiesCreator = () => {
                               error={!!errors.publicationType}
                               helperText={errors.publicationType ? "publication type is required." : ""}
                               label="Publication type *"
+                              slotProps={{
+                                input: {
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      <Tooltip title="Only applies for DATEX2 publications. Publication type (only one) E.g: SituationPublication or MeasuredDataPublication
+or VmsPublication" placement="top"    slotProps={{
+                                        tooltip: {
+                                          sx: tooltipFontStyle,
+                                        },
+                                      }}>
+                                        <IconButton edge="end" size="small">
+                                          <InfoOutlinedIcon fontSize="small" />
+                                        </IconButton>
+                                      </Tooltip>
+                                    </InputAdornment>
+                                  ),
+                                },
+                              }}
                     />
                 )}
               />
@@ -381,6 +541,20 @@ const UserCapabilitiesCreator = () => {
                     }
                     slotProps={{
                       input: {
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Tooltip title="Relevant spatial index location of the C-ITS message. If a larger area is needed, you need to chain multiple quadTree values together,
+                            separated by a comma." placement="top"    slotProps={{
+                              tooltip: {
+                                sx: tooltipFontStyle,
+                              },
+                            }}>
+                              <IconButton edge="end" size="small">
+                                <InfoOutlinedIcon fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                          </InputAdornment>
+                        ),
                         inputProps: {
                           maxLength: 255,
                         }

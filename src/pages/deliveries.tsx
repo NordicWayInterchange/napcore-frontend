@@ -19,10 +19,12 @@ import CommonDrawer from "@/components/layout/CommonDrawer";
 import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
 import AddButton from "@/components/shared/actions/AddButton";
 import { performRefetch } from "@/lib/performRefetch";
+import SearchBox from "@/components/shared/SearchBox";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Deliveries() {
   const { data: session } = useSession();
-  const { data, isLoading, remove, refetch } = useDeliveries(
+  const { data, isLoading, refetch } = useDeliveries(
     session?.user.commonName as string
   );
   const [open, setOpen] = useState<boolean>(false);
@@ -30,6 +32,8 @@ export default function Deliveries() {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const [shouldRefreshAfterDelete, setShouldRefreshAfterDelete] = useState<boolean>(false);
+  const queryClient = useQueryClient();
+  const [searchId, setSearchId] = useState("");
 
   useEffect(() => {
     if (isDeleted) {
@@ -68,7 +72,7 @@ export default function Deliveries() {
 
   const handleClickClose = (close: boolean) => {
     setOpen(close);
-    remove();
+    queryClient.removeQueries({ queryKey: ['deliveries'] });
   };
 
   const handleOnRowClick = (params: any) => {
@@ -78,6 +82,14 @@ export default function Deliveries() {
   const handleDeletedItem = (deleted: boolean) => {
     setIsDeleted(deleted);
   };
+
+  const rows = Array.isArray(data) ? data : [];
+
+  const filteredDeliveryRows = searchId.trim()
+    ? rows.filter((row) =>
+      row.id?.toString().includes(searchId.trim())
+    )
+    : rows;
 
   const tableHeaders: GridColDef[] = [
     {
@@ -150,14 +162,17 @@ export default function Deliveries() {
       <Mainheading>Deliveries</Mainheading>
       <Subheading>
         These are all of the deliveries in the network. You can click a
-        delivery to view more information and create a delivery.
+        delivery to see details or remove.
       </Subheading>
       <Divider sx={{ marginY: 2 }} />
+      <Box display="flex" flexDirection="row" gap={5}>
       <AddButton text="Create delivery" labelUrl="delivery"></AddButton>
+      <SearchBox searchId={searchId} setSearchId={setSearchId} label="delivery" searchElement="ID"/>
+      </Box>
       <Divider style={{ margin: '5px 0', visibility: 'hidden' }}/>
       <DataGrid
         columns={tableHeaders}
-        rows={data || []}
+        rows={filteredDeliveryRows || []}
         onRowClick={handleOnRowClick}
         loading={isLoading}
         getRowId={(row) => row.id}

@@ -77,14 +77,22 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
         severity: "success",
       });
     } else {
-      const errorData = await response.json();
-      const errorMessage = errorData.message || `Delivery could not be created, try again!`;
+      if (response.statusText === "Conflict") {
+        setFeedback({
+          feedback: true,
+          message: "Delivery already exists!",
+          severity: "warning",
+        });
+      } else {
+        const errorData = await response.json();
+        const errorMessage = errorData.message || `Delivery could not be created, try again!`;
 
-      setFeedback({
-        feedback: true,
-        message: errorMessage,
-        severity: "warning",
-      });
+        setFeedback({
+          feedback: true,
+          message: errorMessage,
+          severity: "warning",
+        });
+      }
     }
     handleMoreClose();
   };
@@ -93,7 +101,7 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
     <>
       <Drawer
         sx={drawerStyle}
-        PaperProps={{ sx: { backgroundColor: "#F9F9F9" }}}
+        slotProps={{paper: {sx: {backgroundColor: "#F9F9F9"}}}}
         variant="temporary"
         anchor="right"
         open={open}
@@ -110,12 +118,12 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
                                   type="delivery"/>
             <ListItem>
               <StyledCard variant={"outlined"}>
-                <Typography sx={{ mb:2 }}>Delivery Description</Typography>
+                <Typography sx={{ mb:2 }}>Description to create a delivery</Typography>
                 <div>
                   <FormControl fullWidth>
                     <TextField
                       name="description"
-                      label="Enter a description to create a delivery"
+                      label="Enter a description for delivery"
                       multiline
                       rows={4}
                       onChange={(event) =>

@@ -1,4 +1,5 @@
 import { escapeString } from "@/lib/escapeString";
+import { describe, it, expect } from '@jest/globals';
 
 describe("Can correctly escape string", () => {
   const text = "Thi$ i$ @n %llegal te3t!!+?";

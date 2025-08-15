@@ -106,6 +106,7 @@ const fetchUserCapabilities = async (params: extendedGetParams) => {
 
       return {
         ...userCapability.application,
+        ...userCapability.metadata,
         causeCodesDictionary: causeCodes && causeCodes.filter(Boolean),
         id: userCapability.id,
       };
@@ -230,6 +231,7 @@ const fetchDeliveriesCapabilities = async (params: basicGetParams) => {
     deliveries.map((delivery) => {
       return {
         ...delivery.application,
+        ...delivery.metadata,
       };
     }),
   ];
@@ -349,7 +351,6 @@ const findHandler: (params: any) =>
           console.warn(`Path length ${path.length} does not match expected values for 'privatechannels/peer'`);
         }
       }
-
       if (Object.keys(deletePaths).includes(aliasMatch)) {
         return {
           fn: deletePaths[aliasMatch],

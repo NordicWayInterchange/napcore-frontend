@@ -7,7 +7,6 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { ExtendedCapability } from "@/types/capability";
-import { createSubscription } from "@/lib/fetchers/internalFetchers";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import { IFeedback } from "@/interface/IFeedback";
 import { useSession } from "next-auth/react";
@@ -16,6 +15,8 @@ import CapabilityDrawerForm from "@/components/layout/CapabilityDrawerForm";
 import { drawerStyle, StyledCard } from "@/components/shared/styles/StyledSelectorBuilder";
 import { handleDescription } from "@/lib/handleDescription";
 import { StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
+import ConfirmSubDialog from "@/components/shared/actions/ConfirmSubDialog";
+import { HandleCreateSubscription } from "@/components/shared/utils/HandleCreateSubscription";
 
 type Props = {
   capability: ExtendedCapability;
@@ -33,6 +34,8 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
   });
   const [descriptionError, setDescriptionError] = useState(false);
   const [description, setDescription] = useState<string>("");
+  const [dialogMessage, setDialogMessage] = useState<boolean>(false);
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
   const selector = `(publicationId = '${capability.publicationId}')`;
 
@@ -55,68 +58,71 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
 
   const saveSubscription = async (name: string, selector: string) => {
     if (description.length > 255 ) return ;
-    const bodyData = {
-      selector: selector,
-      description: description
-    };
-
-    const response = await createSubscription(name, bodyData);
-
-    if (response.ok) {
-      setFeedback({
-        feedback: true,
-        message: "Subscription successfully created",
-        severity: "success",
-      });
-    } else {
-      const errorData = await response.json();
-      const errorMessage = errorData.message || "Subscription could not be created, try again!";
-
-      setFeedback({
-        feedback: true,
-        message: errorMessage,
-        severity: "warning",
-      });
+    if (capability.shardCount > 1 ) {
+      setDialogMessage(true);
+      return;
     }
+    setDialogMessage(false);
+    await HandleCreateSubscription(name, setFeedback, selector, description, "CapabilitiesDrawer")
     handleMoreClose();
   };
+
+  const handleClickClose = (close: boolean) => {
+    setDialogOpen(close);
+  }
 
   return (
     <>
       <Drawer
         sx={drawerStyle}
-        PaperProps={{ sx: { backgroundColor: "#F9F9F9"}}}
+        slotProps={{paper: {sx: {backgroundColor: "#F9F9F9"}}}}
         variant="temporary"
         anchor="right"
         open={open}
-        onClose={() => {handleMoreClose(); removeDescriptionError();}}
+        onClose={() => {
+          handleMoreClose();
+          removeDescriptionError();
+        }}
       >
         <Toolbar />
         <Box sx={{ padding: 1, width: 1 }}>
           <List>
-            <CapabilityDrawerForm capability={capability}
-                                  handleMoreClose={handleMoreClose}
-                                  setOpenMap={setOpenMap}
-                                  removeDescriptionError={removeDescriptionError}
-                                  setDialogOpen={() => {}}
-                                  type="subscription"/>
+            <CapabilityDrawerForm
+              capability={capability}
+              handleMoreClose={handleMoreClose}
+              setOpenMap={setOpenMap}
+              removeDescriptionError={removeDescriptionError}
+              setDialogOpen={() => {}}
+              type="subscription"
+            />
             <ListItem>
               <StyledCard variant={"outlined"}>
-                <Typography sx={{ mb:2 }}>Description for Subscription</Typography>
+                <Typography sx={{ mb: 2 }}>
+                  Description to create a subscription
+                </Typography>
                 <div>
-                <FormControl fullWidth>
-                  <TextField
-                    name="description"
-                    label="Enter a description to create subscription"
-                    multiline
-                    rows={4}
-                    onChange={(event) =>
-                      handleDescription(event, setDescription, setDescriptionError)}
-                    error={descriptionError}
-                    helperText={descriptionError ? "Description exceeds maximum length of 255 characters" : ""}
-                    fullWidth
-                  />
-                </FormControl>
+                  <FormControl fullWidth>
+                    <TextField
+                      name="description"
+                      label="Enter a description for Subscription"
+                      multiline
+                      rows={4}
+                      onChange={(event) =>
+                        handleDescription(
+                          event,
+                          setDescription,
+                          setDescriptionError
+                        )
+                      }
+                      error={descriptionError}
+                      helperText={
+                        descriptionError
+                          ? "Description exceeds maximum length of 255 characters"
+                          : ""
+                      }
+                      fullWidth
+                    />
+                  </FormControl>
                 </div>
               </StyledCard>
             </ListItem>
@@ -125,9 +131,13 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
                 variant={"contained"}
                 color={"buttonThemeColor"}
                 disableElevation
-                onClick={() =>
-                  saveSubscription(session?.user.commonName as string, selector)
-                }
+                onClick={() => {
+                  setDialogOpen(true);
+                  saveSubscription(
+                    session?.user.commonName as string,
+                    selector
+                  );
+                }}
               >
                 Subscribe
               </StyledButton>
@@ -135,6 +145,18 @@ const CapabilitiesDrawer = ({ capability, open, handleMoreClose }: Props) => {
           </List>
         </Box>
       </Drawer>
+      {dialogMessage && (
+        <ConfirmSubDialog
+          open={dialogOpen}
+          actorCommonName={session?.user.commonName as string}
+          handleMoreClose={handleMoreClose}
+          handleDialog={handleClickClose}
+          selector={selector}
+          description={description}
+          text= {`Please note that there are ${capability.shardCount.toString()} shards for this capability. Do you still want to subscribe?`}
+          form="CapabilitiesDrawer"
+        />
+      )}
       {feedback.feedback && (
         <Snackbar
           message={feedback.message}

@@ -1,4 +1,4 @@
-import { Chip, OutlinedInput, TextField, Typography } from "@mui/material";
+import { Chip, IconButton, InputAdornment, OutlinedInput, TextField, Tooltip, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Box } from "@mui/system";
@@ -11,6 +11,8 @@ import { IFormPrivateChannelInput } from "@/interface/IFormPrivateChanelInput";
 import { createPrivateChannel } from "@/lib/fetchers/internalFetchers";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { escapeString } from "@/lib/escapeString";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { tooltipFontStyle } from "@/components/shared/styles/TooltipFontStyle";
 
 const PrivateChannelsCreator = () => {
   const [feedback, setFeedback] = useState<IFeedback>({
@@ -123,14 +125,31 @@ const PrivateChannelsCreator = () => {
       <StyledCard variant={"outlined"}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <StyledFormControl>
-            <Box display="flex" alignItems="flex-start" p={1} borderRadius={1} border={1} flexWrap="wrap"
-                 sx={{ borderColor: errors.peers ? "red" : "grey.300" }}>
-              <Typography color="textSecondary" sx={{
-                marginRight: "8px", position: "relative",
-                top: "3px"
-              }}>Peers *</Typography>
+            <Box
+              display="flex"
+              alignItems="flex-start"
+              p={1}
+              borderRadius={1}
+              border={1}
+              flexWrap="wrap"
+              sx={{ borderColor: errors.peers ? "red" : "grey.300" }}
+            >
+              <Typography
+                color="textSecondary"
+                sx={{
+                  marginRight: "8px",
+                  position: "relative",
+                  top: "3px",
+                }}
+              >
+                Peers *
+              </Typography>
 
-              <Box display="flex" flexWrap="wrap" sx={{ gap: "8px", maxWidth: "100%" }}>
+              <Box
+                display="flex"
+                flexWrap="wrap"
+                sx={{ gap: "8px", maxWidth: "100%" }}
+              >
                 {getValues("peers").map((value, index) => (
                   <Chip
                     key={index}
@@ -139,7 +158,7 @@ const PrivateChannelsCreator = () => {
                     sx={{
                       backgroundColor: "sidebarActiveColor",
                       border: "1px solid",
-                      borderColor: "sidebarBorderColor"
+                      borderColor: "sidebarBorderColor",
                     }}
                     deleteIcon={<CancelIcon style={{ color: "grey" }} />}
                     variant="outlined"
@@ -159,8 +178,25 @@ const PrivateChannelsCreator = () => {
                 }}
                 slotProps={{
                   input: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Tooltip
+                          title="Use a comma, space, or press enter to separate peers—otherwise, they won't be added properly."
+                          placement="top"
+                          slotProps={{
+                            tooltip: {
+                              sx: tooltipFontStyle,
+                            },
+                          }}
+                        >
+                          <IconButton edge="end" size="small">
+                            <InfoOutlinedIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                      </InputAdornment>
+                    ),
                     inputProps: {
-                      placeholder: 'Add peers (comma, space, or enter to add)',
+                      placeholder: "Add peers (comma, space, or enter to add)",
                       maxLength: 255,
                     },
                   },
@@ -177,14 +213,16 @@ const PrivateChannelsCreator = () => {
                   <TextField
                     {...field}
                     {...register("description", {
-                      required: "Description is required"
+                      required: "Description is required",
                     })}
                     fullWidth
                     multiline
                     rows={5}
                     label="Description *"
                     error={!!errors.description}
-                    helperText={errors.description ? errors.description.message : ""}
+                    helperText={
+                      errors.description ? errors.description.message : ""
+                    }
                   />
                 )}
               />

@@ -14,11 +14,13 @@ export const NewFormDataGrid: GridColDef[] = [
     ...dataGridTemplate,
     field: "publicationId",
     headerName: "Publication ID",
+    flex: 2
   },
   {
     ...dataGridTemplate,
     field: "messageType",
     headerName: "Message type",
+    flex: 2,
     renderCell: (cell) => {
       return (
         <Chip
@@ -34,10 +36,16 @@ export const NewFormDataGrid: GridColDef[] = [
     ...dataGridTemplate,
     field: "protocolVersion",
     headerName: "Protocol version",
+    flex: 2
   },
   {
     ...dataGridTemplate,
     field: "originatingCountry",
     headerName: "Originating country",
+  },
+  {
+    ...dataGridTemplate,
+    field: "shardCount",
+    headerName: "Shard count",
   },
 ];

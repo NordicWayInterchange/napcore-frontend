@@ -18,11 +18,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { CustomFooter } from "@/components/shared/datagrid/CustomFooter";
 import AddButton from "@/components/shared/actions/AddButton";
 import { performRefetch } from "@/lib/performRefetch";
-import { ExtendedSubscription } from "@/types/subscription";
+import SearchBox from "@/components/shared/SearchBox";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Capabilities() {
   const { data: session } = useSession();
-  const { data, isLoading, remove, refetch } = useUserCapabilities(
+  const { data, isLoading, refetch } = useUserCapabilities(
     session?.user.commonName as string
   );
 
@@ -30,6 +31,8 @@ export default function Capabilities() {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const queryClient = useQueryClient();
+  const [searchId, setSearchId] = useState("");
 
   useEffect(() => {
     if (isDeleted) {
@@ -56,7 +59,7 @@ export default function Capabilities() {
 
   const handleClickClose = (close: boolean) => {
     setOpen(close);
-    remove();
+    queryClient.removeQueries({ queryKey: ['capabilities'] });
   };
 
   const handleOnRowClick = (params: any) => {
@@ -66,6 +69,14 @@ export default function Capabilities() {
   const handleDeletedItem = (deleted: boolean) => {
     setIsDeleted(deleted);
   };
+
+  const rows = Array.isArray(data) ? data : [];
+
+  const filteredCapabilitiesRows = searchId.trim()
+    ? rows.filter((row) =>
+      row.publicationId?.toString().includes(searchId.trim())
+    )
+    : rows;
 
   const tableHeaders: GridColDef[] = [
     { ...dataGridTemplate, field: "publisherId", headerName: "Publisher ID" },
@@ -128,15 +139,17 @@ export default function Capabilities() {
     <Box flex={1}>
       <Mainheading>My Capabilities</Mainheading>
       <Subheading>
-        These are all of user capabilites in the network. You can click a
-        capability to view more information and remove.
+        These are all of user capabilites in the network. You can click a capability to see details, remove or deliver.
       </Subheading>
       <Divider sx={{ marginY: 2 }} />
+      <Box display="flex" flexDirection="row" gap={5}>
       <AddButton text="Add capability" labelUrl="capability"></AddButton>
+      <SearchBox searchId={searchId} setSearchId={setSearchId} label="capability" searchElement="publicationID"/>
+      </Box>
       <Divider style={{ margin: '5px 0', visibility: 'hidden' }}/>
       <DataGrid
         columns={tableHeaders}
-        rows={data || []}
+        rows={filteredCapabilitiesRows || []}
         onRowClick={handleOnRowClick}
         loading={isLoading}
         getRowId={(row) => row.publicationId}

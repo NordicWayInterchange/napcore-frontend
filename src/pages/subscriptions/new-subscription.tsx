@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Divider } from "@mui/material";
 import React from "react";
 import { useMatchingCapabilities } from "@/hooks/useMatchingCapabilities";
@@ -13,20 +13,40 @@ import { GridEventListener } from "@mui/x-data-grid";
 import { BreadcrumbNavigation } from "@/components/shared/actions/BreadcrumbNavigation";
 import { NewFormDataGrid } from "@/components/shared/datagrid/GridColumns/NewFormDatagrid";
 import UserAssistance from "@/components/shared/actions/UserAssistance";
+import { useQueryClient } from "@tanstack/react-query";
 
 const NewSubscription = () => {
   const { data: session } = useSession();
   const [selector, setSelector] = useState<string>(" ");
   const [publicationIdRow, setPublicationIdRow] = useState<string>("");
+  const queryClient = useQueryClient();
 
-  const { data, isLoading, remove } = useMatchingCapabilities(
+  const { data, isLoading } = useMatchingCapabilities(
     session?.user.commonName as string,
     selector
   );
+  const [dialogMessage, setDialogMessage] = useState<boolean>(false);
+  const [subscriptionConfirmationText, setSubscriptionConfirmationText] = useState<string>("");
+
+  useEffect(() => {
+    let fullText = "";
+    const total: number | undefined = data
+      ?.flat()
+      .reduce((sum, item) => sum + (item.shardCount ?? 0), 0);
+
+    const isGreaterThanFive = (total ?? 0) > 5;
+    if (isGreaterThanFive) {
+      setDialogMessage(true);
+      fullText = `Please note the total number of shards for the matching capabilities are more than five. Do you still want to subscribe?`;
+      setSubscriptionConfirmationText(fullText);
+    } else {
+      setDialogMessage(false);
+    }
+  }, [data]);
 
   const handleChange = (selector: string) => {
     setSelector(selector);
-    remove();
+    queryClient.removeQueries({ queryKey: ['matchingCapabilities'] });
   };
 
   const handleOnRowClick: GridEventListener<"rowClick"> = (params) => {
@@ -59,6 +79,8 @@ const NewSubscription = () => {
             matchingElements={data || []}
             selectorCallback={handleChange}
             publicationIdRow={publicationIdRow}
+            dialogMessage={dialogMessage}
+            subscriptionConfirmationText={subscriptionConfirmationText}
             label="Subscription"
           />
         </Box>

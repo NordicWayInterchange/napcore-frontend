@@ -22,7 +22,7 @@ import PeersDrawer from "@/components/privateChannels/PeersDrawer";
 import { usePeers } from "@/hooks/usePeers";
 import { timeConverter } from "@/lib/timeConverter";
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
-import { ExtendedSubscription } from "@/types/subscription";
+import SearchBox from "@/components/shared/SearchBox";
 
 export default function PrivateChannels() {
 
@@ -47,6 +47,8 @@ export default function PrivateChannels() {
   const [peerOpen, setPeerOpen] = useState<boolean>(false);
   const [shouldRefreshAfterDelete, setShouldRefreshAfterDelete] = useState<boolean>(false);
   const [shouldRefreshPeersAfterDelete, setShouldRefreshPeersAfterDelete] = useState<boolean>(false);
+  const [searchId, setSearchId] = useState("");
+  const [peerSearchId, setPeerSearchId] = useState("");
 
   const hasPeersData =  peersData && peersData.length > 0;
 
@@ -109,7 +111,9 @@ export default function PrivateChannels() {
     setOpen(true);
   };
 
-  const peerHandleDelete = (peers: PrivateChannelPeers) => {
+  const peerHandleDelete = (peers: PrivateChannelPeers, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.stopPropagation();
+    setDrawerOpen(false);
     setPeersRow(peers);
     setPeerOpen(true);
   };
@@ -129,6 +133,21 @@ export default function PrivateChannels() {
     setIsPeerDeleted(deleted);
   };
 
+  const rows = Array.isArray(data) ? data : [];
+  const peersRows = Array.isArray(peersData) ? peersData : [];
+
+  const filteredPrivateChannelsRows = searchId.trim()
+    ? rows.filter((row) =>
+      row.id?.toString().includes(searchId.trim())
+    )
+    : rows;
+
+
+  const filteredPeersRowRows = peerSearchId.trim()
+    ? peersRows?.filter((peersRows) =>
+      peersRows.id?.toString().includes(peerSearchId.trim())
+    )
+    : peersRows;
 
   const tableHeaders: GridColDef[] = [
     {
@@ -243,6 +262,7 @@ export default function PrivateChannels() {
         const value = params.row.lastUpdated;
         return value && timeConverter(value);
       },
+      flex: 2
     },
     {
       ...dataGridTemplate,
@@ -255,7 +275,7 @@ export default function PrivateChannels() {
       renderCell: (params) => {
         return (
           <Box>
-            <IconButton onClick={() => peerHandleDelete(params.row)}>
+            <IconButton onClick={(event) => peerHandleDelete(params.row, event)}>
               <DeleteIcon />
             </IconButton>
             <IconButton onClick={() => handlePeersMore(params.row)}>
@@ -272,11 +292,13 @@ export default function PrivateChannels() {
       <Mainheading>Private channels</Mainheading>
       <Subheading>
         These are all of private channels in the network. You can click a private channel or a private channel subscription
-        to view more information and remove.
+        to see details or remove.
       </Subheading>
       <Divider sx={{ marginY: 2 }} />
+      <Box display="flex" flexDirection="row" gap={5}>
       <AddButton text="Create private channel" labelUrl="privateChannel"></AddButton>
-
+      <SearchBox searchId={searchId} setSearchId={setSearchId} label="private channel" searchElement="ID"/>
+      </Box>
       <Divider style={{ margin: '5px 0', visibility: 'hidden' }} />
       <Subheading>My private channels</Subheading>
       <Divider style={{ margin: '5px 0', visibility: 'hidden' }} />
@@ -289,7 +311,7 @@ export default function PrivateChannels() {
       >
         <DataGrid
           columns={tableHeaders}
-          rows={data || []}
+          rows={filteredPrivateChannelsRows || []}
           onRowClick={handleOnRowClick}
           loading={isLoading}
           getRowId={(row) => row.id}
@@ -321,8 +343,11 @@ export default function PrivateChannels() {
       <Divider style={{ margin: "20px 0", visibility: "hidden" }} />
       {hasPeersData && (
         <Box>
+          <Box display="flex" flexDirection="row" gap={5}>
           <Subheading>My private channel subscriptions</Subheading>
-          <Divider style={{ margin: "5px 0", visibility: "hidden" }} />
+          <SearchBox searchId={peerSearchId} setSearchId={setPeerSearchId} label="my private channel subscription" searchElement="ID"/>
+          </Box>
+          <Divider style={{ margin: "10px 0", visibility: "hidden" }} />
           <Box
             sx={{
               maxHeight: hasPeersData ? "400px": "hidden",
@@ -331,7 +356,7 @@ export default function PrivateChannels() {
           >
             <DataGrid
               columns={peerTableHeaders}
-              rows={peersData || []}
+              rows={filteredPeersRowRows || []}
               onRowClick={handleOnPeersRowClick}
               loading={isPeersLoading}
               getRowId={(row) => row.id}

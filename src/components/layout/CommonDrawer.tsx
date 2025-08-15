@@ -43,7 +43,7 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
     <>
       <Drawer
         sx={drawerStyle}
-        PaperProps={{ sx: {backgroundColor: "#F9F9F9"}}}
+        slotProps={{paper: {sx: {backgroundColor: "#F9F9F9"}}}}
         variant="temporary"
         anchor="right"
         open={open}

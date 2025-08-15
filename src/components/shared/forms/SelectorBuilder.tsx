@@ -5,17 +5,20 @@ import {
   FormControl,
   FormControlLabel,
   FormHelperText,
+  IconButton,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
   Switch,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { generateSelector } from "@/lib/generateSelector";
 import {
   createDelivery,
-  createSubscription
+  createSubscription,
 } from "@/lib/fetchers/internalFetchers";
 import MapDialog from "../../map/MapDialog";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -30,25 +33,49 @@ import { useSession } from "next-auth/react";
 import { ExtendedDelivery } from "@/types/delivery";
 import { useRouter } from "next/router";
 import { handleQuadtree } from "@/lib/handleQuadtree";
-import { StyledButton, StyledCard, StyledFormControl,menuItemStyles } from "@/components/shared/styles/StyledSelectorBuilder";
+import {
+  StyledButton,
+  StyledCard,
+  StyledFormControl,
+  menuItemStyles,
+} from "@/components/shared/styles/StyledSelectorBuilder";
 import { handleDescription } from "@/lib/handleDescription";
+import ConfirmSubDialog from "@/components/shared/actions/ConfirmSubDialog";
+import { Cheatsheet } from "@/components/shared/forms/Cheatsheet";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { tooltipFontStyle } from "@/components/shared/styles/TooltipFontStyle";
 
 type Props = {
   matchingElements: ExtendedCapability[] | ExtendedDelivery[] | [];
   selectorCallback: (selector: string) => void;
   label: string;
   publicationIdRow: string;
+  dialogMessage: boolean;
+  subscriptionConfirmationText: string;
 };
 
 const MATCHING_CAP_LIMIT = 1;
 const QUADTREE_REGEX = /^[0-3]+(,[0-3]+)*$/i;
 
-async function createArtifacts(artifactType: string, name: string, bodyData: Object) {
-  return await (artifactType === "Delivery" ? createDelivery(name, bodyData) : createSubscription(name, bodyData));
+async function createArtifacts(
+  artifactType: string,
+  name: string,
+  bodyData: Object
+) {
+  return await (artifactType === "Delivery"
+    ? createDelivery(name, bodyData)
+    : createSubscription(name, bodyData));
 }
 
 const SelectorBuilder = (props: Props) => {
-  const { selectorCallback, matchingElements, label, publicationIdRow } = props;
+  const {
+    selectorCallback,
+    matchingElements,
+    label,
+    publicationIdRow,
+    dialogMessage,
+    subscriptionConfirmationText,
+  } = props;
   const [selector, setSelector] = useState<string>("");
   const [descriptionError, setDescriptionError] = useState(false);
   const [description, setDescription] = useState<string>("");
@@ -62,8 +89,19 @@ const SelectorBuilder = (props: Props) => {
     message: "",
     severity: "success",
   });
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+
   const { data: session } = useSession();
   const router = useRouter();
+
+  const handleClickClose = (close: boolean) => {
+    setDialogOpen(close);
+  };
+
+  const handleMoreClose = () => {
+    setDrawerOpen(true);
+  };
 
   const {
     handleSubmit,
@@ -122,8 +160,7 @@ const SelectorBuilder = (props: Props) => {
     reset();
     setSelectedPublicationId(publicationIdRow);
     setValue("publicationId", publicationIdRow, { shouldValidate: true });
-  }, [publicationIdRow, setValue, reset ]);
-
+  }, [publicationIdRow, setValue, reset]);
 
   const onSubmit: SubmitHandler<IFormInputs> = async () => {
     if (matchingElements.length < MATCHING_CAP_LIMIT) {
@@ -132,13 +169,15 @@ const SelectorBuilder = (props: Props) => {
         message: "You have no matching capabilities",
         severity: "info",
       });
-
       return;
     }
-    if (description.length > 255 ) return ;
+    if (description.length > 255) return;
+    setDialogOpen(true);
+    if (dialogMessage) return;
+
     const bodyData = {
       selector: selector,
-      description: description
+      description: description,
     };
 
     const response = await createArtifacts(
@@ -151,25 +190,37 @@ const SelectorBuilder = (props: Props) => {
       setFeedback({
         feedback: true,
         message: `${label} successfully created`,
-        severity: "success"
+        severity: "success",
       });
-      await router.push(label === "Delivery" ? '/deliveries' : '/subscriptions');
+      await router.push(
+        label === "Delivery" ? "/deliveries" : "/subscriptions"
+      );
     } else {
-      const errorData = await response.json();
-      const errorMessage = errorData.message || `${label} could not be created, try again!`;
+      if (response.statusText === "Conflict") {
+        setFeedback({
+          feedback: true,
+          message: `${label} already exists!`,
+          severity: "warning",
+        });
+      } else {
+        const errorData = await response.json();
+        const errorMessage =
+          errorData.message || `${label} could not be created, try again!`;
 
-      setFeedback({
-        feedback: true,
-        message: errorMessage,
-        severity: "warning"
-      });
+        setFeedback({
+          feedback: true,
+          message: errorMessage,
+          severity: "warning",
+        });
+      }
     }
   };
   const handleReset = () => {
     reset();
-    setSelectedPublicationId('');
-    setDescription('');
+    setSelectedPublicationId("");
+    setDescription("");
     setDescriptionError(false);
+    setDialogOpen(false);
   };
 
   const handleVerify = () => {
@@ -186,7 +237,10 @@ const SelectorBuilder = (props: Props) => {
     setOpen(false);
   };
 
-  const handleSnackClose = (_event?: React.SyntheticEvent | Event, reason?: string) => {
+  const handleSnackClose = (
+    _event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
     if (reason === "clickaway") {
       return;
     }
@@ -213,7 +267,7 @@ const SelectorBuilder = (props: Props) => {
 
   return (
     <>
-      <StyledCard variant={"outlined"} sx={{boxShadow: 2}}>
+      <StyledCard variant={"outlined"} sx={{ boxShadow: 2 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <StyledFormControl>
             <Box sx={{ display: "flex", gap: 1 }}>
@@ -229,11 +283,31 @@ const SelectorBuilder = (props: Props) => {
                       const userInput = e.target.value;
                       field.onChange(userInput);
                       setSelectedPublicationId(userInput);
-                     }
-                    }
+                    }}
                     disabled={advancedMode}
                     fullWidth
                     label="Publication ID"
+                    slotProps={{
+                      input: {
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Tooltip
+                              title="Publication ID is a unique identifier and is concatenation of publisherId with a ':' between e.g. 'DE15608:IVIM_BERLIN_067'."
+                              placement="top"
+                              slotProps={{
+                                tooltip: {
+                                  sx: tooltipFontStyle,
+                                },
+                              }}
+                            >
+                              <IconButton edge="end" size="small">
+                                <InfoOutlinedIcon fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
                   />
                 )}
               />
@@ -245,11 +319,43 @@ const SelectorBuilder = (props: Props) => {
                     <InputLabel>Originating country</InputLabel>
                     <Select multiple label="Originating country" {...field}>
                       {originatingCountries.map((country, index) => (
-                        <MenuItem key={index} value={country.value} sx={menuItemStyles}>
+                        <MenuItem
+                          key={index}
+                          value={country.value}
+                          sx={menuItemStyles}
+                        >
                           {country.value}
                         </MenuItem>
                       ))}
                     </Select>
+                    <Box
+                      position="absolute"
+                      right={30}
+                      top="50%"
+                      sx={{
+                        transform: "translateY(-50%)",
+                        pointerEvents: "auto",
+                      }}
+                    >
+                      <Tooltip
+                        title="Country code (based on ISO 3166-1 alpha-2). Country code where the payload message is created"
+                        arrow
+                        slotProps={{
+                          tooltip: {
+                            sx: tooltipFontStyle,
+                          },
+                        }}
+                      >
+                        <IconButton
+                          size="small"
+                          sx={{
+                            p: 0.5,
+                          }}
+                        >
+                          <InfoOutlinedIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
                   </FormControl>
                 )}
               />
@@ -259,18 +365,47 @@ const SelectorBuilder = (props: Props) => {
                 name="messageType"
                 control={control}
                 render={({ field }) => (
-                  <FormControl
-                    fullWidth
-                    disabled={advancedMode}
-                  >
+                  <FormControl fullWidth disabled={advancedMode}>
                     <InputLabel>Message type</InputLabel>
                     <Select {...field} multiple label="Message type">
                       {messageTypes.map((messageType, index) => (
-                        <MenuItem key={index} value={messageType.value} sx={menuItemStyles}>
+                        <MenuItem
+                          key={index}
+                          value={messageType.value}
+                          sx={menuItemStyles}
+                        >
                           {messageType.value}
                         </MenuItem>
                       ))}
                     </Select>
+                    <Box
+                      position="absolute"
+                      right={30}
+                      top="35%"
+                      sx={{
+                        transform: "translateY(-50%)",
+                        pointerEvents: "auto",
+                      }}
+                    >
+                      <Tooltip
+                        title="Message type is the type of the published message"
+                        arrow
+                        slotProps={{
+                          tooltip: {
+                            sx: tooltipFontStyle,
+                          },
+                        }}
+                      >
+                        <IconButton
+                          size="small"
+                          sx={{
+                            p: 0.5,
+                          }}
+                        >
+                          <InfoOutlinedIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
                   </FormControl>
                 )}
               />
@@ -290,8 +425,13 @@ const SelectorBuilder = (props: Props) => {
                       {...field}
                     >
                       {causeCodes.map((country, index) => (
-                        <MenuItem key={index} value={country.value} sx={menuItemStyles}>
-                          {country.value}{country.label ? ':' : ''} {country.label}
+                        <MenuItem
+                          key={index}
+                          value={country.value}
+                          sx={menuItemStyles}
+                        >
+                          {country.value}
+                          {country.label ? ":" : ""} {country.label}
                         </MenuItem>
                       ))}
                     </Select>
@@ -311,6 +451,27 @@ const SelectorBuilder = (props: Props) => {
                       fullWidth
                       disabled={advancedMode}
                       label="publisher name"
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <Tooltip
+                                title="Publisher name is the identifier for the datex message distributer and is btained from the national identifier section of the datex document."
+                                placement="top"
+                                slotProps={{
+                                  tooltip: {
+                                    sx: tooltipFontStyle,
+                                  },
+                                }}
+                              >
+                                <IconButton edge="end" size="small">
+                                  <InfoOutlinedIcon fontSize="small" />
+                                </IconButton>
+                              </Tooltip>
+                            </InputAdornment>
+                          ),
+                        },
+                      }}
                     />
                   )}
                 />
@@ -325,6 +486,28 @@ const SelectorBuilder = (props: Props) => {
                       fullWidth
                       disabled={advancedMode}
                       label="publication type"
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <Tooltip
+                                title="Only applies for DATEX2 publications. Publication type (only one) E.g: SituationPublication or MeasuredDataPublication
+or VmsPublication"
+                                placement="top"
+                                slotProps={{
+                                  tooltip: {
+                                    sx: tooltipFontStyle,
+                                  },
+                                }}
+                              >
+                                <IconButton edge="end" size="small">
+                                  <InfoOutlinedIcon fontSize="small" />
+                                </IconButton>
+                              </Tooltip>
+                            </InputAdornment>
+                          ),
+                        },
+                      }}
                     />
                   )}
                 />
@@ -340,18 +523,46 @@ const SelectorBuilder = (props: Props) => {
                     {...field}
                     label="Quadtree"
                     fullWidth
-                    onChange={handleQuadtree(setError, setValue, clearErrors, setPredefinedQuadtree, resetField)}
+                    onChange={handleQuadtree(
+                      setError,
+                      setValue,
+                      clearErrors,
+                      setPredefinedQuadtree,
+                      resetField,
+                    )}
                     disabled={advancedMode}
                     error={Boolean(errors.quadTree)}
                     sx={{ marginRight: 1 }}
                     helperText={
                       "Only comma (,) separated numbers between 0-3 is allowed"
                     }
+                    slotProps={{
+                      input: {
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Tooltip
+                              title="Relevant spatial index location of the C-ITS message. If a larger area is needed, you need to chain multiple quadTree values together,
+                            separated by a comma."
+                              placement="top"
+                              slotProps={{
+                                tooltip: {
+                                  sx: tooltipFontStyle,
+                                },
+                              }}
+                            >
+                              <IconButton edge="end" size="small">
+                                <InfoOutlinedIcon fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
                   />
                 )}
               />
               <StyledButton
-                sx={{mt:-1}}
+                sx={{ mt: -1 }}
                 color="buttonThemeColor"
                 variant="outlined"
                 disabled={!!getFieldState("quadTree").error || advancedMode}
@@ -368,10 +579,36 @@ const SelectorBuilder = (props: Props) => {
                 value={description}
                 label="Description"
                 onChange={(event) =>
-                  handleDescription(event, setDescription, setDescriptionError)}
+                  handleDescription(event, setDescription, setDescriptionError)
+                }
                 error={descriptionError}
-                helperText={descriptionError ? "Description exceeds maximum length of 255 characters" : ""}
+                helperText={
+                  descriptionError
+                    ? "Description exceeds maximum length of 255 characters"
+                    : ""
+                }
                 fullWidth
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Tooltip
+                          title="Please note that the description cannot exceed 255 characters."
+                          placement="top"
+                          slotProps={{
+                            tooltip: {
+                              sx: tooltipFontStyle,
+                            },
+                          }}
+                        >
+                          <IconButton edge="end" size="small">
+                            <InfoOutlinedIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                      </InputAdornment>
+                    ),
+                  },
+                }}
               />
             </Box>
             <FormControlLabel
@@ -390,6 +627,28 @@ const SelectorBuilder = (props: Props) => {
                     label="Selector"
                     sx={{ marginRight: 1 }}
                     onChange={handleTextArea}
+                    slotProps={{
+                      input: {
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Tooltip
+                              title="Selector can match to one or more capabilities that belong to the same Service Provider, and declares an endpoint for the a client
+                            to push messages to. The system then routes messages into datastreams dependent on the capability they match."
+                              placement="top"
+                              slotProps={{
+                                tooltip: {
+                                  sx: tooltipFontStyle,
+                                },
+                              }}
+                            >
+                              <IconButton edge="end" size="small">
+                                <InfoOutlinedIcon fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
                   />
                   <StyledButton
                     color="buttonThemeColor"
@@ -399,6 +658,7 @@ const SelectorBuilder = (props: Props) => {
                     Verify
                   </StyledButton>
                 </Box>
+                <Cheatsheet />
               </>
             )}
             <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
@@ -433,6 +693,18 @@ const SelectorBuilder = (props: Props) => {
           severity={feedback.severity}
           open={feedback.feedback}
           handleClose={handleSnackClose}
+        />
+      )}
+      {dialogMessage && (
+        <ConfirmSubDialog
+          open={dialogOpen}
+          actorCommonName={session?.user.commonName as string}
+          handleMoreClose={handleMoreClose}
+          handleDialog={handleClickClose}
+          selector={selector}
+          description={description}
+          text={subscriptionConfirmationText}
+          form="SelectorBuilder"
         />
       )}
     </>
