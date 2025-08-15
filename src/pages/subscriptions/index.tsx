@@ -21,8 +21,6 @@ import AddButton from "@/components/shared/actions/AddButton";
 import { performRefetch } from "@/lib/performRefetch";
 import { useQueryClient } from "@tanstack/react-query";
 import SearchBox from "@/components/shared/SearchBox";
-import MultipleDeleteSubDialog from "@/components/shared/actions/MultipleDeleteSubDialog";
-import { tooltipFontStyle } from "@/components/shared/styles/TooltipFontStyle";
 
 export default function Subscriptions() {
   const { data: session } = useSession();
@@ -37,12 +35,6 @@ export default function Subscriptions() {
   const [shouldRefreshAfterDelete, setShouldRefreshAfterDelete] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const [searchId, setSearchId] = useState("");
-  const [subRows, setSubRows] = React.useState<ExtendedSubscription[]>([]);
-  const [selectedSubscriptionIds, setSelectedSubscriptionIds] = useState(() => new Set<string>());
-  const [selectedSubscriptionIdsRow, setSelectedSubscriptionIdsRow] =  useState<string>("");
-
-  const isAllCheckboxSelected = subRows.length > 0 && selectedSubscriptionIds.size === subRows.length;
-
 
   useEffect(() => {
     if (isDeleted) {
@@ -61,6 +53,13 @@ export default function Subscriptions() {
       clearTimeout(timeout);
     };
   }, [shouldRefreshAfterDelete, refetch]);
+
+  const handleDelete = (subscription: ExtendedSubscription, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.stopPropagation();
+    setDrawerOpen(false);
+    setSubscriptionRow(subscription);
+    setOpen(true);
+  };
 
   const handleMore = (subscription: ExtendedSubscription) => {
     setSubscriptionRow(subscription);
@@ -93,43 +92,6 @@ export default function Subscriptions() {
     : rows;
 
   const tableHeaders: GridColDef[] = [
-    {
-      field: 'select',
-      headerName: '',
-      width: 80,
-      sortable: false,
-      disableColumnMenu: true,
-      renderHeader: () => (
-        <Box display="flex" alignItems="left">
-          <Checkbox
-            checked={isAllCheckboxSelected}
-            indeterminate={selectedSubscriptionIds.size > 0 && !isAllCheckboxSelected}
-            onChange={(event) => handleToggleAll(event)}
-          />
-          <Tooltip title="Delete selected subscriptions" slotProps={{
-            tooltip: {
-              sx: tooltipFontStyle,
-            },
-          }}>
-            <span>
-              <IconButton
-                sx={{ ml: '-10px', mt: '1px' }}
-                onClick={handleCheckboxDelete}
-                disabled={selectedSubscriptionIds.size === 0}
-              >
-                <DeleteIcon fontSize="medium" />
-              </IconButton>
-            </span>
-          </Tooltip>
-        </Box>
-      ),
-      renderCell: (params: GridRenderCellParams) => (
-        <Checkbox
-          checked={selectedSubscriptionIds.has(params.row.id)}
-          onChange={(event) => handleCheckboxChange(params.row.id, event)}
-        />
-      ),
-    },
     {
       ...dataGridTemplate,
       field: "id",
@@ -183,6 +145,9 @@ export default function Subscriptions() {
       renderCell: (params) => {
         return (
           <Box>
+            <IconButton onClick={(event) => handleDelete(params.row, event)}>
+              <DeleteIcon />
+            </IconButton>
             <IconButton onClick={() => handleMore(params.row)}>
               <MoreVertIcon />
             </IconButton>
@@ -191,46 +156,6 @@ export default function Subscriptions() {
       },
     },
   ];
-
-  const handleToggleAll = ( event: React.ChangeEvent<HTMLInputElement>) => {
-    event.stopPropagation();
-    const allSubscriptionIds = rows.map((r) => r.id);
-    const currentSubscriptionSelected = new Set(selectedSubscriptionIds);
-    const isAllCurrentlySelected = allSubscriptionIds.every((id) => currentSubscriptionSelected.has(id));
-
-    if (isAllCurrentlySelected) {
-      setSelectedSubscriptionIds(new Set<string>());
-    } else {
-      const allSubscriptionIds = rows.map((r) => r.id);
-      setSelectedSubscriptionIds(new Set<string>(allSubscriptionIds));
-    }
-  };
-
-  const handleCheckboxChange = (
-    id: string,
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    event.stopPropagation();
-    setDrawerOpen(false);
-    setSelectedSubscriptionIds((prev) => {
-      const newSet = new Set<string>(prev);
-      if (newSet.has(id)) {
-        newSet.delete(id);
-      } else {
-        newSet.add(id);
-      }
-      return newSet;
-    });
-  };
-
-  const handleCheckboxDelete = () => {
-    const ids = Array.from(selectedSubscriptionIds);
-
-    const idString = ids.join(",");
-    setSelectedSubscriptionIdsRow(idString);
-    setOpen(true);
-    setSelectedSubscriptionIds(new Set<string>());
-  };
 
   return (
     <Box flex={1}>
@@ -272,15 +197,6 @@ export default function Subscriptions() {
         actorCommonName={session?.user.commonName as string}
         handleDeletedItem={handleDeletedItem}
         text="Subscription"
-        handleMoreClose={handleMoreClose}
-      />
-
-      <MultipleDeleteSubDialog
-        itemId={selectedSubscriptionIdsRow as string}
-        handleDialog={handleClickClose}
-        open={open}
-        actorCommonName={session?.user.commonName as string}
-        handleDeletedItem={handleDeletedItem}
         handleMoreClose={handleMoreClose}
       />
     </Box>
