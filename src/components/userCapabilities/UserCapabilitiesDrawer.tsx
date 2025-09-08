@@ -22,8 +22,7 @@ type Props = {
   open: boolean;
   handleMoreClose: () => void;
   handleDeletedItem: (deleted: boolean) => void;
-  onSwitchChange: (rowId: number, checked: boolean) => void;
-
+  onSwitchChange: (checked: boolean) => void;
 };
 
 const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDeletedItem, onSwitchChange }: Props) => {
@@ -38,7 +37,7 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
   const [descriptionError, setDescriptionError] = useState(false);
   const [description, setDescription] = useState<string>("");
   const selector = `(publicationId = '${capability.publicationId}')`;
-  const [dlqueue, seDlqueue] = useState<boolean>(false);
+  const [dlqueue, setDlqueue] = useState<boolean>(false);
 
 
   const handleSnackClose = (
@@ -66,7 +65,8 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
   }
 
   const enableDlqueue = (event: React.ChangeEvent<HTMLInputElement>) => {
-    seDlqueue(event.target.checked);
+    setDlqueue(event.target.checked);
+    onSwitchChange(event.target.checked);
   };
 
   const saveDelivery = async (name: string, selector: string, dlqueue: boolean) => {

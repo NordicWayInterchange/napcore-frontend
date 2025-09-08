@@ -33,7 +33,7 @@ export default function Capabilities() {
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const [searchId, setSearchId] = useState("");
-  const [switchStates, setSwitchStates] = useState<Record<number, boolean>>({});
+  const [switchChecked, setSwitchChecked] = useState(false);
 
   useEffect(() => {
     if (isDeleted) {
@@ -42,11 +42,8 @@ export default function Capabilities() {
     }
   }, [isDeleted, refetch]);
 
-  const handleSwitchChange = (rowId: number, checked: boolean) => {
-    setSwitchStates(prev => ({
-      ...prev,
-      [rowId]: checked,
-    }));
+  const handleSwitchChange = (checked: boolean) => {
+    setSwitchChecked(checked);
   };
 
   const handleDelete = (capability: ExtendedCapability, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
