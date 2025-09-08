@@ -11,6 +11,7 @@ export type Endpoint = {
   port: number;
   target: string;
   source: string;
+  dlqName: string;
 };
 
 export type DeliveriesDelivery = {

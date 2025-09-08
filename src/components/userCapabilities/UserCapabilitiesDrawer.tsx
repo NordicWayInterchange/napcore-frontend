@@ -82,7 +82,6 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
       dlqueue: dlqueue,
     };
 
-    console.log(bodyData);
     const response = await createDelivery(name, bodyData);
 
     if (response.ok) {
