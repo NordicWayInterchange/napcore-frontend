@@ -283,10 +283,12 @@ const SelectorBuilder = (props: Props) => {
       <StyledCard variant={"outlined"} sx={{ boxShadow: 2 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <StyledFormControl>
-            <FormControlLabel
-              control={<Switch onChange={enableDlqueue} />}
-              label="Enable dead letter queue (DLQ) for this delivery"
-            />
+            {label === "Delivery" && (
+              <FormControlLabel
+                control={<Switch onChange={enableDlqueue} />}
+                label="Enable dead letter queue (DLQ) for this delivery"
+              />
+            )}
             <Box sx={{ display: "flex", gap: 1 }}>
               <Controller
                 name="publicationId"
