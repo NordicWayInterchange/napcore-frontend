@@ -62,6 +62,7 @@ async function createArtifacts(
   name: string,
   bodyData: Object
 ) {
+  console.log(bodyData);
   return await (artifactType === "Delivery"
     ? createDelivery(name, bodyData)
     : createSubscription(name, bodyData));
@@ -91,6 +92,7 @@ const SelectorBuilder = (props: Props) => {
   });
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+  const [dlqueue, seDlqueue] = useState<boolean>(false);
 
   const { data: session } = useSession();
   const router = useRouter();
@@ -127,6 +129,7 @@ const SelectorBuilder = (props: Props) => {
       publicationId: "",
       quadTree: [],
       description: "",
+      dlqueue: false
     },
   });
 
@@ -175,15 +178,22 @@ const SelectorBuilder = (props: Props) => {
     setDialogOpen(true);
     if (dialogMessage) return;
 
-    const bodyData = {
+    const deliveryBodyData = {
+      selector: selector,
+      description: description,
+      dlqueue: dlqueue,
+    };
+
+    const subscriptionBodyData = {
       selector: selector,
       description: description,
     };
 
+    console.log(label);
     const response = await createArtifacts(
       label,
       session?.user.commonName as string,
-      bodyData
+      label === "Delivery" ? deliveryBodyData : subscriptionBodyData
     );
 
     if (response.ok) {
@@ -265,11 +275,16 @@ const SelectorBuilder = (props: Props) => {
     }
   };
 
+  const enableDlqueue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    seDlqueue(event.target.checked);
+  };
+
   return (
     <>
       <StyledCard variant={"outlined"} sx={{ boxShadow: 2 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <StyledFormControl>
+            <Switch onChange={enableDlqueue}/>
             <Box sx={{ display: "flex", gap: 1 }}>
               <Controller
                 name="publicationId"

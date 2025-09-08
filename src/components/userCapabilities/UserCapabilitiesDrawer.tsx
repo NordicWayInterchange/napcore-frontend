@@ -2,7 +2,7 @@ import {
   Box,
   Drawer, FormControl,
   List,
-  ListItem, TextField,
+  ListItem, Switch, TextField,
   Toolbar, Typography
 } from "@mui/material";
 import React, { useState } from "react";
@@ -22,9 +22,11 @@ type Props = {
   open: boolean;
   handleMoreClose: () => void;
   handleDeletedItem: (deleted: boolean) => void;
+  onSwitchChange: (rowId: number, checked: boolean) => void;
+
 };
 
-const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDeletedItem }: Props) => {
+const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDeletedItem, onSwitchChange }: Props) => {
   const { data: session } = useSession();
   const [openMap, setOpenMap] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
@@ -36,6 +38,8 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
   const [descriptionError, setDescriptionError] = useState(false);
   const [description, setDescription] = useState<string>("");
   const selector = `(publicationId = '${capability.publicationId}')`;
+  const [dlqueue, seDlqueue] = useState<boolean>(false);
+
 
   const handleSnackClose = (
     _event?: React.SyntheticEvent | Event,
@@ -61,13 +65,20 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
     setDescriptionError(false);
   }
 
-  const saveDelivery = async (name: string, selector: string) => {
+  const enableDlqueue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    seDlqueue(event.target.checked);
+  };
+
+  const saveDelivery = async (name: string, selector: string, dlqueue: boolean) => {
     if (description.length > 255 ) return ;
 
     const bodyData = {
       selector: selector,
-      description: description
+      description: description,
+      dlqueue: dlqueue,
     };
+
+    console.log(bodyData);
     const response = await createDelivery(name, bodyData);
 
     if (response.ok) {
@@ -120,6 +131,7 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
               <StyledCard variant={"outlined"}>
                 <Typography sx={{ mb:2 }}>Description to create a delivery</Typography>
                 <div>
+                  <Switch onChange={enableDlqueue}/>
                   <FormControl fullWidth>
                     <TextField
                       name="description"
@@ -143,7 +155,7 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
                 color={"buttonThemeColor"}
                 disableElevation
                 onClick={() =>
-                  saveDelivery(session?.user.commonName as string, selector)
+                  saveDelivery(session?.user.commonName as string, selector, dlqueue)
                 }
               >
                 Deliver
