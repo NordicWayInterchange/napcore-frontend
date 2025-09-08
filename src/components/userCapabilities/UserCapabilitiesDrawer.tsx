@@ -5,7 +5,7 @@ import {
   ListItem, Switch, TextField,
   Toolbar, Typography
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ExtendedCapability } from "@/types/capability";
 import { useSession } from "next-auth/react";
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
@@ -39,6 +39,9 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
   const selector = `(publicationId = '${capability.publicationId}')`;
   const [dlqueue, setDlqueue] = useState<boolean>(false);
 
+  useEffect(() => {
+    setDlqueue(false);
+  }, []);
 
   const handleSnackClose = (
     _event?: React.SyntheticEvent | Event,
@@ -65,11 +68,12 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
   }
 
   const enableDlqueue = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDlqueue(event.target.checked);
-    onSwitchChange(event.target.checked);
+    const isdlqueueChecked = event.target.checked;
+    setDlqueue(isdlqueueChecked);
+    onSwitchChange(isdlqueueChecked);
   };
 
-  const saveDelivery = async (name: string, selector: string, dlqueue: boolean) => {
+  const saveDelivery = async (name: string, selector: string) => {
     if (description.length > 255 ) return ;
 
     const bodyData = {
@@ -131,7 +135,7 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
               <StyledCard variant={"outlined"}>
                 <Typography sx={{ mb:2 }}>Description to create a delivery</Typography>
                 <div>
-                  <Switch onChange={enableDlqueue}/>
+                  <Switch checked={dlqueue} onChange={enableDlqueue}/>
                   <FormControl fullWidth>
                     <TextField
                       name="description"
@@ -155,7 +159,7 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
                 color={"buttonThemeColor"}
                 disableElevation
                 onClick={() =>
-                  saveDelivery(session?.user.commonName as string, selector, dlqueue)
+                  saveDelivery(session?.user.commonName as string, selector)
                 }
               >
                 Deliver
