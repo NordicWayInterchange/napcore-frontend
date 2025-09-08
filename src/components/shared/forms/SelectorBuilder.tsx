@@ -128,8 +128,7 @@ const SelectorBuilder = (props: Props) => {
       originatingCountry: [],
       publicationId: "",
       quadTree: [],
-      description: "",
-      dlqueue: false
+      description: ""
     },
   });
 
@@ -284,7 +283,10 @@ const SelectorBuilder = (props: Props) => {
       <StyledCard variant={"outlined"} sx={{ boxShadow: 2 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <StyledFormControl>
-            <Switch onChange={enableDlqueue}/>
+            <FormControlLabel
+              control={<Switch onChange={enableDlqueue} />}
+              label="Enable dead letter queue (DLQ) for this delivery"
+            />
             <Box sx={{ display: "flex", gap: 1 }}>
               <Controller
                 name="publicationId"

@@ -8,5 +8,4 @@ export interface IFormInputs {
   publicationId: string;
   quadTree: string[];
   description: string;
-  dlqueue: boolean;
 }

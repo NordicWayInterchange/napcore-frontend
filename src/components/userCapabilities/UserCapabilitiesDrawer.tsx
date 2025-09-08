@@ -1,6 +1,6 @@
 import {
-  Box,
-  Drawer, FormControl,
+  Box, Divider,
+  Drawer, FormControl, FormControlLabel,
   List,
   ListItem, Switch, TextField,
   Toolbar, Typography
@@ -135,7 +135,11 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
               <StyledCard variant={"outlined"}>
                 <Typography sx={{ mb:2 }}>Description to create a delivery</Typography>
                 <div>
-                  <Switch checked={dlqueue} onChange={enableDlqueue}/>
+                  <FormControlLabel
+                    control={<Switch checked={dlqueue} onChange={enableDlqueue} />}
+                    label="Enable dead letter queue (DLQ) for this delivery"
+                  />
+                  <Divider style={{ margin: '5px 0', visibility: 'hidden' }}/>
                   <FormControl fullWidth>
                     <TextField
                       name="description"
