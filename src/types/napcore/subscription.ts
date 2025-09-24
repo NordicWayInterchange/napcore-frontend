@@ -15,6 +15,7 @@ export type Endpoint = {
   target: string;
   maxBandwidth: number;
   maxMessageRate: number;
+  dlqName: string;
 };
 
 export type SubscriptionsSubscription = {

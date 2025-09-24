@@ -91,6 +91,7 @@ const SelectorBuilder = (props: Props) => {
   });
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+  const [dlqueue, seDlqueue] = useState<boolean>(false);
 
   const { data: session } = useSession();
   const router = useRouter();
@@ -126,7 +127,7 @@ const SelectorBuilder = (props: Props) => {
       originatingCountry: [],
       publicationId: "",
       quadTree: [],
-      description: "",
+      description: ""
     },
   });
 
@@ -175,7 +176,13 @@ const SelectorBuilder = (props: Props) => {
     setDialogOpen(true);
     if (dialogMessage) return;
 
-    const bodyData = {
+    const deliveryBodyData = {
+      selector: selector,
+      description: description,
+      dlqueue: dlqueue,
+    };
+
+    const subscriptionBodyData = {
       selector: selector,
       description: description,
     };
@@ -183,7 +190,7 @@ const SelectorBuilder = (props: Props) => {
     const response = await createArtifacts(
       label,
       session?.user.commonName as string,
-      bodyData
+      label === "Delivery" ? deliveryBodyData : subscriptionBodyData
     );
 
     if (response.ok) {
@@ -265,11 +272,39 @@ const SelectorBuilder = (props: Props) => {
     }
   };
 
+  const enableDlqueue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    seDlqueue(event.target.checked);
+  };
+
   return (
     <>
       <StyledCard variant={"outlined"} sx={{ boxShadow: 2 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <StyledFormControl>
+            {label === "Delivery" && (
+              <FormControlLabel
+                control={<Switch onChange={enableDlqueue} />}
+                label={
+                  <Box display="flex" alignItems="center">
+                    <span>
+                      Enable dead letter queue (DLQ) for this delivery
+                    </span>
+                    <Tooltip
+                      slotProps={{
+                        tooltip: {
+                          sx: tooltipFontStyle,
+                        },
+                      }}
+                      title="Messages that couldn't be delivered are moved to dlqueue"
+                    >
+                      <IconButton size="small">
+                        <InfoOutlinedIcon fontSize="small" sx={{ mt: -2 }} />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                }
+              />
+            )}
             <Box sx={{ display: "flex", gap: 1 }}>
               <Controller
                 name="publicationId"

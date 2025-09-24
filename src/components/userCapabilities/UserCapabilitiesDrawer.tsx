@@ -1,11 +1,11 @@
 import {
-  Box,
-  Drawer, FormControl,
+  Box, Divider,
+  Drawer, FormControl, FormControlLabel,
   List,
-  ListItem, TextField,
+  ListItem, Switch, TextField,
   Toolbar, Typography
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ExtendedCapability } from "@/types/capability";
 import { useSession } from "next-auth/react";
 import DeleteSubDialog from "@/components/shared/actions/DeleteSubDialog";
@@ -22,9 +22,10 @@ type Props = {
   open: boolean;
   handleMoreClose: () => void;
   handleDeletedItem: (deleted: boolean) => void;
+  onSwitchChange: (checked: boolean) => void;
 };
 
-const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDeletedItem }: Props) => {
+const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDeletedItem, onSwitchChange }: Props) => {
   const { data: session } = useSession();
   const [openMap, setOpenMap] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
@@ -36,6 +37,11 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
   const [descriptionError, setDescriptionError] = useState(false);
   const [description, setDescription] = useState<string>("");
   const selector = `(publicationId = '${capability.publicationId}')`;
+  const [dlqueue, setDlqueue] = useState<boolean>(false);
+
+  useEffect(() => {
+    setDlqueue(false);
+  }, []);
 
   const handleSnackClose = (
     _event?: React.SyntheticEvent | Event,
@@ -61,13 +67,21 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
     setDescriptionError(false);
   }
 
+  const enableDlqueue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const isdlqueueChecked = event.target.checked;
+    setDlqueue(isdlqueueChecked);
+    onSwitchChange(isdlqueueChecked);
+  };
+
   const saveDelivery = async (name: string, selector: string) => {
     if (description.length > 255 ) return ;
 
     const bodyData = {
       selector: selector,
-      description: description
+      description: description,
+      dlqueue: dlqueue,
     };
+
     const response = await createDelivery(name, bodyData);
 
     if (response.ok) {
@@ -120,6 +134,11 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
               <StyledCard variant={"outlined"}>
                 <Typography sx={{ mb:2 }}>Description to create a delivery</Typography>
                 <div>
+                  <FormControlLabel
+                    control={<Switch checked={dlqueue} onChange={enableDlqueue} />}
+                    label="Enable dead letter queue (DLQ) for this delivery"
+                  />
+                  <Divider style={{ margin: '5px 0', visibility: 'hidden' }}/>
                   <FormControl fullWidth>
                     <TextField
                       name="description"

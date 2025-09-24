@@ -43,7 +43,7 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
     <>
       <Drawer
         sx={drawerStyle}
-        slotProps={{paper: {sx: {backgroundColor: "#F9F9F9"}}}}
+        slotProps={{ paper: { sx: { backgroundColor: "#F9F9F9" } } }}
         variant="temporary"
         anchor="right"
         open={open}
@@ -64,7 +64,7 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
                   color={
                     statusChips[
                       item.status.toString() as keyof typeof statusChips
-                      ] as any
+                    ] as any
                   }
                   label={item.status}
                 />
@@ -82,9 +82,20 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
                   </Box>
                   <Box>
                     <ListItemText
-                      primary={label == "Delivery" ? "Last updated" : "Last status change" }
-                      secondary={ label == "Delivery" ? timeConverter((item as ExtendedDelivery).lastUpdatedTimestamp) :
-                        timeConverter((item as ExtendedSubscription).lastStatusChange)}
+                      primary={
+                        label == "Delivery"
+                          ? "Last updated"
+                          : "Last status change"
+                      }
+                      secondary={
+                        label == "Delivery"
+                          ? timeConverter(
+                              (item as ExtendedDelivery).lastUpdatedTimestamp,
+                            )
+                          : timeConverter(
+                              (item as ExtendedSubscription).lastStatusChange,
+                            )
+                      }
                     />
                   </Box>
                 </Box>
@@ -131,12 +142,31 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
                         input: {
                           endAdornment: (
                             <InputAdornment position="end">
-                              <ContentCopy value={item.endpoints[0].port.toString()} />,
+                              <ContentCopy
+                                value={item.endpoints[0].port.toString()}
+                              />
+                              ,
                             </InputAdornment>
                           ),
                         },
                       }}
                     />
+                    {label == "Delivery" && item.endpoints[0].dlqName?.toString() && (
+                      <TextField
+                        value={item.endpoints[0].dlqName?.toString() || ""}
+                        label= "Dead letter queue name"
+                        margin="normal"
+                        slotProps={{
+                          input: {
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <ContentCopy value={getAttribute()} />
+                              </InputAdornment>
+                            ),
+                          },
+                        }}
+                      />
+                    )}
                   </FormControl>
                 </StyledCard>
               </ListItem>

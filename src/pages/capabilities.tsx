@@ -33,6 +33,7 @@ export default function Capabilities() {
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const [searchId, setSearchId] = useState("");
+  const [switchChecked, setSwitchChecked] = useState(false);
 
   useEffect(() => {
     if (isDeleted) {
@@ -40,6 +41,10 @@ export default function Capabilities() {
       setIsDeleted(false);
     }
   }, [isDeleted, refetch]);
+
+  const handleSwitchChange = (checked: boolean) => {
+    setSwitchChecked(checked);
+  };
 
   const handleDelete = (capability: ExtendedCapability, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.stopPropagation();
@@ -165,6 +170,7 @@ export default function Capabilities() {
           open={drawerOpen}
           capability={userCapabilityRow as ExtendedCapability}
           handleDeletedItem={handleDeletedItem}
+          onSwitchChange={handleSwitchChange}
         />
       )}
       <DeleteSubDialog
