@@ -62,7 +62,6 @@ async function createArtifacts(
   name: string,
   bodyData: Object
 ) {
-  console.log(bodyData);
   return await (artifactType === "Delivery"
     ? createDelivery(name, bodyData)
     : createSubscription(name, bodyData));
@@ -188,7 +187,6 @@ const SelectorBuilder = (props: Props) => {
       description: description,
     };
 
-    console.log(label);
     const response = await createArtifacts(
       label,
       session?.user.commonName as string,
@@ -286,7 +284,25 @@ const SelectorBuilder = (props: Props) => {
             {label === "Delivery" && (
               <FormControlLabel
                 control={<Switch onChange={enableDlqueue} />}
-                label="Enable dead letter queue (DLQ) for this delivery"
+                label={
+                  <Box display="flex" alignItems="center">
+                    <span>
+                      Enable dead letter queue (DLQ) for this delivery
+                    </span>
+                    <Tooltip
+                      slotProps={{
+                        tooltip: {
+                          sx: tooltipFontStyle,
+                        },
+                      }}
+                      title="Messages that couldn't be delivered are moved to dlqueue"
+                    >
+                      <IconButton size="small">
+                        <InfoOutlinedIcon fontSize="small" sx={{ mt: -2 }} />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                }
               />
             )}
             <Box sx={{ display: "flex", gap: 1 }}>
