@@ -160,7 +160,7 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
                           input: {
                             endAdornment: (
                               <InputAdornment position="end">
-                                <ContentCopy value={getAttribute()} />
+                                <ContentCopy value={item.endpoints[0].dlqName} />
                               </InputAdornment>
                             ),
                           },
