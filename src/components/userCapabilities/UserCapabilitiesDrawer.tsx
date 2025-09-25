@@ -1,9 +1,9 @@
 import {
   Box, Divider,
-  Drawer, FormControl, FormControlLabel,
+  Drawer, FormControl, FormControlLabel, IconButton,
   List,
   ListItem, Switch, TextField,
-  Toolbar, Typography
+  Toolbar, Tooltip, Typography
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { ExtendedCapability } from "@/types/capability";
@@ -16,6 +16,8 @@ import { IFeedback } from "@/interface/IFeedback";
 import Snackbar from "@/components/shared/feedback/Snackbar";
 import { drawerStyle, StyledCard, StyledButton } from "@/components/shared/styles/StyledSelectorBuilder";
 import { handleDescription } from "@/lib/handleDescription";
+import { tooltipFontStyle } from "@/components/shared/styles/TooltipFontStyle";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 type Props = {
   capability: ExtendedCapability;
@@ -136,7 +138,25 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
                 <div>
                   <FormControlLabel
                     control={<Switch checked={dlqueue} onChange={enableDlqueue} />}
-                    label="Enable dead letter queue (DLQ) for this delivery"
+                    label={
+                      <Box display="flex" alignItems="center">
+                    <span>
+                      Enable dead letter queue (DLQ) for this delivery
+                    </span>
+                        <Tooltip
+                          slotProps={{
+                            tooltip: {
+                              sx: tooltipFontStyle,
+                            },
+                          }}
+                          title="Messages that couldn't be delivered are moved to dlqueue"
+                        >
+                          <IconButton size="small">
+                            <InfoOutlinedIcon fontSize="small" sx={{ mt: -2 }} />
+                          </IconButton>
+                        </Tooltip>
+                      </Box>
+                    }
                   />
                   <Divider style={{ margin: '5px 0', visibility: 'hidden' }}/>
                   <FormControl fullWidth>

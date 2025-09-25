@@ -154,7 +154,7 @@ const CommonDrawer = ({item, open, handleMoreClose, handleDeletedItem, label }: 
                     {label == "Delivery" && item.endpoints[0].dlqName?.toString() && (
                       <TextField
                         value={item.endpoints[0].dlqName?.toString() || ""}
-                        label= "Dead letter queue name"
+                        label= "Dead letter queue"
                         margin="normal"
                         slotProps={{
                           input: {
