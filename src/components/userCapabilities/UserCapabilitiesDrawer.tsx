@@ -136,28 +136,6 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
               <StyledCard variant={"outlined"}>
                 <Typography sx={{ mb:2 }}>Description to create a delivery</Typography>
                 <div>
-                  <FormControlLabel
-                    control={<Switch checked={dlqueue} onChange={enableDlqueue} />}
-                    label={
-                      <Box display="flex" alignItems="center">
-                    <span>
-                      Enable dead letter queue (DLQ) for this delivery
-                    </span>
-                        <Tooltip
-                          slotProps={{
-                            tooltip: {
-                              sx: tooltipFontStyle,
-                            },
-                          }}
-                          title="Messages that couldn't be delivered are moved to dlqueue"
-                        >
-                          <IconButton size="small">
-                            <InfoOutlinedIcon fontSize="small" sx={{ mt: -2 }} />
-                          </IconButton>
-                        </Tooltip>
-                      </Box>
-                    }
-                  />
                   <Divider style={{ margin: '5px 0', visibility: 'hidden' }}/>
                   <FormControl fullWidth>
                     <TextField
@@ -173,6 +151,29 @@ const UserCapabilitiesDrawer = ({ capability, open, handleMoreClose, handleDelet
                     />
                   </FormControl>
                 </div>
+                <FormControlLabel
+                  control={<Switch checked={dlqueue} onChange={enableDlqueue} />}
+                  sx={{mt: 1 }}
+                  label={
+                    <Box display="flex" alignItems="center">
+                    <span>
+                      Enable dead letter queue (DLQ) for this delivery
+                    </span>
+                      <Tooltip
+                        slotProps={{
+                          tooltip: {
+                            sx: tooltipFontStyle,
+                          },
+                        }}
+                        title="Messages that couldn't be delivered are moved to dlqueue"
+                      >
+                        <IconButton size="small">
+                          <InfoOutlinedIcon fontSize="small" sx={{ mt: -2 }} />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                  }
+                />
               </StyledCard>
             </ListItem>
 

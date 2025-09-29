@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Box, Checkbox, Divider, IconButton, Tooltip } from "@mui/material";
+import { Box, Divider, IconButton } from "@mui/material";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
-import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { GridColDef } from "@mui/x-data-grid";
 import { useSession } from "next-auth/react";
 import { dataGridTemplate } from "@/components/shared/datagrid/DataGridTemplate";
 import DataGrid from "@/components/shared/datagrid/DataGrid";

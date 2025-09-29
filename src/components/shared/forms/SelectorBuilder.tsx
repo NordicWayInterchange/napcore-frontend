@@ -281,30 +281,6 @@ const SelectorBuilder = (props: Props) => {
       <StyledCard variant={"outlined"} sx={{ boxShadow: 2 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <StyledFormControl>
-            {label === "Delivery" && (
-              <FormControlLabel
-                control={<Switch onChange={enableDlqueue} />}
-                label={
-                  <Box display="flex" alignItems="center">
-                    <span>
-                      Enable dead letter queue (DLQ) for this delivery
-                    </span>
-                    <Tooltip
-                      slotProps={{
-                        tooltip: {
-                          sx: tooltipFontStyle,
-                        },
-                      }}
-                      title="Messages that couldn't be delivered are moved to dlqueue"
-                    >
-                      <IconButton size="small">
-                        <InfoOutlinedIcon fontSize="small" sx={{ mt: -2 }} />
-                      </IconButton>
-                    </Tooltip>
-                  </Box>
-                }
-              />
-            )}
             <Box sx={{ display: "flex", gap: 1 }}>
               <Controller
                 name="publicationId"
@@ -695,6 +671,31 @@ or VmsPublication"
                 </Box>
                 <Cheatsheet />
               </>
+            )}
+            {label === "Delivery" && (
+              <FormControlLabel
+                control={<Switch onChange={enableDlqueue} />}
+                sx={{mt: -3 }}
+                label={
+                  <Box display="flex" alignItems="center">
+                    <span>
+                      Enable dead letter queue (DLQ) for this delivery
+                    </span>
+                    <Tooltip
+                      slotProps={{
+                        tooltip: {
+                          sx: tooltipFontStyle,
+                        },
+                      }}
+                      title="Messages that couldn't be delivered are moved to dlqueue"
+                    >
+                      <IconButton size="small">
+                        <InfoOutlinedIcon fontSize="small" sx={{ mt: -2 }} />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                }
+              />
             )}
             <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
               <StyledButton
