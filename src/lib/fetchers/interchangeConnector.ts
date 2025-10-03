@@ -11,7 +11,6 @@ const headers = {
 };
 const tlsAgent = getTLSAgent();
 
-// internals
 const fetchIXN: (
   actorCommonName: string,
   path: string,
@@ -103,7 +102,6 @@ export type basicPostFunction = (params: basicPostParams) => Promise<any>;
 export type basicPatchFunction = (params: basicPatchParams) => Promise<any>;
 export type basicDeleteFunction = (params: basicDeleteParams) => Promise<any>;
 
-// exported functions
 export const fetchNapcoreNetworkCapabilities: basicGetFunction = async (
   params
 ) => {
