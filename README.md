@@ -23,7 +23,7 @@
 ### Development
 
 1. Clone the repository and install packages `npm install`
-2. Copy environment variables and add PFX file in root. The keys and file are provided in a Keeper vault.
+2. Copy environment variables and add PFX file in root.
 3. Available commands:
 
 ```bash
@@ -55,7 +55,7 @@ AUTH0_ISSUER=
 ### Docker
 
 1. Start Docker.
-2. Create and run a shell script with the following content. The keys are provided in a Keeper vault.
+2. Create and run a shell script with the following content.
 
 ```bash
 #!/bin/bash -eu
