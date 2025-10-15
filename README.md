@@ -2,8 +2,17 @@
 
 ---
 
-### License
+## License
+
+---
+
 See full MIT license text [here](license.md).
+
+## Introduction
+
+---
+
+This is a self-help portal for interchange end-users to manage capabilities, subscriptions, deliveries and private channels.
 
 ![architecture drawio (1)](https://github.com/NordicWayInterchange/napcore-frontend/assets/127298906/88333580-19a0-4404-bb15-28c50d0304f5)
 
