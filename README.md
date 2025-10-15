@@ -2,6 +2,9 @@
 
 ---
 
+### License
+See full MIT license text [here](license.md).
+
 ![architecture drawio (1)](https://github.com/NordicWayInterchange/napcore-frontend/assets/127298906/88333580-19a0-4404-bb15-28c50d0304f5)
 
 ## Technologies
