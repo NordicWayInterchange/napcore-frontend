@@ -1,5 +1,8 @@
 import NextAuth from "next-auth";
+/*
 import Auth0Provider from "next-auth/providers/auth0";
+ */
+import Keycloak from "next-auth/providers/keycloak"
 import { escapeString } from "@/lib/escapeString";
 const logger = require("../../../lib/logger");
 
@@ -8,6 +11,7 @@ export const authOptions = {
    * @Description Providers client id/secret
    */
   providers: [
+    /*
     Auth0Provider({
       clientId: process.env.AUTH0_CLIENT_ID,
       clientSecret: process.env.AUTH0_CLIENT_SECRET,
@@ -18,6 +22,20 @@ export const authOptions = {
         },
       },
     }),
+
+     */
+    Keycloak({
+      clientId: process.env.KEYCLOAK_CLIENT_ID,
+      clientSecret: process.env.KEYCLOAK_CLIENT_SECRET,
+      issuer: process.env.KEYCLOAK_ISSUER,
+      authorization: {
+        params: {
+          redirect_url: process.env.NEXTAUTH_URL +  '/api/auth/callback/keycloak',
+          prompt: "login"
+        }
+      }
+    })
+
   ],
 
   session: {

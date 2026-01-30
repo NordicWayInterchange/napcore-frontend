@@ -45,7 +45,7 @@ export default function Login({}: InferGetServerSidePropsType<
         sx={{ textTransform: "none", width: 200, alignSelf: "center" }}
         onClick={() => {
           /*TODO: get from props*/
-          void signIn("auth0");
+          void signIn("keycloak");
         }}
       >
         <Typography>Sign in</Typography>
