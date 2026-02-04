@@ -1,7 +1,4 @@
 import NextAuth from "next-auth";
-/*
-import Auth0Provider from "next-auth/providers/auth0";
- */
 import Keycloak from "next-auth/providers/keycloak"
 import { escapeString } from "@/lib/escapeString";
 const logger = require("../../../lib/logger");
@@ -11,29 +8,20 @@ export const authOptions = {
    * @Description Providers client id/secret
    */
   providers: [
-    /*
-    Auth0Provider({
-      clientId: process.env.AUTH0_CLIENT_ID,
-      clientSecret: process.env.AUTH0_CLIENT_SECRET,
-      issuer: process.env.AUTH0_ISSUER,
-      authorization: {
-        params: {
-          prompt: "login",
-        },
-      },
-    }),
-
-     */
     Keycloak({
+      jwks_endpoint: `${process.env.INTERNAL_KEYCLOAK_URL}/realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/certs`,
+      wellKnown: undefined,
       clientId: process.env.KEYCLOAK_CLIENT_ID,
       clientSecret: process.env.KEYCLOAK_CLIENT_SECRET,
-      issuer: process.env.KEYCLOAK_ISSUER,
+      issuer: `${process.env.EXTERNAL_KEYCLOAK_URL}/realms/${process.env.KEYCLOAK_REALM}`,
       authorization: {
         params: {
-          redirect_url: process.env.NEXTAUTH_URL +  '/api/auth/callback/keycloak',
           prompt: "login"
-        }
-      }
+        },
+        url: `${process.env.EXTERNAL_KEYCLOAK_URL}/realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/auth`
+      },
+      token: `${process.env.INTERNAL_KEYCLOAK_URL}/realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/token`,
+      userInfo: `${process.env.INTERNAL_KEYCLOAK_URL}/realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/userinfo`,
     })
 
   ],
