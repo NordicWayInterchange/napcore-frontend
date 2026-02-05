@@ -13,9 +13,8 @@ import Loading from "@/components/shared/actions/Loading";
 import { addBiqueueAccess } from "@/lib/fetchers/internalFetchers";
 import { IFeedback } from "@/interface/IFeedback";
 import Snackbar from "@/components/shared/feedback/Snackbar";
-import BiQueueEndpointDrawer from "@/components/biQueue/BiQueueEndpointDrawer";
 
-const BiQueue = () => {
+const BiConsumer = () => {
   const { data: session } = useSession();
   const { data: biQueueAccess, isLoading } = useAccessToBiQueue(
     session?.user?.commonName as string,
@@ -49,8 +48,6 @@ const BiQueue = () => {
 
   const handleOpen = (value: boolean) => () => setOpen(value);
 
-  const handleClose = () => setOpen(false);
-
   const handleToggleAccess = async () => {
     const response = await addBiqueueAccess(
       session?.user.commonName as string,
@@ -60,13 +57,13 @@ const BiQueue = () => {
     if (response.ok) {
       setFeedback({
         feedback: true,
-        message: `Bi queue access successfully ${hasAccess ? "revoked" : "granted"}!`,
+        message: `Bi-queue access successfully ${hasAccess ? "revoked" : "granted"}!`,
         severity: "success",
       });
     } else {
       const errorData = await response.json();
       const errorMessage =
-        errorData.message || "Bi queue access could not be granted, try again!";
+        errorData.message || "Bi-queue access could not be granted, try again!";
 
       setFeedback({
         feedback: true,
@@ -83,15 +80,25 @@ const BiQueue = () => {
 
   return (
     <>
-      <Box sx={frontPageCardStyle}>
+      <Box
+        sx={{
+          ...frontPageCardStyle,
+          justifyContent: "left",
+          "@media (min-width:600px)": {
+            flexDirection: "row",
+            maxWidth: "950px",
+          },
+          maxWidth: "950px",
+        }}
+      >
         {biQueueAccess === undefined || isLoading ? (
-          <Loading text="Bi queue access status" />
+          <Loading text="Bi-queue access status" />
         ) : (
           <Box>
             <Stack
               direction="row"
               alignItems="left"
-              spacing={2}
+              spacing={1}
               sx={{
                 flexWrap: "wrap",
                 rowGap: 1,
@@ -105,20 +112,20 @@ const BiQueue = () => {
                   onClick={handleOpen(true)}
                 >
                   <IconButton size="small">
-                    <CheckCircleOutlineIcon color="success" />
+                    <CheckCircleOutlineIcon color="success"/>
                   </IconButton>
                   <Typography
                     variant="body2"
                     sx={{ display: "flex", alignItems: "center" }}
                   >
-                    I currently have permission to bi-queue. Click here to view bi-queue endpoint.
+                    I currently have permission to bi-queue.
                     <Tooltip
                       slotProps={{
                         tooltip: {
                           sx: tooltipFontStyle,
                         },
                       }}
-                      title="Bi queue is an unfiltered queue without any subscriptions. You can add or remove access to the bi-consumer's group"
+                      title="Bi-queue is an unfiltered queue without any subscriptions. You can add or remove access to the bi-consumer's group"
                     >
                       <IconButton size="small">
                         <InfoOutlinedIcon fontSize="small" sx={{ mt: -2 }} />
@@ -127,7 +134,12 @@ const BiQueue = () => {
                   </Typography>
                 </Stack>
               ) : (
-                <Stack direction="row" alignItems="left" spacing={1} onClick={handleOpen(true)}>
+                <Stack
+                  direction="row"
+                  alignItems="left"
+                  spacing={1}
+                  onClick={handleOpen(true)}
+                >
                   <IconButton size="small">
                     <LockOutlinedIcon color="action" />
                   </IconButton>
@@ -135,14 +147,14 @@ const BiQueue = () => {
                     variant="body2"
                     sx={{ display: "flex", alignItems: "center" }}
                   >
-                    I currently do not have permission to bi-queue. Click here to view bi-queue endpoint.
+                    I currently do not have permission to bi-queue.
                     <Tooltip
                       slotProps={{
                         tooltip: {
                           sx: tooltipFontStyle,
                         },
                       }}
-                      title="Bi queue is an unfiltered queue without any subscriptions. You can add or remove access to the bi-consumer's group"
+                      title="Bi-queue is an unfiltered queue without any subscriptions. You can add or remove access to the bi-consumer's group"
                     >
                       <IconButton size="small">
                         <InfoOutlinedIcon fontSize="small" sx={{ mt: -2 }} />
@@ -169,18 +181,17 @@ const BiQueue = () => {
             </Stack>
           </Box>
         )}
+        {feedback.feedback && (
+          <Snackbar
+            message={feedback.message}
+            severity={feedback.severity}
+            open={feedback.feedback}
+            handleClose={handleSnackClose}
+          />
+        )}
       </Box>
-      <BiQueueEndpointDrawer open={open} onClose={handleClose} />
-      {feedback.feedback && (
-        <Snackbar
-          message={feedback.message}
-          severity={feedback.severity}
-          open={feedback.feedback}
-          handleClose={handleSnackClose}
-        />
-      )}
     </>
   );
 };
 
-export default BiQueue;
+export default BiConsumer;
