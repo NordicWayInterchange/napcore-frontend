@@ -1,5 +1,7 @@
 # NAPCORE
 
+**This project is archived. Napcore has been renamed to frontend, and moved into the parent project [here](https://github.com/NordicWayInterchange/interchange/tree/federation-master/frontend/README.md).**
+
 ---
 
 ## License
